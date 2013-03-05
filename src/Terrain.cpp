@@ -23,7 +23,7 @@ Terrain::Terrain(IVideoDriver * _driver, ISceneManager * _smgr, ICameraSceneNode
 	smgr = _smgr;
 	camera = _camera;
 	terrain = _smgr->addTerrainSceneNode(
-		"../assets/textures/valleyHeightMap.bmp",
+		"assets/textures/valleyHeightMap.bmp",
 		0,					// parent node
 		-1,					// node id
 		core::vector3df(0.f, 0.f, 0.f),		// position
@@ -40,7 +40,7 @@ Terrain::Terrain(IVideoDriver * _driver, ISceneManager * _smgr, ICameraSceneNode
 	terrain->setMaterialFlag(video::EMF_LIGHTING, false);
 
 	terrain->setMaterialTexture(0,
-		_driver->getTexture("../assets/textures/groundTexture.jpg"));
+		_driver->getTexture("assets/textures/groundTexture.jpg"));
 
 	terrain->setMaterialType(video::EMT_DETAIL_MAP);
 

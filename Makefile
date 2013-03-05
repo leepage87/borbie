@@ -8,7 +8,7 @@
 Target := Borbie\'s\ Big\ Adventure
 
 # >>>>> Space-separated list of source files
-Sources := src/main.cpp src/game.cpp src/borbiesEventReceiver.h
+Sources := src/*
 
 # >>>>> Folder where Irrlicht is installed (no ending '/')
 IrrlichtHome := /home/student/miodowj195/Desktop/Games/irrlicht-1.8

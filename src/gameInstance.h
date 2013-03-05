@@ -2,11 +2,12 @@
 
 class GameInstance {
   public:
-    GameInstance(irr::ISceneManager *smgr);
+    GameInstance(irr::scene::ISceneManager *smgr, irr::video::IVideoDriver *driver);
 
-    void draw();
+//    void draw();
  
   private:
-    irr::ISceneManager *smgr;
+    irr::scene::ISceneManager *smgr;
+    irr::video::IVideoDriver *driver; 
     // draw functions
 };
