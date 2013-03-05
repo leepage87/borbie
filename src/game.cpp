@@ -32,7 +32,7 @@ Game::Game()
         receiver);                 // Pointer to IEventReceiver
 
 
-  device->setWindowCaption(L"This is Filler");
+  device->setWindowCaption(L"Borbie's Big Adventure: LET'S HIT THE TOWN!");
 
   /* Cache pointers to the VideoDriver, SceneManager, and
      GUIEnvironment in local variables. */
