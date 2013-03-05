@@ -50,12 +50,14 @@ Game::~Game()
 //TODO eventually refactor to call a run either playable game or gui-menu
 int Game::run()
 {
+  this->gameInstance = new GameInstance(this->smgr);
   while(device->run()) 
   {
-    driver->beginScene(true, true, SColor(255,100,101,140));
-
-    smgr->drawAll();
-    driver->endScene();
+    this->gameInstance.draw();
+    //driver->beginScene(true, true, SColor(255,100,101,140));
+    
+    //smgr->drawAll();
+    //driver->endScene();
   }
 }
 
