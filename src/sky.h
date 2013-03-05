@@ -1,24 +1,22 @@
 /*
-* Lee Page
+* Lee Page et al
 * Sky object (sky.h)
 * CIS 395 
 */
-#ifndef TERRAIN_H
-#define TERRAIN_H
+#ifndef SKY_H
+#define SKY_H
 
 #include <string>
 #include <irrlicht.h>
 
-class sky {
+class Sky {
 private:
 
-	irr::video::IVideoDriver * driver;
 	irr::scene::ISceneManager * smgr;
-	irr::scene::ICameraSceneNode* camera;
 public:
 	irr::scene::ISceneNode * sky;
 
-	sky(irr::scene::ISceneManager * smgr);
+	Sky(irr::scene::ISceneManager * smgr, irr::video::IVideoDriver *driver);
 
 	irr::scene::ISceneNode* getNode() { return sky; }
 };
