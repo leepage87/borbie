@@ -11,7 +11,7 @@ Target := Borbie\'s\ Big\ Adventure
 Sources := src/*
 
 # >>>>> Folder where Irrlicht is installed (no ending '/')
-IrrlichtHome := /home/student/miodowj195/Desktop/Games/irrlicht-1.8
+IrrlichtHome := ../irrlicht-1.8
 
 # >>>>> Folder for output file (no ending '/')
 # win32 note: should contain a copy of Irrlicht.dll
