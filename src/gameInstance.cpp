@@ -26,9 +26,11 @@ GameInstance::GameInstance(ISceneManager *smgr, IVideoDriver *driver, IrrlichtDe
 	//  hide cursor
 	device->getCursorControl()->setVisible(false);
 	
-	// add terrain and skybox
+	// add terrain and collision
 	this->terrain = new Terrain(driver, smgr, camera);
-	this->terrain->getTriSelector();
+	addCollision(this->terrain->getTriSelector());
+	
+	// add skybox
 	this->skybox = new Sky(smgr, driver);
   
 
