@@ -5,8 +5,10 @@
 #ifndef GAMEINSTANCE_H
 #define GAMEINSTANCE_H
 
+// include irrlicht
 #include <irrlicht.h>
-#include "game.h"
+
+// include game object definitions
 #include "Terrain.h"
 #include "sky.h"
 

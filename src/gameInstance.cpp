@@ -1,4 +1,6 @@
 #include "gameInstance.h"
+#include "game.h"
+#include <iostream> //TODO: debug (remove)
 
 using namespace irr;
 using namespace scene;
@@ -27,7 +29,7 @@ GameInstance::GameInstance(ISceneManager *smgr, IVideoDriver *driver, IrrlichtDe
 	// add buildings
 	
 	// add lighting
-
+	//std::cout <<  "Debug: " << BORBIE_DEBUG_MODE << std::endl;
 
 	/*** Camera Setup ***/
 	
