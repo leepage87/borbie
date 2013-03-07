@@ -41,24 +41,6 @@ Terrain::Terrain(IVideoDriver * _driver, ISceneManager * _smgr, ICameraSceneNode
 
 	terrain->setMaterialTexture(0,
 		_driver->getTexture("assets/textures/groundTexture.jpg"));
-
 	terrain->setMaterialType(video::EMT_DETAIL_MAP);
-
 	terrain->scaleTexture(1.0f, 20.0f);
-
-	//add collision
-	// create triangle selector for the terrain	
-	scene::ITriangleSelector* selector
-		= smgr->createTerrainTriangleSelector(terrain, 0);
-	terrain->setTriangleSelector(selector);
-
-	// create collision response animator and attach it to the camera
-	scene::ISceneNodeAnimator* anim = smgr->createCollisionResponseAnimator(
-		selector, _camera, core::vector3df(60,100,60),
-		core::vector3df(0,0,0),
-		core::vector3df(0,50,0));
-	selector->drop();
-	_camera->addAnimator(anim);
-	anim->drop();
-
 }
