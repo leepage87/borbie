@@ -8,6 +8,7 @@
 #include "borbiesEventReceiver.h"
 #include "gameInstance.h"
 
+
 class Game {
   private:
     irr::IrrlichtDevice *device;

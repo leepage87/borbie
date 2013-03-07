@@ -1,6 +1,4 @@
 #include "gameInstance.h"
-#include "Terrain.h"
-#include "sky.h"
 
 using namespace irr;
 using namespace scene;
@@ -33,7 +31,14 @@ GameInstance::GameInstance(ISceneManager *smgr, IVideoDriver *driver, IrrlichtDe
 	// add skybox
 	this->skybox = new Sky(smgr, driver);
   
-
+	// add automatic collision response to camera
+	ISceneNodeAnimator* anim =
+		smgr->createCollisionResponseAnimator(metaTriSelector, camera,
+			core::vector3df(10, 10, 10), // radius (10 = no clipping)
+			core::vector3df(0, -10, 0)); // gravity (negative y = go down)
+			//core::vector3df(0,20,0)); // radius offset
+	camera->addAnimator(anim);
+	anim->drop();
 }
 
 
