@@ -8,10 +8,15 @@
 
 #include "game.h"
 
-int main() {
-  Game *game = new Game();
-  game->run();
- 
-  return 0;
+int main(int argc, char ** argv) {
+	bool BORBIE_DEBUG_MODE = false;
+	if(argc > 1){
+		bool BORBIE_DEBUG_MODE = true;
+	}
+	
+	Game *game = new Game();
+	game->run();
+
+	return 0;
 }
 

@@ -50,7 +50,7 @@ Game::~Game()
 //TODO eventually refactor to call a run either playable game or gui-menu
 int Game::run()
 {
-  this->GI = new GameInstance(this->smgr, this->driver, this->device);
+  this->gameInstance = new GameInstance(this->smgr, this->driver, this->device);
   while(device->run()) 
   {
     //this->gameInstance.draw();

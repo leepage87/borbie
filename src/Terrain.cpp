@@ -18,10 +18,9 @@ using namespace gui;
 #define s2( name ) #name
 #define stringify( name ) s2( name )
 
-Terrain::Terrain(IVideoDriver * _driver, ISceneManager * _smgr, ICameraSceneNode* _camera) {
+Terrain::Terrain(IVideoDriver * _driver, ISceneManager * _smgr) {
 	driver = _driver;
 	smgr = _smgr;
-	camera = _camera;
 	terrainNode = _smgr->addTerrainSceneNode(
 		"assets/textures/valleyHeightMap.bmp",
 		0,					// parent node
