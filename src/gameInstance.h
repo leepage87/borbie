@@ -15,7 +15,8 @@ class GameInstance {
   private:
  	// irrlicht renderer pointers
     irr::scene::ISceneManager *smgr;
-    irr::video::IVideoDriver *driver; 
+    irr::video::IVideoDriver *driver;
+    irr::IrrlichtDevice *device;
     
     // collision detection pointers
 	irr::scene::IMetaTriangleSelector *metaTriSelector;
@@ -30,7 +31,9 @@ class GameInstance {
 	
     
   public:
-    GameInstance(irr::scene::ISceneManager *smgr, irr::video::IVideoDriver *driver);
+    GameInstance(irr::scene::ISceneManager *smgr,
+    			irr::video::IVideoDriver *driver,
+    			irr::IrrlichtDevice *device);
 
 //    void draw();
 

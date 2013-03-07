@@ -7,10 +7,11 @@ using namespace scene;
 using namespace video;
 using namespace core;
 
-GameInstance::GameInstance(ISceneManager *smgr, IVideoDriver *driver ){
+GameInstance::GameInstance(ISceneManager *smgr, IVideoDriver *driver, IrrlichtDevice *device){
 	// keep pointers to Irrlicht rendering pointers
 	this->smgr = smgr;
 	this->driver = driver;
+	this->device = device;
 	
 	// setup global collision meta selector
 	this->metaTriSelector = smgr->createMetaTriangleSelector();
@@ -44,7 +45,7 @@ void GameInstance::addCollision(irr::scene::ITriangleSelector *selector){
 
 // Remove a node's Triangle Selector from the global meta selector.
 void GameInstance::removeCollision(irr::scene::ITriangleSelector *selector){
-	this->metaTriSelector->removeTriangleSelector(curModel->getTriangleSelector());
+	this->metaTriSelector->removeTriangleSelector(selector);
 }
 
 
