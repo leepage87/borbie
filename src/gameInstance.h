@@ -6,6 +6,7 @@
 #define GAMEINSTANCE_H
 
 #include <irrlicht.h>
+#include "game.h"
 #include "Terrain.h"
 #include "sky.h"
 
