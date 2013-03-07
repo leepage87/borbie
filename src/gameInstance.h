@@ -6,6 +6,8 @@
 #define GAMEINSTANCE_H
 
 #include <irrlicht.h>
+#include "Terrain.h"
+#include "sky.h"
 
 
 // GameInstance class:

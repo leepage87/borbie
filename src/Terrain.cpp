@@ -22,7 +22,7 @@ Terrain::Terrain(IVideoDriver * _driver, ISceneManager * _smgr, ICameraSceneNode
 	driver = _driver;
 	smgr = _smgr;
 	camera = _camera;
-	terrain = _smgr->addTerrainSceneNode(
+	terrainNode = _smgr->addTerrainSceneNode(
 		"assets/textures/valleyHeightMap.bmp",
 		0,					// parent node
 		-1,					// node id
@@ -37,17 +37,17 @@ Terrain::Terrain(IVideoDriver * _driver, ISceneManager * _smgr, ICameraSceneNode
 
 	
 	//set lighting to true after lights have been added
-	terrain->setMaterialFlag(video::EMF_LIGHTING, false);
+	terrainNode->setMaterialFlag(video::EMF_LIGHTING, false);
 
-	terrain->setMaterialTexture(0,
+	terrainNode->setMaterialTexture(0,
 		_driver->getTexture("assets/textures/groundTexture.jpg"));
-	terrain->setMaterialType(video::EMT_DETAIL_MAP);
-	terrain->scaleTexture(1.0f, 20.0f);
+	terrainNode->setMaterialType(video::EMT_DETAIL_MAP);
+	terrainNode->scaleTexture(1.0f, 20.0f);
 	
 	// setup collision
 	ITriangleSelector* selector =
-		smgr->createTerrainTriangleSelector(this->terrainNode, 0);
-	terrain->setTriangleSelector(selector);
+		smgr->createTerrainTriangleSelector(terrainNode, 0);
+	terrainNode->setTriangleSelector(selector);
 	this->triSelector = selector;
 }
 

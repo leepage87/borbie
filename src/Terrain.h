@@ -27,6 +27,8 @@ public:
 	irr::scene::ITerrainSceneNode* getNode() { return terrainNode; }
 	
 	// const means it doesn't change anything
-	irr::scene::ITraingleSelector* getTriSelector() const { return this->triSelector }
+	irr::scene::ITriangleSelector* getTriSelector() { return triSelector; }
 };
+
+
 #endif
