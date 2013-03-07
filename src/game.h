@@ -10,7 +10,7 @@
 
 
 // determines whether or not the game is running in debug mode
-//extern bool BORBIE_DEBUG_MODE;
+extern bool BORBIE_DEBUG_MODE;
 
 
 // Game Class

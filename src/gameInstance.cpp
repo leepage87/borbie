@@ -29,6 +29,8 @@ GameInstance::GameInstance(ISceneManager *smgr, IVideoDriver *driver, IrrlichtDe
 	// add buildings
 	
 	// add lighting
+	//bool x = BORBIE_DEBUG_MODE;
+	std::cout <<"hello" <<std::endl;
 	//std::cout <<  "Debug: " << BORBIE_DEBUG_MODE << std::endl;
 
 	/*** Camera Setup ***/
