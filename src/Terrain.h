@@ -12,14 +12,21 @@
 class Terrain {
 private:
 
-	irr::video::IVideoDriver * driver;
-	irr::scene::ISceneManager * smgr;
-	irr::scene::ICameraSceneNode* camera;
+	irr::video::IVideoDriver *driver;
+	irr::scene::ISceneManager *smgr;
+	irr::scene::ICameraSceneNode *camera;
+	irr::scene::ITerrainSceneNode *terrainNode;
+	irr::scene::ITriangleSelector *triSelector;
+	
 public:
-	irr::scene::ITerrainSceneNode * terrain;
+	// constructor
+	Terrain(irr::video::IVideoDriver * driver,
+			irr::scene::ISceneManager * smgr,
+			irr::scene::ICameraSceneNode* camera);
 
-	Terrain(irr::video::IVideoDriver * driver, irr::scene::ISceneManager * smgr, irr::scene::ICameraSceneNode* camera);
-
-	irr::scene::ITerrainSceneNode* getNode() { return terrain; }
+	irr::scene::ITerrainSceneNode* getNode() { return terrainNode; }
+	
+	// const means it doesn't change anything
+	irr::scene::ITraingleSelector* getTriSelector() const { return this->triSelector }
 };
 #endif

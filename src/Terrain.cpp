@@ -43,4 +43,42 @@ Terrain::Terrain(IVideoDriver * _driver, ISceneManager * _smgr, ICameraSceneNode
 		_driver->getTexture("assets/textures/groundTexture.jpg"));
 	terrain->setMaterialType(video::EMT_DETAIL_MAP);
 	terrain->scaleTexture(1.0f, 20.0f);
+	
+	// setup collision
+	ITriangleSelector* selector =
+		smgr->createTerrainTriangleSelector(this->terrainNode, 0);
+	terrain->setTriangleSelector(selector);
+	this->triSelector = selector;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -18,12 +18,17 @@ GameInstance::GameInstance(ISceneManager *smgr, IVideoDriver *driver ){
 	//create a temp camera for testing
 	//TODO remove temp camera
 
+	// setup camera
 	ICameraSceneNode *camera = smgr->addCameraSceneNodeFPS(0, 100.0f, 1.2f);
 	camera->setPosition(vector3df(2700*2,255*2,2600*2));
 	camera->setFarValue(30000.0f); 
-	Terrain *terr = new Terrain(driver, smgr, camera);  
-
-	Sky *s = new Sky(smgr, driver);
+	//  hide cursor
+	device->getCursorControl()->setVisible(false);
+	
+	// add terrain and skybox
+	this->terrain = new Terrain(driver, smgr, camera);
+	this->terrain->getTriSelector();
+	this->skybox = new Sky(smgr, driver);
   
 
 }

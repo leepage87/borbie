@@ -22,6 +22,10 @@ class GameInstance {
 	void addCollision(irr::scene::ITriangleSelector *selector);
 	void removeCollision(irr::scene::ITriangleSelector *selector);
 	
+	// game objects (e.g. terrain, GUI, etc.)
+	Terrain *terrain;
+	Sky *skybox;
+	
     
   public:
     GameInstance(irr::scene::ISceneManager *smgr, irr::video::IVideoDriver *driver);
