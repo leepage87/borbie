@@ -45,7 +45,7 @@ GameInstance::GameInstance(ISceneManager *smgr, IVideoDriver *driver, IrrlichtDe
 	// add automatic collision response to camera
 	ISceneNodeAnimator* anim =
 		smgr->createCollisionResponseAnimator(metaTriSelector, camera,
-			core::vector3df(10, 10, 10), // radius (10 = no clipping)
+			core::vector3df(30, 150, 30), // radius (10 = no clipping)
 			core::vector3df(0, -10, 0)); // gravity (negative y = go down)
 			//core::vector3df(0,20,0)); // radius offset
 	camera->addAnimator(anim);
