@@ -1,14 +1,17 @@
-/*
- * game is the primary controll structure for running the game
- * depending on the game state, it will alternate between running
- * the playable game and the menuing system
+/*	File: game.cpp
+ *	Authors: idk your names
+ *
+ *	Description: this file contains the class declaration for the
+ *	Game class. This object is responsible for starting the
+ *	game, initializaing the Irrlicht engine, and then switching between
+ *	the primary high-level phases of the game (i.e. main menu and
+ *	game instance). It "glues" main game pieces together under the
+ *	game engine's roof.
  */
 
 #include "game.h"
 
-/*
-   Standard Irrlicht namespaces
-   */
+// using Irrlicht engine namespaces:
 using namespace irr;
 using namespace core;
 using namespace scene;
@@ -48,7 +51,7 @@ Game::~Game()
 }
 
 //TODO eventually refactor to call a run either playable game or gui-menu
-int Game::run(int runMode)
+int Game::run(unsigned int runMode)
 {
   this->gameInstance = new GameInstance(this->smgr, this->driver, this->device, runMode);
   while(device->run()) 

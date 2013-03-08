@@ -10,7 +10,7 @@ GameInstance::GameInstance(
 	ISceneManager *smgr,
 	IVideoDriver *driver,
 	IrrlichtDevice *device,
-	int runMode)
+	unsigned int runMode)
 {
 	// keep pointers to Irrlicht rendering pointers
 	this->smgr = smgr;
@@ -54,11 +54,11 @@ GameInstance::GameInstance(
 	device->getCursorControl()->setVisible(false);
   
   	// set gravity (0 if running in debug mode)
-	int gravity;
-	if(runMode == BORBIE_DEBUG_MODE)
+	int gravity = 0;
+	/*if(runMode == BORBIE_DEBUG_MODE)
 		gravity = 0;
 	else
-		gravity = GLOBAL_GRAVITY;
+		gravity = GLOBAL_GRAVITY;*/
 	
 	// add automatic collision response to camera
 	ISceneNodeAnimator* anim =
