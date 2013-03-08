@@ -38,7 +38,16 @@ GameInstance::GameInstance(
 	/*** Camera Setup ***/
 	
 	// setup camera
-	ICameraSceneNode *camera = smgr->addCameraSceneNodeFPS(0, 100.0f, 1.2f);
+	ICameraSceneNode *camera = smgr->addCameraSceneNodeFPS(
+		0,		// parent (none)
+		100.0f,	// rotate speed
+		1.2f,	// move speed
+		0,		// ID
+		0,		// keymap
+		0,		// keymap size
+		true,	// disable vertical movement
+		3.f		// jump speed
+	);
 	camera->setPosition(vector3df(2700*2,255*2,2600*2));
 	camera->setFarValue(30000.0f); 
 	//  hide cursor
@@ -61,6 +70,9 @@ GameInstance::GameInstance(
 	anim->drop();
 }
 
+
+
+/*** PRIVATE HELPER METHODS: used for adjusting and manipulating the world ***/
 
 // Add a node's Traingle Selector to the global meta selector. Use
 //	irr::scene::ISceneNode->getTriangleSelector() to get one.
