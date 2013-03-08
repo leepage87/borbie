@@ -9,7 +9,7 @@
 #include <irrlicht.h>
 
 // include game object definitions
-#include "Terrain.h"
+#include "terrain.h"
 #include "sky.h"
 
 // world constants
