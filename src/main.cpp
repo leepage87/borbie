@@ -9,14 +9,13 @@
 #include "game.h"
 
 int main(int argc, char ** argv) {
-	bool BORBIE_DEBUG_MODE = false;
+	int mode = BORBIE_GAME_MODE;
 	if(argc > 1){
-		bool BORBIE_DEBUG_MODE = true;
+		mode = BORBIE_DEBUG_MODE;
 	}
 	
 	Game *game = new Game();
-	game->run();
+	game->run(mode);
 
 	return 0;
 }
-

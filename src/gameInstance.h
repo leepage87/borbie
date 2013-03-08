@@ -12,6 +12,9 @@
 #include "Terrain.h"
 #include "sky.h"
 
+// world constants
+#define GLOBAL_GRAVITY -10
+
 
 // GameInstance class:
 class GameInstance {
@@ -36,7 +39,8 @@ class GameInstance {
   public:
     GameInstance(irr::scene::ISceneManager *smgr,
     			irr::video::IVideoDriver *driver,
-    			irr::IrrlichtDevice *device);
+    			irr::IrrlichtDevice *device,
+    			int runMode);
 
 //    void draw();
 

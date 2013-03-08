@@ -1,13 +1,17 @@
 #include "gameInstance.h"
 #include "game.h"
-#include <iostream> //TODO: debug (remove)
 
 using namespace irr;
 using namespace scene;
 using namespace video;
 using namespace core;
 
-GameInstance::GameInstance(ISceneManager *smgr, IVideoDriver *driver, IrrlichtDevice *device){
+GameInstance::GameInstance(
+	ISceneManager *smgr,
+	IVideoDriver *driver,
+	IrrlichtDevice *device,
+	int runMode)
+{
 	// keep pointers to Irrlicht rendering pointers
 	this->smgr = smgr;
 	this->driver = driver;
@@ -29,9 +33,7 @@ GameInstance::GameInstance(ISceneManager *smgr, IVideoDriver *driver, IrrlichtDe
 	// add buildings
 	
 	// add lighting
-	//bool x = BORBIE_DEBUG_MODE;
-	std::cout <<"hello" <<std::endl;
-	//std::cout <<  "Debug: " << BORBIE_DEBUG_MODE << std::endl;
+	
 
 	/*** Camera Setup ***/
 	
@@ -42,11 +44,18 @@ GameInstance::GameInstance(ISceneManager *smgr, IVideoDriver *driver, IrrlichtDe
 	//  hide cursor
 	device->getCursorControl()->setVisible(false);
   
+  	// set gravity (0 if running in debug mode)
+	int gravity;
+	if(runMode == BORBIE_DEBUG_MODE)
+		gravity = 0;
+	else
+		gravity = GLOBAL_GRAVITY;
+	
 	// add automatic collision response to camera
 	ISceneNodeAnimator* anim =
 		smgr->createCollisionResponseAnimator(metaTriSelector, camera,
 			core::vector3df(30, 150, 30), // radius (10 = no clipping)
-			core::vector3df(0, -10, 0)); // gravity (negative y = go down)
+			core::vector3df(0, gravity, 0)); // gravity (negative y = go down)
 			//core::vector3df(0,20,0)); // radius offset
 	camera->addAnimator(anim);
 	anim->drop();

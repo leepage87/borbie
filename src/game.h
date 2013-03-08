@@ -9,8 +9,9 @@
 #include "gameInstance.h"
 
 
-// determines whether or not the game is running in debug mode
-extern bool BORBIE_DEBUG_MODE;
+// run mode definitions
+#define BORBIE_DEBUG_MODE 0
+#define BORBIE_GAME_MODE 1
 
 
 // Game Class
@@ -28,7 +29,7 @@ class Game {
 	~Game();
 	
 	// start the game
-    int run();
+    int run(int runMode);
 
 }; // end of Game class
 

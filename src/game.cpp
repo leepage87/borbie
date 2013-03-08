@@ -48,9 +48,9 @@ Game::~Game()
 }
 
 //TODO eventually refactor to call a run either playable game or gui-menu
-int Game::run()
+int Game::run(int runMode)
 {
-  this->gameInstance = new GameInstance(this->smgr, this->driver, this->device);
+  this->gameInstance = new GameInstance(this->smgr, this->driver, this->device, runMode);
   while(device->run()) 
   {
     //this->gameInstance.draw();
