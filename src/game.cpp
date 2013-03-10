@@ -20,20 +20,26 @@ using namespace video;
 //using namespace gui;
 
 //Constructor
-Game::Game()
+Game::Game(unsigned int runMode)
 {
-
-  receiver = new BorbiesEventReceiver(); 
-  //do something?
+  // remember the run mode flag
+  this->runMode = runMode;
+  
+  receiver = new BorbiesEventReceiver();
+  // if fullscreen is flagged, run as full screen
+  bool fullScreen = false;
+  if(runMode & BORBIE_FULLSCREEN)
+  	fullScreen = true;
   device =
     createDevice(video::EDT_OPENGL,          // Video driver to use
         dimension2d<u32>(640, 480), // Dimensions of window
         32,                         // Bit-depth
-        false,                      // Full screen
+        fullScreen,                 // Full screen
         false,                      // Stencil buffer
         false,                      // Vsync
         receiver);                 // Pointer to IEventReceiver
 
+  ((BorbiesEventReceiver *)receiver)->setDevice(device);
 
   device->setWindowCaption(L"Borbie's Big Adventure: LET'S HIT THE TOWN!");
 
@@ -51,9 +57,10 @@ Game::~Game()
 }
 
 //TODO eventually refactor to call a run either playable game or gui-menu
-int Game::run(unsigned int runMode)
+int Game::run()
 {
-  this->gameInstance = new GameInstance(this->smgr, this->driver, this->device, runMode);
+  this->gameInstance =
+  	new GameInstance(this->smgr, this->driver, this->device, this->runMode);
   while(device->run()) 
   {
     //this->gameInstance.draw();

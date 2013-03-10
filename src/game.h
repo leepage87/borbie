@@ -58,15 +58,17 @@ class Game {
     
     // pointers to all internal Borbie-related objects:
     GameInstance *gameInstance;
+    
+    unsigned int runMode;
 
 
   public:
   	// constructor/destructor
-	Game();
+	Game(unsigned int runMode);
 	~Game();
 	
 	// start the game
-    int run(unsigned int runMode);
+    int run();
 
 
 }; // end of Game class
