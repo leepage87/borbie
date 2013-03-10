@@ -18,14 +18,7 @@ using namespace gui;
 #define stringify( name ) s2( name )
 
 Sky::Sky(ISceneManager * smgr, IVideoDriver *driver) {
-scene::ISceneNode* skybox=smgr->addSkyBoxSceneNode(
-		driver->getTexture("assets/textures/calm_top.jpg"),
-		driver->getTexture("assets/textures/calm_top.jpg"),
-		driver->getTexture("assets/textures/calm_left.jpg"),
-		driver->getTexture("assets/textures/calm_right.jpg"),
-		driver->getTexture("assets/textures/calm_front.jpg"),
-		driver->getTexture("assets/textures/calm_back.jpg"));
 	scene::ISceneNode* skydome=smgr->addSkyDomeSceneNode(driver->getTexture("assets/textures/burnies.jpg"),16,8,0.95f,2.0f);
 
-  skybox->setVisible(true);
+  skydome->setVisible(true);
 }
