@@ -18,24 +18,15 @@
 #include "buildingInstance.h"
 
 
-// BuildingInstance class:
-class BuildingInstance : public GameObject {
+// Buildings class:
+class Buildings {
 
   public:
-	BuildingInstance(
-		irr::scene::ISceneManager *smgr,
-		float width, float height, float depth,
-		float posX, float posY, float posZ,
-		irr::video::ITexture *texture
-	);
-	
-	virtual void doDamage(int damage);
-	virtual void applyCollision(
-			irr::scene::IMetaTriangleSelector *metaTriSelector
-		);
+	void makeBuilding(unsigned int type,
+		float xPos, float yPos, float zPos);
 	
 	
-}; // end of Building class
+}; // end of Buildings class
 
 
 #endif
