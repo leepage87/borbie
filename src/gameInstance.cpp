@@ -34,7 +34,7 @@ GameInstance::GameInstance(
 	// add buildings
 	
 	// add lighting
-	
+	this->light = new ambientLight(smgr);
 
 	/*** Runtime Flags Setup ***/
 	
@@ -84,6 +84,9 @@ GameInstance::GameInstance(
 			core::vector3df(0, PLAYER_HEIGHT, 0)); // radius offset
 	camera->addAnimator(anim);
 	anim->drop();
+	
+	
+	
 }
 
 
