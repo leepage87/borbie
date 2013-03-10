@@ -81,7 +81,8 @@ GameInstance::GameInstance(
 		smgr->createCollisionResponseAnimator(metaTriSelector, camera,
 			core::vector3df(30, 150, 30), // radius (10 = no clipping)
 			core::vector3df(0, gravity, 0), // gravity (negative y = go down)
-			core::vector3df(0, PLAYER_HEIGHT, 0)); // radius offset
+			core::vector3df(0, PLAYER_HEIGHT, 0), //radius offset
+      0.1f); // sliding value TODO tweak as needed
 	camera->addAnimator(anim);
 	anim->drop();
 	
