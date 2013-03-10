@@ -33,7 +33,7 @@ GameInstance::GameInstance(
 	// add buildings
 	
 	// add lighting
-	
+	this->light = new ambientLight(smgr);
 
 	/*** Runtime Flags Setup ***/
 	

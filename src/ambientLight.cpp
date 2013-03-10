@@ -17,20 +17,25 @@ using namespace io;
 #define stringify( name ) s2( name )
 
 ambientLight::ambientLight(scene::ISceneManager * _smgr) {
+	//the parent node that the sun will be attached to
+	scene::ISceneNode *pNode = _smgr->addEmptySceneNode();
+	pNode->setPosition(core::vector3df(2600, 2000, 2600));
+	
 	sun = _smgr->addLightSceneNode(
-		0,								// parent = 0 (null)
-		core::vector3df(12.5, 40, -10)	// position
+		pNode,								// parent
+		core::vector3df(0,0,1),	       		// position relative to parent
+		video::SColorf(181.0f,5.0f,28.0f),	//red color
+		4000.0f,							//radius of light
+		-1									//id
 	);
 	sun-> setLightType(video::ELT_DIRECTIONAL);
 	// change angle:
-	scene::ISceneNode *pNode = _smgr->addEmptySceneNode();
-	sun->setPosition(core::vector3df(0,0,1)); //default is (1,1,0)
-	sun->setParent(pNode);
 	// now rotate pNode to set light angle (degrees):
 	//	x: up/down rotation (90 = directly above)
 	//	y: rotates around sides (90 = to the left)
 	//	z:
-	pNode->setRotation(core::vector3df(75, -20, -20));
+	pNode->setRotation(core::vector3df(85, 0, 0));
+
 }
 
 

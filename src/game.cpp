@@ -35,7 +35,7 @@ Game::Game(unsigned int runMode)
         dimension2d<u32>(640, 480), // Dimensions of window
         32,                         // Bit-depth
         fullScreen,                 // Full screen
-        false,                      // Stencil buffer
+        true,                      // Stencil buffer
         false,                      // Vsync
         receiver);                 // Pointer to IEventReceiver
 

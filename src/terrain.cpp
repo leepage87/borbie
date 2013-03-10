@@ -24,7 +24,7 @@ Terrain::Terrain(IVideoDriver * _driver, ISceneManager * _smgr) {
 	terrainNode = _smgr->addTerrainSceneNode(
 		"assets/textures/valleyHeightMap.bmp",
 		0,					// parent node
-		-1,					// node id
+		-1,					// node idsssssssss
 		core::vector3df(0.f, 0.f, 0.f),		// position
 		core::vector3df(0.f, 0.f, 0.f),		// rotation
 		core::vector3df(40.f, 4.4f, 40.f),	// scale
@@ -35,8 +35,7 @@ Terrain::Terrain(IVideoDriver * _driver, ISceneManager * _smgr) {
 		);
 
 	
-	//set lighting to true after lights have been added
-	terrainNode->setMaterialFlag(video::EMF_LIGHTING, false);
+	terrainNode->setMaterialFlag(video::EMF_LIGHTING, true);
 
 	terrainNode->setMaterialTexture(0,
 		_driver->getTexture("assets/textures/groundTexture.jpg"));
