@@ -103,6 +103,9 @@ GameInstance::GameInstance(
 			core::vector3df(0, PLAYER_HEIGHT, 0)); // radius offset
 	camera->addAnimator(anim);
 	anim->drop();
+	
+	
+	
 }
 
 

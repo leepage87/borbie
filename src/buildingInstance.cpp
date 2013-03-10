@@ -1,13 +1,13 @@
-/*	File: building.cpp
+/*	File: buildingInstance.cpp
  *	Authors: idk your names
  *
  *	Description: this file contains the class declaration of the
- *	building object. The building object provides a specification
+ *	building instance object. The building object provides a specification
  *	of the abstract GameObject class and contains functions and variables
  *	specific to destructable buildings placed within the environment.
  */
 
-#include "building.h"
+#include "buildingInstance.h"
 
 using namespace irr;
 using namespace scene;
@@ -15,7 +15,7 @@ using namespace core;
 using namespace video;
 
 
-Building::Building(
+BuildingInstance::BuildingInstance(
 	ISceneManager *smgr,
 	float width, float height, float depth,
 	float posX, float posY, float posZ,
@@ -28,11 +28,11 @@ Building::Building(
 }
 
 
-void Building::doDamage(int damage){
+void BuildingInstance::doDamage(int damage){
 	this->health -= damage;
 }
 
-void Building::applyCollision(
+void BuildingInstance::applyCollision(
 	irr::scene::IMetaTriangleSelector *metaTriSelector)
 {
 	ITriangleSelector *selector =
