@@ -42,7 +42,31 @@ GameObject::~GameObject(){
 }
 
 
-/* GET: health - returns the object's current health (in int form) */
+/* GET: health
+ *	returns the object's current health (in int form)
+ */
 int GameObject::getHealth() const {
 	return this->health;
+}
+
+/* GET: explosion radius
+ *	returns the object's current explosion radius (in int form).
+ */
+int GameObject::getExplosionRadius() const {
+	return this->explosionRadius;
+}
+
+
+/* SET: health
+ *	set the objects current health
+ */
+void GameObject::setHealth(int newHealth){
+	this->health = newHealth;
+}
+
+/* SET: explosion radius
+ *	set the objects current explosion radius
+ */
+void GameObject::setExplosionRadius(int newRadius){
+	this->health = newRadius;
 }

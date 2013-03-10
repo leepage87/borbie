@@ -19,6 +19,7 @@
 // GameObject definitions
 //	TODO: modify as needed
 #define GAME_OBJ_MAXHEALTH 1000
+#define GAME_OBJ_STDRADIUS 1000
 
 
 // GameObject class (abstract):
@@ -33,6 +34,7 @@ class GameObject {
 	
 	// object variables
 	int health;
+	int explosionRadius;
 
 
   public:
@@ -44,10 +46,18 @@ class GameObject {
 	
 	// standard getters
 	virtual int getHealth() const;
+	virtual int getExplosionRadius() const;
+	
+	// standard setters
+	virtual void setHealth(int newHealth);
+	virtual void setExplosionRadius(int newRadius);
+	
 	
 	// pure virtual functions (override mandatory)
 	virtual void doDamage(int damage) = 0;
-	virtual void applyCollision(int metaOfNotIntType) = 0;
+	virtual void applyCollision(
+			irr::scene::IMetaTriangleSelector *metaTriSelector
+		) = 0;
 	
 	
 }; // end of GameObject class
