@@ -24,7 +24,10 @@ BuildingInstance::BuildingInstance(
 {
 	this->sceneNode = smgr->addCubeSceneNode();
 	this->sceneNode->setScale(vector3df(width, height, depth));
+	this->sceneNode->setPosition(vector3df(posX, posY, posZ));
 	this->sceneNode->setMaterialTexture(0, texture);
+	this->sceneNode->setMaterialFlag(EMF_LIGHTING, true);
+	this->sceneNode->addShadowVolumeSceneNode();
 }
 
 
@@ -35,9 +38,22 @@ void BuildingInstance::doDamage(int damage){
 void BuildingInstance::applyCollision(
 	irr::scene::IMetaTriangleSelector *metaTriSelector)
 {
+	// add its triangles to the global collision meta selector
 	ITriangleSelector *selector =
 		smgr->createTriangleSelectorFromBoundingBox(sceneNode);
 	sceneNode->setTriangleSelector(selector);
 	selector->drop();
 	metaTriSelector->addTriangleSelector(sceneNode->getTriangleSelector());
+	
+	// get bounds
+	/*core::aabbox3d<f32> modelBounds = this->sceneNode->getTransformedBoundingBox();
+	// add a collision response animator to it
+	core::vector3df radius = modelBounds.MaxEdge - modelBounds.getCenter();
+	ISceneNodeAnimator* anim = this->smgr->createCollisionResponseAnimator(
+		metaTriSelector, this->sceneNode,
+		radius, // radius of collision
+		vector3df(0, -5, 0), // gravity (negative y = down)
+		vector3df(0, -radius.Y, 0)); // radius offset
+	this->sceneNode->addAnimator(anim);
+	anim->drop();*/
 }

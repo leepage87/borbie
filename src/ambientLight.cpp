@@ -23,10 +23,10 @@ ambientLight::ambientLight(scene::ISceneManager * _smgr) {
 	
 	sun = _smgr->addLightSceneNode(
 		pNode,								// parent
-		core::vector3df(0,0,1),	       		// position relative to parent
-		video::SColorf(181.0f,5.0f,28.0f),	//red color
-		4000.0f,							//radius of light
-		-1									//id
+		core::vector3df(0,0,1),				// position relative to parent
+		video::SColor(255, 255, 255, 255),	// color
+		4000.0f,							// radius of light
+		-1									// id
 	);
 	sun-> setLightType(video::ELT_DIRECTIONAL);
 	// change angle:
@@ -36,6 +36,8 @@ ambientLight::ambientLight(scene::ISceneManager * _smgr) {
 	//	z:
 	pNode->setRotation(core::vector3df(85, 0, 0));
 
+	// add ambient light
+	_smgr->setAmbientLight(video::SColor(255, 255, 192, 203));
 }
 
 

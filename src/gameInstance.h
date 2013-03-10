@@ -16,6 +16,7 @@
 #include "sky.h"
 #include "game_object.h"
 #include "ambientLight.h"
+#include "buildings.h"
 
 
 // world constants
@@ -50,6 +51,7 @@ class GameInstance {
 	Terrain *terrain;
 	Sky *skybox;
 	ambientLight *light;
+	Buildings *buildings;
 	
     
   public:

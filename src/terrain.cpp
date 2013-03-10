@@ -35,12 +35,13 @@ Terrain::Terrain(IVideoDriver * _driver, ISceneManager * _smgr) {
 		);
 
 	
-	terrainNode->setMaterialFlag(video::EMF_LIGHTING, true);
 
 	terrainNode->setMaterialTexture(0,
 		_driver->getTexture("assets/textures/groundTexture.jpg"));
 	terrainNode->setMaterialType(video::EMT_DETAIL_MAP);
 	terrainNode->scaleTexture(1.0f, 20.0f);
+	
+	terrainNode->setMaterialFlag(video::EMF_LIGHTING, true);
 	
 	// setup collision
 	ITriangleSelector* selector =

@@ -16,10 +16,12 @@ using namespace video;
 
 Buildings::Buildings(
 	ISceneManager *smgr,
-	IVideoDriver *driver)
+	IVideoDriver *driver,
+	IMetaTriangleSelector *metaTriSelector)
 {
 	this->smgr = smgr;
 	this->driver = driver;
+	this->metaTriSelector = metaTriSelector;
 }
 
 // delete all of the buildings
@@ -48,6 +50,8 @@ void Buildings::makeBuilding(unsigned int type,
 			xPos, yPos, zPos,
 			texture
 		);
+	
+	newBuilding->applyCollision(this->metaTriSelector);
 	
 	this->buildingList.push_back(newBuilding);
 }

@@ -70,7 +70,7 @@ GameInstance::GameInstance(
 	// set camera position to ???? TODO: wtf?
 	//camera->setPosition(vector3df(2700*2,255*2,2600*2));
 	//camera->setPosition(vector3df(5400, 510, 5200));
-	camera->setPosition(vector3df(5400, 1000, 5200));
+	camera->setPosition(vector3df(4400, 1000, 5200));
 	// set view distance
 	camera->setFarValue(30000.0f); 
 	//  hide cursor
@@ -87,7 +87,19 @@ GameInstance::GameInstance(
 	anim->drop();
 	
 	
-	
+	this->buildings = new Buildings(smgr, driver, metaTriSelector);
+	this->buildings->makeBuilding(
+		0,			// type
+		6150.0f,	// x
+		470.0f,		// y
+		5200.0f		// z
+	);
+	this->buildings->makeBuilding(
+		0,			// type
+		7700.0f,	// x
+		470.0f,		// y
+		5200.0f		// z
+	);
 }
 
 

@@ -33,13 +33,15 @@ class Buildings {
   private:
 	irr::scene::ISceneManager *smgr;
 	irr::video::IVideoDriver *driver;
+	irr::scene::IMetaTriangleSelector *metaTriSelector;
 	
 	std::vector<BuildingInstance *> buildingList;
   
   public:
 	Buildings(
 		irr::scene::ISceneManager *smgr,
-		irr::video::IVideoDriver *driver);
+		irr::video::IVideoDriver *driver,
+		irr::scene::IMetaTriangleSelector *metaTriSelector);
 	~Buildings();
 	
 	void makeBuilding(unsigned int type,
