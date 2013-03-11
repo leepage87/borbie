@@ -20,11 +20,11 @@
 
 
 // world constants
-#define GLOBAL_GRAVITY -20.0f
+#define GLOBAL_GRAVITY -40.0f
 #define PLAYER_ROTATE_SPEED 100.0f
 #define PLAYER_MOVEMENT_SPEED 1.2f
 #define PLAYER_JUMP_SPEED 12.0f
-#define PLAYER_HEIGHT 100.0f
+#define PLAYER_HEIGHT 200.0f
 
 
 // GameInstance class:

@@ -90,7 +90,7 @@ GameInstance::GameInstance(
 	this->buildings = new Buildings(smgr, driver, metaTriSelector);
 	this->buildings->makeBuilding(
 		0,			// type
-		6150.0f,	// x
+		6150.0f,	// x		increase to make it go "right"
 		470.0f,		// y
 		5200.0f		// z
 	);
