@@ -17,14 +17,18 @@ using namespace core;
 using namespace scene;
 using namespace video;
 //using namespace io;
-//using namespace gui;
+using namespace gui;
+
 
 //Constructor
 Game::Game(unsigned int runMode)
 {
   // remember the run mode flag
   this->runMode = runMode;
-  
+
+  gui = 0;
+  gameInstance = 0;
+
   receiver = new BorbiesEventReceiver();
   // if fullscreen is flagged, run as full screen
   bool fullScreen = false;
@@ -39,7 +43,7 @@ Game::Game(unsigned int runMode)
         false,                      // Vsync
         receiver);                 // Pointer to IEventReceiver
 
-  ((BorbiesEventReceiver *)receiver)->setDevice(device);
+  ((BorbiesEventReceiver *)receiver)->setDevice(device, this);
 
   device->setWindowCaption(L"Borbie's Big Adventure: LET'S HIT THE TOWN!");
 
@@ -48,6 +52,9 @@ Game::Game(unsigned int runMode)
   driver = device->getVideoDriver();
   smgr = device->getSceneManager();
 
+   //start the GUI
+   GameState = 1;
+   manageStates();   
 }
 
 //De(con)structor
@@ -56,11 +63,27 @@ Game::~Game()
   device->drop();
 }
 
+void Game::manageStates()
+{
+	//case statements
+	if(GameState == 0){
+		GameState = 1;
+		if(gui)
+			delete gui;
+			
+		this->gameInstance = new GameInstance(this->smgr, 
+			this->driver, this->device, this->runMode);
+	}else if(GameState == 1){
+		GameState = 0;
+		if(gameInstance)
+			delete gameInstance;
+		this->gui = new Gui();
+	}
+}
 //TODO eventually refactor to call a run either playable game or gui-menu
 int Game::run()
 {
-  this->gameInstance =
-  	new GameInstance(this->smgr, this->driver, this->device, this->runMode);
+  
   while(device->run()) 
   {
     //this->gameInstance.draw();

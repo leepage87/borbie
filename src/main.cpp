@@ -34,6 +34,7 @@ int main(int argc, char ** argv) {
 	}
 	
 	Game *game = new Game(mode);
+
 	game->run();
 	
 	// destructs the game object, in turn closing Irrlicht device,

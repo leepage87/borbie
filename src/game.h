@@ -18,7 +18,7 @@
 //Game Includes
 #include "borbiesEventReceiver.h"
 #include "gameInstance.h"
-
+#include "gui.h"
 
 /* RuntimeOptions: enum (constant definitions):
  *	16-bit flags allow for bitwise or operations
@@ -46,6 +46,8 @@ enum RuntimeOptions {
 	BORBIE_FULLSCREEN	= 0x0002
 };
 
+//game state enum
+//enum {GUI, GAME} GameState;
 
 // Game Class
 class Game {
@@ -55,8 +57,10 @@ class Game {
     irr::IEventReceiver *receiver;
     irr::video::IVideoDriver* driver;
     irr::scene::ISceneManager *smgr;
-    
+  
+  	int GameState;  
     // pointers to all internal Borbie-related objects:
+    Gui *gui;
     GameInstance *gameInstance;
     
     unsigned int runMode;
@@ -68,6 +72,7 @@ class Game {
 	~Game();
 	
 	// start the game
+	void manageStates();
     int run();
 
 
