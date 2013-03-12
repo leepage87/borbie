@@ -114,6 +114,19 @@ GameInstance::GameInstance(
 		    5750.0f		// z
 	    );
 	}
+	for(int i=0; i<10; ++i){
+	    this->buildings->addRandomBuilding(
+		    7350.0f + (450*i),	// x
+		    0.0f,		// y
+		    6200.0f		// z
+	    );
+	}
+}
+
+
+// destructor: clears the scene
+GameInstance::~GameInstance(){
+    this->smgr->clear();
 }
 
 
