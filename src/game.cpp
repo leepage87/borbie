@@ -46,6 +46,7 @@ Game::Game(unsigned int runMode)
   /* Cache pointers to the VideoDriver, SceneManager, and
      GUIEnvironment in local variables. */
   driver = device->getVideoDriver();
+  device->setResizable(true);
   smgr = device->getSceneManager();
 
 }
