@@ -39,6 +39,9 @@ class Buildings {
 	// list of buildings
 	std::vector<BuildingInstance *> buildingList;
 	
+	// list of building textures
+	std::vector<const char *> textureList;
+	
 	// building construction functions
 	void makeBuilding(int textureIndex, float height,
 		float xPos, float yPos, float zPos);

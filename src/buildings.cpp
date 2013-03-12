@@ -30,6 +30,14 @@ Buildings::Buildings(
 	
 	// seed the random number generator (using system time)
 	srand(time(NULL));
+	
+	// populate the texture list
+	this->textureList.push_back("assets/textures/buildings/building1.png");
+	this->textureList.push_back("assets/textures/buildings/building2.jpg");
+	this->textureList.push_back("assets/textures/buildings/building3.jpg");
+	this->textureList.push_back("assets/textures/buildings/building4.jpg");
+	this->textureList.push_back("assets/textures/buildings/building5.jpg");
+	this->textureList.push_back("assets/textures/buildings/building6.jpg");
 }
 
 // delete all of the buildings
@@ -48,9 +56,12 @@ void Buildings::addRandomBuilding(
 {
     // generate random height
     int rHeight = rand() % 10 + 1;
-    rHeight = rHeight * 10 + 50.0;
+    rHeight = rHeight * 5 + 20.0;
     
-	this->makeBuilding(0, rHeight, xPos, yPos, zPos);
+    // get a random texture index from the texture list
+    int textureIndex = rand() % this->textureList.size();
+    
+	this->makeBuilding(textureIndex, rHeight, xPos, yPos, zPos);
 }
 
 
@@ -60,9 +71,10 @@ void Buildings::makeBuilding(
 	float xPos, float yPos, float zPos)
 {
     // create texture, w, h, d based on building type
-	ITexture *texture = this->driver->getTexture("assets/textures/building1.png");
-	float width = 60.0f;
-	float depth = 60.0f;
+	ITexture *texture =
+	    this->driver->getTexture(this->textureList[textureIndex]);
+	float width = 40.0f;
+	float depth = 40.0f;
 	
 	BuildingInstance *newBuilding
 		= new BuildingInstance(

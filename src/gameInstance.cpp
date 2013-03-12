@@ -89,15 +89,31 @@ GameInstance::GameInstance(
 	
 	this->buildings = new Buildings(smgr, driver, metaTriSelector);
 	this->buildings->addRandomBuilding(
-		6150.0f,	// x		increase to make it go "right"
+		6500.0f,	// x		increase to make it go "right"
 		0.0f,		// y
-		5200.0f		// z
+		4850.0f		// z        increase makes it go "back"
 	);
-	this->buildings->addRandomBuilding(
-		7700.0f,	// x
-		0.0f,		// y
-		5200.0f		// z
-	);
+	for(int i=0; i<10; ++i){
+	    this->buildings->addRandomBuilding(
+		    7350.0f + (450*i),	// x
+		    0.0f,		// y
+		    4850.0f		// z
+	    );
+	}
+	for(int i=0; i<10; ++i){
+	    this->buildings->addRandomBuilding(
+		    7350.0f + (450*i),	// x
+		    0.0f,		// y
+		    5300.0f		// z
+	    );
+	}
+	for(int i=0; i<10; ++i){
+	    this->buildings->addRandomBuilding(
+		    7350.0f + (450*i),	// x
+		    0.0f,		// y
+		    5750.0f		// z
+	    );
+	}
 }
 
 

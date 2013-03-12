@@ -25,7 +25,8 @@ BuildingInstance::BuildingInstance(
 	ITexture *texture)
 	: GameObject(smgr) // call super GameObject constructor first
 {
-    // calculate actual hight based on the given scale
+    // calculate y-position based on height (with posY being the base
+    //  of the building. Irrlicht centers objects at 1/2 height.
     float actualPosY = posY + (height * 10) / 2;
     
 	this->sceneNode = smgr->addCubeSceneNode();
