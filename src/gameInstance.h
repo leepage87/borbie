@@ -59,6 +59,7 @@ class GameInstance {
     			irr::video::IVideoDriver *driver,
     			irr::IrrlichtDevice *device,
     			unsigned int runMode);
+    ~GameInstance();
 
 //    void draw();
 
