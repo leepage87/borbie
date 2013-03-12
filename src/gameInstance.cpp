@@ -88,16 +88,14 @@ GameInstance::GameInstance(
 	
 	
 	this->buildings = new Buildings(smgr, driver, metaTriSelector);
-	this->buildings->makeBuilding(
-		0,			// type
+	this->buildings->addRandomBuilding(
 		6150.0f,	// x		increase to make it go "right"
-		470.0f,		// y
+		0.0f,		// y
 		5200.0f		// z
 	);
-	this->buildings->makeBuilding(
-		0,			// type
+	this->buildings->addRandomBuilding(
 		7700.0f,	// x
-		470.0f,		// y
+		0.0f,		// y
 		5200.0f		// z
 	);
 }

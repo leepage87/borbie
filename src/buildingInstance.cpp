@@ -9,6 +9,9 @@
 
 #include "buildingInstance.h"
 
+#include <iostream> // TODO: debug (remove)
+using namespace std;
+
 using namespace irr;
 using namespace scene;
 using namespace core;
@@ -22,9 +25,12 @@ BuildingInstance::BuildingInstance(
 	ITexture *texture)
 	: GameObject(smgr) // call super GameObject constructor first
 {
+    // calculate actual hight based on the given scale
+    float actualPosY = posY + (height * 10) / 2;
+    
 	this->sceneNode = smgr->addCubeSceneNode();
 	this->sceneNode->setScale(vector3df(width, height, depth));
-	this->sceneNode->setPosition(vector3df(posX, posY, posZ));
+	this->sceneNode->setPosition(vector3df(posX, actualPosY , posZ));
 	this->sceneNode->setMaterialTexture(0, texture);
 	this->sceneNode->setMaterialFlag(EMF_LIGHTING, true);
 	this->sceneNode->addShadowVolumeSceneNode();

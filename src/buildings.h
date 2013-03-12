@@ -31,11 +31,18 @@ enum BuildingTypes {
 class Buildings {
 
   private:
+    // references to the Irrlicht scene objects (to make building nodes)
 	irr::scene::ISceneManager *smgr;
 	irr::video::IVideoDriver *driver;
 	irr::scene::IMetaTriangleSelector *metaTriSelector;
 	
+	// list of buildings
 	std::vector<BuildingInstance *> buildingList;
+	
+	// building construction functions
+	void makeBuilding(int textureIndex, float height,
+		float xPos, float yPos, float zPos);
+	
   
   public:
 	Buildings(
@@ -44,8 +51,7 @@ class Buildings {
 		irr::scene::IMetaTriangleSelector *metaTriSelector);
 	~Buildings();
 	
-	void makeBuilding(unsigned int type,
-		float xPos, float yPos, float zPos);
+	void addRandomBuilding(float xPos, float yPos, float zPos);
 	
 	
 }; // end of Buildings class
