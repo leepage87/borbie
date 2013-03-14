@@ -38,7 +38,7 @@ ambientLight::ambientLight(scene::ISceneManager * _smgr) {
 	pNode->setRotation(core::vector3df(90, 0, 0));
 
 	// add ambient light
-	//_smgr->setAmbientLight(video::SColor(255, 255, 192, 203));
+	_smgr->setAmbientLight(video::SColor(255, 255, 192, 203));
 }
 
 
