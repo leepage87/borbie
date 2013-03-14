@@ -112,6 +112,10 @@ GameInstance::GameInstance(
 	this->buildings = new Buildings(smgr, driver, metaTriSelector);
 	
 	// read in the map building coordinate file
+	/* NOTES: currently, model is loaded with lower-
+	 */
+	const int farX = 20000.0f;
+	const int farY = 20000.0f;
 	std::ifstream mapfile("assets/map/coords.bor");
 	for(std::string line; getline(mapfile, line); ) {
         if(line.size() == 0)
@@ -125,20 +129,20 @@ GameInstance::GameInstance(
              lineParser >> coordY;
              // use coordinates to add the building at specified location
              this->buildings->addRandomBuilding(
-		        19825 * coordX,
+		        farX * coordX,
 		        0.0f,
-		        19825 * (coordY)
+		        farY * (coordY)
 	         );
              std::cout << "Generated building at " <<
                 "x: " << coordX << ", y: " << coordY << std::endl;
         }
     }
     
-	/*this->buildings->addRandomBuilding(
-		19825 * coordX
+	this->buildings->addRandomBuilding(
+		farX * 0.5,
 		0.0f,
-		4850.0f
-	);*/
+		farY * 0.5
+	);
     
 	/*this->buildings->addRandomBuilding(
 		6500.0f,	// x		increase to make it go "right"

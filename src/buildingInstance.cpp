@@ -29,9 +29,13 @@ BuildingInstance::BuildingInstance(
     //  of the building. Irrlicht centers objects at 1/2 height.
     float actualPosY = posY + (height * 10) / 2;
     
+    // set x,z positions based on width and depth respectively (center it)
+    float actualPosX = posX + (width * 10) / 2;
+    float actualPosZ = posZ + (depth * 10) / 2;
+    
 	this->sceneNode = smgr->addCubeSceneNode();
 	this->sceneNode->setScale(vector3df(width, height, depth));
-	this->sceneNode->setPosition(vector3df(posX, actualPosY , posZ));
+	this->sceneNode->setPosition(vector3df(actualPosX, actualPosY , actualPosZ));
 	this->sceneNode->setMaterialTexture(0, texture);
 	this->sceneNode->setMaterialFlag(EMF_LIGHTING, true);
 	this->sceneNode->addShadowVolumeSceneNode(0,-1,true,50.0f);
