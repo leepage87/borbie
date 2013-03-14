@@ -134,11 +134,11 @@ GameInstance::GameInstance(
         }
     }
     
-	this->buildings->addRandomBuilding(
+	/*this->buildings->addRandomBuilding(
 		19825 * coordX
 		0.0f,
 		4850.0f
-	);
+	);*/
     
 	/*this->buildings->addRandomBuilding(
 		6500.0f,	// x		increase to make it go "right"
