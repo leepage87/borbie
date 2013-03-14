@@ -43,6 +43,10 @@ GameInstance::GameInstance(
 	// add lighting
 	this->light = new ambientLight(smgr);
 
+	//add vehicle(s)
+	this->vehicles = new Vehicles(smgr, driver, metaTriSelector);
+	this->vehicles->addRandomVehicle(4000,200,4000);
+
 	/*** Runtime Flags Setup ***/
 	
 	float gravity = GLOBAL_GRAVITY;
