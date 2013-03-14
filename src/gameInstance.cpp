@@ -2,6 +2,7 @@
 #include "game.h"
 #include "kBindings.h"
 
+// ALL INCLUDES FOR READING FILES...
 #include <fstream> // TODO: move file stuff into a different place?
 #include <string>
 #include <iostream>
@@ -55,13 +56,16 @@ GameInstance::GameInstance(
 	
 	/*** Camera Setup ***/
 	
-	// TODO: move these to a separate keybindings file
-	// camera (player) control key bindings
+	// TODO: not sure what's going on here, but it's a memory leak.
+	//  If setKeys is static, then perhaps it should just be a static
+	//  function. Also, if setKeys just maps the key bindings into the
+	//  array, delete the KBindings object after we're done with it.
 	SKeyMap keyMap[9];
-  KBindings *keys = new KBindings(&keyMap[0]);
-  keys->setKeys();
-  
-  
+    KBindings *keys = new KBindings(&keyMap[0]);
+    keys->setKeys();
+    // added: (remove if setKeys() becomes static)
+    delete keys;
+    
     // setup camera
 	ICameraSceneNode *camera = smgr->addCameraSceneNodeFPS(
 		0,						// parent (none)
@@ -73,13 +77,12 @@ GameInstance::GameInstance(
 		noVerticalMovement,		// no vertical movement (true = up/down disabled)
 		PLAYER_JUMP_SPEED		// jump speed
 	);
-	// set camera position to ???? TODO: wtf?
-	//camera->setPosition(vector3df(2700*2,255*2,2600*2));
-	//camera->setPosition(vector3df(5400, 510, 5200));
+	
+	// TODO: read camera position from map file
 	camera->setPosition(vector3df(4400, 1000, 5200));
 	// set view distance
 	camera->setFarValue(30000.0f); 
-	//  hide cursor
+	// hide cursor
 	device->getCursorControl()->setVisible(false);
 	
 	// add automatic collision response to camera
@@ -93,27 +96,19 @@ GameInstance::GameInstance(
 	anim->drop();
 	
 	/* Positions explained:
-	 *  x: 0-19825  0 is RIGHT edge of texture
+	 *  x: 0 to 20000  0 is RIGHT edge of texture
 	 *  y: height (~500 is slightly over ground level)
-	 *  z: 0-19825  0 is TOP edge of texture
+	 *  z: 0 to 20000  0 is TOP edge of texture
 	 *
-	 *  9912.5 is half-way (9912.5, 9912.5) = center of texture
+	 *  10000 is half-way; (10000, 10000) = center of texture
 	 */
-	IMeshSceneNode *sceneNode = smgr->addCubeSceneNode();
-    sceneNode->setScale(vector3df(10, 10, 10));
-    sceneNode->setPosition(vector3df(0, 1000 , 0));
-	IMeshSceneNode *sceneNode2 = smgr->addCubeSceneNode();
-    sceneNode2->setScale(vector3df(10, 10, 10));
-    sceneNode2->setPosition(vector3df(19825, 1000 , 19825));
-    sceneNode->setMaterialFlag(EMF_LIGHTING, true);
-    sceneNode->addShadowVolumeSceneNode();
     
-	
+    // add the buildings
 	this->buildings = new Buildings(smgr, driver, metaTriSelector);
 	
 	// read in the map building coordinate file
-	/* NOTES: currently, model is loaded with lower-
-	 */
+	// TODO: put this in another file. Perhaps the Buildings object should just
+	//  have a function generateCity() using the map.
 	const int farX = 20000.0f;
 	const int farY = 20000.0f;
 	std::ifstream mapfile("assets/map/coords.bor");
@@ -123,21 +118,24 @@ GameInstance::GameInstance(
         else if(line[0] == '#')
             continue;
         else {
-             std::istringstream lineParser(line);
-             float coordX, coordY;
-             lineParser >> coordX;
-             lineParser >> coordY;
-             // use coordinates to add the building at specified location
-             this->buildings->addRandomBuilding(
+            // TODO: have some try/catch check in case file is broken
+            std::istringstream lineParser(line);
+            float coordX, coordY;
+            lineParser >> coordX;
+            lineParser >> coordY;
+            // use coordinates to add the building at specified location
+            this->buildings->addRandomBuilding(
 		        farX * coordX,
 		        0.0f,
 		        farY * (coordY)
-	         );
-             std::cout << "Generated building at " <<
+	        );
+            std::cout << "Generated building at " <<
                 "x: " << coordX << ", y: " << coordY << std::endl;
         }
     }
     
+    // TODO: remove. This just sets a building in the center of the map for
+    //  testing purposes.
 	this->buildings->addRandomBuilding(
 		farX * 0.5,
 		0.0f,

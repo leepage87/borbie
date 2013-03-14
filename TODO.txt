@@ -1,0 +1,3 @@
+    Create a global constant in game.h for the world scale. Right now it's 20.0, but if we change it
+it would impact the size of each building and how the coordinates map to the max width/height
+value (currently 20,000 : that is, 1:1000 ratio between terrain scale and in-game units).
