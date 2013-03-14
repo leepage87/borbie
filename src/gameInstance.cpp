@@ -2,6 +2,12 @@
 #include "game.h"
 #include "kBindings.h"
 
+#include <fstream> // TODO: move file stuff into a different place?
+#include <string>
+#include <iostream>
+#include <istream>
+#include <sstream>
+
 using namespace irr;
 using namespace scene;
 using namespace video;
@@ -86,9 +92,55 @@ GameInstance::GameInstance(
 	camera->addAnimator(anim);
 	anim->drop();
 	
+	/* Positions explained:
+	 *  x: 0-19825  0 is RIGHT edge of texture
+	 *  y: height (~500 is slightly over ground level)
+	 *  z: 0-19825  0 is TOP edge of texture
+	 *
+	 *  9912.5 is half-way (9912.5, 9912.5) = center of texture
+	 */
+	IMeshSceneNode *sceneNode = smgr->addCubeSceneNode();
+    sceneNode->setScale(vector3df(10, 10, 10));
+    sceneNode->setPosition(vector3df(0, 1000 , 0));
+	IMeshSceneNode *sceneNode2 = smgr->addCubeSceneNode();
+    sceneNode2->setScale(vector3df(10, 10, 10));
+    sceneNode2->setPosition(vector3df(19825, 1000 , 19825));
+    sceneNode->setMaterialFlag(EMF_LIGHTING, true);
+    sceneNode->addShadowVolumeSceneNode();
+    
 	
 	this->buildings = new Buildings(smgr, driver, metaTriSelector);
+	
+	// read in the map building coordinate file
+	std::ifstream mapfile("assets/map/coords.bor");
+	for(std::string line; getline(mapfile, line); ) {
+        if(line.size() == 0)
+            continue;
+        else if(line[0] == '#')
+            continue;
+        else {
+             std::istringstream lineParser(line);
+             float coordX, coordY;
+             lineParser >> coordX;
+             lineParser >> coordY;
+             // use coordinates to add the building at specified location
+             this->buildings->addRandomBuilding(
+		        19825 * coordX,
+		        0.0f,
+		        19825 * (coordY)
+	         );
+             std::cout << "Generated building at " <<
+                "x: " << coordX << ", y: " << coordY << std::endl;
+        }
+    }
+    
 	this->buildings->addRandomBuilding(
+		19825 * coordX
+		0.0f,
+		4850.0f
+	);
+    
+	/*this->buildings->addRandomBuilding(
 		6500.0f,	// x		increase to make it go "right"
 		0.0f,		// y
 		4850.0f		// z        increase makes it go "back"
@@ -120,7 +172,7 @@ GameInstance::GameInstance(
 		    0.0f,		// y
 		    6200.0f		// z
 	    );
-	}
+	}*/
 }
 
 
