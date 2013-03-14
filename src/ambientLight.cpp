@@ -19,11 +19,11 @@ using namespace io;
 ambientLight::ambientLight(scene::ISceneManager * _smgr) {
 	//the parent node that the sun will be attached to
 	scene::ISceneNode *pNode = _smgr->addEmptySceneNode();
-	pNode->setPosition(core::vector3df(2600, 2000, 2600));
+	pNode->setPosition(core::vector3df(9000, 0, 9000));
 	
 	sun = _smgr->addLightSceneNode(
 		pNode,								// parent
-		core::vector3df(0,100,1),				// position relative to parent
+		core::vector3df(9900,4000,9900),				// position relative to parent
 		video::SColorf(255.0f, 255.0f, 255.0f, 255.0f),	// color
 		//video::SColorf(181.0f, 5.0f, 28.0f),	// red color (old version)
 		4000.0f,							// radius of light
@@ -35,7 +35,7 @@ ambientLight::ambientLight(scene::ISceneManager * _smgr) {
 	//	x: up/down rotation (90 = directly above)
 	//	y: rotates around sides (90 = to the left)
 	//	z:
-	pNode->setRotation(core::vector3df(85, 0, 0));
+	pNode->setRotation(core::vector3df(90, 0, 0));
 
 	// add ambient light
 	//_smgr->setAmbientLight(video::SColor(255, 255, 192, 203));

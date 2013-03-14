@@ -34,7 +34,7 @@ BuildingInstance::BuildingInstance(
 	this->sceneNode->setPosition(vector3df(posX, actualPosY , posZ));
 	this->sceneNode->setMaterialTexture(0, texture);
 	this->sceneNode->setMaterialFlag(EMF_LIGHTING, true);
-	this->sceneNode->addShadowVolumeSceneNode();
+	this->sceneNode->addShadowVolumeSceneNode(0,-1,true,50.0f);
 }
 
 
