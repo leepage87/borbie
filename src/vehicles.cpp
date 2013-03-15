@@ -35,6 +35,8 @@ Vehicles::Vehicles(
 	//this->modelList.push_back("assets/models/vehicles/eclipse/2003eclipse.obj");
 	//this->modelList.push_back("assets/models/vehicles/h2/h2.3ds");
 	this->modelList.push_back("assets/models/vehicles/jeep/jeep.obj");
+	//this->modelList.push_back("assets/models/vehicles/corradon/car2.obj");
+	//this->modelList.push_back("assets/models/vehicles/pigMobile/PoliceCar.3DS");
 	//this->modelList.push_back("assets/models/vehicles/lambo/Lamborghini.x");
 	//this->modelList.push_back("assets/models/vehicles/riviera/car_riviera.obj");
 }

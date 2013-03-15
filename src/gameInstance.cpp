@@ -141,11 +141,12 @@ GameInstance::GameInstance(
 		0.0f,
 		farY * 0.5
 	);
-	const int ROAD_HEIGHT = 75;
+	const int ROAD_HEIGHT = 70;
 	//add vehicle(s)
 	this->vehicles = new Vehicles(smgr, driver, metaTriSelector);
 	this->vehicles->addRandomVehicle(farX*.1953, ROAD_HEIGHT, farY*.2207);
-    
+  this->vehicles->addRandomVehicle(farX*.2453, ROAD_HEIGHT, farY*.2207);
+  this->vehicles->addRandomVehicle(farX*.2953, ROAD_HEIGHT, farY*.2207);  
 	/*this->buildings->addRandomBuilding(
 		6500.0f,	// x		increase to make it go "right"
 		0.0f,		// y

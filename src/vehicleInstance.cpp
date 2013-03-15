@@ -28,7 +28,7 @@ VehicleInstance::VehicleInstance(
 	this->sceneNode = smgr->addMeshSceneNode(mesh);
 	this->sceneNode->setScale(vector3df(.2, .2, .2));
 	this->sceneNode->setPosition(vector3df(posX, posY , posZ));
-	this->sceneNode->setMaterialFlag(EMF_LIGHTING, false);
+	this->sceneNode->setMaterialFlag(EMF_LIGHTING, true);
 	this->sceneNode->addShadowVolumeSceneNode(0,-1,true,50.0f);
 }
 
