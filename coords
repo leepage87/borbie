@@ -1,0 +1,39 @@
+#!/usr/bin/python3
+
+print("Enter image data, and then we're ready to go!")
+
+iwidth	= input("Image width:  > ")
+iwidth = int(iwidth)
+iheight = input("Image height: > ")
+iheight = int(iheight)
+print("-------- OK --------")
+roundval = input("# dec places: > ")
+roundpow = pow(10, int(roundval))
+
+looping = True
+while looping:
+	print("-------- OK --------")
+	toprx	= input("Top Right X:  > ")
+	toprx = int(toprx)
+	topry	= input("Top Right Y:  > ")
+	topry = int(topry)
+	boxw	= input("Box width:    > ")
+	boxw = int(boxw)
+	boxh	= input("Box height:   > ")
+	boxh = int(boxh)
+	pieces = input("Grid size:    > ")
+	pieces = int(pieces)
+	print("Calculating based on the x-axis...")
+	divsize = boxw / (pieces*2)
+	for i in range(pieces):
+		y = topry + divsize*(2*i+1)
+		for j in range(pieces):
+			x = toprx + divsize*(2*j+1)
+			calcx = x / iwidth
+			calcx = (round(roundpow * calcx)) / roundpow
+			calcy = y / iheight
+			calcy = (round(roundpow * calcy)) / roundpow
+			print("Row {}, point {}: ({}, {})".format((i+1), (j+1), calcx, calcy))
+	confirm = input("Continue? (y): > ")
+	if confirm != "y":
+		looping = False

@@ -38,6 +38,17 @@ Buildings::Buildings(
 	this->textureList.push_back("assets/textures/buildings/building4.jpg");
 	this->textureList.push_back("assets/textures/buildings/building5.jpg");
 	this->textureList.push_back("assets/textures/buildings/building6.jpg");
+	this->textureList.push_back("assets/textures/buildings/building7.jpg");
+	this->textureList.push_back("assets/textures/buildings/building8.jpg");
+	this->textureList.push_back("assets/textures/buildings/building9.jpg");
+	this->textureList.push_back("assets/textures/buildings/building10.jpg");
+	this->textureList.push_back("assets/textures/buildings/building11.jpg");
+	this->textureList.push_back("assets/textures/buildings/building12.jpg");
+	this->textureList.push_back("assets/textures/buildings/building13.png");
+	this->textureList.push_back("assets/textures/buildings/building14.jpg");
+	this->textureList.push_back("assets/textures/buildings/building15.jpg");
+	this->textureList.push_back("assets/textures/buildings/building16.jpg");
+	this->textureList.push_back("assets/textures/buildings/building17.jpg");
 }
 
 // delete all of the buildings
