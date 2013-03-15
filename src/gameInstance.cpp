@@ -43,10 +43,6 @@ GameInstance::GameInstance(
 	// add lighting
 	this->light = new ambientLight(smgr);
 
-	//add vehicle(s)
-	this->vehicles = new Vehicles(smgr, driver, metaTriSelector);
-	this->vehicles->addRandomVehicle(4000,200,4000);
-
 	/*** Runtime Flags Setup ***/
 	
 	float gravity = GLOBAL_GRAVITY;
@@ -145,6 +141,10 @@ GameInstance::GameInstance(
 		0.0f,
 		farY * 0.5
 	);
+	const int ROAD_HEIGHT = 75;
+	//add vehicle(s)
+	this->vehicles = new Vehicles(smgr, driver, metaTriSelector);
+	this->vehicles->addRandomVehicle(farX*.1953, ROAD_HEIGHT, farY*.2207);
     
 	/*this->buildings->addRandomBuilding(
 		6500.0f,	// x		increase to make it go "right"

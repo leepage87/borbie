@@ -31,9 +31,9 @@ VehicleInstance::VehicleInstance(
 
     
 	this->sceneNode = smgr->addMeshSceneNode(smgr->getMesh("assets/models/jeep/jeep.obj"));
-	this->sceneNode->setScale(vector3df(1, 1, 1));
+	this->sceneNode->setScale(vector3df(.2, .2, .2));
 	this->sceneNode->setPosition(vector3df(posX, posY , posZ));
-	this->sceneNode->setMaterialFlag(EMF_LIGHTING, true);
+	this->sceneNode->setMaterialFlag(EMF_LIGHTING, false);
 	this->sceneNode->addShadowVolumeSceneNode(0,-1,true,50.0f);
 }
 
