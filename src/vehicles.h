@@ -43,7 +43,7 @@ class Vehicles {
 	std::vector<const char *> modelList;
 	
 	// vehicle construction functions
-	void makeVehicle(float xPos, float yPos, float zPos);
+	void makeVehicle(int modelIndex, float xPos, float yPos, float zPos);
 	
   
   public:

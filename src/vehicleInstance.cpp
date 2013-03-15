@@ -20,17 +20,12 @@ using namespace video;
 
 VehicleInstance::VehicleInstance(
 	ISceneManager *smgr,
-	float posX, float posY, float posZ)
+	float posX, float posY, float posZ, IAnimatedMesh *mesh)
 	: GameObject(smgr) // call super GameObject constructor first
 {
 
-
-
-
-
-
     
-	this->sceneNode = smgr->addMeshSceneNode(smgr->getMesh("assets/models/jeep/jeep.obj"));
+	this->sceneNode = smgr->addMeshSceneNode(mesh);
 	this->sceneNode->setScale(vector3df(.2, .2, .2));
 	this->sceneNode->setPosition(vector3df(posX, posY , posZ));
 	this->sceneNode->setMaterialFlag(EMF_LIGHTING, false);

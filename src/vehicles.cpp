@@ -31,18 +31,15 @@ Vehicles::Vehicles(
 	// seed the random number generator (using system time)
 	srand(time(NULL));
 	
-	// populate the texture list
-	//change this to model list
-	/*this->textureList.push_back("assets/textures/buildings/building1.png");
-	this->textureList.push_back("assets/textures/buildings/building2.jpg");
-	this->textureList.push_back("assets/textures/buildings/building3.jpg");
-	this->textureList.push_back("assets/textures/buildings/building4.jpg");
-	this->textureList.push_back("assets/textures/buildings/building5.jpg");
-	this->textureList.push_back("assets/textures/buildings/building6.jpg");
-*/
+	// populate the model list
+	//this->modelList.push_back("assets/models/vehicles/eclipse/2003eclipse.obj");
+	//this->modelList.push_back("assets/models/vehicles/h2/h2.3ds");
+	this->modelList.push_back("assets/models/vehicles/jeep/jeep.obj");
+	//this->modelList.push_back("assets/models/vehicles/lambo/Lamborghini.x");
+	//this->modelList.push_back("assets/models/vehicles/riviera/car_riviera.obj");
 }
 
-// delete all of the buildings
+// delete all of the vehicles
 Vehicles::~Vehicles(){
 	for(std::vector<VehicleInstance *>::iterator it = vehicleList.begin();
 		it != vehicleList.end(); ++it)
@@ -60,29 +57,26 @@ void Vehicles::addRandomVehicle(
     //int rHeight = rand() % 10 + 1;
     //rHeight = rHeight * 5 + 20.0;
 
-    //change this to models
-    // get a random texture index from the texture list
-    //int textureIndex = rand() % this->textureList.size();
+    // get a random index from the model list
+    int modelIndex = rand() % this->modelList.size();
     
-	this->makeVehicle(xPos, yPos, zPos);
+	this->makeVehicle(modelIndex, xPos, yPos, zPos);
 }
 
 
 // make a vehicle with the given texture and height value
-void Vehicles::makeVehicle(
+void Vehicles::makeVehicle(int modelIndex,
 	float xPos, float yPos, float zPos)
 {
-    // create texture, w, h, d based on building type
-	/*ITexture *texture =
-	    this->driver->getTexture(this->textureList[textureIndex]);
-	float width = 40.0f;
-	float depth = 40.0f;
-	*/
+    // get the vehicle mesh
+	IAnimatedMesh *mesh =
+	    smgr->getMesh(this->modelList[modelIndex]);
+
 
 	VehicleInstance *newVehicle
 		= new VehicleInstance(
 			this->smgr,
-			xPos, yPos, zPos
+			xPos, yPos, zPos, mesh
 		);
 	
 	newVehicle->applyCollision(this->metaTriSelector);
