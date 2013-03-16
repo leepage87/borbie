@@ -137,34 +137,9 @@ void Buildings::addRandomBuilding(
 
 
 // Returns a random height between the maximum and minimum heights allowed,
-//  with a general bias towards mid-ranged heights.
+//  with a general bias towards mid-ranged heights. The bias and all height
+//  restriction constants can be adjusted in the buildings.h file.
 float Buildings::getRandomHeight(){
-    // get random integer between 0 and 99
-    /*int randVal = rand() % 100;
-    
-    // calculate number of possible height values
-    int heightRange = BUILDING_MAX_HEIGHT - BUILDING_MIN_HEIGHT;
-    int numHeights = heightRange/BUILDING_HEIGHT_DIFF + 1;
-    
-    // map the randomly generated number to the index
-    
-    // rand = [0, 1)
-    // rand = rand^(1.5) (bias towards 0)
-    // x = rand(0, 1)
-    // if (x==0): // min-average
-    //  bias = 1 - rand
-    // elif (x==1): // average-max
-    //  bias = 1 + rand
-    // bias = [0, 2) with bias towards 1
-    
-    int scale = 100 / numHeights;
-    int selectedIndex = (randVal / scale);
-    
-    // find the actual height using the randomly found index
-    float rHeight = BUILDING_MIN_HEIGHT + BUILDING_HEIGHT_DIFF * selectedIndex;
-    std::cout << "HEIGHT: " << rHeight << std::endl;
-    return rHeight;*/
-    
     // generate a random number
     int randNum = rand() % 100000; // 0 to 99999
     float randf = randNum / 100000.0; // 0 to .99999

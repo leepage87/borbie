@@ -73,7 +73,7 @@ GameInstance::GameInstance(
 	// TODO: read camera position from map file
 	camera->setPosition(vector3df(2500, 1000, 4450));
 	// set view distance
-	camera->setFarValue(30000.0f); 
+	camera->setFarValue(30000.0f);
 	// hide cursor
 	device->getCursorControl()->setVisible(false);
 	
