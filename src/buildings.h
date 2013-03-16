@@ -21,8 +21,17 @@
 #include "buildingInstance.h"
 
 
-// building ground level height:
+// building constants:
 #define BUILDING_GROUND_HEIGHT 0.0f
+#define BUILDING_WIDTH 40.0f
+#define BUILDING_DEPTH 40.0f
+// height max and min values:
+#define BUILDING_MIN_HEIGHT 25
+#define BUILDING_MAX_HEIGHT 75
+// minimum difference between building heights:
+#define BUILDING_HEIGHT_DIFF 5
+// random building height bias (1+):
+#define BUILDING_HEIGHT_BIAS 2 // larger => more biased to average height
 
 // types of buildings
 enum BuildingTypes {
@@ -44,6 +53,10 @@ class Buildings {
 	
 	// list of building textures
 	std::vector<const char *> textureList;
+	
+	// random height generator function (restricted to a certain height range,
+	//  and bias towards mid-ranged heights)
+    float getRandomHeight();
 	
 	// building construction functions
 	void makeBuilding(int textureIndex, float height,

@@ -10,8 +10,10 @@
 #include "buildings.h"
 
 // include cpp library headers for random number generation
+// TODO: make the random generator global (static object)
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
+#include <math.h>       /* pow */
 
 // include cpp library headers for reading the building coordinate file
 #include <fstream>
@@ -71,7 +73,12 @@ Buildings::~Buildings(){
 }
 
 
-// build the city using the given building coordinates file path
+// Build the city using the given building coordinates file path,
+//  adding a randomly sized building at each point as dictated
+//  by the loaded file.
+// TODO: return int that can return error codes if file failed to load,
+//  file data is inappropriate, etc.
+// --- (public) ---
 void Buildings::generateBuildings(const char *buildingCoords){
     
 	/* Positions explained:
@@ -102,7 +109,8 @@ void Buildings::generateBuildings(const char *buildingCoords){
             // use coordinates to add the building at specified location
             this->addRandomBuilding(
 		        farX * coordX,
-		        BUILDING_GROUND_HEIGHT,
+		        //BUILDING_GROUND_HEIGHT,
+		        50.0f,
 		        farY * (coordY)
 	        );
             std::cout << "Generated building at " <<
@@ -112,22 +120,87 @@ void Buildings::generateBuildings(const char *buildingCoords){
 }
 
 
-// public addBuilding: add a random building at the given position.
+// Add a building at the given position with a randomized height
+//  (provided by the getRandomHeight function) and a texture
+//  selected randomly from the textureList std::vector.
+// --- (public) ---
 void Buildings::addRandomBuilding(
 	float xPos, float yPos, float zPos)
 {
-    // generate random height
-    int rHeight = rand() % 10 + 1;
-    rHeight = rHeight * 5 + 20.0;
-    
-    // get a random texture index from the texture list
+    // get random height and texture index
+    float rHeight = this->getRandomHeight();
     int textureIndex = rand() % this->textureList.size();
     
+    // make the building with those parameters and the given position
 	this->makeBuilding(textureIndex, rHeight, xPos, yPos, zPos);
 }
 
 
-// make a building with the given texture and height value
+// Returns a random height between the maximum and minimum heights allowed,
+//  with a general bias towards mid-ranged heights.
+float Buildings::getRandomHeight(){
+    // get random integer between 0 and 99
+    /*int randVal = rand() % 100;
+    
+    // calculate number of possible height values
+    int heightRange = BUILDING_MAX_HEIGHT - BUILDING_MIN_HEIGHT;
+    int numHeights = heightRange/BUILDING_HEIGHT_DIFF + 1;
+    
+    // map the randomly generated number to the index
+    
+    // rand = [0, 1)
+    // rand = rand^(1.5) (bias towards 0)
+    // x = rand(0, 1)
+    // if (x==0): // min-average
+    //  bias = 1 - rand
+    // elif (x==1): // average-max
+    //  bias = 1 + rand
+    // bias = [0, 2) with bias towards 1
+    
+    int scale = 100 / numHeights;
+    int selectedIndex = (randVal / scale);
+    
+    // find the actual height using the randomly found index
+    float rHeight = BUILDING_MIN_HEIGHT + BUILDING_HEIGHT_DIFF * selectedIndex;
+    std::cout << "HEIGHT: " << rHeight << std::endl;
+    return rHeight;*/
+    
+    // generate a random number
+    int randNum = rand() % 100000; // 0 to 99999
+    float randf = randNum / 100000.0; // 0 to .99999
+    
+    // scew the random value (scaled between 0 and 0.5)
+    float adjusted = (pow(randf, BUILDING_HEIGHT_BIAS)) / 2.0;
+    
+    // decide randomly whether or not the building is taller or
+    //  smaller than average, and calculate bias outcome between 0 and 1
+    int selector = rand() % 2; // 0 or 1
+    float bias = 0.f;
+    if(selector == 0)
+        bias = 0.5 - adjusted;
+    else
+        bias = 0.5 + adjusted;
+
+
+    // do the actual building height calculations based on the random bias:
+    
+    // find number of possible height partitions based on constants 
+    const int heightRange = BUILDING_MAX_HEIGHT - BUILDING_MIN_HEIGHT;
+    int numHeights = (heightRange / BUILDING_HEIGHT_DIFF) + 1;
+    
+    // use the bias to determine a height index
+    int selIndex = (int)(bias * numHeights);
+    
+    // scale height index and return value
+    float height = BUILDING_MIN_HEIGHT + (BUILDING_HEIGHT_DIFF * selIndex);
+    return height;
+}
+
+
+// Make a building with the given texture and height value. This function
+//  adds the buildings collision triangles to the global triangle selector
+//  for global collision.
+// --- (private) ---
 void Buildings::makeBuilding(
     int textureIndex, float height,
 	float xPos, float yPos, float zPos)
@@ -135,18 +208,16 @@ void Buildings::makeBuilding(
     // create texture, w, h, d based on building type
 	ITexture *texture =
 	    this->driver->getTexture(this->textureList[textureIndex]);
-	float width = 40.0f;
-	float depth = 40.0f;
 	
+	// create the new building objects, make it apply its collision
+	//  to the global meta, and add it to the building list
 	BuildingInstance *newBuilding
 		= new BuildingInstance(
 			this->smgr,
-			width, height, depth,
+			BUILDING_WIDTH, height, BUILDING_DEPTH,
 			xPos, yPos, zPos,
 			texture
 		);
-	
 	newBuilding->applyCollision(this->metaTriSelector);
-	
 	this->buildingList.push_back(newBuilding);
 }
