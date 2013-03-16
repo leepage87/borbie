@@ -22,12 +22,15 @@ Terrain::Terrain(IVideoDriver * _driver, ISceneManager * _smgr) {
 	driver = _driver;
 	smgr = _smgr;
 	terrainNode = _smgr->addTerrainSceneNode(
-		"assets/textures/valleyHeightMap.bmp",
+		"assets/map/valleyHeightMap.bmp",
 		0,					// parent node
 		-1,					// node idsssssssss
 		core::vector3df(0.f, 0.f, 0.f),		// position
 		core::vector3df(0.f, 0.f, 0.f),		// rotation
-		core::vector3df(40.f, 4.4f, 40.f),	// scale
+		core::vector3df(
+            BORBIE_TERRAIN_SCALE,
+            4.4f,
+            BORBIE_TERRAIN_SCALE),	// scale
 		video::SColor ( 255, 255, 255, 255 ),	// vertexColor
 		5,					// maxLOD
 		scene::ETPS_17,				// patchSize

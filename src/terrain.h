@@ -9,6 +9,11 @@
 #include <string>
 #include <irrlicht.h>
 
+// terrain scale (1 scale unit = 500 game units)
+#define BORBIE_TERRAIN_SCALE 40.0f
+
+
+// Terrain class:
 class Terrain {
 private:
 
@@ -27,7 +32,7 @@ public:
 	
 	// const means it doesn't change anything
 	irr::scene::ITriangleSelector* getTriSelector() { return triSelector; }
-};
+}; // end of Terrain class.
 
 
 #endif

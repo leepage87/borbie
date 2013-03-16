@@ -38,10 +38,8 @@ GameInstance::GameInstance(
 	// add skybox
 	this->skybox = new Sky(smgr, driver);
 	
-	// add buildings
-	
 	// add lighting
-	this->light = new ambientLight(smgr);
+	this->light = new WorldLight(smgr);
 
 	/*** Runtime Flags Setup ***/
 	
@@ -56,10 +54,7 @@ GameInstance::GameInstance(
 	
 	/*** Camera Setup ***/
 	
-	// TODO: not sure what's going on here, but it's a memory leak.
-	//  If setKeys is static, then perhaps it should just be a static
-	//  function. Also, if setKeys just maps the key bindings into the
-	//  array, delete the KBindings object after we're done with it.
+	// TODO: there was a memory leak. Delete after finished!
 	SKeyMap keyMap[9];
     KBindings *keys = new KBindings(&keyMap[0]);
     keys->setKeys();
