@@ -2,18 +2,15 @@
 #include "game.h"
 #include "kBindings.h"
 
-// ALL INCLUDES FOR READING FILES...
-#include <fstream> // TODO: move file stuff into a different place?
-#include <string>
-#include <iostream>
-#include <istream>
-#include <sstream>
-
 using namespace irr;
 using namespace scene;
 using namespace video;
 using namespace core;
 
+
+// CONSTRUCTOR:
+//  builds the GameInstance object and initializes all internal game objects,
+//  such as buildings, vehicles, etc.
 GameInstance::GameInstance(
 	ISceneManager *smgr,
 	IVideoDriver *driver,
@@ -89,97 +86,31 @@ GameInstance::GameInstance(
       0.1f); // sliding value TODO tweak as needed
 	camera->addAnimator(anim);
 	anim->drop();
-	
-	/* Positions explained:
-	 *  x: 0 to 20000  0 is RIGHT edge of texture
-	 *  y: height (~500 is slightly over ground level)
-	 *  z: 0 to 20000  0 is TOP edge of texture
-	 *
-	 *  10000 is half-way; (10000, 10000) = center of texture
-	 */
     
-    // add the buildings
+    // add the buildings and generate city based on coordinate file
 	this->buildings = new Buildings(smgr, driver, metaTriSelector);
-	
-	// read in the map building coordinate file
-	// TODO: put this in another file. Perhaps the Buildings object should just
-	//  have a function generateCity() using the map.
+    this->buildings->generateBuildings("assets/map/coords.bor");
+    
+	const int ROAD_HEIGHT = 70;
 	const int farX = 20000.0f;
 	const int farY = 20000.0f;
-	std::ifstream mapfile("assets/map/coords.bor");
-	for(std::string line; getline(mapfile, line); ) {
-        if(line.size() == 0)
-            continue;
-        else if(line[0] == '#')
-            continue;
-        else {
-            // TODO: have some try/catch check in case file is broken
-            std::istringstream lineParser(line);
-            float coordX, coordY;
-            lineParser >> coordX;
-            lineParser >> coordY;
-            // use coordinates to add the building at specified location
-            this->buildings->addRandomBuilding(
-		        farX * coordX,
-		        0.0f,
-		        farY * (coordY)
-	        );
-            std::cout << "Generated building at " <<
-                "x: " << coordX << ", y: " << coordY << std::endl;
-        }
-    }
-    
-    // TODO: remove. This just sets a building in the center of the map for
-    //  testing purposes.
-	this->buildings->addRandomBuilding(
-		farX * 0.5,
-		0.0f,
-		farY * 0.5
-	);
-	const int ROAD_HEIGHT = 70;
 	//add vehicle(s)
 	this->vehicles = new Vehicles(smgr, driver, metaTriSelector);
 	this->vehicles->addRandomVehicle(farX*.1953, ROAD_HEIGHT, farY*.2207);
-  this->vehicles->addRandomVehicle(farX*.2453, ROAD_HEIGHT, farY*.2207);
-  this->vehicles->addRandomVehicle(farX*.2953, ROAD_HEIGHT, farY*.2207);  
-	/*this->buildings->addRandomBuilding(
-		6500.0f,	// x		increase to make it go "right"
-		0.0f,		// y
-		4850.0f		// z        increase makes it go "back"
-	);
-	for(int i=0; i<10; ++i){
-	    this->buildings->addRandomBuilding(
-		    7350.0f + (450*i),	// x
-		    0.0f,		// y
-		    4850.0f		// z
-	    );
-	}
-	for(int i=0; i<10; ++i){
-	    this->buildings->addRandomBuilding(
-		    7350.0f + (450*i),	// x
-		    0.0f,		// y
-		    5300.0f		// z
-	    );
-	}
-	for(int i=0; i<10; ++i){
-	    this->buildings->addRandomBuilding(
-		    7350.0f + (450*i),	// x
-		    0.0f,		// y
-		    5750.0f		// z
-	    );
-	}
-	for(int i=0; i<10; ++i){
-	    this->buildings->addRandomBuilding(
-		    7350.0f + (450*i),	// x
-		    0.0f,		// y
-		    6200.0f		// z
-	    );
-	}*/
+    this->vehicles->addRandomVehicle(farX*.2453, ROAD_HEIGHT, farY*.2207);
+    this->vehicles->addRandomVehicle(farX*.2953, ROAD_HEIGHT, farY*.2207);  
+	
 }
 
 
-// destructor: clears the scene
+// destructor: removes all objects from memory and ensures that the scene
+//  manager is completely wiped clean of all Irrlicht objects.
 GameInstance::~GameInstance(){
+    delete this->terrain;
+	delete this->skybox;
+	delete this->light;
+	delete this->buildings;
+	delete this->vehicles;
     this->smgr->clear();
 }
 

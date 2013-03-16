@@ -21,6 +21,9 @@
 #include "buildingInstance.h"
 
 
+// building ground level height:
+#define BUILDING_GROUND_HEIGHT 0.0f
+
 // types of buildings
 enum BuildingTypes {
 	BUILDING1 = 1
@@ -48,12 +51,17 @@ class Buildings {
 	
   
   public:
+    // constructor/destructor
 	Buildings(
 		irr::scene::ISceneManager *smgr,
 		irr::video::IVideoDriver *driver,
 		irr::scene::IMetaTriangleSelector *metaTriSelector);
 	~Buildings();
 	
+	// build the city using the given building coordinates file path
+	void generateBuildings(const char *buildingCoords);
+	
+	// add a randomly sized and textured building to the scene
 	void addRandomBuilding(float xPos, float yPos, float zPos);
 	
 	

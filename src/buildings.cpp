@@ -13,11 +13,21 @@
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
 
+// include cpp library headers for reading the building coordinate file
+#include <fstream>
+#include <string>
+#include <iostream>
+#include <istream>
+#include <sstream>
+
 using namespace irr;
 using namespace scene;
 using namespace video;
 
 
+// CONSTRUCTOR: initializes the list of building textures as they will
+//  be applied to each generated building. Sets up pointers to keep track
+//  of Irrlicht objects, and also seeds the random generator using system time.
 Buildings::Buildings(
 	ISceneManager *smgr,
 	IVideoDriver *driver,
@@ -51,13 +61,54 @@ Buildings::Buildings(
 	this->textureList.push_back("assets/textures/buildings/building17.jpg");
 }
 
-// delete all of the buildings
+// delete all of the buildings in the building list
 Buildings::~Buildings(){
 	for(std::vector<BuildingInstance *>::iterator it = buildingList.begin();
 		it != buildingList.end(); ++it)
 	{
 		delete (*it);
 	}
+}
+
+
+// build the city using the given building coordinates file path
+void Buildings::generateBuildings(const char *buildingCoords){
+    
+	/* Positions explained:
+	 *  x: 0 to 20000  0 is RIGHT edge of texture
+	 *  y: height (~500 is slightly over ground level)
+	 *  z: 0 to 20000  0 is TOP edge of texture
+	 *
+	 *  10000 is half-way; (10000, 10000) = center of texture
+	 */
+	
+    // read in the map building coordinate file
+	// TODO: put this in another file. Perhaps the Buildings object should just
+	//  have a function generateCity() using the map.
+	const int farX = 20000.0f;
+	const int farY = 20000.0f;
+	std::ifstream mapfile(buildingCoords);
+	for(std::string line; getline(mapfile, line); ) {
+        if(line.size() == 0) // skip empty lines
+            continue;
+        else if(line[0] == '#') // skip commented lines (beginning w/ "#")
+            continue;
+        else {
+            // TODO: have some try/catch check in case file is broken
+            std::istringstream lineParser(line);
+            float coordX, coordY;
+            lineParser >> coordX;
+            lineParser >> coordY;
+            // use coordinates to add the building at specified location
+            this->addRandomBuilding(
+		        farX * coordX,
+		        BUILDING_GROUND_HEIGHT,
+		        farY * (coordY)
+	        );
+            std::cout << "Generated building at " <<
+                "x: " << coordX << ", y: " << coordY << std::endl;
+        }
+    }
 }
 
 
