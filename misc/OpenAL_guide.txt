@@ -1,0 +1,32 @@
+Installing OpenAL on Ubuntu 12.10:
+
+    $ sudo apt-get install libopenal-dev
+    $ sudo apt-get install libalut-dev
+
+Linking OpenAL to a project (g++):
+
+    $ g++ test.cpp -lalut
+        (possibly):
+    $ g++ test.cpp -lopenal -lalut
+    
+    Note: -l library links come AFTER the file.
+
+Hello World program:
+
+    #include <iostream>
+    #include <AL/alut.h>
+
+    using namespace std;
+
+    int main(int argc, char ** argv){
+        ALuint helloBuffer, helloSource;
+        alutInit (&argc, argv);
+        helloBuffer = alutCreateBufferHelloWorld ();
+        alGenSources (1, &helloSource);
+        alSourcei (helloSource, AL_BUFFER, helloBuffer);
+        alSourcePlay (helloSource);
+        alutSleep (1);
+        alutExit ();
+            cout << "Hello, world" << endl;
+        return 0;
+    }
