@@ -14,10 +14,10 @@ private:
 
 	irr::scene::ISceneManager * smgr;
 public:
-	irr::scene::ISceneNode * sky;
+	irr::scene::ISceneNode * skydome;
 
 	Sky(irr::scene::ISceneManager * smgr, irr::video::IVideoDriver *driver);
 
-	irr::scene::ISceneNode* getNode() { return sky; }
+	irr::scene::ISceneNode* getNode() { return skydome; }
 };
 #endif

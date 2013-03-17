@@ -18,7 +18,7 @@ using namespace gui;
 #define stringify( name ) s2( name )
 
 Sky::Sky(ISceneManager * smgr, IVideoDriver *driver) {
-	scene::ISceneNode* skydome=smgr->addSkyDomeSceneNode(driver->getTexture("assets/textures/burnies.jpg"),16,8,0.95f,2.0f);
+	skydome=smgr->addSkyDomeSceneNode(driver->getTexture("assets/textures/burnies.jpg"),16,8,0.95f,2.0f);
 
   skydome->setVisible(true);
 }

@@ -18,7 +18,7 @@
 #include "game_object.h"
 
 
-// BuildingInstance class:
+// VehicleInstance class:
 class VehicleInstance : public GameObject {
 
   public:

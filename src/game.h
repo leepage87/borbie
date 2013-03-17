@@ -83,6 +83,9 @@ class Game {
 	void manageStates();
     int run();
 
+	//returns the event receiver
+	irr::IEventReceiver *receiver getReceiver(){return receiver;}
+
 
 }; // end of Game class
 
