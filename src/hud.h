@@ -10,7 +10,7 @@ class Hud {
     irr::gui::IGUIEnvironment *guienv;
     irr::video::IVideoDriver *driver;
     
-    irr::video::ITexuture *hudTexture;
+    irr::video::ITexture *hudTexture;
 
   public:
     Hud(irr::gui::IGUIEnvironment *guienv, irr::video::IVideoDriver *driver);

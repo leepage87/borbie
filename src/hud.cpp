@@ -58,7 +58,7 @@ Hud::~Hud(){
 }
 
 
-void hud::drawHud(){
+void Hud::drawHud(){
     float screenWidth = driver->getScreenSize().Width;
     float screenHeight = driver->getScreenSize().Height;
     
@@ -69,8 +69,10 @@ void hud::drawHud(){
     
     driver->draw2DImage(
         this->hudTexture,
-        rect<s32>(hudX, hudY, hudW, hudH),
+        //rect<s32>(hudX, hudY, hudW, hudH),
+        rect<s32>(0, 0, 200, 200),
         rect<s32>(0, 0, 200, 200));
+    std::cout << "HI" << std::endl;
 }
 
     

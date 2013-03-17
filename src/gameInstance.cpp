@@ -139,6 +139,11 @@ GameInstance::~GameInstance(){
 }
 
 
+// calls update on the hud (called each frame)
+void GameInstance::drawGUI(){
+    this->hud->drawHud();
+}
+
 
 /*** PRIVATE HELPER METHODS: used for adjusting and manipulating the world ***/
 
