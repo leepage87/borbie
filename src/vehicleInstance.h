@@ -24,7 +24,7 @@ class VehicleInstance : public GameObject {
   public:
 	VehicleInstance(
 		irr::scene::ISceneManager *smgr,
-		float posX, float posY, float posZ, irr::scene::IAnimatedMesh *mesh
+		float posX, float posY, float posZ, irr::scene::IAnimatedMesh *mesh, int modelIndex
 	);
 	
 	virtual void doDamage(int damage);

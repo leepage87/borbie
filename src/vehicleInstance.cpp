@@ -20,14 +20,19 @@ using namespace video;
 
 VehicleInstance::VehicleInstance(
 	ISceneManager *smgr,
-	float posX, float posY, float posZ, IAnimatedMesh *mesh)
+	float posX, float posY, float posZ, IAnimatedMesh *mesh, int modelIndex)
 	: GameObject(smgr) // call super GameObject constructor first
 {
 
     
 	this->sceneNode = smgr->addMeshSceneNode(mesh);
-	this->sceneNode->setScale(vector3df(.2, .2, .2));
-	this->sceneNode->setPosition(vector3df(posX, posY , posZ));
+	if (modelIndex == 0){//its a jeep
+		this->sceneNode->setScale(vector3df(.2, .2, .2));
+	}else{//its a riviera
+		this->sceneNode->setScale(vector3df(20,20,20));
+	}
+		this->sceneNode->setPosition(vector3df(posX, posY+20 , posZ));
+
 	this->sceneNode->setMaterialFlag(EMF_LIGHTING, true);
 	this->sceneNode->addShadowVolumeSceneNode(0,-1,true,50.0f);
 }
