@@ -84,7 +84,7 @@ class Game {
     int run();
 
 	//returns the event receiver
-	irr::IEventReceiver *receiver getReceiver(){return receiver;}
+	irr::IEventReceiver * getReceiver(){return receiver;}
 
 
 }; // end of Game class
