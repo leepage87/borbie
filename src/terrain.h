@@ -21,11 +21,11 @@ private:
 	irr::scene::ISceneManager *smgr;
 	irr::scene::ITerrainSceneNode *terrainNode;
 	irr::scene::ITriangleSelector *triSelector;
-	
+  irr::scene::IMetaTriangleSelector *metaTriSelector;	
 public:
 	// constructor
 	Terrain(irr::video::IVideoDriver * driver,
-			irr::scene::ISceneManager * smgr);
+			irr::scene::ISceneManager * smgr, irr::scene::IMetaTriangleSelector *metaTriSelector);
 
 	// returns the terrain node
 	irr::scene::ITerrainSceneNode* getNode() { return terrainNode; }

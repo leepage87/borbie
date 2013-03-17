@@ -48,7 +48,7 @@ GameInstance::GameInstance(
 	/*** Setup Environment ***/
 	
 	// Add Terrain and collision
-	this->terrain = new Terrain(driver, smgr);
+	this->terrain = new Terrain(driver, smgr, metaTriSelector);
 	addCollision(this->terrain->getTriSelector());
 	
 	// add skybox
