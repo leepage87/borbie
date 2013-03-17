@@ -29,7 +29,7 @@ VehicleInstance::VehicleInstance(
 	if (modelIndex == 0){//its a jeep
 		this->sceneNode->setScale(vector3df(.2, .2, .2));
 	}else{//its a riviera
-		this->sceneNode->setScale(vector3df(20,20,20));
+		this->sceneNode->setScale(vector3df(40,40,40));
 	}
 		this->sceneNode->setPosition(vector3df(posX, posY+20 , posZ));
 
