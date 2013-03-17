@@ -90,7 +90,9 @@ GameInstance::GameInstance(
     // add the buildings and generate city based on coordinate file
 	this->buildings = new Buildings(smgr, driver, metaTriSelector);
     this->buildings->generateBuildings("assets/map/coords.bor");
-    
+
+    //set shadow color
+	smgr->setShadowColor(video::SColor(90,0,0,0));
 	const int ROAD_HEIGHT = 70;
 	const int farX = 20000.0f;
 	const int farY = 20000.0f;
