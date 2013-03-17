@@ -38,7 +38,7 @@ Vehicles::Vehicles(
 	//this->modelList.push_back("assets/models/vehicles/corradon/car2.obj");
 	//this->modelList.push_back("assets/models/vehicles/pigMobile/PoliceCar.3DS");
 	//this->modelList.push_back("assets/models/vehicles/lambo/Lamborghini.x");
-	//this->modelList.push_back("assets/models/vehicles/riviera/car_riviera.obj");
+	this->modelList.push_back("assets/models/vehicles/riviera/car_riviera.obj");
 }
 
 // delete all of the vehicles
@@ -78,7 +78,7 @@ void Vehicles::makeVehicle(int modelIndex,
 	VehicleInstance *newVehicle
 		= new VehicleInstance(
 			this->smgr,
-			xPos, yPos, zPos, mesh
+			xPos, yPos, zPos, mesh, modelIndex
 		);
 	
 	newVehicle->applyCollision(this->metaTriSelector);
