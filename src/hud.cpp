@@ -11,66 +11,51 @@ using namespace core;
 Hud::Hud(IGUIEnvironment *guienv, IVideoDriver *driver){
     this->guienv = guienv;
     this->driver = driver;
-    
-    /*guienv->addImage(
-        driver->getTexture("assets/textures/hudTexture.jpg"),
-        position2d<s32>(0, 0));*/
-    
-    /*
-    float screenWidth = driver->getScreenSize().Width;
-    float screenHeight = driver->getScreenSize().Height;
-    
-    float hudX = screenWidth / 2;
-    float hudW = screenWidth / 4;
-    float hudY = screenHeight - (screenHeight / 6);
-    float hudH = screenHeight / 6;
-    
-    std::cout << "SCREEN W: " << screenWidth <<
-        " | SCREEN H: " << screenHeight << std::endl;
-    std::cout << "HUDX: " << hudX
-        << " HUDY: " << hudY
-        << " HUDW: " << hudW
-        << " HUDH: " << hudH << std::endl;
-    
-    ITexture* tex;
-    tex = driver->getTexture("assets/textures/hudTexture.jpg");
 
-    IGUIImage* img;
+    // get hud font
+    this->font = guienv->getFont("assets/fonts/bigfont.png");
+    if(!this->font)
+        std::cout << "ERROR: Font can't load." << std::endl;
 
-    // Give to addImage() the XY coords of 2 points :
-    img = guienv->addImage(
-        core::rect<s32>(0, 0, 200, 200));
-    img->setImage(tex);
-    img->setScaleImage(true);
-    driver->removeTexture(tex);
-    */
-    /*//ITexture* tex;
-   // tex = driver->getTexture("assets/textures/hudTexture.jpg");
-
-    driver->draw2DImage(tex,
-        rect<s32>(0, 0, 200, 200),
-        rect<s32>(0, 0, 200, 200));*/
+    // get the main hud texture
     this->hudTexture = driver->getTexture("assets/textures/hudTexture.jpg");
+    this->hudTextureSize = this->hudTexture->getSize();
 }
 
 Hud::~Hud(){
-
+    this->hudTexture->drop();
 }
 
 
 void Hud::drawHud(){
+    // get screen dimensions
     float screenWidth = driver->getScreenSize().Width;
     float screenHeight = driver->getScreenSize().Height;
     
-    float hudX = screenWidth / 4;
-    float hudW = screenWidth / 2;
-    float hudY = screenHeight - (screenHeight / 6);
-    float hudH = screenHeight / 6;
+    // calculate hud width and height based on screen size
+    float hudX = 0;
+    float hudW = screenWidth;
+    float hudY = screenHeight - (screenHeight / 8);
+    float hudH = screenHeight / 8;
     
+    // draw the hud background
     driver->draw2DImage(
         this->hudTexture,
         rect<s32>(hudX, hudY, hudX+hudW, hudY+hudH),
-        rect<s32>(0, 0, 200, 200));
+        rect<s32>(0, 0,
+            this->hudTextureSize.Width,
+            this->hudTextureSize.Height));
+    
+    // draw text
+    if(font){
+        font->draw(
+            "Borbie's Big Adventure",
+            rect<s32>(hudX, hudY, hudX+hudW, hudY+hudH),
+            SColor(255, 0, 0, 255),
+            true, true); 
+		    //bool  	hcenter = false,
+		    //bool  	vcenter = false,
+    }
 }
 
     

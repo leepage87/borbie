@@ -10,7 +10,12 @@ class Hud {
     irr::gui::IGUIEnvironment *guienv;
     irr::video::IVideoDriver *driver;
     
+    // main hud texture (background)
     irr::video::ITexture *hudTexture;
+    irr::core::dimension2d<irr::u32> hudTextureSize;
+    
+    // font
+    irr::gui::IGUIFont *font;
 
   public:
     Hud(irr::gui::IGUIEnvironment *guienv, irr::video::IVideoDriver *driver);
