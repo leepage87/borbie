@@ -6,6 +6,7 @@ using namespace irr;
 using namespace scene;
 using namespace video;
 using namespace core;
+using namespace gui;
 
 
 // CONSTRUCTOR:
@@ -13,32 +14,25 @@ using namespace core;
 //  such as buildings, vehicles, etc.
 GameInstance::GameInstance(
 	ISceneManager *smgr,
+	IGUIEnvironment *guienv,
 	IVideoDriver *driver,
 	IrrlichtDevice *device,
 	unsigned int runMode)
 {
+    /*** Setup Pointers and Irrlicht Objects ***/    
+    
 	// keep pointers to Irrlicht rendering pointers
 	this->smgr = smgr;
+	this->guienv = guienv;
 	this->driver = driver;
 	this->device = device;
 	
 	// setup global collision meta selector
 	this->metaTriSelector = smgr->createMetaTriangleSelector();
-	
-	
-	/*** Environment Setup ***/
-	
-	// Add Terrain and collision
-	this->terrain = new Terrain(driver, smgr);
-	addCollision(this->terrain->getTriSelector());
-	
-	// add skybox
-	this->skybox = new Sky(smgr, driver);
-	
-	// add lighting
-	this->light = new WorldLight(smgr);
 
-	/*** Runtime Flags Setup ***/
+
+
+	/*** Setup Runtime Flags ***/
 	
 	float gravity = GLOBAL_GRAVITY;
 	bool noVerticalMovement = true; // disabled
@@ -49,7 +43,47 @@ GameInstance::GameInstance(
 		noVerticalMovement = false; // vertical movement enabled
 	}
 	
-	/*** Camera Setup ***/
+	
+	
+	/*** Setup Environment ***/
+	
+	// Add Terrain and collision
+	this->terrain = new Terrain(driver, smgr);
+	addCollision(this->terrain->getTriSelector());
+	
+	// add skybox
+	this->skybox = new Sky(smgr, driver);
+	
+	// add lighting
+	this->light = new WorldLight(smgr);
+	
+	
+	
+	/*** Setup Game Objects (BUILDINGS, VEHICLES) ***/
+    
+    // add the buildings and generate city based on coordinate file
+	this->buildings = new Buildings(smgr, driver, metaTriSelector);
+    this->buildings->generateBuildings("assets/map/coords.bor");
+    
+	const int ROAD_HEIGHT = 70;
+	const int farX = 20000.0f;
+	const int farY = 20000.0f;
+	//add vehicle(s)
+	this->vehicles = new Vehicles(smgr, driver, metaTriSelector);
+	this->vehicles->addRandomVehicle(farX*.1953, ROAD_HEIGHT, farY*.2207);
+    this->vehicles->addRandomVehicle(farX*.2453, ROAD_HEIGHT, farY*.2207);
+    this->vehicles->addRandomVehicle(farX*.2953, ROAD_HEIGHT, farY*.2207);
+	
+	
+	
+	/*** Setup User Interface (HUD) ***/
+	
+	// add the hud object
+	this->hud = new Hud(this->guienv);
+	
+	
+	
+	/*** Setup Camera ***/
 	
 	// TODO: there was a memory leak. Delete after finished!
 	SKeyMap keyMap[9];
@@ -86,20 +120,6 @@ GameInstance::GameInstance(
       0.1f); // sliding value TODO tweak as needed
 	camera->addAnimator(anim);
 	anim->drop();
-    
-    // add the buildings and generate city based on coordinate file
-	this->buildings = new Buildings(smgr, driver, metaTriSelector);
-    this->buildings->generateBuildings("assets/map/coords.bor");
-    
-	const int ROAD_HEIGHT = 70;
-	const int farX = 20000.0f;
-	const int farY = 20000.0f;
-	//add vehicle(s)
-	this->vehicles = new Vehicles(smgr, driver, metaTriSelector);
-	this->vehicles->addRandomVehicle(farX*.1953, ROAD_HEIGHT, farY*.2207);
-    this->vehicles->addRandomVehicle(farX*.2453, ROAD_HEIGHT, farY*.2207);
-    this->vehicles->addRandomVehicle(farX*.2953, ROAD_HEIGHT, farY*.2207);  
-	
 }
 
 

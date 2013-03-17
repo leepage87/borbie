@@ -76,7 +76,7 @@ void Game::loadMainMenuState(){
 
 // loads the main game state
 void Game::loadGameState(){
-    this->gameInstance = new GameInstance(this->smgr, 
+    this->gameInstance = new GameInstance(this->smgr, this->guienv,
 			this->driver, this->device, this->runMode);
 }
 
