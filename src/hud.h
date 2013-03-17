@@ -9,6 +9,8 @@ class Hud {
   private:
     irr::gui::IGUIEnvironment *guienv;
     irr::video::IVideoDriver *driver;
+    
+    irr::video::ITexture *hudTexture;
 
   public:
     Hud(irr::gui::IGUIEnvironment *guienv, irr::video::IVideoDriver *driver);
@@ -16,6 +18,8 @@ class Hud {
     
     void changeHealthState(const int healthState);
     void changeMoodText(const char *text);
+    
+    void drawHud();
     
 }; // end of Hud class
 

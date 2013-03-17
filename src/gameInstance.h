@@ -59,7 +59,9 @@ class GameInstance {
     			unsigned int runMode);
     ~GameInstance();
 
-//    void draw();
+    // updates the game where Irrlicht fails to automatically
+    //  do updates by itself (namely, updates the Hud)
+    void drawGUI();
 
 
 }; // end of GameInstance class

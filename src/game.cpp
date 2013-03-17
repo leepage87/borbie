@@ -115,8 +115,13 @@ int Game::run()
     //this->gameInstance.draw();
     driver->beginScene(true, true, SColor(255,100,101,140));
     
+    // draw world and GUI
     smgr->drawAll();
     guienv->drawAll();
+    
+    // if gameInstance is active, draw the GUI
+    if(gameInstance)
+        gameInstance->drawGUI();
     
     driver->endScene();
   }
