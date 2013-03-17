@@ -57,6 +57,9 @@ GameInstance::GameInstance(
 	// add lighting
 	this->light = new WorldLight(smgr);
 	
+    //set shadow color
+	smgr->setShadowColor(video::SColor(90,0,0,0));
+	
 	
 	
 	/*** Setup Game Objects (BUILDINGS, VEHICLES) ***/
@@ -120,6 +123,23 @@ GameInstance::GameInstance(
       0.1f); // sliding value TODO tweak as needed
 	camera->addAnimator(anim);
 	anim->drop();
+/*<<<<<<< HEAD
+=======
+    
+    // add the buildings and generate city based on coordinate file
+	this->buildings = new Buildings(smgr, driver, metaTriSelector);
+    this->buildings->generateBuildings("assets/map/coords.bor");
+
+	const int ROAD_HEIGHT = 70;
+	const int farX = 20000.0f;
+	const int farY = 20000.0f;
+	//add vehicle(s)
+	this->vehicles = new Vehicles(smgr, driver, metaTriSelector);
+	this->vehicles->addRandomVehicle(farX*.1953, ROAD_HEIGHT, farY*.2207);
+    this->vehicles->addRandomVehicle(farX*.2453, ROAD_HEIGHT, farY*.2207);
+    this->vehicles->addRandomVehicle(farX*.2953, ROAD_HEIGHT, farY*.2207);  
+	
+>>>>>>> 3e10367412fd62ec93bb23ebf796fb9726b65667*/
 }
 
 
