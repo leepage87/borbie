@@ -82,7 +82,7 @@ GameInstance::GameInstance(
 	/*** Setup User Interface (HUD) ***/
 	
 	// add the hud object
-	this->hud = new Hud(this->guienv);
+	this->hud = new Hud(this->guienv, this->driver);
 	
 	
 	

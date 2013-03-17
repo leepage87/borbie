@@ -8,9 +8,10 @@
 class Hud {
   private:
     irr::gui::IGUIEnvironment *guienv;
+    irr::video::IVideoDriver *driver;
 
   public:
-    Hud(irr::gui::IGUIEnvironment *guienv);
+    Hud(irr::gui::IGUIEnvironment *guienv, irr::video::IVideoDriver *driver);
     ~Hud();
     
     void changeHealthState(const int healthState);
