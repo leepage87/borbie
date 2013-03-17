@@ -46,8 +46,11 @@ enum RuntimeOptions {
 	BORBIE_FULLSCREEN	= 0x0002
 };
 
-//game state enum
-//enum {GUI, GAME} GameState;
+// game state enum
+enum GameState {
+    BORBIE_MAIN_MENU_STATE,
+    BORBIE_GAME_STATE
+};
 
 // Game Class
 class Game {
@@ -57,8 +60,13 @@ class Game {
     irr::IEventReceiver *receiver;
     irr::video::IVideoDriver* driver;
     irr::scene::ISceneManager *smgr;
+    irr::gui::IGUIEnvironment *guienv;
   
-  	int GameState;  
+    // game state variables and functions
+  	GameState gameState;
+  	void loadMainMenuState();
+  	void loadGameState();
+  	
     // pointers to all internal Borbie-related objects:
     Gui *gui;
     GameInstance *gameInstance;

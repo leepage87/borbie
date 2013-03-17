@@ -23,64 +23,89 @@ using namespace gui;
 //Constructor
 Game::Game(unsigned int runMode)
 {
-  // remember the run mode flag
-  this->runMode = runMode;
+    // remember the run mode flag
+    this->runMode = runMode;
 
-  gui = 0;
-  gameInstance = 0;
+    gui = 0;
+    gameInstance = 0;
 
-  receiver = new BorbiesEventReceiver();
-  // if fullscreen is flagged, run as full screen
-  bool fullScreen = false;
-  if(runMode & BORBIE_FULLSCREEN)
-  	fullScreen = true;
-  device =
-    createDevice(video::EDT_OPENGL,          // Video driver to use
-        dimension2d<u32>(640, 480), // Dimensions of window
-        32,                         // Bit-depth
-        fullScreen,                 // Full screen
-        true,                      // Stencil buffer
-        false,                      // Vsync
-        receiver);                 // Pointer to IEventReceiver
+    receiver = new BorbiesEventReceiver();
+    // if fullscreen is flagged, run as full screen
+    bool fullScreen = false;
+    if(runMode & BORBIE_FULLSCREEN)
+        fullScreen = true;
+    device =
+        createDevice(video::EDT_OPENGL, // Video driver to use
+            dimension2d<u32>(640, 480), // Dimensions of window
+            32,                         // Bit-depth
+            fullScreen,                 // Full screen
+            true,                       // Stencil buffer
+            false,                      // Vsync
+            receiver);                  // Pointer to IEventReceiver
 
-  ((BorbiesEventReceiver *)receiver)->setDevice(device, this);
+    // set the event receiver's device pointer to the current device.
+    ((BorbiesEventReceiver *)receiver)->setDevice(device, this);
 
-  device->setWindowCaption(L"Borbie's Big Adventure: LET'S HIT THE TOWN!");
+    device->setWindowCaption(L"Borbie's Big Adventure: LET'S HIT THE TOWN!");
 
-  /* Cache pointers to the VideoDriver, SceneManager, and
-     GUIEnvironment in local variables. */
-  driver = device->getVideoDriver();
-  device->setResizable(true);
-  smgr = device->getSceneManager();
+    /* Cache pointers to the VideoDriver, SceneManager, and
+       GUIEnvironment in local variables. */
+    driver = device->getVideoDriver();
+    device->setResizable(true);
+    smgr = device->getSceneManager();
+    guienv = smgr->getGUIEnvironment();
 
-   //start the GUI
-   GameState = 1;
-   manageStates();   
+    // start the main menu (initial phase)
+    gameState = BORBIE_MAIN_MENU_STATE;
+    loadMainMenuState(); 
 }
 
-//De(con)structor
+
+//De(con)structor: clean up Irrlicht
 Game::~Game()
 {
   device->drop();
 }
 
+
+// loads the main menu
+void Game::loadMainMenuState(){
+    this->gui = new Gui();
+}
+
+
+// loads the main game state
+void Game::loadGameState(){
+    this->gameInstance = new GameInstance(this->smgr, 
+			this->driver, this->device, this->runMode);
+}
+
+
+// switches to the next available game state
 void Game::manageStates()
 {
-	//case statements
-	if(GameState == 0){
-		GameState = 1;
-		if(gui)
+	// if currently in menu state, switch to game state
+	if(gameState == BORBIE_MAIN_MENU_STATE){
+		gameState = BORBIE_GAME_STATE;
+		if(gui){
 			delete gui;
-			
-		this->gameInstance = new GameInstance(this->smgr, 
-			this->driver, this->device, this->runMode);
-	}else if(GameState == 1){
-		GameState = 0;
-		if(gameInstance)
+			gui = 0;
+	    }
+		loadGameState();
+	}
+	
+	// if currently in game state, switch to menu state
+	else if(gameState == BORBIE_GAME_STATE){
+		gameState = BORBIE_MAIN_MENU_STATE;
+		if(gameInstance){
 			delete gameInstance;
-		this->gui = new Gui();
+			gameInstance = 0;
+		}
+		loadMainMenuState();
 	}
 }
+
+
 //TODO eventually refactor to call a run either playable game or gui-menu
 int Game::run()
 {
