@@ -1,3 +1,4 @@
+
 # Makefile for Irrlicht Examples: Stripped for a template
 # It's usually sufficient to change just the target name and source file list
 # and be sure that CXX is set to a valid compiler
@@ -7,11 +8,10 @@
 Target := BorbiesBigAdventure
 
 # >>>>> Space-separated list of source files
-Sources := $(shell ls src/ | grep .cpp)
+Sources := $(shell ls -t src/ | grep .cpp)
 Objects = $(addprefix obj/, $(Sources:.cpp=.o))
 
 # >>>>> Folder for output file (no ending '/')
-# win32 note: should contain a copy of Irrlicht.dll
 BinPath = bin
 
 # Get the OS Size
@@ -20,11 +20,15 @@ OS_SIZE = $(shell uname -m | sed -e "s/i.86/32/" -e "s/x86_64/64/")
 CPPFLAGS = -DROOT_DIR=.
 CXXFLAGS = -g -O3 -ffast-math
 # >>>>> Where to look for for headers
-INCLUDES += -Iinclude/irrlicht
+INCLUDES += -Iinclude/irrlicht -Iinclude/irrKlang
 
-# >>>>> WHere to look for for libs
+# >>>>> Where to look for for libs
 # Local
 LDFLAGS += -Llib/$(OS_SIZE) -lIrrlicht
+LDFLAGS += -Llib/$(OS_SIZE) -lIrrKlang 	\
+		   -likpMP3 					\
+		   -likpFlac
+
 # system
 LDFLAGS += -L/usr/X11R6/lib -lGL -lXxf86vm -lXext -lX11 -lXcursor
 
@@ -42,10 +46,9 @@ obj/%.o: src/%.cpp
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c -o $@ $< $(CPPFLAGS) 
 
 game: $(Objects)
-	$(CXX) $(CXXFLAGS) $(INCLUDES) $? -o $(BinPath)/$(Target) $(LDFLAGS) $(CPPFLAGS)
+	$(CXX) $(CXXFLAGS) $(INCLUDES) $? -o $(BinPath)/$(Target) $(LDFLAGS) -Wl,-rpath=lib/$(OS_SIZE) $(CPPFLAGS)
 
 clean:
 	$(RM) -r $(BinPath)
 	$(RM) -r obj
-
 

@@ -14,13 +14,15 @@ using namespace video;
 using namespace io;
 using namespace gui;
 
-
+//const core::vector3df SIZE = (10.0f,10.0f, 10.0f);
 #define s2( name ) #name
 #define stringify( name ) s2( name )
 
-Terrain::Terrain(IVideoDriver * _driver, ISceneManager * _smgr) {
+Terrain::Terrain(IVideoDriver * _driver, ISceneManager * _smgr, irr::scene::IMetaTriangleSelector *metaTriSelector) {
 	driver = _driver;
 	smgr = _smgr;
+  this->metaTriSelector = metaTriSelector;
+
 	terrainNode = _smgr->addTerrainSceneNode(
 		"assets/map/valleyHeightMap.bmp",
 		0,					// parent node
@@ -44,18 +46,32 @@ Terrain::Terrain(IVideoDriver * _driver, ISceneManager * _smgr) {
 		_driver->getTexture("assets/map/groundTexture.jpg"));
 	terrainNode->setMaterialType(video::EMT_DETAIL_MAP);
 	terrainNode->scaleTexture(1.0f, 20.0f);
+
+
 	
-	// setup collision
+  // setup collision
 	ITriangleSelector* selector =
 		smgr->createTerrainTriangleSelector(terrainNode, 0);
 	terrainNode->setTriangleSelector(selector);
 	this->triSelector = selector;
+  
+  //add invisible walls
+  IMeshSceneNode * southWall = smgr->addCubeSceneNode(100000, 0 , -1, vector3df(2000, 500,2000), vector3df(0,0,0), vector3df(1, 1, 0.0001));
+
+  // add its triangles to the global collision meta selector
+	ITriangleSelector *wallSelector =
+		smgr->createTriangleSelectorFromBoundingBox(southWall);
+	
+  southWall->setTriangleSelector(wallSelector);
+	wallSelector->drop();
+  metaTriSelector->addTriangleSelector(southWall->getTriangleSelector());
+	
+
+
+
+
+  
 }
-
-
-
-
-
 
 
 
