@@ -22,6 +22,9 @@ private:
 	irr::scene::ITerrainSceneNode *terrainNode;
 	irr::scene::ITriangleSelector *triSelector;
   irr::scene::IMetaTriangleSelector *metaTriSelector;	
+  irr::scene::ITriangleSelector *wallSelector;
+
+  void applyCollision(irr::scene::IMeshSceneNode *wall);
 public:
 	// constructor
 	Terrain(irr::video::IVideoDriver * driver,

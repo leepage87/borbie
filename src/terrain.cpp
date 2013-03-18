@@ -57,25 +57,32 @@ Terrain::Terrain(IVideoDriver * _driver, ISceneManager * _smgr, irr::scene::IMet
   //add invisible walls
   IMeshSceneNode * southWall = smgr->addCubeSceneNode(100000, 0 , -1, vector3df(2000, 500,2000), vector3df(0,0,0), vector3df(1, 1, 0.0001));
   southWall->setVisible(false);
-
-  //TODO refactor as a function
+	
+  wallSelector =
+		smgr->createTriangleSelectorFromBoundingBox(southWall);
+  
+  applyCollision(wallSelector, southWall);
+  
+   //TODO refactor as a function
   
   // add its triangles to the global collision meta selector
-	ITriangleSelector *wallSelector =
-		smgr->createTriangleSelectorFromBoundingBox(southWall);
+//  southWall->setTriangleSelector(wallSelector);
+//	wallSelector->drop();
+//  metaTriSelector->addTriangleSelector(southWall->getTriangleSelector());
 	
-  southWall->setTriangleSelector(wallSelector);
-	wallSelector->drop();
-  metaTriSelector->addTriangleSelector(southWall->getTriangleSelector());
+ }
+
+//helper functions
+void Terrain::applyCollision(ITriangleSelector *selector, IMeshSceneNode* wall)
+{
 	
-
-
-
-
   
+  wall->setTriangleSelector(selector);
+	selector->drop();
+  metaTriSelector->addTriangleSelector(wall->getTriangleSelector());
+	
+
 }
-
-
 
 
 
