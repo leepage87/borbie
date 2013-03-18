@@ -36,7 +36,7 @@ Game::Game(unsigned int runMode)
         fullScreen = true;
     device =
         createDevice(video::EDT_OPENGL, // Video driver to use
-            dimension2d<u32>(640, 480), // Dimensions of window
+            dimension2d<u32>(800, 600), // Dimensions of window
             32,                         // Bit-depth
             fullScreen,                 // Full screen
             true,                       // Stencil buffer

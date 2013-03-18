@@ -23,10 +23,10 @@ WorldLight::WorldLight(scene::ISceneManager * _smgr) {
 	
 	sun = _smgr->addLightSceneNode(
 		pNode,								// parent
-		core::vector3df(9900,4000,9900),				// position relative to parent
+		core::vector3df(2000,4000,15000),				// position relative to parent
 		video::SColorf(255.0f, 255.0f, 255.0f, 255.0f),	// color
 		//video::SColorf(181.0f, 5.0f, 28.0f),	// red color (old version)
-		4000.0f,							// radius of light
+		14000.0f,							// radius of light
 		-1									// id
 	);
 	sun-> setLightType(video::ELT_DIRECTIONAL);

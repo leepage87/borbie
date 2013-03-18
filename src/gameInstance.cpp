@@ -58,7 +58,7 @@ GameInstance::GameInstance(
 	this->light = new WorldLight(smgr);
 	
     //set shadow color
-	smgr->setShadowColor(video::SColor(90,0,0,0));
+	smgr->setShadowColor(video::SColor(120,0,0,0));
 	
 	
 	
