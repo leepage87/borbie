@@ -124,18 +124,23 @@ GameInstance::GameInstance(
 	anim->drop();
 
 
-	//create ray selector
-	selector = new CastRay(smgr, camera);
-	
+	//create beatDown ray selector
+	beatDownSelector = new CastRay(smgr, camera);
+	highlightedSceneNode = 0;
 
 }
 
 //gets a highlighted scene node if there is one
 void GameInstance::updateSelector(){
-	ISceneNode * selected = 0;
-	selected = selector->getTarget();
+
+if (highlightedSceneNode) {
+		highlightedSceneNode->setMaterialFlag(EMF_LIGHTING, true);
+		highlightedSceneNode = 0;
+	}
+	ISceneNode * selected = beatDownSelector->getTarget();
 	if (selected){
-		selected->setMaterialFlag(EMF_LIGHTING, false);
+		highlightedSceneNode = selected;
+		highlightedSceneNode->setMaterialFlag(EMF_LIGHTING, false);
 	}
 }
 
@@ -147,7 +152,7 @@ GameInstance::~GameInstance(){
 	delete this->light;
 	delete this->buildings;
 	delete this->vehicles;
-	delete this->selector;
+	delete this->beatDownSelector;
     this->smgr->clear();
 }
 

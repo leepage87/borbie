@@ -36,7 +36,8 @@ class GameInstance {
     irr::gui::IGUIEnvironment *guienv;
     irr::video::IVideoDriver *driver;
     irr::IrrlichtDevice *device;
-		CastRay::CastRay *selector;
+		CastRay::CastRay *beatDownSelector;
+		irr::scene::ISceneNode *highlightedSceneNode;
 
     
     // collision detection pointers
