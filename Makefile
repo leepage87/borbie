@@ -20,15 +20,11 @@ OS_SIZE = $(shell uname -m | sed -e "s/i.86/32/" -e "s/x86_64/64/")
 CPPFLAGS = -DROOT_DIR=.
 CXXFLAGS = -g -O3 -ffast-math
 # >>>>> Where to look for for headers
-INCLUDES += -Iinclude/irrlicht -Iinclude/irrKlang
+INCLUDES += -Iinclude/irrlicht
 
 # >>>>> Where to look for for libs
 # Local
 LDFLAGS += -Llib/$(OS_SIZE) -lIrrlicht
-LDFLAGS += -Llib/$(OS_SIZE) -lIrrKlang 	\
-		   -likpMP3 					\
-		   -likpFlac
-
 # system
 LDFLAGS += -L/usr/X11R6/lib -lGL -lXxf86vm -lXext -lX11 -lXcursor
 
