@@ -16,6 +16,7 @@
 #include "buildings.h"
 #include "vehicles.h"
 #include "hud.h"
+#include "castRay.h"
 
 
 // world constants
@@ -31,9 +32,12 @@ class GameInstance {
   private:
  	// irrlicht renderer pointers
     irr::scene::ISceneManager *smgr;
+		irr::scene::ICameraSceneNode *camera;
     irr::gui::IGUIEnvironment *guienv;
     irr::video::IVideoDriver *driver;
     irr::IrrlichtDevice *device;
+		CastRay::CastRay *selector;
+
     
     // collision detection pointers
 	irr::scene::IMetaTriangleSelector *metaTriSelector;
@@ -57,12 +61,16 @@ class GameInstance {
     			irr::video::IVideoDriver *driver,
     			irr::IrrlichtDevice *device,
     			unsigned int runMode);
-    ~GameInstance();
 
+		void updateSelector();
+
+    ~GameInstance();
+	
     // updates the game where Irrlicht fails to automatically
     //  do updates by itself (namely, updates the Hud)
     void drawGUI();
 
+		irr::scene::ICameraSceneNode* getCamera() { return camera; }
 
 }; // end of GameInstance class
 

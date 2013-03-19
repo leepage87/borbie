@@ -57,16 +57,15 @@ GameInstance::GameInstance(
 	// add lighting
 	this->light = new WorldLight(smgr);
 	
-    //set shadow color: dark purplish
+  //set shadow color: dark purplish
 	smgr->setShadowColor(video::SColor(120,35,20,47));
 	
-	
-	
+
 	/*** Setup Game Objects (BUILDINGS, VEHICLES) ***/
     
     // add the buildings and generate city based on coordinate file
 	this->buildings = new Buildings(smgr, driver, metaTriSelector);
-    this->buildings->generateBuildings("assets/map/coords.bor");
+  this->buildings->generateBuildings("assets/map/coords.bor");
     
 	const int ROAD_HEIGHT = 70;
 	const int farX = 20000.0f;
@@ -74,8 +73,8 @@ GameInstance::GameInstance(
 	//add vehicle(s)
 	this->vehicles = new Vehicles(smgr, driver, metaTriSelector);
 	this->vehicles->addRandomVehicle(farX*.1953, ROAD_HEIGHT, farY*.2207);
-    this->vehicles->addRandomVehicle(farX*.2453, ROAD_HEIGHT, farY*.2207);
-    this->vehicles->addRandomVehicle(farX*.2953, ROAD_HEIGHT, farY*.2207);
+  this->vehicles->addRandomVehicle(farX*.2453, ROAD_HEIGHT, farY*.2207);
+  this->vehicles->addRandomVehicle(farX*.2953, ROAD_HEIGHT, farY*.2207);
 	
 	
 	
@@ -96,7 +95,7 @@ GameInstance::GameInstance(
     delete keys;
     
     // setup camera
-	ICameraSceneNode *camera = smgr->addCameraSceneNodeFPS(
+		camera = smgr->addCameraSceneNodeFPS(
 		0,						// parent (none)
 		PLAYER_ROTATE_SPEED,	// rotate speed
 		PLAYER_MOVEMENT_SPEED,	// move speed
@@ -124,8 +123,21 @@ GameInstance::GameInstance(
 	camera->addAnimator(anim);
 	anim->drop();
 
+
+	//create ray selector
+	selector = new CastRay(smgr, camera);
+	
+
 }
 
+//gets a highlighted scene node if there is one
+void GameInstance::updateSelector(){
+	ISceneNode * selected = 0;
+	selected = selector->getTarget();
+	if (selected){
+		selected->setMaterialFlag(EMF_LIGHTING, false);
+	}
+}
 
 // destructor: removes all objects from memory and ensures that the scene
 //  manager is completely wiped clean of all Irrlicht objects.
@@ -135,6 +147,7 @@ GameInstance::~GameInstance(){
 	delete this->light;
 	delete this->buildings;
 	delete this->vehicles;
+	delete this->selector;
     this->smgr->clear();
 }
 

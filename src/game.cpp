@@ -10,6 +10,7 @@
  */
 
 #include "game.h"
+#include <iostream>
 
 // using Irrlicht engine namespaces:
 using namespace irr;
@@ -108,8 +109,7 @@ void Game::manageStates()
 
 //TODO eventually refactor to call a run either playable game or gui-menu
 int Game::run()
-{
-  
+{  
   while(device->run()) 
   {
     //this->gameInstance.draw();
@@ -120,9 +120,11 @@ int Game::run()
     guienv->drawAll();
     
     // if gameInstance is active, draw the GUI
-    if(gameInstance)
+    if(gameInstance){
         gameInstance->drawGUI();
-    
+				gameInstance->updateSelector();
+		}
+    	
     driver->endScene();
   }
 }

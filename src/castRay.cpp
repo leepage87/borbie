@@ -4,6 +4,7 @@
  *Returns: The intersected scene node
  */
 #include "castRay.h"
+
 using namespace std;
 
 using namespace irr;
@@ -15,6 +16,7 @@ const f32 RAY_LENGTH_IN_UNITS = 200.0f;
 //constructor:
 //sets sceneManager and camera
 CastRay::CastRay(ISceneManager *_smgr, ICameraSceneNode *_camera){
+
 	this->smgr = _smgr;
 	this->camera = _camera;
 }
