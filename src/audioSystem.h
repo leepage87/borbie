@@ -24,12 +24,35 @@
 // AudioSystem Class
 class AudioSystem {
   private:
+    // FMOD system variables
+    FMOD::System *system;
+    
+    // primary audio channels
+    FMOD::Channel *musicChannel;
+    FMOD::Channel *ambianceChannel;
+    
+    // game sound variables
+    FMOD_VECTOR playerPosition;
+    
+    // internal helper functions
+    void playMusic(const char *file, bool looped);
+
+    
   public:
+    AudioSystem();
+    ~AudioSystem();
+    
+    void playMusic(const char *file);
+    void playMusicLoop(const char *file);
+    void stopMusic();
+    
     /* TODO: add these functions (or most of them):
     
     void playMusic(const char *file);
     void playMusicLoop(const char *file);
     void setCrossFade(unsigned int miliseconds);
+    
+    void setPlayerPosition(irr::core::vector3df position);
     
     void playSound3d(char *file, irr::core::vector3df source);
     void playSound3d(char *file, irr::scene::IMeshSceneNode *source);

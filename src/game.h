@@ -19,6 +19,7 @@
 #include "borbiesEventReceiver.h"
 #include "gameInstance.h"
 #include "gui.h"
+#include "audioSystem.h"
 
 /* RuntimeOptions: enum (constant definitions):
  *	16-bit flags allow for bitwise or operations
@@ -70,6 +71,7 @@ class Game {
     // pointers to all internal Borbie-related objects:
     Gui *gui;
     GameInstance *gameInstance;
+    AudioSystem *audioSystem;
     
     unsigned int runMode;
 

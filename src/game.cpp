@@ -59,13 +59,18 @@ Game::Game(unsigned int runMode)
     // start the main menu (initial phase)
     gameState = BORBIE_MAIN_MENU_STATE;
     loadMainMenuState(); 
+    
+    // TODO: temporary (might change location)
+    this->audioSystem = new AudioSystem();
+    this->audioSystem->playMusic("assets/sounds/swish.wav");
 }
 
 
 //De(con)structor: clean up Irrlicht
 Game::~Game()
 {
-  device->drop();
+    delete this->audioSystem;
+    this->device->drop();
 }
 
 
