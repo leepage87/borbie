@@ -17,6 +17,7 @@
 #include "vehicles.h"
 #include "hud.h"
 #include "castRay.h"
+#include "audioSystem.h"
 
 
 // world constants
@@ -48,6 +49,7 @@ class GameInstance {
 	void removeCollision(irr::scene::ITriangleSelector *selector);
 	
 	// game objects (e.g. terrain, GUI, etc.)
+	AudioSystem *audioSystem;
 	Terrain *terrain;
 	Sky *skybox;
 	WorldLight *light;
@@ -55,23 +57,28 @@ class GameInstance {
 	Vehicles *vehicles;
 	Hud *hud;
 	
+	// private update methods to update the various subsystems:
+	//  all of these are called by the update() method.
+	void drawGUI();
+    void updateSelector();
+    void updateSound();
+    
     
   public:
     GameInstance(irr::scene::ISceneManager *smgr,
                 irr::gui::IGUIEnvironment *guienv,
     			irr::video::IVideoDriver *driver,
     			irr::IrrlichtDevice *device,
+    			AudioSystem *audioSystem,
     			unsigned int runMode);
-
-		void updateSelector();
 
     ~GameInstance();
 	
-    // updates the game where Irrlicht fails to automatically
-    //  do updates by itself (namely, updates the Hud)
-    void drawGUI();
+    // updates all of the game subsystems (hud, selectors, sounds, etc.)
+    void update();
 
-		irr::scene::ICameraSceneNode* getCamera() { return camera; }
+    irr::scene::ICameraSceneNode* getCamera() { return camera; }
+
 
 }; // end of GameInstance class
 

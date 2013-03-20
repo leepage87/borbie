@@ -83,9 +83,10 @@ void Game::loadMainMenuState(){
 
 // loads the main game state
 void Game::loadGameState(){
-    this->gameInstance = new GameInstance(this->smgr, this->guienv,
-			this->driver, this->device, this->runMode);
-    this->audioSystem->setMusicVolume(0.25);
+    this->gameInstance = new GameInstance(
+        this->smgr, this->guienv, this->driver, this->device,
+		this->audioSystem, this->runMode);
+    this->audioSystem->setMusicVolume(0.5);
 }
 
 
@@ -117,22 +118,22 @@ void Game::manageStates()
 //TODO eventually refactor to call a run either playable game or gui-menu
 int Game::run()
 {  
-  while(device->run()) 
-  {
-    //this->gameInstance.draw();
-    driver->beginScene(true, true, SColor(255,100,101,140));
-    
-    // draw world and GUI
-    smgr->drawAll();
-    guienv->drawAll();
-    
-    // if gameInstance is active, draw the GUI
-    if(gameInstance){
-        gameInstance->drawGUI();
-				gameInstance->updateSelector();
-		}
-    	
-    driver->endScene();
-  }
+    while(device->run())
+    {
+        driver->beginScene(true, true, SColor(255,100,101,140));
+        
+        // draw world and GUI
+        smgr->drawAll();
+        guienv->drawAll();
+        
+        // if gameInstance is active, update its subsystems
+        if(gameInstance)
+            gameInstance->update();
+        
+        // if(gui)
+        //  gui->update();
+        	
+        driver->endScene();
+    }
 }
 

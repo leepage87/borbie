@@ -1,5 +1,5 @@
 /*	File: audioSystem.h
- *	Authors: idk your names
+ *	Authors: teamKillYourself
  *
  *	Description: this file contains the class declaration for the
  *	AudioSystem class. This object is responsible for providing an interface
@@ -11,12 +11,18 @@
  *  See doc/fmodex.pdf for full documentation on this library.
  *  Special thanks to http://www.online-convert.com for converting
  *      the provided .chm file to an actually usable format.
+ *
+ *  TESTED AUDIO FILE FORMATS (might support more):
+ *      .ogg
+ *      .wav
+ *      .mp3
  */
 
 #ifndef AUDIO_SYSTEM_H
 #define AUDIO_SYSTEM_H
 
 // System includes
+#include <irrlicht.h>
 #include "fmod.hpp"
 #include "fmod_errors.h"
 
@@ -31,6 +37,8 @@ class AudioSystem {
     FMOD::Channel *musicChannel;
     FMOD::Channel *ambianceChannel;
     
+    // primary sound objects
+    
     // game sound variables
     FMOD_VECTOR playerPosition;
     
@@ -44,11 +52,18 @@ class AudioSystem {
     
     // TODO: perhaps these functions can return int error codes
     
+    // Music Playback Functions
     void playMusic(const char *file);
     void playMusicLoop(const char *file);
     void pauseMusic();
     void resumeMusic();
     void setMusicVolume(const float vol);
+    
+    // 3D sound management functions
+    void updatePlayerPosition(const irr::core::vector3df playerPos);
+    
+    // 3D Sound Functions
+    
     
     /* TODO: add these functions (or most of them):
     

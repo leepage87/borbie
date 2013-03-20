@@ -17,6 +17,7 @@ GameInstance::GameInstance(
 	IGUIEnvironment *guienv,
 	IVideoDriver *driver,
 	IrrlichtDevice *device,
+	AudioSystem *audioSystem,
 	unsigned int runMode)
 {
     /*** Setup Pointers and Irrlicht Objects ***/    
@@ -26,6 +27,7 @@ GameInstance::GameInstance(
 	this->guienv = guienv;
 	this->driver = driver;
 	this->device = device;
+	this->audioSystem = audioSystem;
 	
 	// setup global collision meta selector
 	this->metaTriSelector = smgr->createMetaTriangleSelector();
@@ -65,7 +67,7 @@ GameInstance::GameInstance(
     
     // add the buildings and generate city based on coordinate file
 	this->buildings = new Buildings(smgr, driver, metaTriSelector);
-  this->buildings->generateBuildings("assets/map/coords.bor");
+    this->buildings->generateBuildings("assets/map/coords.bor");
     
 	const int ROAD_HEIGHT = 70;
 	const int farX = 20000.0f;
@@ -73,8 +75,8 @@ GameInstance::GameInstance(
 	//add vehicle(s)
 	this->vehicles = new Vehicles(smgr, driver, metaTriSelector);
 	this->vehicles->addRandomVehicle(farX*.1953, ROAD_HEIGHT, farY*.2207);
-  this->vehicles->addRandomVehicle(farX*.2453, ROAD_HEIGHT, farY*.2207);
-  this->vehicles->addRandomVehicle(farX*.2953, ROAD_HEIGHT, farY*.2207);
+    this->vehicles->addRandomVehicle(farX*.2453, ROAD_HEIGHT, farY*.2207);
+    this->vehicles->addRandomVehicle(farX*.2953, ROAD_HEIGHT, farY*.2207);
 	
 	
 	
@@ -130,19 +132,6 @@ GameInstance::GameInstance(
 
 }
 
-//gets a highlighted scene node if there is one
-void GameInstance::updateSelector(){
-
-if (highlightedSceneNode) {
-		highlightedSceneNode->setMaterialFlag(EMF_LIGHTING, true);
-		highlightedSceneNode = 0;
-	}
-	ISceneNode * selected = beatDownSelector->getTarget();
-	if (selected){
-		highlightedSceneNode = selected;
-		highlightedSceneNode->setMaterialFlag(EMF_LIGHTING, false);
-	}
-}
 
 // destructor: removes all objects from memory and ensures that the scene
 //  manager is completely wiped clean of all Irrlicht objects.
@@ -157,13 +146,49 @@ GameInstance::~GameInstance(){
 }
 
 
+
+/*** PER-FRAME UPDATE METHODS ***/
+
+// called each frame by Game object to update all of the GameInstance
+//  subsystems, including GUI, target selector, and sound.
+void GameInstance::update(){
+    this->drawGUI();
+    this->updateSelector();
+    this->updateSound();
+}
+
+// (private)
 // calls update on the hud (called each frame)
 void GameInstance::drawGUI(){
     this->hud->drawHud();
 }
 
+// (private)
+// gets a highlighted scene node if there is one
+void GameInstance::updateSelector(){
 
-/*** PRIVATE HELPER METHODS: used for adjusting and manipulating the world ***/
+    if (highlightedSceneNode) {
+		highlightedSceneNode->setMaterialFlag(EMF_LIGHTING, true);
+		highlightedSceneNode = 0;
+	}
+	ISceneNode * selected = beatDownSelector->getTarget();
+	if (selected){
+		highlightedSceneNode = selected;
+		highlightedSceneNode->setMaterialFlag(EMF_LIGHTING, false);
+	}
+}
+
+// (private)
+// update the sound system for current player position and orientation
+void GameInstance::updateSound(){
+    this->audioSystem->updatePlayerPosition(
+        this->camera->getPosition()
+    );
+}
+
+
+
+/*** PRIVATE COLLISION METHODS ***/
 
 // Add a node's Traingle Selector to the global meta selector. Use
 //	irr::scene::ISceneNode->getTriangleSelector() to get one.
