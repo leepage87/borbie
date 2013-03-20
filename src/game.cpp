@@ -55,14 +55,14 @@ Game::Game(unsigned int runMode)
     device->setResizable(true);
     smgr = device->getSceneManager();
     guienv = smgr->getGUIEnvironment();
+    
+    // Create the audio system
+    this->audioSystem = new AudioSystem();
+    this->audioSystem->playMusicLoop("assets/sounds/yumyum.ogg");
 
     // start the main menu (initial phase)
     gameState = BORBIE_MAIN_MENU_STATE;
     loadMainMenuState(); 
-    
-    // TODO: temporary (might change location)
-    this->audioSystem = new AudioSystem();
-    this->audioSystem->playMusic("assets/sounds/swish.wav");
 }
 
 
@@ -77,6 +77,7 @@ Game::~Game()
 // loads the main menu
 void Game::loadMainMenuState(){
     this->gui = new Gui();
+    this->audioSystem->setMusicVolume(1.0);
 }
 
 
@@ -84,6 +85,7 @@ void Game::loadMainMenuState(){
 void Game::loadGameState(){
     this->gameInstance = new GameInstance(this->smgr, this->guienv,
 			this->driver, this->device, this->runMode);
+    this->audioSystem->setMusicVolume(0.25);
 }
 
 

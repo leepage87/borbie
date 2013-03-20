@@ -102,11 +102,28 @@ void AudioSystem::playMusicLoop(const char *file){
 }
 
 
-// If the music channel is currently playing, stops playback.
-//  NOTE: This method DOES NOT remove the sound from memory.
-void AudioSystem::stopMusic(){
-    // TODO: actually implement this
+void AudioSystem::pauseMusic(){
+    if(this->musicChannel)
+        this->musicChannel->setPaused(true);
 }
+
+void AudioSystem::resumeMusic(){
+    if(this->musicChannel)
+        this->musicChannel->setPaused(false);
+}
+
+
+// Attempts to set the volume of the music channel. Volume is expected to
+//  be between 0.0 and 1.0 (float). Does nothing if the music channel is
+//  null/un-initialized.
+void AudioSystem::setMusicVolume(const float vol){
+    if(vol < 0.0 || vol > 1.0)
+        std::cout << "Volume must be between 0.0 and 1.0." << std::endl;
+    else if(this->musicChannel){
+        this->musicChannel->setVolume(vol);
+    }
+}
+
 
 
 

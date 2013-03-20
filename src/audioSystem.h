@@ -46,12 +46,12 @@ class AudioSystem {
     
     void playMusic(const char *file);
     void playMusicLoop(const char *file);
-    void stopMusic();
+    void pauseMusic();
+    void resumeMusic();
+    void setMusicVolume(const float vol);
     
     /* TODO: add these functions (or most of them):
     
-    void pauseMusic();
-    void resumeMusic(); 
     void setMusicCrossFade(unsigned int miliseconds);
     
     void setPlayerPosition(irr::core::vector3df position);
