@@ -23,7 +23,22 @@
 
 // AudioSystem Class
 class AudioSystem {
-  //
+  private:
+  public:
+    /* TODO: add these functions (or most of them):
+    
+    void playMusic(const char *file);
+    void playMusicLoop(const char *file);
+    void setCrossFade(unsigned int miliseconds);
+    
+    void playSound3d(char *file, irr::core::vector3df source);
+    void playSound3d(char *file, irr::scene::IMeshSceneNode *source);
+    
+    void encache(char *file);
+    void decache(char *file);
+    void clearCache();
+    
+    */
 
 
 }; // end of AudioSystem class
