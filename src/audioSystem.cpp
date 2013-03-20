@@ -48,9 +48,13 @@ AudioSystem::~AudioSystem(){
 }
 
 
-// plays the given file in the music channel: if looped flag is true,
-//  this will run the track in a repeating loop. Otherwise, it will play
-//  once and stop.
+// Attempts to load and play the sound file given by the string parameter.
+//  If <looped> parameter is set to true, the sound will repeat continuously
+//  until manually stopped (or until the AudioSystem object is deleted).
+// Sounds played through the playMusic call will be played in the dedicated
+//  music sound channel, and will play in standard 2D stereo mode.
+// TODO: maybe add a global musicSound pointer, and just release it if a new
+//  song is to be played. Then release it if it exists in the destructor.
 void AudioSystem::playMusic(const char *file, bool looped){
     FMOD_RESULT result;
     
@@ -82,13 +86,17 @@ void AudioSystem::playMusic(const char *file, bool looped){
 }
 
 
-// calls the internal playMusic function with loop set to false
+// Attempts to load and start playing the sound file given by the parameter.
+//  This method only plays the sound once: this DOES NOT LOOP the music.
+// See playMusic(const char*, bool) above for playMusic specifications.
 void AudioSystem::playMusic(const char *file){
     this->playMusic(file, false);
 }
 
 
-// calls the internal playMusic function with loop set to true
+// Attempts to load and start playing the sound file given by the parameter.
+//  This method causes the sound to continuously repeat: this LOOPS the music.
+// See playMusic(const char*, bool) above for playMusic specifications.
 void AudioSystem::playMusicLoop(const char *file){
     this->playMusic(file, true);
 }

@@ -42,15 +42,17 @@ class AudioSystem {
     AudioSystem();
     ~AudioSystem();
     
+    // TODO: perhaps these functions can return int error codes
+    
     void playMusic(const char *file);
     void playMusicLoop(const char *file);
     void stopMusic();
     
     /* TODO: add these functions (or most of them):
     
-    void playMusic(const char *file);
-    void playMusicLoop(const char *file);
-    void setCrossFade(unsigned int miliseconds);
+    void pauseMusic();
+    void resumeMusic(); 
+    void setMusicCrossFade(unsigned int miliseconds);
     
     void setPlayerPosition(irr::core::vector3df position);
     
