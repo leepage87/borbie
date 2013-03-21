@@ -149,7 +149,7 @@ GameInstance::~GameInstance(){
 
 /*** PER-FRAME UPDATE METHODS ***/
 
-// called each frame by Game object to update all of the GameInstance
+// called each frame by Game object to upda all of the GameInstance
 //  subsystems, including GUI, target selector, and sound.
 void GameInstance::update(){
     this->drawGUI();

@@ -130,10 +130,9 @@ int Game::run()
         if(gameInstance)
             gameInstance->update();
         
-        // if(gui)
-        //  gui->update();
+         if(gameMenu)
+          gameMenu->update();
         	
         driver->endScene();
     }
 }
-

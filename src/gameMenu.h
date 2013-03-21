@@ -19,6 +19,9 @@ class GameMenu
     GameMenu(irr::gui::IGUIEnvironment *guienv,
         irr::video::IVideoDriver *driver);
     ~GameMenu();
+    
+    void update();
+
 };
 #endif
 

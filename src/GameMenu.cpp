@@ -11,19 +11,24 @@ GameMenu::GameMenu(IGUIEnvironment *guienv, IVideoDriver *driver)
   this->driver=driver;
   this->font=guienv->getFont("assets/fonts/bigfont.png");
 
-    this->menuTexture = driver->getTexture("assets/textures/hudTexture.jpg");
-    this->menuTextureSize = this->menuTexture->getSize();
+  this->menuTexture = driver->getTexture("assets/textures/hudTexture.jpg");
+  this->menuTextureSize = this->menuTexture->getSize();
 
-  drawMenu();
+  update();
 }
-
 
 GameMenu::~GameMenu()
 {
   guienv->clear();
 }
 
-void GameMenu::drawMenu(){
+void GameMenu::update()
+{
+  drawMenu();
+}
+
+void GameMenu::drawMenu()
+{
   // get screen dimensions
   float screenWidth = driver->getScreenSize().Width;
   float screenHeight = driver->getScreenSize().Height;
