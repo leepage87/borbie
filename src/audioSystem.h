@@ -44,6 +44,11 @@ class AudioSystem {
     
     // internal helper functions
     void playMusic(const char *file, bool looped);
+    void playSound3d(
+        const char *file,
+        irr::core::vector3df source,
+        const float volume,
+        bool looped);
 
     
   public:
@@ -51,6 +56,9 @@ class AudioSystem {
     ~AudioSystem();
     
     // TODO: perhaps these functions can return int error codes
+    
+    // Global sound functions
+    //void setGlobalVolume(const float vol);
     
     // Music Playback Functions
     void playMusic(const char *file);
@@ -60,7 +68,11 @@ class AudioSystem {
     void setMusicVolume(const float vol);
     
     // 3D sound management functions
-    void updatePlayerPosition(const irr::core::vector3df playerPos);
+    void update(
+        const irr::core::vector3df playerPos
+        //const irr::core::vector3df playerForwardOrientation = 0,
+        //const irr::core::vector3df playerUpOrientation = 0
+    );
     
     // 3D Sound Functions
     

@@ -181,7 +181,7 @@ void GameInstance::updateSelector(){
 // (private)
 // update the sound system for current player position and orientation
 void GameInstance::updateSound(){
-    this->audioSystem->updatePlayerPosition(
+    this->audioSystem->update(
         this->camera->getPosition()
     );
 }
