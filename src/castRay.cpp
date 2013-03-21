@@ -11,7 +11,7 @@ using namespace irr;
 using namespace scene;
 using namespace core;
 
-const f32 RAY_LENGTH_IN_UNITS = 200.0f;
+const f32 RAY_LENGTH_IN_UNITS = 350.0f;
 
 //constructor:
 //sets sceneManager and camera

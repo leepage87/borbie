@@ -37,7 +37,7 @@ class GameInstance {
     irr::gui::IGUIEnvironment *guienv;
     irr::video::IVideoDriver *driver;
     irr::IrrlichtDevice *device;
-		CastRay *beatDownSelector;
+		CastRay *selector;
 		irr::scene::ISceneNode *highlightedSceneNode;
 
     
