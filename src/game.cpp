@@ -76,7 +76,7 @@ Game::~Game()
 
 // loads the main menu
 void Game::loadMainMenuState(){
-    this->gameMenu = new GameMenu();
+    this->gameMenu = new GameMenu(guienv, driver);
     this->audioSystem->setMusicVolume(1.0);
 }
 
