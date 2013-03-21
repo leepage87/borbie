@@ -2,15 +2,15 @@
  * helper class use to clean up key bindings settings
  */
 
-#include "kBindings.h"
+#include "keyBindings.h"
 
 using namespace irr;
 
-KBindings::KBindings(SKeyMap *keyMap){
+KeyBindings::KeyBindings(SKeyMap *keyMap){
   this->keyMap = keyMap;
 }
 
-void KBindings::setKeys()
+void KeyBindings::setKeys()
 {
  // forward movement (UP arrow and W)
 	keyMap[0].Action = EKA_MOVE_FORWARD;

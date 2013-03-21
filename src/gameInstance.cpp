@@ -1,6 +1,6 @@
 #include "gameInstance.h"
 #include "game.h"
-#include "kBindings.h"
+#include "keyBindings.h"
 
 using namespace irr;
 using namespace scene;
@@ -91,7 +91,7 @@ GameInstance::GameInstance(
 	
 	// TODO: there was a memory leak. Delete after finished!
 	SKeyMap keyMap[9];
-    KBindings *keys = new KBindings(&keyMap[0]);
+    KeyBindings *keys = new KeyBindings(&keyMap[0]);
     keys->setKeys();
     // added: (remove if setKeys() becomes static)
     delete keys;

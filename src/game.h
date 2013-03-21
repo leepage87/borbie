@@ -18,7 +18,7 @@
 //Game Includes
 #include "borbiesEventReceiver.h"
 #include "gameInstance.h"
-#include "gui.h"
+#include "gameMenu.h"
 #include "audioSystem.h"
 
 /* RuntimeOptions: enum (constant definitions):
@@ -69,7 +69,7 @@ class Game {
   	void loadGameState();
   	
     // pointers to all internal Borbie-related objects:
-    Gui *gui;
+    GameMenu *gameMenu;
     GameInstance *gameInstance;
     AudioSystem *audioSystem;
     

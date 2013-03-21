@@ -27,7 +27,7 @@ Game::Game(unsigned int runMode)
     // remember the run mode flag
     this->runMode = runMode;
 
-    gui = 0;
+    gameMenu = 0;
     gameInstance = 0;
 
     receiver = new BorbiesEventReceiver();
@@ -76,7 +76,7 @@ Game::~Game()
 
 // loads the main menu
 void Game::loadMainMenuState(){
-    this->gui = new Gui();
+    this->gameMenu = new GameMenu();
     this->audioSystem->setMusicVolume(1.0);
 }
 
@@ -96,9 +96,9 @@ void Game::manageStates()
 	// if currently in menu state, switch to game state
 	if(gameState == BORBIE_MAIN_MENU_STATE){
 		gameState = BORBIE_GAME_STATE;
-		if(gui){
-			delete gui;
-			gui = 0;
+		if(gameMenu){
+			delete gameMenu;
+			gameMenu = 0;
 	    }
 		loadGameState();
 	}

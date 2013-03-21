@@ -5,10 +5,10 @@
 #define KBINDINGS_H
 #include <irrlicht.h>
 
-class KBindings {
+class KeyBindings {
   public:
     irr::SKeyMap * keyMap;
-    KBindings(irr::SKeyMap *keyMap);
+    KeyBindings(irr::SKeyMap *keyMap);
     void setKeys();
 };
 #endif
