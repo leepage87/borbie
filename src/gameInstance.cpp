@@ -127,7 +127,7 @@ GameInstance::GameInstance(
 
 
 	//create beatDown ray selector
-	beatDownSelector = new CastRay(smgr, camera);
+	selector = new CastRay(smgr, camera);
 	highlightedSceneNode = 0;
 
 }
@@ -141,7 +141,7 @@ GameInstance::~GameInstance(){
 	delete this->light;
 	delete this->buildings;
 	delete this->vehicles;
-	delete this->beatDownSelector;
+	delete this->selector;
     this->smgr->clear();
 }
 
@@ -149,7 +149,7 @@ GameInstance::~GameInstance(){
 
 /*** PER-FRAME UPDATE METHODS ***/
 
-// called each frame by Game object to update all of the GameInstance
+// called each frame by Game object to upda all of the GameInstance
 //  subsystems, including GUI, target selector, and sound.
 void GameInstance::update(){
     this->drawGUI();
@@ -166,15 +166,16 @@ void GameInstance::drawGUI(){
 // (private)
 // gets a highlighted scene node if there is one
 void GameInstance::updateSelector(){
-
-    if (highlightedSceneNode) {
-		highlightedSceneNode->setMaterialFlag(EMF_LIGHTING, true);
+if (highlightedSceneNode) {
+		//highlighted->setMaterialFlag(EMF_LIGHTING, true);
+		highlightedSceneNode->setVisible(true);
 		highlightedSceneNode = 0;
 	}
-	ISceneNode * selected = beatDownSelector->getTarget();
+ISceneNode * selected = selector->getTarget();
 	if (selected){
 		highlightedSceneNode = selected;
-		highlightedSceneNode->setMaterialFlag(EMF_LIGHTING, false);
+		//highlightedSceneNode->setMaterialFlag(EMF_LIGHTING, false);
+		highlightedSceneNode->setVisible(false);
 	}
 }
 
