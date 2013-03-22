@@ -1,21 +1,16 @@
 #include "audioSystem.h"
 
 #include <iostream>
+#include <math.h>
 
 
 AudioSystem::AudioSystem(){
     this->musicChannel = 0;
     this->ambianceChannel = 0;
-    this->playerPosition.x = 0.0f;
-    this->playerPosition.y = 0.0f;
-    this->playerPosition.z = 0.0f;
-    
-    /*int              key;
-    bool             listenerflag = true;
-    unsigned int     version;*/
     
     FMOD_RESULT result;
     
+    // create the FMOD sound system
     result = FMOD::System_Create(&system);
     if(result != FMOD_OK)
         std::cout << "FMOD ERROR: System_Create failed." << std::endl;
@@ -36,9 +31,20 @@ AudioSystem::AudioSystem(){
     else
         std::cout << "FMOD -- number channels = " << numchannels << std::endl;
     
+    
+    //system->set3DSettings(1.0f, 10000.0f, 1.0f);
+    
+    // TODO: remove
+    /*FMOD_VECTOR listenerPosition2;
+    listenerPosition2.x = 3000 / 100.0;
+    listenerPosition2.y = 516 / 100.0;
+    listenerPosition2.z = 4450 / 100.0;
+    system->set3DListenerAttributes(0, &listenerPosition2, 0,0,0);
+    system->update();*/
+    
     playSound3d(
-        "assets/sounds/jaguar.wav",
-        irr::core::vector3df(2500, 516, 4450),
+        "assets/sounds/yumyum.ogg",
+        irr::core::vector3df(10000/100.0, 516/100.0, 4450/100.0),
         0.0,
         true);
 }
@@ -71,7 +77,7 @@ AudioSystem::~AudioSystem(){
 // TODO: maybe add a global musicSound pointer, and just release it if a new
 //  song is to be played. Then release it if it exists in the destructor.
 void AudioSystem::playMusic(const char *file, bool looped){
-    return;
+    return; // TODO: stop returning
     FMOD_RESULT result;
     
     // create the sound from the given file path
@@ -142,52 +148,59 @@ void AudioSystem::setMusicVolume(const float vol){
 
 
 
-
+// Updates the global 3D sound environment with the listener position
+//  and orientation of the player (pass in vectors from the camera
+//  or player node - wherever you want to "hear" your sound from).
+// Once update is finished, calls the FMOD audio system to update itself.
+// This function should be called every frame
+//  (possibly except when in the main menu or not playing 3D sounds).
 void AudioSystem::update(
-    const irr::core::vector3df playerPos
-    //const irr::core::vector3df playerForwardOrientation = 0,
-    //const irr::core::vector3df playerUpOrientation = 0,
+    const irr::core::vector3df playerPos,
+    const irr::core::vector3df playerRot
 ){
-/* TODO: can use FPS counter to update velocity data. What is vel for?
-static FMOD_VECTOR lastpos = { 0.0f, 0.0f, 0.0f };
-FMOD_VECTOR forward        = { 0.0f, 0.0f, 1.0f };
-FMOD_VECTOR up             = { 0.0f, 1.0f, 0.0f };
-FMOD_VECTOR vel;
-if (listenerflag){
-    listenerpos.x = ((float)sin(t * 0.05f) * 33.0f); // left right pingpong
-}
-// ********* NOTE ******* READ NEXT COMMENT!!!!!
-// vel = how far we moved last FRAME (m/f), then time compensate it to SECONDS (m/s).
-vel.x = (listenerpos.x - lastpos.x) * (1000 / INTERFACE_UPDATETIME);
-vel.y = (listenerpos.y - lastpos.y) * (1000 / INTERFACE_UPDATETIME);
-vel.z = (listenerpos.z - lastpos.z) * (1000 / INTERFACE_UPDATETIME);
-// store pos for next time
-lastpos = listenerpos;
-*/
-    this->playerPosition.x = playerPos.X;
-    this->playerPosition.y = playerPos.Y;
-    this->playerPosition.z = playerPos.Z;
-    std::cout << playerPosition.x << " , " <<
-        playerPosition.y << " , " <<
-        playerPosition.z << std::endl;
+// TODO: can use FPS counter to update velocity data. What is vel for?
+
+    // 3D sound position of listener
+    FMOD_VECTOR listenerPosition;
+    listenerPosition.x = playerPos.X / AUDIO_WORLD_SCALE;
+    listenerPosition.y = playerPos.Y / AUDIO_WORLD_SCALE;
+    listenerPosition.z = playerPos.Z / AUDIO_WORLD_SCALE;
+    
+    // 3D rotation (forward orientation) of listener:
+    //  calculate radians from degrees
+    float degree = playerRot.Y;
+    float radians = (degree) * (M_PI/180);
+    //  figure out rotation angles using sin, cos
+    float fx = cos(radians);
+    float fz = sin(radians);
+    // set rotation vector based on calculated angles
+    FMOD_VECTOR listenerRotation;
+    listenerRotation.x = fz;
+    listenerRotation.y = 0;
+    listenerRotation.z = fx;
+    
+    // apply the attributes to the system
     system->set3DListenerAttributes(
         0,                  // listener id (0: only one listener)
-        &playerPosition,    // current listener position
+        &listenerPosition,  // current listener position
         0,                  // how far moved since last update
-        0,                  // forward orientation of player
+        &listenerRotation,  // forward orientation of player
         0);                 // up orientation of player
     
+    // update the audio system
     system->update();
 }
 
 
 
-
+// Attempts to play 3D sound TODO: memory management
+// NOTE: the FMOD system uses the system's global listener position as
+//  the sound's origin reference point. Thus, if your player's position
+//  was never updated, the sounds position will be RELATIVE to 0,0,0
 void AudioSystem::playSound3d(
-    const char *file, irr::core::vector3df source,
+    const char *file, irr::core::vector3df sourcePos,
     const float volume, bool looped)
 {
-
     FMOD_RESULT result;
     FMOD::Sound *sound;
     FMOD::Channel *soundChannel;
@@ -205,19 +218,10 @@ void AudioSystem::playSound3d(
     if(result != FMOD_OK)
         std::cout << "FMOD ERROR: 3dsetMode (sound) failed." << std::endl;
     
-    // set the sound position in 3D space
-    FMOD_VECTOR pos;
-    pos.x = 2500;
-    pos.y = 516;
-    pos.z = 4450;
-    result = sound->set3DMinMaxDistance(4.0f, 10000.0f);
+    // setup 3D sound flags
+    result = sound->set3DMinMaxDistance(4.0f, 500.0f);
     if(result != FMOD_OK)
         std::cout << "FMOD ERROR: 3dset3dMinMaxDistance failed." << std::endl;
-    
-    
-    
-    
-    
     
     // attempt to play the sound file in the music channel.
     result = system->playSound(FMOD_CHANNEL_FREE, sound, 0,
@@ -225,21 +229,16 @@ void AudioSystem::playSound3d(
     if(result != FMOD_OK)
         std::cout << "FMOD ERROR: 3dplaySound failed." << std::endl;
     
-    // update FMOD system
-    this->system->update();
-    
-    
-    // set the attribultes
-    this->playerPosition.x = 2500;
-    this->playerPosition.y = 516.76;
-    this->playerPosition.z = 4450;
-    system->set3DListenerAttributes(
-        0,                  // listener id (0: only one listener)
-        &playerPosition,    // current listener position
-        0,                  // how far moved since last update
-        0,                  // forward orientation of player
-        0);                 // up orientation of player
+    // set the sound position in 3D space
+    FMOD_VECTOR pos;
+    pos.x = sourcePos.X;
+    pos.y = sourcePos.Y;
+    pos.z = sourcePos.Z;
     result = soundChannel->set3DAttributes(&pos, 0);
+    if(result != FMOD_OK)
+        std::cout << "FMOD ERROR: 3dset3dAttributes failed: " << std::endl;
+    
+    // update FMOD system
     this->system->update();
 }
 

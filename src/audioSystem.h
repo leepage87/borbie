@@ -26,6 +26,9 @@
 #include "fmod.hpp"
 #include "fmod_errors.h"
 
+// scale: divides the actual coordinates by this scale
+#define AUDIO_WORLD_SCALE 100.0f
+
 
 // AudioSystem Class
 class AudioSystem {
@@ -39,14 +42,11 @@ class AudioSystem {
     
     // primary sound objects
     
-    // game sound variables
-    FMOD_VECTOR playerPosition;
-    
     // internal helper functions
     void playMusic(const char *file, bool looped);
     void playSound3d(
         const char *file,
-        irr::core::vector3df source,
+        irr::core::vector3df sourcePos,
         const float volume,
         bool looped);
 
@@ -69,9 +69,8 @@ class AudioSystem {
     
     // 3D sound management functions
     void update(
-        const irr::core::vector3df playerPos
-        //const irr::core::vector3df playerForwardOrientation = 0,
-        //const irr::core::vector3df playerUpOrientation = 0
+        const irr::core::vector3df playerPos,
+        const irr::core::vector3df playerRot
     );
     
     // 3D Sound Functions

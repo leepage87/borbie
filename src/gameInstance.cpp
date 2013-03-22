@@ -183,7 +183,8 @@ ISceneNode * selected = selector->getTarget();
 // update the sound system for current player position and orientation
 void GameInstance::updateSound(){
     this->audioSystem->update(
-        this->camera->getPosition()
+        this->camera->getPosition(),
+        this->camera->getRotation()
     );
 }
 
