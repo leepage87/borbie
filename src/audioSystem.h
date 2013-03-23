@@ -21,9 +21,6 @@
 #ifndef AUDIO_SYSTEM_H
 #define AUDIO_SYSTEM_H
 
-// c++ standard library includes
-#include <vector>
-
 // System includes
 #include <irrlicht.h>
 #include "fmod.hpp"
@@ -45,33 +42,33 @@ class AudioSystem {
     // FMOD system variables
     FMOD::System *system;
     
-    // primary audio channels
+    // dedicated FMOD audio channels
     FMOD::Channel *musicChannel;
     FMOD::Channel *ambianceChannel;
     
-    // list of all active sound objects
-    std::vector<SoundClip> activeSounds;
-    
-    // internal helper functions
-    SoundClip * playMusic(const char *file, bool looped);
+    // private helper functions: music playback
+    SoundClip* playMusic(const char *file, bool looped);
     void playMusic(SoundClip *musicSound, bool looped);
-    void playSound3d(
-        const char *file,
-        irr::core::vector3df sourcePos,
-        const float volume,
-        bool looped);
 
     
   public:
     AudioSystem();
     ~AudioSystem();
     
-    // TODO: perhaps these functions can return int error codes
+    // TODO: perhaps some kind of error-checking system?
     
     // Global sound functions
+    //SoundClip* createSound2d(const char *file);
+    //SoundClip* createSound3d(const char *file);
     //void dropSound(SoundClip *sound);
     //void setGlobalVolume(const float vol);
     //void setAudioPath(const char *path);
+    
+    /* TODO: add these functions (or most of them):
+    void setMusicCrossFade(unsigned int miliseconds);
+    void playSound3d(char *file, irr::scene::IMeshSceneNode *source);
+    void dropSoundWhenFinished(SoundClip *, Channel *);
+    */
     
     // Music Playback Functions
     SoundClip* playMusic(const char *file);
@@ -82,37 +79,23 @@ class AudioSystem {
     void resumeMusic();
     void setMusicVolume(const float vol);
     
-    // 3D sound management functions
+    // 3D Sound Functions
+    SoundClip* playSound3d(const char *file,
+        irr::core::vector3df sourcePos,
+        const float volume = 1.0f);
+    void playSound3d(SoundClip *sound,
+        irr::core::vector3df sourcePos,
+        const float volume = 1.0f);
+    
+    //auto-tracking 3D objects "following" Irrlicht nodes
+    
+    
+    // 3D sound update -- must be called every frame in the game loop
     void update(
         const irr::core::vector3df playerPos,
         const irr::core::vector3df playerRot
     );
     
-    // 3D Sound Functions
-    
-    /*
-    // same for ambiance
-    
-    SoundClip* playSound3d(const char *file);
-    void playSound3d(SoundClip *sound);
-    */
-    
-    
-    /* TODO: add these functions (or most of them):
-    
-    void setMusicCrossFade(unsigned int miliseconds);
-    
-    void setPlayerPosition(irr::core::vector3df position);
-    
-    void playSound3d(char *file, irr::core::vector3df source, float vol = 1.0);
-    void playSound3d(char *file, irr::scene::IMeshSceneNode *source);
-    
-    void encache(char *file);
-    void decache(char *file);
-    void clearCache();
-    
-    */
-
 
 }; // end of AudioSystem class
 

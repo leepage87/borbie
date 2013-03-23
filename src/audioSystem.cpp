@@ -34,9 +34,7 @@ AudioSystem::AudioSystem(){
     // TODO: remove
     playSound3d(
         "assets/sounds/yumyum.ogg",
-        irr::core::vector3df(10000/100.0, 516/100.0, 4450/100.0),
-        0.0,
-        true);
+        irr::core::vector3df(10000/100.0, 516/100.0, 4450/100.0));
 }
 
 
@@ -88,12 +86,12 @@ void AudioSystem::playMusic(SoundClip *musicSound, bool looped){
 //  music sound channel, and will play in standard 2D stereo mode.
 // RETURNS: SoundClip / FMOD::Sound object pointer if successful;
 //  returns 0 (NULL pointer) if something went wrong).
-SoundClip * AudioSystem::playMusic(const char *file, bool looped){
+SoundClip* AudioSystem::playMusic(const char *file, bool looped){
     return 0; // TODO: stop returning
+    FMOD_RESULT result;
     
     // create the sound from the given file path
     FMOD::Sound *musicSound;
-    FMOD_RESULT result;
     result = system->createSound(file, FMOD_SOFTWARE, 0, &musicSound);
     if(result != FMOD_OK)
         std::cout << "FMOD ERROR: createSound failed." << std::endl;
@@ -163,29 +161,17 @@ void AudioSystem::setMusicVolume(const float vol){
 
 /*** 3D SOUND CONTROL METHODS ***/
 
-// (PRIVATE -- helper method)
-// Attempts to play 3D sound TODO: memory management
-// NOTE: the FMOD system uses the system's global listener position as
-//  the sound's origin reference point. Thus, if your player's position
-//  was never updated, the sounds position will be RELATIVE to 0,0,0
+// Attempts to play the given sound file in 3D space given by the Irrlicht
+//  vector3df at the provided volume.
+// TODO: set volume
 void AudioSystem::playSound3d(
-    const char *file, irr::core::vector3df sourcePos,
-    const float volume, bool looped)
+    SoundClip *sound, irr::core::vector3df sourcePos,
+    const float volume)
 {
     FMOD_RESULT result;
-    FMOD::Sound *sound;
-    FMOD::Channel *soundChannel;
     
-    // create the sound from the given file path
-    result = system->createSound(file, FMOD_SOFTWARE | FMOD_3D, 0, &sound);
-    if(result != FMOD_OK)
-        std::cout << "FMOD ERROR: 3dcreateSound failed." << std::endl;
-    
-    // set looped on or off, depending on parameter
-    if(looped)
-        result = sound->setMode(FMOD_LOOP_NORMAL);
-    else
-        result = sound->setMode(FMOD_LOOP_OFF);
+    // set looped to off (no loop!)
+    result = sound->setMode(FMOD_LOOP_OFF);
     if(result != FMOD_OK)
         std::cout << "FMOD ERROR: 3dsetMode (sound) failed." << std::endl;
     
@@ -194,7 +180,8 @@ void AudioSystem::playSound3d(
     if(result != FMOD_OK)
         std::cout << "FMOD ERROR: 3dset3dMinMaxDistance failed." << std::endl;
     
-    // attempt to play the sound file in the music channel.
+    // attempt to play the sound file in a new sound channel.
+    FMOD::Channel *soundChannel;
     result = system->playSound(FMOD_CHANNEL_FREE, sound, 0,
         &soundChannel);
     if(result != FMOD_OK)
@@ -209,14 +196,30 @@ void AudioSystem::playSound3d(
     if(result != FMOD_OK)
         std::cout << "FMOD ERROR: 3dset3dAttributes failed: " << std::endl;
     
-    // add the loaded sound into the sound list
-    /*this->activeSounds.push_back(SoundClip());
-    int lastIndex = this->activeSounds.size() - 1;
-    this->activeSounds[lastIndex].sound = sound;
-    this->activeSounds[lastIndex].file = file;*/
-    
     // update FMOD system
     this->system->update();
+}
+
+// Attempts to play the given sound file in 3D space given by the Irrlicht
+//  vector3df at the provided volume.
+// RETURNS: SoundClip / FMOD::Sound object pointer if successful;
+//  returns 0 (NULL pointer) if something went wrong).
+SoundClip* AudioSystem::playSound3d(
+    const char *file, irr::core::vector3df sourcePos,
+    const float volume)
+{
+    FMOD_RESULT result;
+    
+    // create the sound from the given file path
+    FMOD::Sound *sound;
+    result = system->createSound(file, FMOD_SOFTWARE | FMOD_3D, 0, &sound);
+    if(result != FMOD_OK)
+        std::cout << "FMOD ERROR: 3dcreateSound failed." << std::endl;
+    
+    // play the sound on a new channel
+    this->playSound3d(sound, sourcePos, volume);
+    
+    return sound;
 }
 
 
