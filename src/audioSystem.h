@@ -36,10 +36,7 @@
 
 
 // SoundClip: contains data
-struct SoundClip {
-    FMOD::Sound *sound;
-    const char *file;
-};
+typedef FMOD::Sound SoundClip;
 
 
 // AudioSystem Class
@@ -56,7 +53,8 @@ class AudioSystem {
     std::vector<SoundClip> activeSounds;
     
     // internal helper functions
-    void playMusic(const char *file, bool looped);
+    SoundClip * playMusic(const char *file, bool looped);
+    void playMusic(SoundClip *musicSound, bool looped);
     void playSound3d(
         const char *file,
         irr::core::vector3df sourcePos,
@@ -71,11 +69,15 @@ class AudioSystem {
     // TODO: perhaps these functions can return int error codes
     
     // Global sound functions
+    //void dropSound(SoundClip *sound);
     //void setGlobalVolume(const float vol);
+    //void setAudioPath(const char *path);
     
     // Music Playback Functions
-    void playMusic(const char *file);
-    void playMusicLoop(const char *file);
+    SoundClip* playMusic(const char *file);
+    SoundClip* playMusicLoop(const char *file);
+    void playMusic(SoundClip *sound);
+    void playMusicLoop(SoundClip *sound);
     void pauseMusic();
     void resumeMusic();
     void setMusicVolume(const float vol);
@@ -87,6 +89,13 @@ class AudioSystem {
     );
     
     // 3D Sound Functions
+    
+    /*
+    // same for ambiance
+    
+    SoundClip* playSound3d(const char *file);
+    void playSound3d(SoundClip *sound);
+    */
     
     
     /* TODO: add these functions (or most of them):
