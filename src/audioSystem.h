@@ -21,6 +21,9 @@
 #ifndef AUDIO_SYSTEM_H
 #define AUDIO_SYSTEM_H
 
+// c++ standard library includes
+#include <vector>
+
 // System includes
 #include <irrlicht.h>
 #include "fmod.hpp"
@@ -28,6 +31,15 @@
 
 // scale: divides the actual coordinates by this scale
 #define AUDIO_WORLD_SCALE 100.0f
+// max distance 3D audio can be heard (plays at minimum volume if further)
+#define AUDIO_MAX_DISTANCE 500.0f
+
+
+// SoundClip: contains data
+struct SoundClip {
+    FMOD::Sound *sound;
+    const char *file;
+};
 
 
 // AudioSystem Class
@@ -40,7 +52,8 @@ class AudioSystem {
     FMOD::Channel *musicChannel;
     FMOD::Channel *ambianceChannel;
     
-    // primary sound objects
+    // list of all active sound objects
+    std::vector<SoundClip> activeSounds;
     
     // internal helper functions
     void playMusic(const char *file, bool looped);
@@ -82,7 +95,7 @@ class AudioSystem {
     
     void setPlayerPosition(irr::core::vector3df position);
     
-    void playSound3d(char *file, irr::core::vector3df source);
+    void playSound3d(char *file, irr::core::vector3df source, float vol = 1.0);
     void playSound3d(char *file, irr::scene::IMeshSceneNode *source);
     
     void encache(char *file);

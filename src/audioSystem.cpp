@@ -148,51 +148,9 @@ void AudioSystem::setMusicVolume(const float vol){
 
 
 
-// Updates the global 3D sound environment with the listener position
-//  and orientation of the player (pass in vectors from the camera
-//  or player node - wherever you want to "hear" your sound from).
-// Once update is finished, calls the FMOD audio system to update itself.
-// This function should be called every frame
-//  (possibly except when in the main menu or not playing 3D sounds).
-void AudioSystem::update(
-    const irr::core::vector3df playerPos,
-    const irr::core::vector3df playerRot
-){
-// TODO: can use FPS counter to update velocity data. What is vel for?
+/*** 3D SOUND CONTROL METHODS ***/
 
-    // 3D sound position of listener
-    FMOD_VECTOR listenerPosition;
-    listenerPosition.x = playerPos.X / AUDIO_WORLD_SCALE;
-    listenerPosition.y = playerPos.Y / AUDIO_WORLD_SCALE;
-    listenerPosition.z = playerPos.Z / AUDIO_WORLD_SCALE;
-    
-    // 3D rotation (forward orientation) of listener:
-    //  calculate radians from degrees
-    float degree = playerRot.Y;
-    float radians = (degree) * (M_PI/180);
-    //  figure out rotation angles using sin, cos
-    float fx = cos(radians);
-    float fz = sin(radians);
-    // set rotation vector based on calculated angles
-    FMOD_VECTOR listenerRotation;
-    listenerRotation.x = fz;
-    listenerRotation.y = 0;
-    listenerRotation.z = fx;
-    
-    // apply the attributes to the system
-    system->set3DListenerAttributes(
-        0,                  // listener id (0: only one listener)
-        &listenerPosition,  // current listener position
-        0,                  // how far moved since last update
-        &listenerRotation,  // forward orientation of player
-        0);                 // up orientation of player
-    
-    // update the audio system
-    system->update();
-}
-
-
-
+// (PRIVATE -- helper method)
 // Attempts to play 3D sound TODO: memory management
 // NOTE: the FMOD system uses the system's global listener position as
 //  the sound's origin reference point. Thus, if your player's position
@@ -219,7 +177,7 @@ void AudioSystem::playSound3d(
         std::cout << "FMOD ERROR: 3dsetMode (sound) failed." << std::endl;
     
     // setup 3D sound flags
-    result = sound->set3DMinMaxDistance(4.0f, 500.0f);
+    result = sound->set3DMinMaxDistance(4.0f, AUDIO_MAX_DISTANCE);
     if(result != FMOD_OK)
         std::cout << "FMOD ERROR: 3dset3dMinMaxDistance failed." << std::endl;
     
@@ -238,8 +196,61 @@ void AudioSystem::playSound3d(
     if(result != FMOD_OK)
         std::cout << "FMOD ERROR: 3dset3dAttributes failed: " << std::endl;
     
+    // add the loaded sound into the sound list
+    this->activeSounds.push_back(SoundClip());
+    int lastIndex = this->activeSounds.size() - 1;
+    this->activeSounds[lastIndex].sound = sound;
+    this->activeSounds[lastIndex].file = file;
+    
     // update FMOD system
     this->system->update();
+}
+
+
+
+/*** SYSTEM UPDATE METHOD ***/
+
+// Updates the global 3D sound environment with the listener position
+//  and orientation of the player (pass in vectors from the camera
+//  or player node - wherever you want to "hear" your sound from).
+// Once update is finished, calls the FMOD audio system to update itself.
+// This function should be called every frame
+//  (possibly except when in the main menu or not playing 3D sounds).
+void AudioSystem::update(
+    const irr::core::vector3df playerPos,
+    const irr::core::vector3df playerRot
+){
+// TODO: can use FPS counter to update velocity data. What is vel for?
+
+    // get scaled 3D sound position of listener
+    FMOD_VECTOR listenerPosition;
+    listenerPosition.x = playerPos.X / AUDIO_WORLD_SCALE;
+    listenerPosition.y = playerPos.Y / AUDIO_WORLD_SCALE;
+    listenerPosition.z = playerPos.Z / AUDIO_WORLD_SCALE;
+    
+    // get 3D rotation (forward orientation) of listener:
+    //  calculate radians from degrees
+    float degree = playerRot.Y;
+    float radians = (degree) * (M_PI/180);
+    //  figure out rotation angles using sin, cos
+    float fx = cos(radians);
+    float fz = sin(radians);
+    // set rotation vector based on calculated angles
+    FMOD_VECTOR listenerRotation;
+    listenerRotation.x = fz;
+    listenerRotation.y = 0;
+    listenerRotation.z = fx;
+    
+    // apply the attributes to the system
+    system->set3DListenerAttributes(
+        0,                  // listener id (0: only one listener)
+        &listenerPosition,  // current listener position
+        0,                  // how far moved since last update
+        &listenerRotation,  // forward orientation of player
+        0);                 // up orientation of player
+    
+    // update the audio system
+    system->update();
 }
 
 
