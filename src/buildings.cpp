@@ -94,7 +94,7 @@ void Buildings::generateBuildings(const char *buildingCoords){
 	//  have a function generateCity() using the map.
 	const int farX = 20000.0f;
 	const int farY = 20000.0f;
-	std::ifstream mapfile(buildingCoords);
+	std::ifstream mapfile("assets/map/test.txt");
 	for(std::string line; getline(mapfile, line); ) {
         if(line.size() == 0) // skip empty lines
             continue;

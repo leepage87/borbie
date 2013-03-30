@@ -32,7 +32,7 @@
 #define AUDIO_MAX_DISTANCE 500.0f
 
 
-// SoundClip: contains data
+// SoundClip: typdef for FMOD::Sound!
 typedef FMOD::Sound SoundClip;
 
 
@@ -70,7 +70,7 @@ class AudioSystem {
     void dropSoundWhenFinished(SoundClip *, Channel *);
     */
     
-    // Music Playback Functions
+    // Music Playback Functions - plays on dedicated music channel
     SoundClip* playMusic(const char *file);
     SoundClip* playMusicLoop(const char *file);
     void playMusic(SoundClip *sound);
