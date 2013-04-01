@@ -27,6 +27,9 @@
 #ifndef AUDIO_SYSTEM_H
 #define AUDIO_SYSTEM_H
 
+// cpp standard library includes
+#include <vector>
+
 // System includes
 #include <irrlicht.h>
 #include "fmod.hpp"
@@ -40,6 +43,14 @@
 
 // SoundClip: typdef for FMOD::Sound
 typedef FMOD::Sound SoundClip;
+
+
+// struct to keep track of a sound channel and its 3d follow target for
+//  the 3D sound follow mechanism
+struct FollowSound {
+    FMOD::Channel *channel;
+    irr::scene::ISceneNode *target;
+};
 
 
 // AudioSystem class
@@ -61,6 +72,9 @@ class AudioSystem {
     void playSound3dFollowTarget(FMOD::Sound *sound,
         irr::scene::ISceneNode *target,
         float volume, bool looped);
+    
+    // list of 3D sounds currently following a target node
+    std::vector<FollowSound> followSounds;
 
     
   public:
@@ -99,6 +113,7 @@ class AudioSystem {
     
     // TODO: custom dedicated channels?
     
+    // TODO: 3d follow sound works IN THEORY! (not tested)
     // 3D Sound Functions - plays once, then channel is gone
     SoundClip* playSound3d(const char *file,
         irr::core::vector3df sourcePos,
@@ -108,14 +123,14 @@ class AudioSystem {
         float volume = 1.0f);
     
     // 3D Sound "Follow" - follows the object
-    SoundClip *playSound3d(const char *file,
+    SoundClip* playSound3d(const char *file,
         irr::scene::ISceneNode *target,
         float volume = 1.0f);
     void playSound3d(SoundClip *sound,
         irr::scene::ISceneNode *target,
         float volume = 1.0f);
     // 3D Sound "Follow" with Loop
-    SoundClip *playSound3dLoop(const char *file,
+    SoundClip* playSound3dLoop(const char *file,
         irr::scene::ISceneNode *target,
         float volume = 1.0f);
     void playSound3dLoop(SoundClip *sound,
