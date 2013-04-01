@@ -90,11 +90,10 @@ void Buildings::generateBuildings(const char *buildingCoords){
 	 */
 	
     // read in the map building coordinate file
-	// TODO: put this in another file. Perhaps the Buildings object should just
-	//  have a function generateCity() using the map.
+    // TODO: adapt to support trees, lamps, and other objects, too
 	const int farX = 20000.0f;
 	const int farY = 20000.0f;
-	std::ifstream mapfile("assets/map/test.txt");
+	std::ifstream mapfile("assets/map/coords.bor");
 	for(std::string line; getline(mapfile, line); ) {
         if(line.size() == 0) // skip empty lines
             continue;

@@ -4,6 +4,13 @@
 #include <math.h>
 
 
+/* TODO list:
+ *  - implement follow target 3D sound
+ *  - enable volume to be set on 3D sound
+ *  - get rid of print statements
+ */
+
+
 // Constructor:
 //  Attempts to create and initialize the FMOD::System object, which is later
 //  used for all audio playback.
@@ -48,6 +55,50 @@ AudioSystem::~AudioSystem(){
 
 
 
+/*** GLOBAL SOUND MANAGEMENT FUNCTIONS ***/
+
+// Attempts to create a new 2D sound from the given file name.
+// Use this to create sound objects during level loading, etc. On-the-fly
+//  sound playback functions will also use this method.
+// NOTE: If sound is intended for 3D use, use createSound3d method. Using a
+//  2D sound will cause the system to disregard all 3D positioning.
+// RETURNS the FMOD::Sound (SoundClip) object pointer, and if the sound could
+//  not be created, RETURNS NULL POINTER.
+SoundClip* AudioSystem::createSound2d(const char *file){
+    FMOD_RESULT result;
+    
+    FMOD::Sound *sound;
+    result = system->createSound(file, FMOD_SOFTWARE, 0, &sound);
+    if(result != FMOD_OK){
+        std::cout << "FMOD ERROR: createSound failed." << std::endl;
+        return 0;
+    }
+    
+    return sound;
+}
+
+// Attempts to create a new 3D sound from the given file name.
+// Use this to create sound objects during level loading, etc. On-the-fly
+//  sound playback functions will also use this method.
+// NOTE: If sound is intended for 2D use, use createSound2d method. Using a
+//  3D sound will result in it being played in default position (0, 0, 0)
+// RETURNS the FMOD::Sound (SoundClip) object pointer, and if the sound could
+//  not be created, RETURNS NULL POINTER.
+SoundClip* AudioSystem::createSound3d(const char *file){
+    FMOD_RESULT result;
+    
+    FMOD::Sound *sound;
+    result = system->createSound(file, FMOD_SOFTWARE | FMOD_3D, 0, &sound);
+    if(result != FMOD_OK){
+        std::cout << "FMOD ERROR: 3dcreateSound failed." << std::endl;
+        return 0;
+    }
+    
+    return sound;
+}
+
+
+
 /*** MUSIC CONTROL METHODS ***/
 
 // (PRIVATE -- helper method)
@@ -57,7 +108,7 @@ AudioSystem::~AudioSystem(){
 //  until manually stopped (or until the AudioSystem object is deleted).
 // Sounds played through the playMusic call will be played in the dedicated
 //  music sound channel, and will play in standard 2D stereo mode.
-void AudioSystem::playMusic(SoundClip *musicSound, bool looped){
+void AudioSystem::playMusic(FMOD::Sound *musicSound, bool looped){
     FMOD_RESULT result;
     
     // set looped on or off, depending on parameter
@@ -91,10 +142,7 @@ SoundClip* AudioSystem::playMusic(const char *file, bool looped){
     FMOD_RESULT result;
     
     // create the sound from the given file path
-    FMOD::Sound *musicSound;
-    result = system->createSound(file, FMOD_SOFTWARE, 0, &musicSound);
-    if(result != FMOD_OK)
-        std::cout << "FMOD ERROR: createSound failed." << std::endl;
+    FMOD::Sound *musicSound = this->createSound2d(file);
     
     // play the sound on the music channel
     this->playMusic(musicSound, looped);
@@ -149,11 +197,17 @@ void AudioSystem::resumeMusic(){
 // Attempts to set the volume of the music channel. Volume is expected to
 //  be between 0.0 and 1.0 (float). Does nothing if the music channel is
 //  null/un-initialized.
-void AudioSystem::setMusicVolume(const float vol){
-    if(vol < 0.0 || vol > 1.0)
-        std::cout << "Volume must be between 0.0 and 1.0." << std::endl;
-    else if(this->musicChannel){
-        this->musicChannel->setVolume(vol);
+// Volume less than 0 will be set to 0; vol > 1 will be set to 1.
+void AudioSystem::setMusicVolume(float volume){
+    // make sure volume is in the correct range
+    if(volume < 0.0)
+        volume = 0.0;
+    else if(volume > 1.0)
+        volume = 1.0;
+    
+    // if music channel isn't null, make the volume adjustment
+    if(this->musicChannel){
+        this->musicChannel->setVolume(volume);
     }
 }
 
@@ -208,15 +262,7 @@ SoundClip* AudioSystem::playSound3d(
     const char *file, irr::core::vector3df sourcePos,
     const float volume)
 {
-    FMOD_RESULT result;
-    
-    // create the sound from the given file path
-    FMOD::Sound *sound;
-    result = system->createSound(file, FMOD_SOFTWARE | FMOD_3D, 0, &sound);
-    if(result != FMOD_OK)
-        std::cout << "FMOD ERROR: 3dcreateSound failed." << std::endl;
-    
-    // play the sound on a new channel
+    FMOD::Sound *sound = this->createSound3d(file);
     this->playSound3d(sound, sourcePos, volume);
     
     return sound;
