@@ -18,6 +18,7 @@
 #include "hud.h"
 #include "castRay.h"
 #include "audioSystem.h"
+#include "objectCarrier.h"
 
 
 // world constants
@@ -38,6 +39,7 @@ class GameInstance {
     irr::video::IVideoDriver *driver;
     irr::IrrlichtDevice *device;
 		CastRay *selector;
+		ObjectCarrier *objCarry;
 		irr::scene::ISceneNode *highlightedSceneNode;
 
     
