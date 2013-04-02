@@ -91,26 +91,46 @@ void Buildings::generateBuildings(const char *buildingCoords){
 	
     // read in the map building coordinate file
     // TODO: adapt to support trees, lamps, and other objects, too
-	const int farX = 20000.0f;
-	const int farY = 20000.0f;
+	const int farX = 20400.0f;
+	const int farY = 20400.0f;//19840.0f;
+	const int xOffset = -190;
+	const int yOffset = -190; // TODO: what the hell?
 	std::ifstream mapfile("assets/map/coords.bor");
+	if(mapfile.fail()){
+	    std::cerr << "ERROR: Cannot open map file." << std::endl;
+	    return;
+	}
 	for(std::string line; getline(mapfile, line); ) {
         if(line.size() == 0) // skip empty lines
             continue;
         else if(line[0] == '#') // skip commented lines (beginning w/ "#")
             continue;
+        else if(line[0] != 'b'){ // skip lines that are not building coordinates
+            std::cout << "Non-building ignored." << std::endl; // TODO - remove this print
+            continue;
+        }
         else {
-            // TODO: have some try/catch check in case file is broken
+            // try to parse the line into two floats
             std::istringstream lineParser(line);
+            // ignore first thing (the 'b')
+            std::string ignore;
+            lineParser >> ignore;
+            // try to read the two floats
             float coordX, coordY;
             lineParser >> coordX;
             lineParser >> coordY;
+            // if something failed, don't bother making the building
+            if(lineParser.fail()){
+                std::cerr << "ERROR: Invalid line in map file:" << std::endl
+                          << "       " << line << std::endl;
+                continue;
+            }
             // use coordinates to add the building at specified location
             this->addRandomBuilding(
-		        farX * coordX,
+		        (farX * coordX) + xOffset,
 		        //BUILDING_GROUND_HEIGHT,
 		        50.0f,
-		        farY * (coordY)
+		        (farY * coordY) + yOffset
 	        );
             std::cout << "Generated building at " <<
                 "x: " << coordX << ", y: " << coordY << std::endl;

@@ -6,6 +6,8 @@
 
 #include "terrain.h"
 
+#include <iostream>
+
 using namespace irr;
 
 using namespace core;
@@ -47,6 +49,17 @@ Terrain::Terrain(IVideoDriver * _driver, ISceneManager * _smgr, irr::scene::IMet
 	terrainNode->setMaterialType(video::EMT_DETAIL_MAP);
 	terrainNode->scaleTexture(1.0f, 20.0f);
   
+    vector3df edges[8];
+    aabbox3df bounds = terrainNode->getBoundingBox();
+    bounds.getEdges(edges);
+    std::cout << "EDGES-----------------------------------EDGES" << std::endl;
+    for(int i=0; i<8; ++i){
+        float x = edges[i].X;
+        float y = edges[i].Y;
+        float z = edges[i].Z;
+        std::cout << "Edge # " << i << " -- " << x << ", " << y << ", " << z
+            << std::endl;
+    }
 
   // setup collision
 	ITriangleSelector* selector =

@@ -40,11 +40,13 @@ GameInstance::GameInstance(
 	
 	float gravity = GLOBAL_GRAVITY;
 	bool noVerticalMovement = true; // disabled
+	float playerMoveSpeed = PLAYER_MOVEMENT_SPEED;
 	
 	// if debug mode, turn off gravity and enable vertical movement
 	if(runMode & BORBIE_DEBUG_MODE){
 		gravity = 0.f; // no gravity
 		noVerticalMovement = false; // vertical movement enabled
+		playerMoveSpeed = PLAYER_MOVEMENT_SPEED_DEBUG;
 	}
 	
 	
@@ -102,7 +104,7 @@ GameInstance::GameInstance(
 		camera = smgr->addCameraSceneNodeFPS(
 		0,						// parent (none)
 		PLAYER_ROTATE_SPEED,	// rotate speed
-		PLAYER_MOVEMENT_SPEED,	// move speed
+		playerMoveSpeed,        // move speed
 		0,						// ID
 		keyMap,					// keymap
 		9,						// keymap size
