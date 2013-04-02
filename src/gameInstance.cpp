@@ -132,6 +132,8 @@ GameInstance::GameInstance(
 	selector = new CastRay(smgr, camera);
 	highlightedSceneNode = 0;
 
+	//create objectCarrier for picking shit up
+	objCarry = new ObjectCarrier(smgr, camera);
 }
 
 
