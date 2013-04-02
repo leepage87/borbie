@@ -18,7 +18,8 @@ GameInstance::GameInstance(
 	IVideoDriver *driver,
 	IrrlichtDevice *device,
 	AudioSystem *audioSystem,
-	unsigned int runMode)
+	unsigned int runMode,
+	IEventReceiver *receiver)
 {
     /*** Setup Pointers and Irrlicht Objects ***/    
     
@@ -28,6 +29,7 @@ GameInstance::GameInstance(
 	this->driver = driver;
 	this->device = device;
 	this->audioSystem = audioSystem;
+	this->receiver = receiver;
 	
 	// setup global collision meta selector
 	this->metaTriSelector = smgr->createMetaTriangleSelector();
@@ -134,6 +136,8 @@ GameInstance::GameInstance(
 
 	//create objectCarrier for picking shit up
 	objCarry = new ObjectCarrier(smgr, camera);
+	//tell the mouse listener that right mouse isn't pressed to start with
+	((BorbiesEventReceiver *)receiver)->setRightMouse(false);
 }
 
 
@@ -146,6 +150,7 @@ GameInstance::~GameInstance(){
 	delete this->buildings;
 	delete this->vehicles;
 	delete this->selector;
+	delete this->objCarry;
     this->smgr->clear();
 }
 
@@ -170,18 +175,20 @@ void GameInstance::drawGUI(){
 // (private)
 // gets a highlighted scene node if there is one
 void GameInstance::updateSelector(){
-if (highlightedSceneNode) {
-		//highlighted->setMaterialFlag(EMF_LIGHTING, true);
-		highlightedSceneNode->setVisible(true);
+	if (highlightedSceneNode) {
+		highlightedSceneNode->setMaterialFlag(EMF_LIGHTING, true);
 		highlightedSceneNode = 0;
 	}
-ISceneNode * selected = selector->getTarget();
+	ISceneNode * selected = selector->getTarget();
 	if (selected){
 		highlightedSceneNode = selected;
-		//highlightedSceneNode->setMaterialFlag(EMF_LIGHTING, false);
-		highlightedSceneNode->setVisible(false);
+		highlightedSceneNode->setMaterialFlag(EMF_LIGHTING, false);
+	}
+	if (highlightedSceneNode && ((BorbiesEventReceiver *)receiver)->isRightMouseDown()){
+		objCarry->pickUp(highlightedSceneNode);
 	}
 }
+
 
 // (private)
 // update the sound system for current player position and orientation
