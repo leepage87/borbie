@@ -85,7 +85,7 @@ void Game::loadMainMenuState(){
 void Game::loadGameState(){
     this->gameInstance = new GameInstance(
         this->smgr, this->guienv, this->driver, this->device,
-		this->audioSystem, this->runMode);
+		this->audioSystem, this->runMode, this->receiver);
     this->audioSystem->setMusicVolume(0.5);
 }
 

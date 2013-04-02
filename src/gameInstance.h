@@ -19,6 +19,7 @@
 #include "castRay.h"
 #include "audioSystem.h"
 #include "objectCarrier.h"
+#include "borbiesEventReceiver.h"
 
 
 // world constants
@@ -41,6 +42,7 @@ class GameInstance {
 		CastRay *selector;
 		ObjectCarrier *objCarry;
 		irr::scene::ISceneNode *highlightedSceneNode;
+		irr::IEventReceiver *receiver;
 
     
     // collision detection pointers
@@ -72,7 +74,8 @@ class GameInstance {
     			irr::video::IVideoDriver *driver,
     			irr::IrrlichtDevice *device,
     			AudioSystem *audioSystem,
-    			unsigned int runMode);
+    			unsigned int runMode,
+					irr::IEventReceiver *receiver);
 
     ~GameInstance();
 	
