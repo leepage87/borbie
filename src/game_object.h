@@ -47,6 +47,7 @@ class GameObject {
 	// standard getters
 	virtual int getHealth() const;
 	virtual int getExplosionRadius() const;
+	virtual irr::scene::IMeshSceneNode* getNode() { return this->sceneNode; }
 	
 	// standard setters
 	virtual void setHealth(int newHealth);

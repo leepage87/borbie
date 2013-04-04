@@ -8,7 +8,7 @@
  */
 
 #include "game_object.h"
-
+#include <iostream> // TODO - remove (debug)
 
 /* CONSTRUCTOR:
  *	Copies the pointer to the Irrlicht engine scene manager, and initializes
@@ -76,35 +76,37 @@ void GameObject::setExplosionRadius(int newRadius){
 // Causes this object to explode, making it vanish, and return a particle
 //	effect node animating the explosion effect in its current position.
 void GameObject::explode(){
-	this->sceneNode->remove();
 	
-	/*irr::scene::IParticleSystemSceneNode* ps =
+	irr::scene::IParticleSystemSceneNode* ps =
 		this->smgr->addParticleSystemSceneNode(false);
 	
-	scene::IParticleEmitter* em = ps->createBoxEmitter(
-		core::aabbox3d<f32>(-7,0,-7,7,1,7), // emitter size
-		core::vector3df(0.0f,0.06f,0.0f),   // initial direction
+	irr::scene::IParticleEmitter* em = ps->createBoxEmitter(
+		irr::core::aabbox3d<irr::f32>(-7,0,-7,7,1,7), // emitter size
+		irr::core::vector3df(0.0f,0.06f,0.0f),   // initial direction
 		80,100,                             // emit rate
-		video::SColor(0,255,255,255),       // darkest color
-		video::SColor(0,255,2a55,255),       // brightest color
+		irr::video::SColor(0,255,0,0),       // darkest color
+		irr::video::SColor(0,255,255,0),      // brightest color
 		800,2000,0,                         // min and max age, angle
-		core::dimension2df(10.f,10.f),      // min size
-		core::dimension2df(20.f,20.f));     // max size
+		irr::core::dimension2df(3.f,3.f),      // min size
+		irr::core::dimension2df(7.f,7.f));     // max size
 	
 	ps->setEmitter(em); // this grabs the emitter
 	em->drop(); // so we can drop it here without deleting it
 	
-	scene::IParticleAffector* paf = ps->createFadeOutParticleAffector();
+	irr::scene::IParticleAffector* paf = ps->createFadeOutParticleAffector();
 	
 	ps->addAffector(paf); // same goes for the affector
 	paf->drop();
 	
-	ps->setPosition(core::vector3df(-70,60,40));
-	ps->setScale(core::vector3df(2,2,2));
-	ps->setMaterialFlag(video::EMF_LIGHTING, false);
-	ps->setMaterialFlag(video::EMF_ZWRITE_ENABLE, false);
-	ps->setMaterialTexture(0, driver->getTexture("../../media/fire.bmp"));
-	ps->setMaterialType(video::EMT_TRANSPARENT_VERTEX_ALPHA);*/
+	ps->setPosition(this->sceneNode->getPosition());
+	ps->setScale(irr::core::vector3df(40,40,40));
+	ps->setMaterialFlag(irr::video::EMF_LIGHTING, false);
+	//ps->setMaterialFlag(irr::video::EMF_ZWRITE_ENABLE, false);
+	//ps->setMaterialTexture(0, this->driver->getTexture("../../media/fire.bmp"));
+	//ps->setMaterialType(irr::video::EMT_TRANSPARENT_VERTEX_ALPHA);
+	
+	
+	this->sceneNode->remove();
 }
 
 

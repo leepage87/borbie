@@ -59,7 +59,7 @@ class Buildings {
     float getRandomHeight();
 	
 	// building construction functions
-	void makeBuilding(int textureIndex, float height,
+	BuildingInstance* makeBuilding(int textureIndex, float height,
 		float xPos, float yPos, float zPos);
 	
   
@@ -74,8 +74,9 @@ class Buildings {
 	// build the city using the given building coordinates file path
 	void generateBuildings(const char *buildingCoords);
 	
-	// add a randomly sized and textured building to the scene
-	void addRandomBuilding(float xPos, float yPos, float zPos);
+	// add a randomly sized and textured building to the scene, returning the
+	//	pointer to the newly created building object
+	BuildingInstance* addRandomBuilding(float xPos, float yPos, float zPos);
 	
 	
 }; // end of Buildings class

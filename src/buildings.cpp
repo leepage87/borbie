@@ -142,8 +142,9 @@ void Buildings::generateBuildings(const char *buildingCoords){
 // Add a building at the given position with a randomized height
 //  (provided by the getRandomHeight function) and a texture
 //  selected randomly from the textureList std::vector.
+// RETURNS a pointer to the builing object created
 // --- (public) ---
-void Buildings::addRandomBuilding(
+BuildingInstance* Buildings::addRandomBuilding(
 	float xPos, float yPos, float zPos)
 {
     // get random height and texture index
@@ -151,7 +152,7 @@ void Buildings::addRandomBuilding(
     int textureIndex = rand() % this->textureList.size();
     
     // make the building with those parameters and the given position
-	this->makeBuilding(textureIndex, rHeight, xPos, yPos, zPos);
+	return this->makeBuilding(textureIndex, rHeight, xPos, yPos, zPos);
 }
 
 
@@ -194,8 +195,9 @@ float Buildings::getRandomHeight(){
 // Make a building with the given texture and height value. This function
 //  adds the buildings collision triangles to the global triangle selector
 //  for global collision.
+// RETURNS the building object created.
 // --- (private) ---
-void Buildings::makeBuilding(
+BuildingInstance* Buildings::makeBuilding(
     int textureIndex, float height,
 	float xPos, float yPos, float zPos)
 {
@@ -214,4 +216,6 @@ void Buildings::makeBuilding(
 		);
 	newBuilding->applyCollision(this->metaTriSelector);
 	this->buildingList.push_back(newBuilding);
+	
+	return newBuilding;
 }

@@ -2,6 +2,8 @@
 #include "game.h"
 #include "keyBindings.h"
 
+#include <iostream> // TODO - remove (debug)
+
 using namespace irr;
 using namespace scene;
 using namespace video;
@@ -138,6 +140,14 @@ GameInstance::GameInstance(
 	objCarry = new ObjectCarrier(smgr, camera);
 	//tell the mouse listener that right mouse isn't pressed to start with
 	((BorbiesEventReceiver *)receiver)->setRightMouse(false);
+	
+	
+	// TODO: remove
+	BuildingInstance *x =
+		this->buildings->addRandomBuilding(3500, 50, 5000);
+	removeCollision(x->getNode()->getTriangleSelector());
+	x->explode();
+	std::cout << "exploded!" << std::endl;
 }
 
 
