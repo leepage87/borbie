@@ -28,6 +28,7 @@ class GameObject {
   protected:
 	// pointers to Irrlicht scene objects as needed
 	irr::scene::ISceneManager *smgr;
+	irr::video::IVideoDriver *driver;
 	
 	// internal Irrlicht scene node
 	irr::scene::IMeshSceneNode *sceneNode;
@@ -40,7 +41,8 @@ class GameObject {
   public:
 	// constructor: initializes standard object values, and saves the
 	//	necessary Irrlicht object pointers to keep track of.
-	GameObject(irr::scene::ISceneManager *smgr);
+	GameObject(	irr::scene::ISceneManager *smgr,
+				irr::video::IVideoDriver *driver = 0);
 	// destructor: automatically removes the node from the scene.
 	~GameObject();
 	

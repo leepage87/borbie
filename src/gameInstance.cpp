@@ -103,7 +103,7 @@ GameInstance::GameInstance(
     delete keys;
     
     // setup camera
-		camera = smgr->addCameraSceneNodeFPS(
+	camera = smgr->addCameraSceneNodeFPS(
 		0,						// parent (none)
 		PLAYER_ROTATE_SPEED,	// rotate speed
 		playerMoveSpeed,        // move speed

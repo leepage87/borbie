@@ -210,6 +210,7 @@ BuildingInstance* Buildings::makeBuilding(
 	BuildingInstance *newBuilding
 		= new BuildingInstance(
 			this->smgr,
+			this->driver,
 			BUILDING_WIDTH, height, BUILDING_DEPTH,
 			xPos, yPos, zPos,
 			texture

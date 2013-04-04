@@ -24,6 +24,7 @@ class BuildingInstance : public GameObject {
   public:
 	BuildingInstance(
 		irr::scene::ISceneManager *smgr,
+		irr::video::IVideoDriver *driver,
 		float width, float height, float depth,
 		float posX, float posY, float posZ,
 		irr::video::ITexture *texture
