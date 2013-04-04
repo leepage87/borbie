@@ -122,7 +122,7 @@ GameInstance::GameInstance(
 	// add automatic collision response to camera
 	ISceneNodeAnimator* anim =
 		smgr->createCollisionResponseAnimator(metaTriSelector, camera,
-			core::vector3df(30, 150, 30), // radius (10 = no clipping)
+			core::vector3df(60, 150, 60), // radius
 			core::vector3df(0, gravity, 0), // gravity (negative y = go down)
 			core::vector3df(0, PLAYER_HEIGHT, 0), //radius offset
       0.1f); // sliding value TODO tweak as needed
