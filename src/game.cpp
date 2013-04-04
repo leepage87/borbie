@@ -89,6 +89,10 @@ void Game::loadGameState(){
     this->audioSystem->setMusicVolume(0.5);
 }
 
+GameState Game::getGameState(void)
+{
+  return gameState;
+}
 
 // switches to the next available game state
 void Game::manageStates()
