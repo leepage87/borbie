@@ -17,6 +17,7 @@ const f32 RAY_LENGTH_IN_UNITS = 350.0f;
 ObjectCarrier::ObjectCarrier(irr::scene::ISceneManager *_smgr, irr::scene::ICameraSceneNode *_camera){
 	this->smgr = _smgr;
 	this->camera = _camera;
+	this->selected = 0;
 }
 void ObjectCarrier::pickUp(irr::scene::ISceneNode *selected) {
 	this->selected = selected;
@@ -31,7 +32,8 @@ void ObjectCarrier::pickUp(irr::scene::ISceneNode *selected) {
 void ObjectCarrier::throwObj(){
 		selected->setParent(smgr->getRootSceneNode());//removes camera as parent
 		selected->addAnimator(smgr->createFlyStraightAnimator(camera->getPosition(),
-							camera->getTarget(), 200, false));
+							camera->getTarget(), 400, false));
+		selected = 0;
 }
 
 
