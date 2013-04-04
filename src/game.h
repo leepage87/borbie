@@ -78,10 +78,13 @@ class Game {
 
   public:
   	// constructor/destructor
-	Game(unsigned int runMode);
+    Game(unsigned int runMode);
 	~Game();
-	
-	// start the game
+
+  //getters
+  GameState getGameState(void);
+
+  // start the game
 	void manageStates();
     int run();
 
