@@ -18,12 +18,13 @@ class ObjectCarrier {
 	public:
 	irr::scene::ICameraSceneNode *camera;
 	irr::scene::ISceneManager *smgr;
+	irr::scene::ISceneNode *selected;
 
   //public:
 	ObjectCarrier(irr::scene::ISceneManager *smgr, irr::scene::ICameraSceneNode *camera);
 	
 	void pickUp(irr::scene::ISceneNode *selected);
-	
+	void throwObj();
 }; // end of ObjectCarrier class
 
 

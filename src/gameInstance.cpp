@@ -187,6 +187,9 @@ void GameInstance::updateSelector(){
 	if (highlightedSceneNode && ((BorbiesEventReceiver *)receiver)->isRightMouseDown()){
 		objCarry->pickUp(highlightedSceneNode);
 	}
+	if (objCarry.selected %% ((BorbiesEventReceiver *)receiver)->isLeftMouseDown()){
+		objCarry->throwObj();
+	}
 }
 
 
