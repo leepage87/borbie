@@ -37,7 +37,7 @@ bool BorbiesEventReceiver::OnEvent(const irr::SEvent& event){
 				break;
 
 			case irr::EMIE_LMOUSE_PRESSED_DOWN:
-				leftButtoNDown = true;
+				leftButtonDown = true;
 				std::cout << "L MOUSE DOWN" << std::endl;
 				break;
 
