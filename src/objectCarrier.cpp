@@ -18,16 +18,20 @@ ObjectCarrier::ObjectCarrier(irr::scene::ISceneManager *_smgr, irr::scene::ICame
 	this->smgr = _smgr;
 	this->camera = _camera;
 }
-
 void ObjectCarrier::pickUp(irr::scene::ISceneNode *selected) {
-	//get the position of the object being picked up
-	float carryPosition[3];
-	vector3d<f32> oldPosition = selected->getPosition();
-	camera->getPosition().getAs3Values(carryPosition);
-	//drop the object by 20 units
-	carryPosition[1] += -100.0;
-	carryPosition[0] += 40.0;
-	//TODO: FIX VEHICLE ROTATION, SINGLE CLICK CARRYING, DONT CARRY BUILDINGS
-	selected->addAnimator(smgr->createFlyStraightAnimator(oldPosition,
-							vector3df(carryPosition[0], carryPosition[1], carryPosition[2]), 200, false));
+	this->selected = selected;
+	
+	selected->setParent(camera);
+	selected->setPosition(vector3df(40,-40,150));
+
+//get bounding box and then get edges and find center
+//irrtests src main line 106
 }
+
+void ObjectCarrier::throwObj(){
+		selected->setParent(smgr->getRootSceneNode());//removes camera as parent
+		selected->addAnimator(smgr->createFlyStraightAnimator(camera->getPosition(),
+							camera->getTarget(), 200, false));
+}
+
+

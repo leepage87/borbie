@@ -21,6 +21,7 @@ class BorbiesEventReceiver : public irr::IEventReceiver {
 		ObjectCarrier *objCarry;
 		CastRay *selector;
 		bool rightButtonDown;
+		bool leftButtonDown;
   public:
    // set the device pointer
    void setDevice(irr::IrrlichtDevice *device, Game *game){
@@ -49,6 +50,7 @@ class BorbiesEventReceiver : public irr::IEventReceiver {
    bool IsKeyDown(irr::EKEY_CODE key) { return false; }
 
 	bool isRightMouseDown() { return rightButtonDown; }
+	bool isLeftMouseDown() { return leftButtonDown; }
 
 	void setRightMouse(bool status) { rightButtonDown = status; }
 		//const SMouseState & GetMouseState(void) const;

@@ -26,7 +26,6 @@ bool BorbiesEventReceiver::OnEvent(const irr::SEvent& event){
 	} else if(event.EventType == irr::EET_MOUSE_INPUT_EVENT){
 		switch(event.MouseInput.Event){
 			case irr::EMIE_RMOUSE_PRESSED_DOWN:
-				//MouseState.RightButtonDown = true;
 				rightButtonDown = true;
 				std::cout << "R MOUSE DOWN" << std::endl;
 				break;
@@ -35,6 +34,17 @@ bool BorbiesEventReceiver::OnEvent(const irr::SEvent& event){
 				//MouseState.RightButtonDown = false;
 				rightButtonDown = false;
 				std::cout << "R MOUSE UP" << std::endl;
+				break;
+
+			case irr::EMIE_LMOUSE_PRESSED_DOWN:
+				leftButtonDown = true;
+				std::cout << "L MOUSE DOWN" << std::endl;
+				break;
+
+			case irr::EMIE_LMOUSE_LEFT_UP:
+				//MouseState.RightButtonDown = false;
+				leftButtonDown = false;
+				std::cout << "L MOUSE UP" << std::endl;
 				break;
 				
 			default:
@@ -46,8 +56,5 @@ bool BorbiesEventReceiver::OnEvent(const irr::SEvent& event){
    	return false;
 }
 
-/*const SMouseState & BorbiesEventReceiver::GetMouseState(void) const{
-	return MouseState;
-}*/
 
 
