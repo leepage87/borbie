@@ -34,7 +34,7 @@ VehicleInstance::VehicleInstance(
 		this->sceneNode->setPosition(vector3df(posX, posY+20 , posZ));
 
 	this->sceneNode->setMaterialFlag(EMF_LIGHTING, true);
-	this->sceneNode->addShadowVolumeSceneNode(0,-1,true,50.0f);
+	//this->sceneNode->addShadowVolumeSceneNode(0,-1,true,25.0f);
 }
 
 
