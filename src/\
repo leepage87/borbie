@@ -46,7 +46,7 @@ void GameMenu::drawMenu()
   float hudY = screenHeight - (screenHeight / 8);
   float hudH = screenHeight / 8;
 
-  startButton->setRelativePosition(rect<s32>(20, 20, 140, 70));
+  startButton->setRelativePosition(rect<s32>(20, 20, hudW/2+140, 70));
 
 
     // draw the hud background

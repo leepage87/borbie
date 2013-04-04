@@ -3,9 +3,21 @@
 
 #include <irrlicht.h>
 
+enum GameButton
+{
+  NEW_GAME,
+  QUIT,
+  KILL_YOURSELF
+};
+
 class GameMenu
 {
   private:
+    //pointers to Menu Related Objects
+    GameButton gameButton;
+
+    irr::gui::IGUIButton *startButton;
+
     irr::gui::IGUIEnvironment *guienv;
     irr::video::IVideoDriver *driver;
 
@@ -19,7 +31,8 @@ class GameMenu
     GameMenu(irr::gui::IGUIEnvironment *guienv,
         irr::video::IVideoDriver *driver);
     ~GameMenu();
-    
+   
+    GameButton getGameButton(void); 
     void update();
 
 };

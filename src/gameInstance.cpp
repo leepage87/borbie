@@ -162,6 +162,10 @@ GameInstance::~GameInstance(){
 	delete this->selector;
 	delete this->objCarry;
     this->smgr->clear();
+	//turn the mouse cursor back on
+    device->getCursorControl()->setVisible(true);
+
+
 }
 
 
