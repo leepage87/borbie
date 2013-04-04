@@ -7,6 +7,8 @@ enum GameButton
 {
   NEW_GAME,
   QUIT,
+  CREDITS,
+  HIGH_SCORES,
   KILL_YOURSELF
 };
 
@@ -17,6 +19,9 @@ class GameMenu
     GameButton gameButton;
 
     irr::gui::IGUIButton *startButton;
+    irr::gui::IGUIButton *quitButton;
+    irr::gui::IGUIButton *creditsButton;
+    irr::gui::IGUIButton *scoresButton;
 
     irr::gui::IGUIEnvironment *guienv;
     irr::video::IVideoDriver *driver;
