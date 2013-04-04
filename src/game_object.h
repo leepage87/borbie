@@ -52,6 +52,10 @@ class GameObject {
 	virtual void setHealth(int newHealth);
 	virtual void setExplosionRadius(int newRadius);
 	
+	// Causes this object to explode, making it vanish, and return a particle
+	//	effect node animating the explosion effect in its current position.
+	virtual void explode();
+	
 	
 	// pure virtual functions (override mandatory)
 	virtual void doDamage(int damage) = 0;
