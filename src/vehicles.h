@@ -54,7 +54,8 @@ class Vehicles {
 	~Vehicles();
 	
 	void addRandomVehicle(float xPos, float yPos, float zPos);
-	
+
+	bool isVehicle(irr::scene::ISceneNode* pointer);
 	
 }; // end of Vehicles class
 

@@ -51,20 +51,15 @@ Vehicles::~Vehicles(){
 }
 
 
-// public addBuilding: add a random building at the given position.
+// public addRandomVehicle: add a random vehicle at the given position.
 void Vehicles::addRandomVehicle(
 	float xPos, float yPos, float zPos)
 {
-    // generate random height
-    //int rHeight = rand() % 10 + 1;
-    //rHeight = rHeight * 5 + 20.0;
-
     // get a random index from the model list
     int modelIndex = rand() % this->modelList.size();
     
 	this->makeVehicle(modelIndex, xPos, yPos, zPos);
 }
-
 
 // make a vehicle with the given texture and height value
 void Vehicles::makeVehicle(int modelIndex,
@@ -84,4 +79,14 @@ void Vehicles::makeVehicle(int modelIndex,
 	newVehicle->applyCollision(this->metaTriSelector);
 	
 	this->vehicleList.push_back(newVehicle);
+}
+
+//determines if an object is a vehicle
+bool Vehicles::isVehicle(ISceneNode* pointer){
+	for(std::vector<VehicleInstance *>::iterator it = vehicleList.begin();
+		it != vehicleList.end(); ++it){
+		if ((*it)->getNode() == pointer)//its a vehicle
+			return true;		
+	}
+		return false;		
 }
