@@ -146,7 +146,15 @@ GameInstance::GameInstance(
 	BuildingInstance *x =
 		this->buildings->addRandomBuilding(3500, 50, 5000);
 	removeCollision(x->getNode()->getTriangleSelector());
-	x->explode();
+	x->setAblaze();
+	/*BuildingInstance *y =
+		this->buildings->addRandomBuilding(3500, 50, 5600);
+	removeCollision(y->getNode()->getTriangleSelector());
+	y->setAblaze();
+	BuildingInstance *z =
+		this->buildings->addRandomBuilding(3500, 50, 6200);
+	removeCollision(z->getNode()->getTriangleSelector());
+	z->setAblaze();*/
 	std::cout << "exploded!" << std::endl;
 }
 

@@ -21,7 +21,18 @@
 // BuildingInstance class:
 class BuildingInstance : public GameObject {
 
+  private:
+    // on fire effect particle system
+    irr::scene::IParticleSystemSceneNode *fireParticleSystem;
+    irr::scene::IParticleSystemSceneNode *sparkParticleSystem;
+    
+    // height and Y-position of the building
+    float height;
+    float posY;
+    
+
   public:
+    void setAblaze();
 	BuildingInstance(
 		irr::scene::ISceneManager *smgr,
 		irr::video::IVideoDriver *driver,
@@ -29,6 +40,7 @@ class BuildingInstance : public GameObject {
 		float posX, float posY, float posZ,
 		irr::video::ITexture *texture
 	);
+	~BuildingInstance();
 	
 	virtual void doDamage(int damage);
 	virtual void applyCollision(

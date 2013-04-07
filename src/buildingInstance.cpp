@@ -40,6 +40,17 @@ BuildingInstance::BuildingInstance(
 	this->sceneNode->setMaterialTexture(0, texture);
 	this->sceneNode->setMaterialFlag(EMF_LIGHTING, true);
 	this->sceneNode->addShadowVolumeSceneNode(0,-1,true,25.0f);
+	
+	this->fireParticleSystem = 0;
+	this->sparkParticleSystem = 0;
+	this->height = height;
+	this->posY = posY;
+}
+
+
+BuildingInstance::~BuildingInstance(){
+	if(this->fireParticleSystem)
+		this->fireParticleSystem->remove();
 }
 
 
@@ -47,6 +58,11 @@ void BuildingInstance::doDamage(int damage){
 	this->health -= damage;
 }
 
+
+// Adds a triangle selector to the given meta triangle selectior to add this
+//  building's collision detection to the global collision meta. The collision
+//  selector is given from the scene node's bounding box, which matches the
+//  visible object exactly since it is just a cube.
 void BuildingInstance::applyCollision(
 	irr::scene::IMetaTriangleSelector *metaTriSelector)
 {
@@ -56,16 +72,90 @@ void BuildingInstance::applyCollision(
 	sceneNode->setTriangleSelector(selector);
 	selector->drop();
 	metaTriSelector->addTriangleSelector(sceneNode->getTriangleSelector());
+}
+
+
+// Sets this building on fire. Oh boy.
+// (adds a fire animation to the building model using particle effects)
+void BuildingInstance::setAblaze(){
+    // ADD FIRE EFFECT
+    // if a particle system for fire already exists, clean it off
+    if(this->fireParticleSystem)
+        this->fireParticleSystem->remove();
+    
+    this->fireParticleSystem =
+		this->smgr->addParticleSystemSceneNode(false);
 	
-	// get bounds
-	/*core::aabbox3d<f32> modelBounds = this->sceneNode->getTransformedBoundingBox();
-	// add a collision response animator to it
-	core::vector3df radius = modelBounds.MaxEdge - modelBounds.getCenter();
-	ISceneNodeAnimator* anim = this->smgr->createCollisionResponseAnimator(
-		metaTriSelector, this->sceneNode,
-		radius, // radius of collision
-		vector3df(0, -5, 0), // gravity (negative y = down)
-		vector3df(0, -radius.Y, 0)); // radius offset
-	this->sceneNode->addAnimator(anim);
-	anim->drop();*/
+	// determine min and max lifetime based on height (25===1500)
+	float maxLifetime = 45 * this->height;
+	float minLifetime = maxLifetime/5;
+	
+	IParticleEmitter *em = this->fireParticleSystem->createBoxEmitter(
+		aabbox3d<f32>(-5, 0, -5, 5, 1, 5),  // emitter size
+		vector3df(0.0f,0.3f,0.0f),          // direction + speed
+		3000, 8000,                         // min,max particles per second
+		SColor(0,255,255,255),              // darkest color
+		SColor(0,255,255,255),              // brightest color
+		minLifetime, maxLifetime,           // min, max particle lifetime
+		0,                                  // max angle degrees
+		dimension2df(30.f,30.f),            // min start size
+		dimension2df(50.f,50.f));           // max start size
+	
+	this->fireParticleSystem->setEmitter(em); // this grabs the emitter
+	em->drop(); // so we can drop it here without deleting it
+	
+	IParticleAffector* paf =
+	    this->fireParticleSystem->createFadeOutParticleAffector();
+	
+	this->fireParticleSystem->addAffector(paf); // same goes for the affector
+	paf->drop();
+	
+	// customize the particle system positioning, etc.
+	vector3df pos = this->sceneNode->getPosition();
+	pos.Y = this->posY - this->height/2;
+	this->fireParticleSystem->setPosition(pos);
+	this->fireParticleSystem->setScale(vector3df(45, 45, 45));
+	this->fireParticleSystem->setMaterialFlag(EMF_LIGHTING, false);
+	this->fireParticleSystem->setMaterialFlag(EMF_ZWRITE_ENABLE, false);
+	this->fireParticleSystem->setMaterialTexture(0,
+	    this->driver->getTexture("assets/textures/fire.bmp"));
+	this->fireParticleSystem->setMaterialType(EMT_TRANSPARENT_ADD_COLOR);
+	
+	
+    // ADD SPARKS EFFECT
+    // if a particle system for fire already exists, clean it off
+    if(this->sparkParticleSystem)
+        this->sparkParticleSystem->remove();
+    
+    this->sparkParticleSystem =
+		this->smgr->addParticleSystemSceneNode(false);
+	
+	IParticleEmitter *em2 = this->sparkParticleSystem->createBoxEmitter(
+		aabbox3d<f32>(-5, 0, -5, 5, this->height/8, 5),  // emitter size
+		vector3df(0.0f, 0.8f, 0.0f),        // direction + speed
+		250, 1200,                          // min,max particles per second
+		SColor(0,255,255,255),              // darkest color
+		SColor(0,255,255,255),              // brightest color
+		800, 850,                           // min, max particle lifetime
+		360,                                // max angle degrees (spread out)
+		dimension2df(30.f,30.f),            // min start size
+		dimension2df(40.f,40.f));           // max start size
+	
+	this->sparkParticleSystem->setEmitter(em2); // this grabs the emitter
+	em2->drop(); // so we can drop it here without deleting it
+	
+	IParticleAffector* paf2 =
+	    this->sparkParticleSystem->createFadeOutParticleAffector();
+	
+	this->sparkParticleSystem->addAffector(paf2); // same goes for the affector
+	paf2->drop();
+	
+	// customize the particle system positioning, etc.
+	this->sparkParticleSystem->setPosition(pos);
+	this->sparkParticleSystem->setScale(vector3df(45, 45, 45));
+	this->sparkParticleSystem->setMaterialFlag(EMF_LIGHTING, false);
+	this->sparkParticleSystem->setMaterialFlag(EMF_ZWRITE_ENABLE, false);
+	this->sparkParticleSystem->setMaterialTexture(0,
+	    this->driver->getTexture("assets/textures/pinkfire.bmp"));
+	this->sparkParticleSystem->setMaterialType(EMT_TRANSPARENT_ADD_COLOR);
 }
