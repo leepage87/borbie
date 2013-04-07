@@ -132,9 +132,10 @@ int Game::run()
         
         // if gameInstance is active, update its subsystems
         if(gameInstance)
-            gameInstance->update();
+          gameInstance->update();
+												
         
-         if(gameMenu)
+        if(gameMenu)
           gameMenu->update();
         	
         driver->endScene();

@@ -44,7 +44,8 @@ class GameInstance {
 		ObjectCarrier *objCarry;
 		irr::scene::ISceneNode *highlightedSceneNode;
 		irr::IEventReceiver *receiver;
-
+		irr::core::vector3df targetPos; //position object was thrown at
+		irr::scene::ISceneNode *thrown; //object thrown
     
     // collision detection pointers
 	irr::scene::IMetaTriangleSelector *metaTriSelector;
@@ -66,9 +67,9 @@ class GameInstance {
 	//  all of these are called by the update() method.
 	void drawGUI();
     void updateSelector();
-    void updateSound();
-    
-    
+    void updateSound(); 
+    void thrownObject();
+
   public:
     GameInstance(irr::scene::ISceneManager *smgr,
                 irr::gui::IGUIEnvironment *guienv,

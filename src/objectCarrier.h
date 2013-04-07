@@ -24,7 +24,7 @@ class ObjectCarrier {
 	ObjectCarrier(irr::scene::ISceneManager *smgr, irr::scene::ICameraSceneNode *camera);
 	
 	void pickUp(irr::scene::ISceneNode *selected);
-	void throwObj();
+	irr::core::vector3df throwObj();
 }; // end of ObjectCarrier class
 
 
