@@ -90,3 +90,12 @@ bool Vehicles::isVehicle(ISceneNode* pointer){
 	}
 		return false;		
 }
+
+VehicleInstance* Vehicles::getVehicle(irr::scene::ISceneNode* pointer){
+	for(std::vector<VehicleInstance *>::iterator it = vehicleList.begin();
+		it != vehicleList.end(); ++it){
+		if ((*it)->getNode() == pointer)//its a vehicle
+			return *it;
+	}
+		return 0;
+}

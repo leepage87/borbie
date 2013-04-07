@@ -121,7 +121,7 @@ void GameObject::explode(){
 	explosionParticleSystem->setMaterialType(EMT_TRANSPARENT_ADD_COLOR);
 	
 	
-	
+    explosionParticleSystem->setEmitter(0);
 	//this->sceneNode->remove();
 }
 

@@ -186,7 +186,7 @@ void GameInstance::update(){
     this->drawGUI();
     this->updateSelector();
     this->updateSound();
-		this->thrownObject();
+    this->thrownObject();
 }
 
 // (private)
@@ -224,6 +224,10 @@ void GameInstance::thrownObject(){
 		if(targetPos == thrown->getPosition()){
 			std::cout<<"EXPLOOOOOOOOOOOOOOODEEEE!!!"<<std::endl;
 			thrown->setVisible(false);
+			VehicleInstance *v = vehicles->getVehicle(thrown);
+			if(v)
+			    v->explode();
+			//thrown->explode();
 			thrown = 0;
 			//TODO: DELETE VEHICLE FROM VECTOR	
 		}
