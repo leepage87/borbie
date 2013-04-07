@@ -206,7 +206,8 @@ void GameInstance::updateSelector(){
 		highlightedSceneNode = selected;
 		highlightedSceneNode->setMaterialFlag(EMF_LIGHTING, false);
 	}
-	if (highlightedSceneNode && ((BorbiesEventReceiver *)receiver)->isRightMouseDown()){
+	
+	if (vehicles->isVehicle(selected) && highlightedSceneNode && ((BorbiesEventReceiver *)receiver)->isRightMouseDown()){
 		objCarry->pickUp(highlightedSceneNode);
 	}
 	if (objCarry->selected && ((BorbiesEventReceiver *)receiver)->isLeftMouseDown()){

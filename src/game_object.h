@@ -36,6 +36,7 @@ class GameObject {
 	// object variables
 	int health;
 	int explosionRadius;
+	bool pickUp;
 
 
   public:
@@ -65,7 +66,6 @@ class GameObject {
 	virtual void applyCollision(
 			irr::scene::IMetaTriangleSelector *metaTriSelector
 		) = 0;
-	
 	
 }; // end of GameObject class
 

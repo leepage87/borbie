@@ -31,8 +31,7 @@ VehicleInstance::VehicleInstance(
 	}else{//its a riviera
 		this->sceneNode->setScale(vector3df(40,40,40));
 	}
-		this->sceneNode->setPosition(vector3df(posX, posY+20 , posZ));
-
+	this->sceneNode->setPosition(vector3df(posX, posY+20 , posZ));
 	this->sceneNode->setMaterialFlag(EMF_LIGHTING, true);
 	//this->sceneNode->addShadowVolumeSceneNode(0,-1,true,25.0f);
 }
