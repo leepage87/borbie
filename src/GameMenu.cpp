@@ -9,11 +9,11 @@ GameMenu::GameMenu(IGUIEnvironment *guienv, IVideoDriver *driver)
 {
   this->guienv=guienv;
   this->driver=driver;
+  this->skin= guienv->getSkin();
   this->font=guienv->getFont("assets/fonts/bigfont.png");
-
-  this->menuTexture = driver->getTexture("assets/textures/hudTexture.jpg");
-  this->menuTextureSize = this->menuTexture->getSize();
-
+  if(font)
+    this->skin->setFont(font);
+  
   //create some buttons!
   startButton = guienv->addButton(rect<s32>(10,240,110,240 + 32), 0, NEW_GAME, L"Let's Hit the Town!", L"starts a new game");
   quitButton = guienv->addButton(rect<s32>(10,240,110,240 + 32), 0, QUIT, L"Quit", L"Running Away!?");
@@ -52,12 +52,17 @@ void GameMenu::drawMenu()
   float hudH = screenHeight / 8;
 
   //set the positions of the buttons
-  startButton->setRelativePosition(rect<s32>(20, 20, 200, 70));
-  quitButton->setRelativePosition(rect<s32>(20, 230, 200, 280));
+  startButton->setRelativePosition(rect<s32>(20, 20, 400, 70));
+  startButton->setDrawBorder(0);
+  quitButton->setRelativePosition(rect<s32>(20, 230, 100, 280));
+  quitButton->setDrawBorder(0);
   scoresButton->setRelativePosition(rect<s32>(20, 90, 200, 140));
+  scoresButton->setDrawBorder(0);
   creditsButton->setRelativePosition(rect<s32>(20, 160, 200, 210));
-
-
+  creditsButton->setDrawBorder(0);
+  
+ 
+/*
     // the hud background
   driver->draw2DImage(
       this->menuTexture,
@@ -76,4 +81,5 @@ void GameMenu::drawMenu()
     //bool  	hcenter = false,
     //bool  	vcenter = false,
   }
+  */
 }
