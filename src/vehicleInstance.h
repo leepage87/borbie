@@ -24,6 +24,8 @@ class VehicleInstance : public GameObject {
   public:
 	VehicleInstance(
 		irr::scene::ISceneManager *smgr,
+	    irr::video::IVideoDriver *driver,
+	    irr::IrrlichtDevice *device,
 		float posX, float posY, float posZ, irr::scene::IAnimatedMesh *mesh, int modelIndex
 	);
 	

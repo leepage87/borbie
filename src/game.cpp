@@ -56,6 +56,8 @@ Game::Game(unsigned int runMode)
     smgr = device->getSceneManager();
     guienv = smgr->getGUIEnvironment();
     
+    g_device = device;
+    
     // Create the audio system
     this->audioSystem = new AudioSystem();
     this->audioSystem->playMusicLoop("assets/sounds/yumyum.ogg");

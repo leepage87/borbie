@@ -34,6 +34,7 @@ class Vehicles {
     // references to the Irrlicht scene objects (to make building nodes)
 	irr::scene::ISceneManager *smgr;
 	irr::video::IVideoDriver *driver;
+	irr::IrrlichtDevice *device;
 	irr::scene::IMetaTriangleSelector *metaTriSelector;
 	
 	// list of vehs
@@ -50,6 +51,7 @@ class Vehicles {
 	Vehicles(
 		irr::scene::ISceneManager *smgr,
 		irr::video::IVideoDriver *driver,
+		irr::IrrlichtDevice *device,
 		irr::scene::IMetaTriangleSelector *metaTriSelector);
 	~Vehicles();
 	

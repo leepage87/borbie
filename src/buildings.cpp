@@ -33,11 +33,13 @@ using namespace video;
 Buildings::Buildings(
 	ISceneManager *smgr,
 	IVideoDriver *driver,
+	IrrlichtDevice *device,
 	IMetaTriangleSelector *metaTriSelector)
 {
     // remember pointers to necessary Irrlicht objects
 	this->smgr = smgr;
 	this->driver = driver;
+	this->device = device;
 	this->metaTriSelector = metaTriSelector;
 	
 	// seed the random number generator (using system time)
@@ -211,6 +213,7 @@ BuildingInstance* Buildings::makeBuilding(
 		= new BuildingInstance(
 			this->smgr,
 			this->driver,
+			this->device,
 			BUILDING_WIDTH, height, BUILDING_DEPTH,
 			xPos, yPos, zPos,
 			texture

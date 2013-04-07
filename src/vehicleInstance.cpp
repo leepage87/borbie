@@ -20,8 +20,10 @@ using namespace video;
 
 VehicleInstance::VehicleInstance(
 	ISceneManager *smgr,
+	IVideoDriver *driver,
+	IrrlichtDevice *device,
 	float posX, float posY, float posZ, IAnimatedMesh *mesh, int modelIndex)
-	: GameObject(smgr) // call super GameObject constructor first
+	: GameObject(smgr, driver, device) // call super GameObject constructor first
 {
 
     

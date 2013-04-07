@@ -36,6 +36,7 @@ class BuildingInstance : public GameObject {
 	BuildingInstance(
 		irr::scene::ISceneManager *smgr,
 		irr::video::IVideoDriver *driver,
+	    irr::IrrlichtDevice *device,
 		float width, float height, float depth,
 		float posX, float posY, float posZ,
 		irr::video::ITexture *texture

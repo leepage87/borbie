@@ -46,6 +46,7 @@ class Buildings {
     // references to the Irrlicht scene objects (to make building nodes)
 	irr::scene::ISceneManager *smgr;
 	irr::video::IVideoDriver *driver;
+	irr::IrrlichtDevice *device;
 	irr::scene::IMetaTriangleSelector *metaTriSelector;
 	
 	// list of buildings
@@ -68,6 +69,7 @@ class Buildings {
 	Buildings(
 		irr::scene::ISceneManager *smgr,
 		irr::video::IVideoDriver *driver,
+		irr::IrrlichtDevice *device,
 		irr::scene::IMetaTriangleSelector *metaTriSelector);
 	~Buildings();
 	

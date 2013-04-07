@@ -5,6 +5,9 @@
 #ifndef GAMEINSTANCE_H
 #define GAMEINSTANCE_H
 
+// include c++ standard
+#include <vector>
+
 // include irrlicht
 #include <irrlicht.h>
 
@@ -69,6 +72,8 @@ class GameInstance {
     void updateSelector();
     void updateSound(); 
     void thrownObject();
+    std::vector<GameObject *> updateList;
+    
 
   public:
     GameInstance(irr::scene::ISceneManager *smgr,

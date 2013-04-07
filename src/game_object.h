@@ -29,9 +29,14 @@ class GameObject {
 	// pointers to Irrlicht scene objects as needed
 	irr::scene::ISceneManager *smgr;
 	irr::video::IVideoDriver *driver;
+	irr::IrrlichtDevice *device;
 	
 	// internal Irrlicht scene node
 	irr::scene::IMeshSceneNode *sceneNode;
+	
+	// explosion variables
+	irr::scene::IParticleSystemSceneNode *explosionParticleSystem;
+	irr::u32 explosionStopTime;
 	
 	// object variables
 	int health;
@@ -43,7 +48,8 @@ class GameObject {
 	// constructor: initializes standard object values, and saves the
 	//	necessary Irrlicht object pointers to keep track of.
 	GameObject(	irr::scene::ISceneManager *smgr,
-				irr::video::IVideoDriver *driver = 0);
+				irr::video::IVideoDriver *driver,
+				irr::IrrlichtDevice *device);
 	// destructor: automatically removes the node from the scene.
 	~GameObject();
 	
@@ -59,6 +65,9 @@ class GameObject {
 	// Causes this object to explode, making it vanish, and return a particle
 	//	effect node animating the explosion effect in its current position.
 	virtual void explode();
+	
+	// updates the object's animation/effects timer
+	virtual bool updateTimer();
 	
 	
 	// pure virtual functions (override mandatory)

@@ -53,6 +53,15 @@ enum GameState {
     BORBIE_GAME_STATE
 };
 
+
+// TODO: fix this
+static irr::IrrlichtDevice *g_device = 0;
+static irr::IEventReceiver *g_receiver = 0;
+static irr::video::IVideoDriver *g_driver = 0;
+static irr::scene::ISceneManager *g_smgr = 0;
+static irr::gui::IGUIEnvironment *g_guienv = 0;
+
+
 // Game Class
 class Game {
   private:

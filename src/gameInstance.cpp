@@ -72,14 +72,14 @@ GameInstance::GameInstance(
 	/*** Setup Game Objects (BUILDINGS, VEHICLES) ***/
     
     // add the buildings and generate city based on coordinate file
-	this->buildings = new Buildings(smgr, driver, metaTriSelector);
+	this->buildings = new Buildings(smgr, driver, device, metaTriSelector);
     this->buildings->generateBuildings("assets/map/coords.bor");
     
 	const int ROAD_HEIGHT = 70;
 	const int farX = 20000.0f;
 	const int farY = 20000.0f;
 	//add vehicle(s)
-	this->vehicles = new Vehicles(smgr, driver, metaTriSelector);
+	this->vehicles = new Vehicles(smgr, driver, device, metaTriSelector);
 	this->vehicles->addRandomVehicle(farX*.1953, ROAD_HEIGHT, farY*.2207);
     this->vehicles->addRandomVehicle(farX*.2453, ROAD_HEIGHT, farY*.2207);
     this->vehicles->addRandomVehicle(farX*.2953, ROAD_HEIGHT, farY*.2207);
@@ -146,7 +146,7 @@ GameInstance::GameInstance(
 	BuildingInstance *x =
 		this->buildings->addRandomBuilding(3500, 50, 5000);
 	removeCollision(x->getNode()->getTriangleSelector());
-	x->explode();
+	x->setAblaze();
 	/*BuildingInstance *y =
 		this->buildings->addRandomBuilding(3500, 50, 5600);
 	removeCollision(y->getNode()->getTriangleSelector());
@@ -154,8 +154,8 @@ GameInstance::GameInstance(
 	BuildingInstance *z =
 		this->buildings->addRandomBuilding(3500, 50, 6200);
 	removeCollision(z->getNode()->getTriangleSelector());
-	z->setAblaze();*/
-	std::cout << "exploded!" << std::endl;
+	z->setAblaze();
+	std::cout << "exploded!" << std::endl;*/
 }
 
 
@@ -187,6 +187,18 @@ void GameInstance::update(){
     this->updateSelector();
     this->updateSound();
     this->thrownObject();
+    
+    for(std::vector<GameObject *>::iterator it = this->updateList.begin();
+        it != this->updateList.end(); ++it)
+    {
+        std::cout <<"checking"<<std::endl;
+        bool finished = (*it)->updateTimer();
+        if(finished){
+            this->updateList.erase(it);
+            it--;
+        }
+        std::cout << finished << std::endl;
+    }
 }
 
 // (private)
@@ -225,8 +237,11 @@ void GameInstance::thrownObject(){
 			std::cout<<"EXPLOOOOOOOOOOOOOOODEEEE!!!"<<std::endl;
 			thrown->setVisible(false);
 			VehicleInstance *v = vehicles->getVehicle(thrown);
-			if(v)
+			if(v){
 			    v->explode();
+			    this->updateList.push_back(v);
+			    std::cout <<"bye"<<std::endl;
+		    }
 			//thrown->explode();
 			thrown = 0;
 			//TODO: DELETE VEHICLE FROM VECTOR	

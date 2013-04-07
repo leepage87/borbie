@@ -17,15 +17,19 @@ using namespace irr;
 using namespace scene;
 using namespace video;
 
+#include <iostream>
+
 
 Vehicles::Vehicles(
 	ISceneManager *smgr,
 	IVideoDriver *driver,
+	IrrlichtDevice *device,
 	IMetaTriangleSelector *metaTriSelector)
 {
     // remember pointers to necessary Irrlicht objects
 	this->smgr = smgr;
 	this->driver = driver;
+	this->device = device;
 	this->metaTriSelector = metaTriSelector;
 	
 	// seed the random number generator (using system time)
@@ -72,7 +76,7 @@ void Vehicles::makeVehicle(int modelIndex,
 
 	VehicleInstance *newVehicle
 		= new VehicleInstance(
-			this->smgr,
+			this->smgr, this->driver, this->device,
 			xPos, yPos, zPos, mesh, modelIndex
 		);
 	
@@ -94,8 +98,10 @@ bool Vehicles::isVehicle(ISceneNode* pointer){
 VehicleInstance* Vehicles::getVehicle(irr::scene::ISceneNode* pointer){
 	for(std::vector<VehicleInstance *>::iterator it = vehicleList.begin();
 		it != vehicleList.end(); ++it){
-		if ((*it)->getNode() == pointer)//its a vehicle
+		if ((*it)->getNode() == pointer) {//its a vehicle
+		    std::cout << "about to return" << std::endl;
 			return *it;
+	    }
 	}
 		return 0;
 }
