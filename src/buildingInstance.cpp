@@ -90,7 +90,8 @@ void BuildingInstance::setAblaze(){
 	float maxLifetime = 45 * this->height;
 	float minLifetime = maxLifetime/5;
 	
-	IParticleEmitter *em = this->fireParticleSystem->createBoxEmitter(
+	// add the fire emitter to the fire particle system
+	IParticleEmitter *fireEmitter = this->fireParticleSystem->createBoxEmitter(
 		aabbox3d<f32>(-5, 0, -5, 5, 1, 5),  // emitter size
 		vector3df(0.0f,0.3f,0.0f),          // direction + speed
 		3000, 8000,                         // min,max particles per second
@@ -100,25 +101,24 @@ void BuildingInstance::setAblaze(){
 		0,                                  // max angle degrees
 		dimension2df(30.f,30.f),            // min start size
 		dimension2df(50.f,50.f));           // max start size
+	this->fireParticleSystem->setEmitter(fireEmitter); // this grabs the emitter
+	fireEmitter->drop(); // so we can drop it here without deleting it
 	
-	this->fireParticleSystem->setEmitter(em); // this grabs the emitter
-	em->drop(); // so we can drop it here without deleting it
-	
-	IParticleAffector* paf =
+	// add fade-out affector to the fire particle system
+	IParticleAffector* fireFadeOutAffector =
 	    this->fireParticleSystem->createFadeOutParticleAffector();
+	this->fireParticleSystem->addAffector(fireFadeOutAffector);
+	fireFadeOutAffector->drop();
 	
-	this->fireParticleSystem->addAffector(paf); // same goes for the affector
-	paf->drop();
-	
-	// customize the particle system positioning, etc.
+	// customize the fire particle system positioning, etc.
 	vector3df pos = this->sceneNode->getPosition();
-	pos.Y = this->posY - this->height/2;
+	pos.Y = this->posY - this->height/2; // get actual y-position
 	this->fireParticleSystem->setPosition(pos);
 	this->fireParticleSystem->setScale(vector3df(45, 45, 45));
 	this->fireParticleSystem->setMaterialFlag(EMF_LIGHTING, false);
 	this->fireParticleSystem->setMaterialFlag(EMF_ZWRITE_ENABLE, false);
 	this->fireParticleSystem->setMaterialTexture(0,
-	    this->driver->getTexture("assets/textures/fire.bmp"));
+	    this->driver->getTexture("assets/textures/fire.bmp")); // fire colored
 	this->fireParticleSystem->setMaterialType(EMT_TRANSPARENT_ADD_COLOR);
 	
 	
@@ -130,7 +130,8 @@ void BuildingInstance::setAblaze(){
     this->sparkParticleSystem =
 		this->smgr->addParticleSystemSceneNode(false);
 	
-	IParticleEmitter *em2 = this->sparkParticleSystem->createBoxEmitter(
+	// add the spark emitter to the spark particle system
+	IParticleEmitter *sparkEmitter = this->sparkParticleSystem->createBoxEmitter(
 		aabbox3d<f32>(-5, 0, -5, 5, this->height/8, 5),  // emitter size
 		vector3df(0.0f, 0.8f, 0.0f),        // direction + speed
 		250, 1200,                          // min,max particles per second
@@ -140,22 +141,21 @@ void BuildingInstance::setAblaze(){
 		360,                                // max angle degrees (spread out)
 		dimension2df(30.f,30.f),            // min start size
 		dimension2df(40.f,40.f));           // max start size
+	this->sparkParticleSystem->setEmitter(sparkEmitter);
+	sparkEmitter->drop();
 	
-	this->sparkParticleSystem->setEmitter(em2); // this grabs the emitter
-	em2->drop(); // so we can drop it here without deleting it
-	
-	IParticleAffector* paf2 =
+	// add a fade-out affector to the spark particle system
+	IParticleAffector* sparkFadeOutAffector =
 	    this->sparkParticleSystem->createFadeOutParticleAffector();
-	
-	this->sparkParticleSystem->addAffector(paf2); // same goes for the affector
-	paf2->drop();
+	this->sparkParticleSystem->addAffector(sparkFadeOutAffector);
+	sparkFadeOutAffector->drop();
 	
 	// customize the particle system positioning, etc.
-	this->sparkParticleSystem->setPosition(pos);
+	this->sparkParticleSystem->setPosition(pos); // add to same pos as fire
 	this->sparkParticleSystem->setScale(vector3df(45, 45, 45));
 	this->sparkParticleSystem->setMaterialFlag(EMF_LIGHTING, false);
 	this->sparkParticleSystem->setMaterialFlag(EMF_ZWRITE_ENABLE, false);
 	this->sparkParticleSystem->setMaterialTexture(0,
-	    this->driver->getTexture("assets/textures/pinkfire.bmp"));
+	    this->driver->getTexture("assets/textures/pinkfire.bmp")); // pink
 	this->sparkParticleSystem->setMaterialType(EMT_TRANSPARENT_ADD_COLOR);
 }

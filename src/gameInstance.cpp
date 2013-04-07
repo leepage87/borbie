@@ -146,7 +146,7 @@ GameInstance::GameInstance(
 	BuildingInstance *x =
 		this->buildings->addRandomBuilding(3500, 50, 5000);
 	removeCollision(x->getNode()->getTriangleSelector());
-	x->setAblaze();
+	x->explode();
 	/*BuildingInstance *y =
 		this->buildings->addRandomBuilding(3500, 50, 5600);
 	removeCollision(y->getNode()->getTriangleSelector());

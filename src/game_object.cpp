@@ -10,6 +10,11 @@
 #include "game_object.h"
 #include <iostream> // TODO - remove (debug)
 
+using namespace irr;
+using namespace scene;
+using namespace core;
+using namespace video;
+
 /* CONSTRUCTOR:
  *	Copies the pointer to the Irrlicht engine scene manager, and initializes
  *	all variables to their default level.
@@ -80,35 +85,41 @@ void GameObject::setExplosionRadius(int newRadius){
 // Causes this object to explode, making it vanish, and return a particle
 //	effect node animating the explosion effect in its current position.
 void GameObject::explode(){
-	
-	irr::scene::IParticleSystemSceneNode* ps =
+	//if(this->fireParticleSystem)
+     //   this->fireParticleSystem->remove();
+    
+    IParticleSystemSceneNode *explosionParticleSystem =
 		this->smgr->addParticleSystemSceneNode(false);
 	
-	irr::scene::IParticleEmitter* em = ps->createBoxEmitter(
-		irr::core::aabbox3d<irr::f32>(-7,0,-7,7,1,7), // emitter size
-		irr::core::vector3df(0.0f,0.3f,0.0f),   // direction + speed
-		4000,10000,                             // min,max particles per second
-		irr::video::SColor(0,255,255,255),       // darkest color
-		irr::video::SColor(0,255,255,255),      // brightest color
-		250,1500,                        		// min,max lifetime
-		0, 										// max angle degrees
-		irr::core::dimension2df(10.f,10.f),      // min start size
-		irr::core::dimension2df(20.f,20.f));     // max start size
+	// add the explosion emitter to the explosion particle system
+	IParticleEmitter *explosionEmitter = explosionParticleSystem->createBoxEmitter(
+		aabbox3d<f32>(-5, 0, -5, 5, 1, 5),  // emitter size
+		vector3df(0.0f,1.0f,0.0f),          // direction + speed
+		3000, 8000,                         // min,max particles per second
+		SColor(0,255,255,255),              // darkest color
+		SColor(0,255,255,255),              // brightest color
+		200, 5000,                          // min, max particle lifetime
+		360,                                // max angle degrees
+		dimension2df(30.0f, 30.0f),         // min start size
+		dimension2df(50.0f, 50.0f));        // max start size
+	explosionParticleSystem->setEmitter(explosionEmitter);
+	explosionEmitter->drop();
 	
-	ps->setEmitter(em); // this grabs the emitter
-	em->drop(); // so we can drop it here without deleting it
+	// add fade-out affector to the fire particle system
+	IParticleAffector* explosionFadeOutAffector =
+	    explosionParticleSystem->createFadeOutParticleAffector();
+	explosionParticleSystem->addAffector(explosionFadeOutAffector);
+	explosionFadeOutAffector->drop();
 	
-	irr::scene::IParticleAffector* paf = ps->createFadeOutParticleAffector();
+	// customize the fire particle system positioning, etc.
+	explosionParticleSystem->setPosition(this->sceneNode->getPosition());
+	explosionParticleSystem->setScale(vector3df(45, 45, 45));
+	explosionParticleSystem->setMaterialFlag(EMF_LIGHTING, false);
+	explosionParticleSystem->setMaterialFlag(EMF_ZWRITE_ENABLE, false);
+	explosionParticleSystem->setMaterialTexture(0,
+	    this->driver->getTexture("assets/textures/pinkfire.bmp")); // fire colored
+	explosionParticleSystem->setMaterialType(EMT_TRANSPARENT_ADD_COLOR);
 	
-	ps->addAffector(paf); // same goes for the affector
-	paf->drop();
-	
-	ps->setPosition(this->sceneNode->getPosition());
-	ps->setScale(irr::core::vector3df(35,35,35));
-	ps->setMaterialFlag(irr::video::EMF_LIGHTING, false);
-	ps->setMaterialFlag(irr::video::EMF_ZWRITE_ENABLE, false);
-	ps->setMaterialTexture(0, this->driver->getTexture("assets/textures/fire.bmp"));
-	ps->setMaterialType(irr::video::EMT_TRANSPARENT_ADD_COLOR);
 	
 	
 	//this->sceneNode->remove();
