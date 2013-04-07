@@ -56,9 +56,9 @@ void GameMenu::drawMenu()
   startButton->setDrawBorder(0);
   quitButton->setRelativePosition(rect<s32>(20, 230, 100, 280));
   quitButton->setDrawBorder(0);
-  scoresButton->setRelativePosition(rect<s32>(20, 90, 200, 140));
+  scoresButton->setRelativePosition(rect<s32>(20, 90, 240, 140));
   scoresButton->setDrawBorder(0);
-  creditsButton->setRelativePosition(rect<s32>(20, 160, 200, 210));
+  creditsButton->setRelativePosition(rect<s32>(20, 160, 160, 210));
   creditsButton->setDrawBorder(0);
   
  
