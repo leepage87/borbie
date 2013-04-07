@@ -29,11 +29,15 @@ void ObjectCarrier::pickUp(irr::scene::ISceneNode *selected) {
 //irrtests src main line 106
 }
 
-void ObjectCarrier::throwObj(){
+vector3df ObjectCarrier::throwObj(){
 		selected->setParent(smgr->getRootSceneNode());//removes camera as parent
+		vector3df targetPos = camera->getTarget();
 		selected->addAnimator(smgr->createFlyStraightAnimator(camera->getPosition(),
-							camera->getTarget(), 400, false));
+							targetPos, 400, false));
+		//explodeObj(targetPos);
 		selected = 0;
+		return targetPos;
 }
+
 
 

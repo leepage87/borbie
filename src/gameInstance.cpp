@@ -54,7 +54,7 @@ GameInstance::GameInstance(
 	
 	
 	/*** Setup Environment ***/
-	
+	this->thrown = 0;
 	// Add Terrain and collision
 	this->terrain = new Terrain(driver, smgr, metaTriSelector);
 	addCollision(this->terrain->getTriSelector());
@@ -186,6 +186,7 @@ void GameInstance::update(){
     this->drawGUI();
     this->updateSelector();
     this->updateSound();
+		this->thrownObject();
 }
 
 // (private)
@@ -207,14 +208,27 @@ void GameInstance::updateSelector(){
 		highlightedSceneNode->setMaterialFlag(EMF_LIGHTING, false);
 	}
 	
-	if (vehicles->isVehicle(selected) && highlightedSceneNode && ((BorbiesEventReceiver *)receiver)->isRightMouseDown()){
+	if (vehicles->isVehicle(highlightedSceneNode) && ((BorbiesEventReceiver *)receiver)->isRightMouseDown()){
 		objCarry->pickUp(highlightedSceneNode);
 	}
 	if (objCarry->selected && ((BorbiesEventReceiver *)receiver)->isLeftMouseDown()){
-		objCarry->throwObj();
+		this->thrown = objCarry->selected;
+		this->targetPos = objCarry->throwObj();
 	}
 }
 
+void GameInstance::thrownObject(){
+	//std::cout<<"INSIDE THROWN OBJ";
+	if (thrown){
+		std::cout<<"Inside if thrown"<<std::endl;
+		if(targetPos == thrown->getPosition()){
+			std::cout<<"EXPLOOOOOOOOOOOOOOODEEEE!!!"<<std::endl;
+			thrown->setVisible(false);
+			thrown = 0;
+			//TODO: DELETE VEHICLE FROM VECTOR	
+		}
+	}
+}
 
 // (private)
 // update the sound system for current player position and orientation

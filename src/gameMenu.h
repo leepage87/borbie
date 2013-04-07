@@ -29,6 +29,7 @@ class GameMenu
     irr::video::ITexture *menuTexture;
     irr::core::dimension2d<irr::u32> menuTextureSize;
 
+    irr::gui::IGUISkin *skin;
     irr::gui::IGUIFont *font;
     
     void drawMenu(); 
