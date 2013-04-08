@@ -49,8 +49,8 @@ class GameInstance {
 		irr::scene::ISceneNode *highlightedSceneNode;
 		irr::IEventReceiver *receiver;
 		irr::core::vector3df targetPos; //position object was thrown at
-		VehicleInstance *carriedVehicle; //object thrown
-		bool thrown;
+		VehicleInstance *carriedVehicle; //object being carried/thrown
+		bool vehicleThrown; // true if a vehicle has been thrown
     
     // collision detection pointers
 	irr::scene::IMetaTriangleSelector *metaTriSelector;
@@ -73,7 +73,7 @@ class GameInstance {
 	void drawGUI();
     void updateSelector();
     void updateSound(); 
-    void thrownObject();
+    void updateThrownObject();
     std::vector<GameObject *> updateList;
     
 

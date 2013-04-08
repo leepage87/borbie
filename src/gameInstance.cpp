@@ -54,9 +54,6 @@ GameInstance::GameInstance(
 	
 	
 	/*** Setup Environment ***/
-	this->carriedVehicle = 0;
-	this->thrown = false;
-	this->targetPos = vector3df(0,0,0);
 	// Add Terrain and collision
 	this->terrain = new Terrain(driver, smgr, metaTriSelector);
 	addCollision(this->terrain->getTriSelector());
@@ -85,6 +82,11 @@ GameInstance::GameInstance(
 	this->vehicles->addRandomVehicle(farX*.1953, ROAD_HEIGHT, farY*.2207);
     this->vehicles->addRandomVehicle(farX*.2453, ROAD_HEIGHT, farY*.2207);
     this->vehicles->addRandomVehicle(farX*.2953, ROAD_HEIGHT, farY*.2207);
+    
+    // default vehicle throwing variables to nothing
+	this->carriedVehicle = 0;
+	this->vehicleThrown = false;
+	this->targetPos = vector3df(0,0,0);
 	
 	
 	
@@ -148,7 +150,7 @@ GameInstance::GameInstance(
 	BuildingInstance *x =
 		this->buildings->addRandomBuilding(3500, 50, 5000);
 	removeCollision(x->getNode()->getTriangleSelector());
-	x->setAblaze();
+	x->setAblaze(); // TODO - setAblaze should be private
 	/*BuildingInstance *y =
 		this->buildings->addRandomBuilding(3500, 50, 5600);
 	removeCollision(y->getNode()->getTriangleSelector());
@@ -188,12 +190,14 @@ void GameInstance::update(){
     this->drawGUI();
     this->updateSelector();
     this->updateSound();
-    this->thrownObject();
     
+    // check objects in the update list that need to be updated each frame;
+    //  if they are done needing to be updated (their updateTimer function
+    //  returns true), then it is removed from the update list and gladly
+    //  ignored again.
     for(std::vector<GameObject *>::iterator it = this->updateList.begin();
         it != this->updateList.end(); ++it)
     {
-        std::cout <<"checking"<<std::endl;
         bool finished = (*it)->updateTimer();
         if(finished){
             this->updateList.erase(it);
@@ -212,41 +216,63 @@ void GameInstance::drawGUI(){
 // (private)
 // gets a highlighted scene node if there is one
 void GameInstance::updateSelector(){
+    // if a highlighted node exists, deselect (un-highlight it). If it is still
+    //  selected this frame, it will be re-selected below.
 	if (highlightedSceneNode) {
 		highlightedSceneNode->setMaterialFlag(EMF_LIGHTING, true);
 		highlightedSceneNode = 0;
 	}
+	
+	// get a pointer to whichever scene node is targetted (if any)
 	ISceneNode * selected = selector->getTarget();
 	if (selected){
 		highlightedSceneNode = selected;
 		highlightedSceneNode->setMaterialFlag(EMF_LIGHTING, false);
 	}
-	carriedVehicle = vehicles->getVehicle(highlightedSceneNode);
-	if (carriedVehicle && ((BorbiesEventReceiver *)receiver)->isRightMouseDown()){
-		objCarry->pickUp(highlightedSceneNode);
+	
+	// If no vehicle is currently being carried and the right mouse button is
+	//  pressed, check if we're currently targetting (highlighting) a vehicle.
+	//  If so, then pick it up.
+	if (!carriedVehicle && ((BorbiesEventReceiver *)receiver)->isRightMouseDown()){
+	    VehicleInstance * vehicle = vehicles->getVehicle(highlightedSceneNode);
+	    if(vehicle) { // if vehicle was in fact selected, pick it up
+	        carriedVehicle = vehicle;
+	        objCarry->pickUp(highlightedSceneNode);
+	    }
 	}
-	if (carriedVehicle && ((BorbiesEventReceiver *)receiver)->isLeftMouseDown()){
+    
+    // If we're currently carrying a vehicle, and the left mouse button is
+    //  pressed, throw it and break someone's face.
+	if (carriedVehicle && !vehicleThrown &&
+	    ((BorbiesEventReceiver *)receiver)->isLeftMouseDown())
+	{
 		this->targetPos = objCarry->throwObj();
-		thrown = true;
-		
+		vehicleThrown = true;
 	}
+	
+	// update thrownObject (checks if vehicles need to be thrown)
+    this->updateThrownObject();
 }
 
-void GameInstance::thrownObject(){
-	//std::cout<<"INSIDE THROWN OBJ";
-	if (thrown){
-		std::cout<<"Inside if thrown"<<std::endl;
+
+// Check to see if a vehicle is currently being thrown. If it has been thrown,
+//  then it is flying through the air (wheeeeeeeeee!). Once it reaches its
+//  destination, make it explode.
+void GameInstance::updateThrownObject(){
+	// check if a carried vehicle exists and it has been thrown:
+	if (carriedVehicle != 0 && vehicleThrown){
+	    // check if said thrown vehicle reached its destination:
 		if(targetPos == carriedVehicle->getNode()->getPosition()){
-			std::cout<<"EXPLOOOOOOOOOOOOOOODEEEE!!!"<<std::endl;
-			carriedVehicle->getNode()->setVisible(false);
-			
+		    // blow it up
 			if(carriedVehicle){
 			    carriedVehicle->explode();
 			    this->updateList.push_back(carriedVehicle);
-			    std::cout <<"bye"<<std::endl;
+			    carriedVehicle->getNode()->setVisible(false);
+			    //TODO: DELETE VEHICLE FROM VECTOR	
 		    }
-			thrown = false;
-			//TODO: DELETE VEHICLE FROM VECTOR	
+			// clean up temporaries (make we can pick up more vehicles)
+			vehicleThrown = false;
+			carriedVehicle = 0;
 		}
 	}
 }
