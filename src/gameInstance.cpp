@@ -54,7 +54,9 @@ GameInstance::GameInstance(
 	
 	
 	/*** Setup Environment ***/
-	this->thrown = 0;
+	this->carriedVehicle = 0;
+	this->thrown = false;
+	this->targetPos = vector3df(0,0,0);
 	// Add Terrain and collision
 	this->terrain = new Terrain(driver, smgr, metaTriSelector);
 	addCollision(this->terrain->getTriSelector());
@@ -219,13 +221,14 @@ void GameInstance::updateSelector(){
 		highlightedSceneNode = selected;
 		highlightedSceneNode->setMaterialFlag(EMF_LIGHTING, false);
 	}
-	
-	if (vehicles->isVehicle(highlightedSceneNode) && ((BorbiesEventReceiver *)receiver)->isRightMouseDown()){
+	carriedVehicle = vehicles->getVehicle(highlightedSceneNode);
+	if (carriedVehicle && ((BorbiesEventReceiver *)receiver)->isRightMouseDown()){
 		objCarry->pickUp(highlightedSceneNode);
 	}
-	if (objCarry->selected && ((BorbiesEventReceiver *)receiver)->isLeftMouseDown()){
-		this->thrown = objCarry->selected;
+	if (carriedVehicle && ((BorbiesEventReceiver *)receiver)->isLeftMouseDown()){
 		this->targetPos = objCarry->throwObj();
+		thrown = true;
+		
 	}
 }
 
@@ -233,17 +236,16 @@ void GameInstance::thrownObject(){
 	//std::cout<<"INSIDE THROWN OBJ";
 	if (thrown){
 		std::cout<<"Inside if thrown"<<std::endl;
-		if(targetPos == thrown->getPosition()){
+		if(targetPos == carriedVehicle->getNode()->getPosition()){
 			std::cout<<"EXPLOOOOOOOOOOOOOOODEEEE!!!"<<std::endl;
-			thrown->setVisible(false);
-			VehicleInstance *v = vehicles->getVehicle(thrown);
-			if(v){
-			    v->explode();
-			    this->updateList.push_back(v);
+			carriedVehicle->getNode()->setVisible(false);
+			
+			if(carriedVehicle){
+			    carriedVehicle->explode();
+			    this->updateList.push_back(carriedVehicle);
 			    std::cout <<"bye"<<std::endl;
 		    }
-			//thrown->explode();
-			thrown = 0;
+			thrown = false;
 			//TODO: DELETE VEHICLE FROM VECTOR	
 		}
 	}

@@ -23,6 +23,7 @@
 #include "audioSystem.h"
 #include "objectCarrier.h"
 #include "borbiesEventReceiver.h"
+#include "vehicleInstance.h"
 
 
 // world constants
@@ -48,7 +49,8 @@ class GameInstance {
 		irr::scene::ISceneNode *highlightedSceneNode;
 		irr::IEventReceiver *receiver;
 		irr::core::vector3df targetPos; //position object was thrown at
-		irr::scene::ISceneNode *thrown; //object thrown
+		VehicleInstance *carriedVehicle; //object thrown
+		bool thrown;
     
     // collision detection pointers
 	irr::scene::IMetaTriangleSelector *metaTriSelector;
