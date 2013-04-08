@@ -78,7 +78,8 @@ Game::~Game()
 
 // loads the main menu
 void Game::loadMainMenuState(){
-    this->gameMenu = new GameMenu(guienv, driver);
+  this->audioSystem->playMusicLoop("assets/sounds/wind.wav");
+    this->gameMenu = new GameMenu(guienv, driver, audioSystem);
     this->audioSystem->setMusicVolume(1.0);
 }
 
@@ -148,9 +149,11 @@ int Game::run()
 
           //load the borbie cover
           driver->enableMaterial2D();
-          driver->draw2DImage(driver->getTexture("assets/misc/bc.jpg"), core::rect<s32>(500,0,screenWidth,screenHeight),
+          driver->draw2DImage(driver->getTexture("assets/misc/borbie_menu.jpg"), core::rect<s32>(screenWidth-800,0,screenWidth,screenHeight),
               core::rect<s32>(0,0,800,1200));
           driver->enableMaterial2D(false);
+          
+          driver->draw2DRectangle(SColor(100,0,0,0), rect<s32>(0, 0, 500, 300));
 
         }
 

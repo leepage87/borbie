@@ -5,11 +5,12 @@ using namespace gui;
 using namespace video;
 using namespace core;
 
-GameMenu::GameMenu(IGUIEnvironment *guienv, IVideoDriver *driver)
+GameMenu::GameMenu(IGUIEnvironment *guienv, IVideoDriver *driver, AudioSystem *audioSystem)
 {
   this->guienv=guienv;
   this->driver=driver;
   this->skin= guienv->getSkin();
+  this->audioSystem = audioSystem;
 
   //create some buttons!
   startButton = guienv->addButton(rect<s32>(10,240,110,240 + 32), 0, NEW_GAME, L"", L"starts a new game");
@@ -29,6 +30,7 @@ void GameMenu::update()
 {
      
   drawMenu();
+  
 }
 
 GameButton GameMenu::getGameButton(void)
