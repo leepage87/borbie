@@ -17,6 +17,7 @@ using namespace io;
 #define stringify( name ) s2( name )
 
 WorldLight::WorldLight(scene::ISceneManager * _smgr) {
+    this->smgr = _smgr;
 	//the parent node that the sun will be attached to
 	scene::ISceneNode *pNode = _smgr->addEmptySceneNode();
 	pNode->setPosition(core::vector3df(9000, 0, 9000));
@@ -38,37 +39,10 @@ WorldLight::WorldLight(scene::ISceneManager * _smgr) {
 	pNode->setRotation(core::vector3df(90, 0, 0));
 
 	// add ambient light
-	_smgr->setAmbientLight(video::SColor(255, 255, 192, 203));
+	this->setAmbientLight(255, 192, 203);
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+void WorldLight::setAmbientLight(unsigned int r, unsigned int g, unsigned int b){
+    this->smgr->setAmbientLight(video::SColor(255, r, g, b));
+}

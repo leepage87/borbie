@@ -141,6 +141,5 @@ void GameObject::explode(){
 	// run this explosion for the predefined number of miliseconds.
 	this->explosionStopTime = this->device->getTimer()->getTime() + 75;
 	
-    //explosionParticleSystem->setEmitter(0);
 	//this->sceneNode->remove();
 }

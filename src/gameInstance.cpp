@@ -160,6 +160,8 @@ GameInstance::GameInstance(
 	removeCollision(z->getNode()->getTriangleSelector());
 	z->setAblaze();
 	std::cout << "exploded!" << std::endl;*/
+	// TODO- remove
+	this->setWorldState_wrecked();
 }
 
 
@@ -178,6 +180,72 @@ GameInstance::~GameInstance(){
     device->getCursorControl()->setVisible(true);
 
 
+}
+
+
+
+/*** WORLD STATE (ENVIRONMENT/MOOD) SETTERS ***/
+
+// Changes the visible state of the world environment to the given WorldState
+//  value
+void GameInstance::setWorldState(WorldState state){
+    if(state == GONETOSHIT)
+        this->setWorldState_wrecked();
+}
+
+// Set the mood and visible state of the world to a dark and hellish feeling,
+//  but of course, preserving Borbie's pink style (because Hell is so much
+//  hotter when it's wearing pink).
+void GameInstance::setWorldState_wrecked(){
+    // add a particle system effect to rain pink debree:
+    if(!this->rainParticleSystem)
+        this->createRainParticleSystem();
+	
+	// add the explosion emitter to the explosion particle system
+	IParticleEmitter *rainEmitter =
+	    this->rainParticleSystem->createBoxEmitter(
+		    aabbox3d<f32>(-100, 0, -100, 100, 100, 100),  // emitter size
+		    vector3df(0.0f, -1.0f, 0.0f),          // direction + speed
+		    4000, 7500,                       // min,max particles per second
+		    SColor(0,255,255,255),              // darkest color
+		    SColor(0,255,255,255),              // brightest color
+		    500, 1500,                       // min, max particle lifetime
+		    0,                                // max angle degrees
+		    dimension2df(20.0f, 20.0f),         // min start size
+		    dimension2df(60.0f, 60.0f));        // max start size
+	this->rainParticleSystem->setEmitter(rainEmitter);
+	rainEmitter->drop();
+	
+	// add fade-out affector to the fire particle system
+	IParticleAffector* rainFadeOutAffector =
+	    rainParticleSystem->createFadeOutParticleAffector();
+	this->rainParticleSystem->addAffector(rainFadeOutAffector);
+	rainFadeOutAffector->drop();
+	
+	
+    // set the ambiance to dark and ugly
+    this->light->setAmbientLight(50, 10, 22);
+    //this->light->setAmbientLight(90, 37, 46);
+}
+
+
+// Creates a rain particle system above the world map, but does not start making
+//  particles yet.
+void GameInstance::createRainParticleSystem(){
+    // if not yet created, create the particle system
+    this->rainParticleSystem =
+	 this->smgr->addParticleSystemSceneNode(false);
+	
+	// customize the rain particle system positioning, etc.
+	// TODO - arbitrary centering over map terrain
+	vector3df pos(10200, 1200, 10200); // center map, 1000 units high
+	this->rainParticleSystem->setPosition(pos);
+	this->rainParticleSystem->setScale(vector3df(104, 104, 104));
+	this->rainParticleSystem->setMaterialFlag(EMF_LIGHTING, false);
+	this->rainParticleSystem->setMaterialFlag(EMF_ZWRITE_ENABLE, false);
+	this->rainParticleSystem->setMaterialTexture(0,
+	    this->driver->getTexture("assets/textures/darkpinkfire.bmp"));
+	this->rainParticleSystem->setMaterialType(EMT_TRANSPARENT_ADD_COLOR);
 }
 
 
@@ -302,27 +370,3 @@ void GameInstance::addCollision(irr::scene::ITriangleSelector *selector){
 void GameInstance::removeCollision(irr::scene::ITriangleSelector *selector){
 	this->metaTriSelector->removeTriangleSelector(selector);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// empty space just cuz it's cool

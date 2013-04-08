@@ -35,6 +35,14 @@
 #define PLAYER_HEIGHT 200.0f
 
 
+// world state enum
+enum WorldState {
+    FABULOUS,
+    WHATEVER,
+    GONETOSHIT
+};
+
+
 // GameInstance class:
 class GameInstance {
   private:
@@ -75,6 +83,15 @@ class GameInstance {
     void updateSound(); 
     void updateThrownObject();
     std::vector<GameObject *> updateList;
+    
+    // world state changes: update the mood of the global environment by swapping
+    //  music, ambiant sound, ambiant colors and applying various world effects.
+    void setWorldState(WorldState state);
+    void setWorldState_wrecked();
+    
+    // world effect values
+    irr::scene::IParticleSystemSceneNode *rainParticleSystem;
+    void createRainParticleSystem();
     
 
   public:
