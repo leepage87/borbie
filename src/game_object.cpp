@@ -9,7 +9,6 @@
 
 #include "game_object.h"
 #include "game.h"
-#include <iostream> // TODO - remove (debug)
 
 using namespace irr;
 using namespace scene;
@@ -101,37 +100,34 @@ bool GameObject::updateTimer(){
 // Causes this object to explode, making it vanish, and return a particle
 //	effect node animating the explosion effect in its current position.
 void GameObject::explode(){
-	std::cout << "made it to the method. grats." << std::endl;
-	
+    // if an explosion already happened, remove it first
 	if(this->explosionParticleSystem)
 	    this->explosionParticleSystem->remove();
 	
+	// add a new explosion particle system
     this->explosionParticleSystem =
 		this->smgr->addParticleSystemSceneNode(false);
-	std::cout << "created ps" << std::endl;
 	
 	// add the explosion emitter to the explosion particle system
 	IParticleEmitter *explosionEmitter =
 	    this->explosionParticleSystem->createBoxEmitter(
 		    aabbox3d<f32>(-5, 0, -5, 5, 1, 5),  // emitter size
-		    vector3df(0.0f,1.0f,0.0f),          // direction + speed
-		    3000, 8000,                         // min,max particles per second
+		    vector3df(0.0f,2.0f,0.0f),          // direction + speed
+		    12000, 14000,                       // min,max particles per second
 		    SColor(0,255,255,255),              // darkest color
 		    SColor(0,255,255,255),              // brightest color
-		    200, 5000,                          // min, max particle lifetime
+		    200, 2500,                          // min, max particle lifetime
 		    360,                                // max angle degrees
 		    dimension2df(30.0f, 30.0f),         // min start size
 		    dimension2df(50.0f, 50.0f));        // max start size
 	this->explosionParticleSystem->setEmitter(explosionEmitter);
 	explosionEmitter->drop();
-	std::cout << "added emitter" << std::endl;
 	
 	// add fade-out affector to the fire particle system
 	IParticleAffector* explosionFadeOutAffector =
 	    explosionParticleSystem->createFadeOutParticleAffector();
 	this->explosionParticleSystem->addAffector(explosionFadeOutAffector);
 	explosionFadeOutAffector->drop();
-	std::cout << "added fadeout" << std::endl;
 	
 	// customize the fire particle system positioning, etc.
 	this->explosionParticleSystem->setPosition(this->sceneNode->getPosition());
@@ -142,9 +138,8 @@ void GameObject::explode(){
 	    this->driver->getTexture("assets/textures/pinkfire.bmp")); // fire colored
 	this->explosionParticleSystem->setMaterialType(EMT_TRANSPARENT_ADD_COLOR);
 	
-	std::cout <<"HI"<<std::endl;
-	
-	this->explosionStopTime = this->device->getTimer()->getTime() + 500;
+	// run this explosion for the predefined number of miliseconds.
+	this->explosionStopTime = this->device->getTimer()->getTime() + 75;
 	
     //explosionParticleSystem->setEmitter(0);
 	//this->sceneNode->remove();
