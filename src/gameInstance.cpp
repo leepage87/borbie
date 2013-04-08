@@ -67,6 +67,8 @@ GameInstance::GameInstance(
   //set shadow color: dark purplish
 	smgr->setShadowColor(video::SColor(120,35,20,47));
 	
+	this->rainParticleSystem = 0;
+	
 
 	/*** Setup Game Objects (BUILDINGS, VEHICLES) ***/
     
@@ -175,6 +177,8 @@ GameInstance::~GameInstance(){
 	delete this->vehicles;
 	delete this->selector;
 	delete this->objCarry;
+	if(this->rainParticleSystem)
+	    this->rainParticleSystem->remove();
     this->smgr->clear();
 	//turn the mouse cursor back on
     device->getCursorControl()->setVisible(true);
@@ -201,7 +205,7 @@ void GameInstance::setWorldState_wrecked(){
     if(!this->rainParticleSystem)
         this->createRainParticleSystem();
 	
-	// add the explosion emitter to the explosion particle system
+	// add the rain emitter to the rain particle system
 	IParticleEmitter *rainEmitter =
 	    this->rainParticleSystem->createBoxEmitter(
 		    aabbox3d<f32>(-100, 0, -100, 100, 100, 100),  // emitter size
@@ -213,19 +217,26 @@ void GameInstance::setWorldState_wrecked(){
 		    0,                                // max angle degrees
 		    dimension2df(20.0f, 20.0f),         // min start size
 		    dimension2df(60.0f, 60.0f));        // max start size
-	this->rainParticleSystem->setEmitter(rainEmitter);
+	this->setRainEmitter(rainEmitter);
 	rainEmitter->drop();
-	
-	// add fade-out affector to the fire particle system
-	IParticleAffector* rainFadeOutAffector =
-	    rainParticleSystem->createFadeOutParticleAffector();
-	this->rainParticleSystem->addAffector(rainFadeOutAffector);
-	rainFadeOutAffector->drop();
 	
 	
     // set the ambiance to dark and ugly
     this->light->setAmbientLight(50, 10, 22);
-    //this->light->setAmbientLight(90, 37, 46);
+}
+
+
+// Sets the rain source to the current emitter, and automatically adds fade-out
+//  affector.
+// TODO: fix this to pass in values instead of an emitter pointer
+void GameInstance::setRainEmitter(IParticleEmitter *rainEmitter){
+    this->rainParticleSystem->setEmitter(rainEmitter);
+	
+	// add fade-out affector to the fire particle system
+	IParticleAffector* rainFadeOutAffector =
+	    this->rainParticleSystem->createFadeOutParticleAffector();
+	this->rainParticleSystem->addAffector(rainFadeOutAffector);
+	rainFadeOutAffector->drop();
 }
 
 

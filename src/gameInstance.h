@@ -92,6 +92,7 @@ class GameInstance {
     // world effect values
     irr::scene::IParticleSystemSceneNode *rainParticleSystem;
     void createRainParticleSystem();
+    void setRainEmitter(irr::scene::IParticleEmitter *emitter);
     
 
   public:
