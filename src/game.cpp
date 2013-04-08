@@ -130,15 +130,39 @@ int Game::run()
         
         // draw world and GUI
         smgr->drawAll();
-        guienv->drawAll();
+
+        //draw the background for the main menu before the
+        //buttons get generated
+        if(gameState == BORBIE_MAIN_MENU_STATE){
+          // get screen dimensions
+          float screenWidth = driver->getScreenSize().Width;
+          float screenHeight = driver->getScreenSize().Height;
+
+          // calculate hud width and height based on screen size
+          float hudX = 0;
+          float hudW = screenWidth;
+          float hudY = screenHeight - (screenHeight / 8);
+          float hudH = screenHeight / 8;
+          
+          driver->draw2DRectangle(SColor(255,0,0,0), rect<s32>(0, 0, screenWidth, screenHeight));
+
+          //load the borbie cover
+          driver->enableMaterial2D();
+          driver->draw2DImage(driver->getTexture("assets/misc/bc.jpg"), core::rect<s32>(500,0,screenWidth,screenHeight),
+              core::rect<s32>(0,0,800,1200));
+          driver->enableMaterial2D(false);
+
+        }
+
+          guienv->drawAll();
         
         // if gameInstance is active, update its subsystems
         if(gameInstance)
           gameInstance->update();
 												
         
-        if(gameMenu)
-          gameMenu->update();
+       // if(gameMenu)
+       //   gameMenu->update();
         	
         driver->endScene();
     }
