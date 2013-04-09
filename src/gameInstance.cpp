@@ -88,6 +88,18 @@ GameInstance::GameInstance(
 	this->vehicles->addRandomVehicle(farX*.1953, ROAD_HEIGHT, farY*.2207);
     this->vehicles->addRandomVehicle(farX*.2453, ROAD_HEIGHT, farY*.2207);
     this->vehicles->addRandomVehicle(farX*.2953, ROAD_HEIGHT, farY*.2207);
+    this->vehicles->addRandomVehicle(farX*.3453, ROAD_HEIGHT, farY*.2207);
+    this->vehicles->addRandomVehicle(farX*.3953, ROAD_HEIGHT, farY*.2207);
+    this->vehicles->addRandomVehicle(farX*.4453, ROAD_HEIGHT, farY*.2207);
+    this->vehicles->addRandomVehicle(farX*.4953, ROAD_HEIGHT, farY*.2207);
+    this->vehicles->addRandomVehicle(farX*.5453, ROAD_HEIGHT, farY*.2207);
+    this->vehicles->addRandomVehicle(farX*.5953, ROAD_HEIGHT, farY*.2207);
+    this->vehicles->addRandomVehicle(farX*.6453, ROAD_HEIGHT, farY*.2207);
+    this->vehicles->addRandomVehicle(farX*.6953, ROAD_HEIGHT, farY*.2207);
+    this->vehicles->addRandomVehicle(farX*.7453, ROAD_HEIGHT, farY*.2207);
+    this->vehicles->addRandomVehicle(farX*.7953, ROAD_HEIGHT, farY*.2207);
+    this->vehicles->addRandomVehicle(farX*.8453, ROAD_HEIGHT, farY*.2207);
+    this->vehicles->addRandomVehicle(farX*.8953, ROAD_HEIGHT, farY*.2207);
     
     // default vehicle throwing variables to nothing
 	this->carriedVehicle = 0;
@@ -215,7 +227,7 @@ void GameInstance::setWorldState_wrecked(){
 	    this->rainParticleSystem->createBoxEmitter(
 		    aabbox3d<f32>(-100, 0, -100, 100, 100, 100),  // emitter size
 		    vector3df(0.0f, -1.0f, 0.0f),          // direction + speed
-		    4000, 7500,                       // min,max particles per second
+		    3000, 5000,                       // min,max particles per second
 		    SColor(0,255,255,255),              // darkest color
 		    SColor(0,255,255,255),              // brightest color
 		    500, 1500,                       // min, max particle lifetime
@@ -338,7 +350,7 @@ void GameInstance::updateSelector(){
 		this->smgr->createCollisionResponseAnimator(
 		    this->metaTriSelector, // global meta triangle selector
 		    carriedVehicle->getNode(), // node to be affected (node of vehicle)
-		    core::vector3df(10, 10, 10), // radius
+		    core::vector3df(100, 100, 100), // radius
 		    //core::vector3df(0, GLOBAL_GRAVITY, 0), // gravity (-y = down)
 		    // TODO - swap thrown destination w/ timer
             core::vector3df(0, 0, 0)); // gravity (-y = down)
@@ -398,6 +410,7 @@ void GameInstance::updateThrownObject(){
 			this->updateList.push_back(carriedVehicle);
 			carriedVehicle->getNode()->setVisible(false);
 		    //TODO: DELETE VEHICLE FROM VECTOR
+
 			// clean up temporaries (make we can pick up more vehicles)
 			vehicleThrown = false;
 			carriedVehicle = 0;

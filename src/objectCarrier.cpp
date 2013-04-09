@@ -34,7 +34,7 @@ vector3df ObjectCarrier::throwObj(){
 		vector3df targetPos = camera->getTarget();
 		ISceneNodeAnimator *flyAnimator =
 		    smgr->createFlyStraightAnimator(camera->getPosition(),
-							targetPos, 800, false);
+							targetPos, 1000, false);
 		selected->addAnimator(flyAnimator);
 		flyAnimator->drop();
 		//explodeObj(targetPos);

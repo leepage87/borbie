@@ -78,7 +78,7 @@ void Vehicles::makeVehicle(int modelIndex,
 	VehicleInstance *newVehicle
 		= new VehicleInstance(
 			this->smgr, this->driver, this->device,
-			xPos, yPos+250, zPos, mesh, modelIndex
+			xPos, yPos, zPos, mesh, modelIndex
 		);
 	
 	newVehicle->applyCollision(this->metaTriSelector);

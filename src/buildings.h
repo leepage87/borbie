@@ -19,6 +19,7 @@
 
 // include building header
 #include "buildingInstance.h"
+#include "objectList.h"
 
 
 // building constants:
@@ -40,17 +41,17 @@ enum BuildingTypes {
 
 
 // Buildings class:
-class Buildings {
+class Buildings : public ObjectList {
 
   private:
     // references to the Irrlicht scene objects (to make building nodes)
-	irr::scene::ISceneManager *smgr;
+	/*irr::scene::ISceneManager *smgr;
 	irr::video::IVideoDriver *driver;
 	irr::IrrlichtDevice *device;
 	irr::scene::IMetaTriangleSelector *metaTriSelector;
 	
 	// list of buildings
-	std::vector<BuildingInstance *> buildingList;
+	std::vector<BuildingInstance *> buildingList;*/
 	
 	// list of building textures
 	std::vector<const char *> textureList;
@@ -71,7 +72,7 @@ class Buildings {
 		irr::video::IVideoDriver *driver,
 		irr::IrrlichtDevice *device,
 		irr::scene::IMetaTriangleSelector *metaTriSelector);
-	~Buildings();
+
 	
 	// build the city using the given building coordinates file path
 	void generateBuildings(const char *buildingCoords);
