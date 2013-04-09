@@ -5,6 +5,7 @@
 #include <iostream>
 #include "objectCarrier.h"
 #include "castRay.h"
+#include "audioSystem.h"
 
 class Game;
 /*
@@ -16,7 +17,8 @@ class Game;
 // BorbiesEventReceiver class (extends IEventReceiver)
 class BorbiesEventReceiver : public irr::IEventReceiver {
   private:
-  	irr::IrrlichtDevice *device;
+    AudioSystem *audioSystem;	
+    irr::IrrlichtDevice *device;
   	Game *game;
 		ObjectCarrier *objCarry;
 		CastRay *selector;
@@ -24,7 +26,8 @@ class BorbiesEventReceiver : public irr::IEventReceiver {
 		bool leftButtonDown;
   public:
    // set the device pointer
-   void setDevice(irr::IrrlichtDevice *device, Game *game){
+   void setDevice(irr::IrrlichtDevice *device, Game *game, AudioSystem *audioSystem){
+    this->audioSystem = audioSystem;
    	this->device = device;
    	this->game = game;
    }

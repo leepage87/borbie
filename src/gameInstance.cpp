@@ -33,7 +33,8 @@ GameInstance::GameInstance(
 	this->audioSystem = audioSystem;
 	this->receiver = receiver;
   this->bgSound = audioSystem->createSound2d("assets/sounds/yumyum.ogg");
-  
+ 
+  //Start the shitty music and loop! 
   audioSystem->playMusicLoop(bgSound); 
   audioSystem->setMusicVolume(0.3);
   // setup global collision meta selector
