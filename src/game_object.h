@@ -38,6 +38,7 @@ class GameObject {
 	irr::scene::IParticleSystemSceneNode *explosionParticleSystem;
 	irr::scene::IParticleSystemSceneNode *explosionParticleSystemLarge;
 	irr::u32 explosionStopTime;
+	bool hasBeenExploded;
 	
 	// object variables
 	int health;
@@ -66,8 +67,9 @@ class GameObject {
 	// Causes this object to explode, creating a particle effect around it.
 	//  For the explosion to fade out, it is necessary to call update() each
 	//  frame until update() returns true (implying explosion is finished).
-	// TODO: object should also disappear here (be set to visible)
+	// TODO: object should also disappear here (be set to invisible)
 	virtual void explode();
+	virtual bool hasExploded(); // returns TRUE if this object has exploded
 	
 	// updates the object's animation/effects timer
 	// TODO: perhaps change name to just update() - maybe

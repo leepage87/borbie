@@ -34,6 +34,7 @@ GameObject::GameObject(
 	
 	this->explosionParticleSystem = 0;
 	this->explosionParticleSystemLarge = 0;
+	this->hasBeenExploded = false;
 	
 	// ensure that internal node pointer is null
 	this->sceneNode = 0;
@@ -88,20 +89,32 @@ void GameObject::setExplosionRadius(int newRadius){
 
 
 // updates animation timer. If finished, returns true. Otherwise, returns false.
+//  If exploded, also sets the hasBeenExploded bool flag to true.
 bool GameObject::updateTimer(){
     if( this->explosionParticleSystem &&
         this->device->getTimer()->getTime() >= this->explosionStopTime)
     {
         this->explosionParticleSystem->setEmitter(0);
 				this->explosionParticleSystemLarge->setEmitter(0);
+        this->hasBeenExploded = true;
         return true;
     }
     return false;
 }
 
+
+// returns TRUE if this object was already exploded (if timer ticked out and
+//  explosion occured) - false if not yet exploded or if explode was never
+//  called.
+bool GameObject::hasExploded(){
+    return this->hasBeenExploded;
+}
+
 // Causes this object to explode, making it vanish, and return a particle
 //	effect node animating the explosion effect in its current position.
 void GameObject::explode(){
+    // TODO - fix this code up
+
     // if an explosion already happened, remove it first
 	if(this->explosionParticleSystem){
 	    this->explosionParticleSystem->remove();

@@ -404,6 +404,10 @@ void GameInstance::updateThrownObject(){
 	    }*/
 	    
 	    // check if said thrown vehicle reached its destination:
+	    // TODO -- instead of
+	    //  targetPos == carriedVehicle->getNode()->getPosition()
+	    // do
+	    //  carriedVehicle->timerDone() (synchronize with a timer)
 		if(targetPos == carriedVehicle->getNode()->getPosition() || collided){
 		    // blow it up
 			carriedVehicle->explode();
