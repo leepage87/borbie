@@ -35,12 +35,8 @@ Buildings::Buildings(
 	IVideoDriver *driver,
 	IrrlichtDevice *device,
 	IMetaTriangleSelector *metaTriSelector)
+	: ObjectList(smgr, driver, device, metaTriSelector)//passing these to supah constructah
 {
-    // remember pointers to necessary Irrlicht objects
-	this->smgr = smgr;
-	this->driver = driver;
-	this->device = device;
-	this->metaTriSelector = metaTriSelector;
 	
 	// seed the random number generator (using system time)
 	srand(time(NULL));
@@ -63,15 +59,6 @@ Buildings::Buildings(
 	this->textureList.push_back("assets/textures/buildings/building15.jpg");
 	this->textureList.push_back("assets/textures/buildings/building16.jpg");
 	this->textureList.push_back("assets/textures/buildings/building17.jpg");
-}
-
-// delete all of the buildings in the building list
-Buildings::~Buildings(){
-	for(std::vector<BuildingInstance *>::iterator it = buildingList.begin();
-		it != buildingList.end(); ++it)
-	{
-		delete (*it);
-	}
 }
 
 
@@ -219,7 +206,7 @@ BuildingInstance* Buildings::makeBuilding(
 			texture
 		);
 	newBuilding->applyCollision(this->metaTriSelector);
-	this->buildingList.push_back(newBuilding);
+	this->objList.push_back(newBuilding);
 	
 	return newBuilding;
 }
