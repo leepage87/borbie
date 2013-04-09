@@ -20,6 +20,8 @@ class GameMenu
     GameButton gameButton;
     
     AudioSystem *audioSystem;
+    SoundClip *sound;
+    
     irr::gui::IGUIButton *startButton;
     irr::gui::IGUIButton *quitButton;
     irr::gui::IGUIButton *creditsButton;

@@ -60,7 +60,7 @@ Game::Game(unsigned int runMode)
     
     // Create the audio system
     this->audioSystem = new AudioSystem();
-    this->audioSystem->playMusicLoop("assets/sounds/yumyum.ogg");
+    //this->audioSystem->playMusicLoop("assets/sounds/yumyum.ogg");
 
     // start the main menu (initial phase)
     gameState = BORBIE_MAIN_MENU_STATE;
@@ -78,9 +78,7 @@ Game::~Game()
 
 // loads the main menu
 void Game::loadMainMenuState(){
-  this->audioSystem->playMusicLoop("assets/sounds/wind.wav");
     this->gameMenu = new GameMenu(guienv, driver, audioSystem);
-    this->audioSystem->setMusicVolume(1.0);
 }
 
 
@@ -89,7 +87,7 @@ void Game::loadGameState(){
     this->gameInstance = new GameInstance(
         this->smgr, this->guienv, this->driver, this->device,
 		this->audioSystem, this->runMode, this->receiver);
-    this->audioSystem->setMusicVolume(0.5);
+//    this->audioSystem->setMusicVolume(0.5);
 }
 
 GameState Game::getGameState(void)

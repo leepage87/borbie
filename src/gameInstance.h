@@ -46,7 +46,9 @@ enum WorldState {
 // GameInstance class:
 class GameInstance {
   private:
- 	// irrlicht renderer pointers
+ 	
+    
+    // irrlicht renderer pointers
     irr::scene::ISceneManager *smgr;
 		irr::scene::ICameraSceneNode *camera;
     irr::gui::IGUIEnvironment *guienv;
@@ -69,6 +71,7 @@ class GameInstance {
 	
 	// game objects (e.g. terrain, GUI, etc.)
 	AudioSystem *audioSystem;
+  SoundClip *bgSound;
 	Terrain *terrain;
 	Sky *skybox;
 	WorldLight *light;

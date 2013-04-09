@@ -11,7 +11,11 @@ GameMenu::GameMenu(IGUIEnvironment *guienv, IVideoDriver *driver, AudioSystem *a
   this->driver=driver;
   this->skin= guienv->getSkin();
   this->audioSystem = audioSystem;
-
+    this->sound = audioSystem->createSound2d("assets/sounds/wind.wav");
+  
+  audioSystem->playMusicLoop(sound);
+  audioSystem->setMusicVolume(1);
+  
   //create some buttons!
   startButton = guienv->addButton(rect<s32>(10,240,110,240 + 32), 0, NEW_GAME, L"", L"starts a new game");
   quitButton = guienv->addButton(rect<s32>(10,240,110,240 + 32), 0, QUIT, L"", L"Running Away!?");
@@ -23,6 +27,7 @@ GameMenu::GameMenu(IGUIEnvironment *guienv, IVideoDriver *driver, AudioSystem *a
 
 GameMenu::~GameMenu()
 {
+  sound->release();
   guienv->clear();
 }
 

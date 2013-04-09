@@ -32,8 +32,11 @@ GameInstance::GameInstance(
 	this->device = device;
 	this->audioSystem = audioSystem;
 	this->receiver = receiver;
-	
-	// setup global collision meta selector
+  this->bgSound = audioSystem->createSound2d("assets/sounds/yumyum.ogg");
+  
+  audioSystem->playMusicLoop(bgSound); 
+  audioSystem->setMusicVolume(0.3);
+  // setup global collision meta selector
 	this->metaTriSelector = smgr->createMetaTriangleSelector();
 
 
@@ -170,7 +173,8 @@ GameInstance::GameInstance(
 // destructor: removes all objects from memory and ensures that the scene
 //  manager is completely wiped clean of all Irrlicht objects.
 GameInstance::~GameInstance(){
-    delete this->terrain;
+  bgSound->release();  
+  delete this->terrain;
 	delete this->skybox;
 	delete this->light;
 	delete this->buildings;

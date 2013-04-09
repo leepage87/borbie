@@ -49,9 +49,9 @@ AudioSystem::AudioSystem(){
     //system->set3DSettings(1.0f, 10000.0f, 1.0f);
     
     // TODO: remove
-    playSound3d(
-        "assets/sounds/yumyum.ogg",
-        irr::core::vector3df(10000/100.0, 516/100.0, 4450/100.0));
+    //playSound3d(
+    ////    "assets/sounds/yumyum.ogg",
+    ////    irr::core::vector3df(10000/100.0, 516/100.0, 4450/100.0));
 }
 
 
@@ -148,7 +148,7 @@ void AudioSystem::playMusic(FMOD::Sound *musicSound, bool looped){
 // RETURNS: SoundClip / FMOD::Sound object pointer if successful;
 //  returns 0 (NULL pointer) if something went wrong).
 SoundClip* AudioSystem::playMusic(const char *file, bool looped){
-    return 0; // TODO: stop returning
+    //return 0; // TODO: stop returning
     FMOD_RESULT result;
     
     // create the sound from the given file path
