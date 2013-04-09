@@ -36,6 +36,7 @@ class GameObject {
 	
 	// explosion variables
 	irr::scene::IParticleSystemSceneNode *explosionParticleSystem;
+	irr::scene::IParticleSystemSceneNode *explosionParticleSystemLarge;
 	irr::u32 explosionStopTime;
 	
 	// object variables

@@ -33,6 +33,7 @@ GameObject::GameObject(
 	this->device = device;
 	
 	this->explosionParticleSystem = 0;
+	this->explosionParticleSystemLarge = 0;
 	
 	// ensure that internal node pointer is null
 	this->sceneNode = 0;
@@ -92,6 +93,7 @@ bool GameObject::updateTimer(){
         this->device->getTimer()->getTime() >= this->explosionStopTime)
     {
         this->explosionParticleSystem->setEmitter(0);
+				this->explosionParticleSystemLarge->setEmitter(0);
         return true;
     }
     return false;
@@ -101,14 +103,19 @@ bool GameObject::updateTimer(){
 //	effect node animating the explosion effect in its current position.
 void GameObject::explode(){
     // if an explosion already happened, remove it first
-	if(this->explosionParticleSystem)
+	if(this->explosionParticleSystem){
 	    this->explosionParticleSystem->remove();
+			this->explosionParticleSystemLarge->remove();
+	}
 	
 	// add a new explosion particle system
     this->explosionParticleSystem =
 		this->smgr->addParticleSystemSceneNode(false);
+
+		this->explosionParticleSystemLarge =
+		this->smgr->addParticleSystemSceneNode(false);
 	
-	// add the explosion emitter to the explosion particle system
+	// add the explosion emitter to the explosion particle system (pink sparkles)
 	IParticleEmitter *explosionEmitter =
 	    this->explosionParticleSystem->createBoxEmitter(
 		    aabbox3d<f32>(-5, 0, -5, 5, 1, 5),  // emitter size
@@ -121,13 +128,13 @@ void GameObject::explode(){
 		    dimension2df(30.0f, 30.0f),         // min start size
 		    dimension2df(50.0f, 50.0f));        // max start size
 	this->explosionParticleSystem->setEmitter(explosionEmitter);
-	explosionEmitter->drop();
+	//explosionEmitter->drop();
 	
 	// add fade-out affector to the fire particle system
 	IParticleAffector* explosionFadeOutAffector =
 	    explosionParticleSystem->createFadeOutParticleAffector();
 	this->explosionParticleSystem->addAffector(explosionFadeOutAffector);
-	explosionFadeOutAffector->drop();
+	//explosionFadeOutAffector->drop();
 	
 	// customize the fire particle system positioning, etc.
 	this->explosionParticleSystem->setPosition(this->sceneNode->getPosition());
@@ -135,8 +142,38 @@ void GameObject::explode(){
 	this->explosionParticleSystem->setMaterialFlag(EMF_LIGHTING, false);
 	this->explosionParticleSystem->setMaterialFlag(EMF_ZWRITE_ENABLE, false);
 	this->explosionParticleSystem->setMaterialTexture(0,
-	    this->driver->getTexture("assets/textures/pinkfire.bmp")); // fire colored
+	this->driver->getTexture("assets/textures/pinkfire.bmp")); // fire colored
 	this->explosionParticleSystem->setMaterialType(EMT_TRANSPARENT_ADD_COLOR);
+
+//configure the large fireballs
+	explosionEmitter =
+	    this->explosionParticleSystemLarge->createBoxEmitter(
+		    aabbox3d<f32>(-5, 0, -5, 5, 1, 5),  // emitter size
+		    vector3df(0.0f,0.5f,0.0f),          // direction + speed
+		    300, 700,                       // min,max particles per second
+		    SColor(0,255,255,255),              // darkest color
+		    SColor(0,255,255,255),              // brightest color
+		    200, 1000,                          // min, max particle lifetime
+		    360,                                // max angle degrees
+		    dimension2df(400.0f, 400.0f),         // min start size
+		    dimension2df(700.0f, 700.0f));        // max start size
+	this->explosionParticleSystemLarge->setEmitter(explosionEmitter);
+	explosionEmitter->drop();
+	
+	// add fade-out affector to the fire particle system
+	/*explosionFadeOutAffector =
+	    explosionParticleSystemLarge->createFadeOutParticleAffector();*/
+	this->explosionParticleSystemLarge->addAffector(explosionFadeOutAffector);
+	explosionFadeOutAffector->drop();
+	
+	// customize the fire particle system positioning, etc.
+	this->explosionParticleSystemLarge->setPosition(this->sceneNode->getPosition());
+	this->explosionParticleSystemLarge->setScale(vector3df(45, 45, 45));
+	this->explosionParticleSystemLarge->setMaterialFlag(EMF_LIGHTING, false);
+	this->explosionParticleSystemLarge->setMaterialFlag(EMF_ZWRITE_ENABLE, false);
+	this->explosionParticleSystemLarge->setMaterialTexture(0,
+	this->driver->getTexture("assets/textures/fire.bmp")); // fire colored
+	this->explosionParticleSystemLarge->setMaterialType(EMT_TRANSPARENT_ADD_COLOR);
 	
 	// run this explosion for the predefined number of miliseconds.
 	this->explosionStopTime = this->device->getTimer()->getTime() + 75;
