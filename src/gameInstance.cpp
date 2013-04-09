@@ -215,7 +215,7 @@ void GameInstance::setWorldState_wrecked(){
 	    this->rainParticleSystem->createBoxEmitter(
 		    aabbox3d<f32>(-100, 0, -100, 100, 100, 100),  // emitter size
 		    vector3df(0.0f, -1.0f, 0.0f),          // direction + speed
-		    4000, 7500,                       // min,max particles per second
+		    3000, 5000,                       // min,max particles per second
 		    SColor(0,255,255,255),              // darkest color
 		    SColor(0,255,255,255),              // brightest color
 		    500, 1500,                       // min, max particle lifetime
@@ -354,6 +354,7 @@ void GameInstance::updateThrownObject(){
 			    carriedVehicle->getNode()->setVisible(false);
 			    //TODO: DELETE VEHICLE FROM VECTOR	
 		    }
+			
 			// clean up temporaries (make we can pick up more vehicles)
 			vehicleThrown = false;
 			carriedVehicle = 0;
