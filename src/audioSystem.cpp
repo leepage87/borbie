@@ -223,6 +223,45 @@ void AudioSystem::setMusicVolume(float volume){
 
 
 
+/*** 2D SOUND CONTROL METHODS ***/
+void AudioSystem::playSound2d(SoundClip *sound, float volume){
+    FMOD_RESULT result;
+    
+    // set looped to off (no loop!)
+    result = sound->setMode(FMOD_LOOP_OFF);
+    if(result != FMOD_OK)
+        std::cout << "FMOD ERROR: 2dsetMode (sound) failed." << std::endl;
+    
+    // attempt to play the sound file in a new sound channel.
+    FMOD::Channel *soundChannel;
+    result = system->playSound(FMOD_CHANNEL_FREE, sound, 0,
+        &soundChannel);
+    if(result != FMOD_OK)
+        std::cout << "FMOD ERROR: 2dplaySound failed." << std::endl;
+    
+    // make sure volume is in the correct range
+    if(volume < 0.0)
+        volume = 0.0;
+    else if(volume > 1.0)
+        volume = 1.0;
+    // set the volume on the sound's channel
+    result = soundChannel->setVolume(volume);
+    if(result != FMOD_OK)
+        std::cout << "FMOD ERROR: 2dsetVolume failed." << std::endl;
+    
+    // update FMOD system
+    this->system->update();
+}
+
+SoundClip* AudioSystem::playSound2d(const char *file, float volume){
+    FMOD::Sound *sound = this->createSound2d(file);
+    this->playSound2d(sound, volume);
+    
+    return sound;
+}
+
+
+
 /*** 3D SOUND CONTROL METHODS ***/
 
 // Attempts to play the given sound file in 3D space given by the Irrlicht

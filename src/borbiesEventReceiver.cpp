@@ -3,15 +3,18 @@
 #include "gameMenu.h"
 
 #include <iostream>
+  
 
 bool BorbiesEventReceiver::OnEvent(const irr::SEvent& event){
-
 
   //MENU EVENTS
   if(game)
   {
+    SoundClip *mm = audioSystem->createSound2d("assets/sounds/menuMouseOver.wav");
+    
     if(game->getGameState() == BORBIE_MAIN_MENU_STATE)
     {
+    
       if(event.EventType == irr::EET_GUI_EVENT)
       {
         irr::s32 id = event.GUIEvent.Caller->getID();
@@ -35,6 +38,14 @@ bool BorbiesEventReceiver::OnEvent(const irr::SEvent& event){
               default:
                 std::cout<<"Unimplemented Button Pressed"<<std::endl; 
                 break;
+            }
+          case irr::gui::EGBS_BUTTON_MOUSE_OVER:
+            switch(id)
+            {
+              default:
+                if(mm)
+                audioSystem->playSound2d(mm);
+               
             }
         }
       }    

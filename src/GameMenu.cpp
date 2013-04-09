@@ -33,9 +33,7 @@ GameMenu::~GameMenu()
 
 void GameMenu::update()
 {
-     
   drawMenu();
-  
 }
 
 GameButton GameMenu::getGameButton(void)
@@ -45,7 +43,6 @@ GameButton GameMenu::getGameButton(void)
 
 void GameMenu::drawMenu()
 {
-
   //set the positions of the buttons
   startButton->setRelativePosition(rect<s32>(20, 20, 660, 70));
   startButton->setImage(driver->getTexture("assets/textures/buttons/NEW_GAME.png"));
@@ -64,5 +61,4 @@ void GameMenu::drawMenu()
   creditsButton->setDrawBorder(0);
   creditsButton->setImage(driver->getTexture("assets/textures/buttons/CREDITS.png"));
   creditsButton->setUseAlphaChannel(true);  
-
  }

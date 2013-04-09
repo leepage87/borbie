@@ -43,9 +43,11 @@ Game::Game(unsigned int runMode)
             true,                       // Stencil buffer
             false,                      // Vsync
             receiver);                  // Pointer to IEventReceiver
+    // Create the audio system
+    this->audioSystem = new AudioSystem();
 
     // set the event receiver's device pointer to the current device.
-    ((BorbiesEventReceiver *)receiver)->setDevice(device, this);
+    ((BorbiesEventReceiver *)receiver)->setDevice(device, this, audioSystem);
 
     device->setWindowCaption(L"Borbie's Big Adventure: LET'S HIT THE TOWN!");
 
@@ -58,8 +60,6 @@ Game::Game(unsigned int runMode)
     
     g_device = device;
     
-    // Create the audio system
-    this->audioSystem = new AudioSystem();
     //this->audioSystem->playMusicLoop("assets/sounds/yumyum.ogg");
 
     // start the main menu (initial phase)

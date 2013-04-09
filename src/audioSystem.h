@@ -139,6 +139,10 @@ class AudioSystem {
     
     
     // 2D Sound Functions - plays once, then channel is gone
+    SoundClip* playSound2d(const char *file,
+        float volume = 1.0f);
+    void playSound2d(SoundClip *sound,
+        float volume = 1.0f);
     
     // auto-tracking 3D objects "following" Irrlicht nodes
     
