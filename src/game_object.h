@@ -41,7 +41,7 @@ class GameObject {
 	// object variables
 	int health;
 	int explosionRadius;
-	bool pickUp;
+	bool pickUp; // TODO - is this used?
 
 
   public:
@@ -62,11 +62,14 @@ class GameObject {
 	virtual void setHealth(int newHealth);
 	virtual void setExplosionRadius(int newRadius);
 	
-	// Causes this object to explode, making it vanish, and return a particle
-	//	effect node animating the explosion effect in its current position.
+	// Causes this object to explode, creating a particle effect around it.
+	//  For the explosion to fade out, it is necessary to call update() each
+	//  frame until update() returns true (implying explosion is finished).
+	// TODO: object should also disappear here (be set to visible)
 	virtual void explode();
 	
 	// updates the object's animation/effects timer
+	// TODO: perhaps change name to just update() - maybe
 	virtual bool updateTimer();
 	
 	
