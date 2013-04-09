@@ -340,6 +340,7 @@ void GameInstance::updateSelector(){
 		    carriedVehicle->getNode(), // node to be affected (node of vehicle)
 		    core::vector3df(10, 10, 10), // radius
 		    //core::vector3df(0, GLOBAL_GRAVITY, 0), // gravity (-y = down)
+		    // TODO - swap thrown destination w/ timer
             core::vector3df(0, 0, 0)); // gravity (-y = down)
 	    carriedVehicle->getNode()->addAnimator(collisionAnimator);
 	    collisionAnimator->drop();
@@ -357,12 +358,34 @@ void GameInstance::updateThrownObject(){
 	// check if a carried vehicle exists and it has been thrown:
 	if (carriedVehicle != 0 && vehicleThrown){
 	
-	    // yup -- seriously, Irrlicht.
-	    bool collided = false;
+	    // yup -- seriously, Irrlicht. I hate Irrlicht.
+	    // I hate Irrlicht. I hate Irrlicht. I hate Irrlicht. I hate Irrlicht.
+	    // I hate Irrlicht. I hate Irrlicht. I hate Irrlicht. I hate Irrlicht.
+	    // I hate Irrlicht. I hate Irrlicht. I hate Irrlicht. I hate Irrlicht.
+	    // I hate Irrlicht. I hate Irrlicht. I hate Irrlicht. I hate Irrlicht.
+	    // I hate Irrlicht. I hate Irrlicht. I hate Irrlicht. I hate Irrlicht.
+	    // I hate Irrlicht. I hate Irrlicht. I hate Irrlicht. I hate Irrlicht.
+	    // I hate Irrlicht. I hate Irrlicht. I hate Irrlicht. I hate Irrlicht.
+	    // I hate Irrlicht. I hate Irrlicht. I hate Irrlicht. I hate Irrlicht.
+	    // I fate Irrlicht. I uate Irrlicht. I cate Irrlicht. I kate Irrlicht.
+	    // I hate Irrlicht. I hate Irrlicht. I hate Irrlicht. I hate Irrlicht.
+	    // I hate Irrlicht. I hate Irrlicht. I hate Irrlicht. I hate Irrlicht.
+	    // I hate Irrlicht. I hate Irrlicht. I hate Irrlicht. I hate Irrlicht.
+	    // I hate Irrlicht. I hate Irrlicht. I hate Irrlicht. I hate Irrlicht.
+	    // I hate Irrlicht. I hate Irrlicht. I hate Irrlicht. I hate Irrlicht.
+	    // I hate Irrlicht. I hate Irrlicht. I hate Irrlicht. I hate Irrlicht.
+	    // I hate Irrlicht. I hate Irrlicht. I hate Irrlicht. I hate Irrlicht.
+	    // I hate Irrlicht. I hate Irrlicht. I hate Irrlicht. I hate Irrlicht.
+	    // I hate Irrlicht. I hate Irrlicht. I hate Irrlicht. I hate Irrlicht.
 	    core::list<ISceneNodeAnimator *> mylist
 	        = carriedVehicle->getNode()-> getAnimators();
 	    ISceneNodeAnimator *an = *(mylist.begin()+1);
-        collided = ((ISceneNodeAnimatorCollisionResponse *)an)->collisionOccurred();
+	    // TODO: potential segfault if pointer isn't perfectly typed, but
+	    //  at this point the only other possible solution would be to re-implement
+	    //  the entire collision system. On the other hand, it's probably easier
+	    //  and less time consuming to just create your own collision system
+	    //  from scratch then dealing with this pile of useless crap (Irrlicht).
+        bool collided = ((ISceneNodeAnimatorCollisionResponse *)an)->collisionOccurred();
         //std::cout << mylist.size() << std::endl;
 	    /*if(collided) {
 	        std::cout << "Collision detected" << std::endl;
