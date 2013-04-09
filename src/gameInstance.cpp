@@ -320,8 +320,8 @@ void GameInstance::updateSelector(){
 	if (!carriedVehicle && ((BorbiesEventReceiver *)receiver)->isRightMouseDown()){
 	    VehicleInstance * vehicle = vehicles->getVehicle(highlightedSceneNode);
 	    if(vehicle) { // if vehicle was in fact selected, pick it up
-	        carriedVehicle = vehicle;
-	        objCarry->pickUp(highlightedSceneNode);
+	        carriedVehicle = vehicle; // VehicleInstance* (carriedVehicle)
+	        objCarry->pickUp(highlightedSceneNode); // ISceneNode* (highlighted)
 	    }
 	}
     
@@ -332,6 +332,17 @@ void GameInstance::updateSelector(){
 	{
 		this->targetPos = objCarry->throwObj();
 		vehicleThrown = true;
+	        
+        this->removeCollision(carriedVehicle->getNode()->getTriangleSelector());
+        ISceneNodeAnimator* collisionAnimator =
+		this->smgr->createCollisionResponseAnimator(
+		    this->metaTriSelector, // global meta triangle selector
+		    carriedVehicle->getNode(), // node to be affected (node of vehicle)
+		    core::vector3df(10, 10, 10), // radius
+		    //core::vector3df(0, GLOBAL_GRAVITY, 0), // gravity (-y = down)
+            core::vector3df(0, 0, 0)); // gravity (-y = down)
+	    carriedVehicle->getNode()->addAnimator(collisionAnimator);
+	    collisionAnimator->drop();
 	}
 	
 	// update thrownObject (checks if vehicles need to be thrown)
@@ -345,15 +356,25 @@ void GameInstance::updateSelector(){
 void GameInstance::updateThrownObject(){
 	// check if a carried vehicle exists and it has been thrown:
 	if (carriedVehicle != 0 && vehicleThrown){
+	
+	    // yup -- seriously, Irrlicht.
+	    bool collided = false;
+	    core::list<ISceneNodeAnimator *> mylist
+	        = carriedVehicle->getNode()-> getAnimators();
+	    ISceneNodeAnimator *an = *(mylist.begin()+1);
+        collided = ((ISceneNodeAnimatorCollisionResponse *)an)->collisionOccurred();
+        //std::cout << mylist.size() << std::endl;
+	    /*if(collided) {
+	        std::cout << "Collision detected" << std::endl;
+	    }*/
+	    
 	    // check if said thrown vehicle reached its destination:
-		if(targetPos == carriedVehicle->getNode()->getPosition()){
+		if(targetPos == carriedVehicle->getNode()->getPosition() || collided){
 		    // blow it up
-			if(carriedVehicle){
-			    carriedVehicle->explode();
-			    this->updateList.push_back(carriedVehicle);
-			    carriedVehicle->getNode()->setVisible(false);
-			    //TODO: DELETE VEHICLE FROM VECTOR	
-		    }
+			carriedVehicle->explode();
+			this->updateList.push_back(carriedVehicle);
+			carriedVehicle->getNode()->setVisible(false);
+		    //TODO: DELETE VEHICLE FROM VECTOR
 			// clean up temporaries (make we can pick up more vehicles)
 			vehicleThrown = false;
 			carriedVehicle = 0;

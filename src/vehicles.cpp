@@ -8,6 +8,7 @@
  */
 
 #include "vehicles.h"
+#include "gameInstance.h"
 
 // include cpp library headers for random number generation
 #include <stdlib.h>     /* srand, rand */
@@ -77,7 +78,7 @@ void Vehicles::makeVehicle(int modelIndex,
 	VehicleInstance *newVehicle
 		= new VehicleInstance(
 			this->smgr, this->driver, this->device,
-			xPos, yPos, zPos, mesh, modelIndex
+			xPos, yPos+250, zPos, mesh, modelIndex
 		);
 	
 	newVehicle->applyCollision(this->metaTriSelector);
@@ -89,7 +90,7 @@ void Vehicles::makeVehicle(int modelIndex,
 bool Vehicles::isVehicle(ISceneNode* pointer){
 	for(std::vector<VehicleInstance *>::iterator it = vehicleList.begin();
 		it != vehicleList.end(); ++it){
-		if ((*it)->getNode() == pointer)//its a vehicle
+		if ((*it)->getNode() == pointer) //it's a vehicle
 			return true;		
 	}
 		return false;		
@@ -98,10 +99,8 @@ bool Vehicles::isVehicle(ISceneNode* pointer){
 VehicleInstance* Vehicles::getVehicle(irr::scene::ISceneNode* pointer){
 	for(std::vector<VehicleInstance *>::iterator it = vehicleList.begin();
 		it != vehicleList.end(); ++it){
-		if ((*it)->getNode() == pointer) {//its a vehicle
-		    std::cout << "about to return" << std::endl;
+		if ((*it)->getNode() == pointer) // it's a vehicle
 			return *it;
-	    }
 	}
 		return 0;
 }
