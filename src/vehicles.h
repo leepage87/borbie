@@ -18,6 +18,7 @@
 #include <irrlicht.h>
 
 // include building header
+#include "objectList.h"
 #include "vehicleInstance.h"
 
 
@@ -28,19 +29,10 @@ enum VehicleTypes {
 
 
 // Buildings class:
-class Vehicles {
+class Vehicles : public ObjectList {
 
   private:
-    // references to the Irrlicht scene objects (to make building nodes)
-	irr::scene::ISceneManager *smgr;
-	irr::video::IVideoDriver *driver;
-	irr::IrrlichtDevice *device;
-	irr::scene::IMetaTriangleSelector *metaTriSelector;
-	
-	// list of vehs
-	std::vector<VehicleInstance *> vehicleList;
-	
-	// list of vehicle models
+    // list of vehicle models
 	std::vector<const char *> modelList;
 	
 	// vehicle construction functions
@@ -53,12 +45,8 @@ class Vehicles {
 		irr::video::IVideoDriver *driver,
 		irr::IrrlichtDevice *device,
 		irr::scene::IMetaTriangleSelector *metaTriSelector);
-	~Vehicles();
 	
 	void addRandomVehicle(float xPos, float yPos, float zPos);
-
-	bool isVehicle(irr::scene::ISceneNode* pointer);
-	VehicleInstance* getVehicle(irr::scene::ISceneNode* pointer); //returns 0 if not found
 	
 }; // end of Vehicles class
 

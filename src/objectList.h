@@ -29,16 +29,16 @@ class ObjectList {
   public:
 	// constructor: initializes a vector to hold each object's pointer
 	ObjectList(	irr::scene::ISceneManager *smgr,
-	irr::video::IVideoDriver *driver,
-	irr::IrrlichtDevice *device,
-	irr::scene::IMetaTriangleSelector *metaTriSelector);
+        irr::video::IVideoDriver *driver,
+        irr::IrrlichtDevice *device,
+        irr::scene::IMetaTriangleSelector *metaTriSelector);
 	// destructor: automatically removes the node from the scene.
 	~ObjectList();
 	
 	//takes a scene node pointer, finds it in the list, and returns the object
-	GameObject* getObject(irr::scene::ISceneNode* pointer);
-	void deleteObject(irr::scene::ISceneNode* pointer);
-	void addObject(GameObject* object);
+	virtual GameObject* getObject(irr::scene::ISceneNode* pointer);
+	virtual void deleteObject(irr::scene::ISceneNode* pointer);
+	virtual void addObject(GameObject* object);
 	
 }; // end of ObjectList class
 

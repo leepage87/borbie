@@ -330,7 +330,8 @@ void GameInstance::updateSelector(){
 	//  pressed, check if we're currently targetting (highlighting) a vehicle.
 	//  If so, then pick it up.
 	if (!carriedVehicle && ((BorbiesEventReceiver *)receiver)->isRightMouseDown()){
-	    VehicleInstance * vehicle = vehicles->getVehicle(highlightedSceneNode);
+	    VehicleInstance * vehicle =
+	        (VehicleInstance *)(vehicles->getObject(highlightedSceneNode));
 	    if(vehicle) { // if vehicle was in fact selected, pick it up
 	        carriedVehicle = vehicle; // VehicleInstance* (carriedVehicle)
 	        objCarry->pickUp(highlightedSceneNode); // ISceneNode* (highlighted)

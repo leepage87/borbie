@@ -26,15 +26,10 @@ Vehicles::Vehicles(
 	IVideoDriver *driver,
 	IrrlichtDevice *device,
 	IMetaTriangleSelector *metaTriSelector)
+	: ObjectList(smgr, driver, device, metaTriSelector)//passing these to supah constructah
 {
-    // remember pointers to necessary Irrlicht objects
-	this->smgr = smgr;
-	this->driver = driver;
-	this->device = device;
-	this->metaTriSelector = metaTriSelector;
-	
-	// seed the random number generator (using system time)
-	srand(time(NULL));
+    // seed the random number generator (using system time)
+	srand(time(NULL)); // TODO - do this elsewhere
 	
 	// populate the model list
 	//this->modelList.push_back("assets/models/vehicles/eclipse/2003eclipse.obj");
@@ -44,15 +39,6 @@ Vehicles::Vehicles(
 	//this->modelList.push_back("assets/models/vehicles/pigMobile/PoliceCar.3DS");
 	//this->modelList.push_back("assets/models/vehicles/lambo/Lamborghini.x");
 	this->modelList.push_back("assets/models/vehicles/riviera/car_riviera.obj");
-}
-
-// delete all of the vehicles
-Vehicles::~Vehicles(){
-	for(std::vector<VehicleInstance *>::iterator it = vehicleList.begin();
-		it != vehicleList.end(); ++it)
-	{
-		delete (*it);
-	}
 }
 
 
@@ -83,24 +69,5 @@ void Vehicles::makeVehicle(int modelIndex,
 	
 	newVehicle->applyCollision(this->metaTriSelector);
 	
-	this->vehicleList.push_back(newVehicle);
-}
-
-//determines if an object is a vehicle
-bool Vehicles::isVehicle(ISceneNode* pointer){
-	for(std::vector<VehicleInstance *>::iterator it = vehicleList.begin();
-		it != vehicleList.end(); ++it){
-		if ((*it)->getNode() == pointer) //it's a vehicle
-			return true;		
-	}
-		return false;		
-}
-
-VehicleInstance* Vehicles::getVehicle(irr::scene::ISceneNode* pointer){
-	for(std::vector<VehicleInstance *>::iterator it = vehicleList.begin();
-		it != vehicleList.end(); ++it){
-		if ((*it)->getNode() == pointer) // it's a vehicle
-			return *it;
-	}
-		return 0;
+	this->objList.push_back(newVehicle);
 }

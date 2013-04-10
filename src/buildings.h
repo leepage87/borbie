@@ -44,15 +44,6 @@ enum BuildingTypes {
 class Buildings : public ObjectList {
 
   private:
-    // references to the Irrlicht scene objects (to make building nodes)
-	/*irr::scene::ISceneManager *smgr;
-	irr::video::IVideoDriver *driver;
-	irr::IrrlichtDevice *device;
-	irr::scene::IMetaTriangleSelector *metaTriSelector;
-	
-	// list of buildings
-	std::vector<BuildingInstance *> buildingList;*/
-	
 	// list of building textures
 	std::vector<const char *> textureList;
 	

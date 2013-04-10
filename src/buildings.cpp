@@ -37,9 +37,8 @@ Buildings::Buildings(
 	IMetaTriangleSelector *metaTriSelector)
 	: ObjectList(smgr, driver, device, metaTriSelector)//passing these to supah constructah
 {
-	
 	// seed the random number generator (using system time)
-	srand(time(NULL));
+	srand(time(NULL)); // TODO - do this elsewhere
 	
 	// populate the texture list
 	this->textureList.push_back("assets/textures/buildings/building1.png");
