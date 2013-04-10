@@ -83,7 +83,7 @@ GameInstance::GameInstance(
 	const int ROAD_HEIGHT = 70;
 	const int farX = 20000.0f;
 	const int farY = 20000.0f;
-	//add vehicle(s)
+	//add vehicle(s) - TODO: add this functionality into the vehicles object
 	this->vehicles = new Vehicles(smgr, driver, device, metaTriSelector);
 	this->vehicles->addRandomVehicle(farX*.1953, ROAD_HEIGHT, farY*.2207);
     this->vehicles->addRandomVehicle(farX*.2453, ROAD_HEIGHT, farY*.2207);
@@ -159,7 +159,7 @@ GameInstance::GameInstance(
 	highlightedSceneNode = 0;
 
 	//create objectCarrier for picking shit up
-	objCarry = new ObjectCarrier(smgr, camera);
+	objCarry = new ObjectCarrier(smgr, device, camera);
 	//tell the mouse listener that right mouse isn't pressed to start with
 	((BorbiesEventReceiver *)receiver)->setRightMouse(false);
 	
@@ -265,7 +265,7 @@ void GameInstance::createRainParticleSystem(){
 	 this->smgr->addParticleSystemSceneNode(false);
 	
 	// customize the rain particle system positioning, etc.
-	// TODO - arbitrary centering over map terrain
+	// TODO - allow for arbitrary centering over map terrain
 	vector3df pos(10200, 1200, 10200); // center map, 1000 units high
 	this->rainParticleSystem->setPosition(pos);
 	this->rainParticleSystem->setScale(vector3df(104, 104, 104));
@@ -350,10 +350,9 @@ void GameInstance::updateSelector(){
 		this->smgr->createCollisionResponseAnimator(
 		    this->metaTriSelector, // global meta triangle selector
 		    carriedVehicle->getNode(), // node to be affected (node of vehicle)
-		    core::vector3df(100, 100, 100), // radius
+		    core::vector3df(100, 100, 100));//, // radius
 		    //core::vector3df(0, GLOBAL_GRAVITY, 0), // gravity (-y = down)
-		    // TODO - swap thrown destination w/ timer
-            core::vector3df(0, 0, 0)); // gravity (-y = down)
+            //core::vector3df(0, -1000, 0)); // gravity (-y = down)
 	    carriedVehicle->getNode()->addAnimator(collisionAnimator);
 	    collisionAnimator->drop();
 	}
@@ -369,50 +368,34 @@ void GameInstance::updateSelector(){
 void GameInstance::updateThrownObject(){
 	// check if a carried vehicle exists and it has been thrown:
 	if (carriedVehicle != 0 && vehicleThrown){
-	
-	    // yup -- seriously, Irrlicht. I hate Irrlicht.
-	    // I hate Irrlicht. I hate Irrlicht. I hate Irrlicht. I hate Irrlicht.
-	    // I hate Irrlicht. I hate Irrlicht. I hate Irrlicht. I hate Irrlicht.
-	    // I hate Irrlicht. I hate Irrlicht. I hate Irrlicht. I hate Irrlicht.
-	    // I hate Irrlicht. I hate Irrlicht. I hate Irrlicht. I hate Irrlicht.
-	    // I hate Irrlicht. I hate Irrlicht. I hate Irrlicht. I hate Irrlicht.
-	    // I hate Irrlicht. I hate Irrlicht. I hate Irrlicht. I hate Irrlicht.
-	    // I hate Irrlicht. I hate Irrlicht. I hate Irrlicht. I hate Irrlicht.
-	    // I hate Irrlicht. I hate Irrlicht. I hate Irrlicht. I hate Irrlicht.
-	    // I fate Irrlicht. I uate Irrlicht. I cate Irrlicht. I kate Irrlicht.
-	    // I hate Irrlicht. I hate Irrlicht. I hate Irrlicht. I hate Irrlicht.
-	    // I hate Irrlicht. I hate Irrlicht. I hate Irrlicht. I hate Irrlicht.
-	    // I hate Irrlicht. I hate Irrlicht. I hate Irrlicht. I hate Irrlicht.
-	    // I hate Irrlicht. I hate Irrlicht. I hate Irrlicht. I hate Irrlicht.
-	    // I hate Irrlicht. I hate Irrlicht. I hate Irrlicht. I hate Irrlicht.
-	    // I hate Irrlicht. I hate Irrlicht. I hate Irrlicht. I hate Irrlicht.
-	    // I hate Irrlicht. I hate Irrlicht. I hate Irrlicht. I hate Irrlicht.
-	    // I hate Irrlicht. I hate Irrlicht. I hate Irrlicht. I hate Irrlicht.
-	    // I hate Irrlicht. I hate Irrlicht. I hate Irrlicht. I hate Irrlicht.
-	    core::list<ISceneNodeAnimator *> mylist
-	        = carriedVehicle->getNode()-> getAnimators();
-	    ISceneNodeAnimator *an = *(mylist.begin()+1);
+	    ISceneNode *vehicleNode = carriedVehicle->getNode();
+	    // yup -- seriously. I hate Irrlicht.
+	    core::list<ISceneNodeAnimator *> animators = vehicleNode->getAnimators();
+	    ISceneNodeAnimator *collisionAnimator = *(animators.begin()+1);
 	    // TODO: potential segfault if pointer isn't perfectly typed, but
 	    //  at this point the only other possible solution would be to re-implement
 	    //  the entire collision system. On the other hand, it's probably easier
 	    //  and less time consuming to just create your own collision system
 	    //  from scratch then dealing with this pile of useless crap (Irrlicht).
-        bool collided = ((ISceneNodeAnimatorCollisionResponse *)an)->collisionOccurred();
-        //std::cout << mylist.size() << std::endl;
-	    /*if(collided) {
-	        std::cout << "Collision detected" << std::endl;
-	    }*/
+	    // True, they make excuses that Irrlicht is only a graphics engine - but
+	    //  it sucks at that too, so really, it's good for absolutely nothing.
+        bool collided = ((ISceneNodeAnimatorCollisionResponse *)collisionAnimator)
+            ->collisionOccurred();
+        
+        // to ensure object doesn't go below the ground, explode it automatically
+        //  if its y-position is lower than the ground:
+        if(vehicleNode->getPosition().Y < -50){ // TODO - tweak this value
+            collided = true;
+            std::cout << "Thrown object went underground: "
+                << vehicleNode->getPosition().Y << std::endl;
+	    }
 	    
-	    // check if said thrown vehicle reached its destination:
-	    // TODO -- instead of
-	    //  targetPos == carriedVehicle->getNode()->getPosition()
-	    // do
-	    //  carriedVehicle->timerDone() (synchronize with a timer)
-		if(targetPos == carriedVehicle->getNode()->getPosition() || collided){
+	    // check if thrown vehicle flew far enough or collided with something
+		if(collided || this->objCarry->objectDoneFlying()){
 		    // blow it up
 			carriedVehicle->explode();
 			this->updateList.push_back(carriedVehicle);
-			carriedVehicle->getNode()->setVisible(false);
+			vehicleNode->setVisible(false);
 		    //TODO: DELETE VEHICLE FROM VECTOR
 
 			// clean up temporaries (make we can pick up more vehicles)

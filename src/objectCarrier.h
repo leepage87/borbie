@@ -15,16 +15,32 @@
 
 // ObjectCarrier class:
 class ObjectCarrier {
-	public:
+  private:
 	irr::scene::ICameraSceneNode *camera;
 	irr::scene::ISceneManager *smgr;
 	irr::scene::ISceneNode *selected;
 
-  //public:
-	ObjectCarrier(irr::scene::ISceneManager *smgr, irr::scene::ICameraSceneNode *camera);
+    // timer values: count time since an object was thrown
+	irr::ITimer *timer;
+    unsigned int timerStopTime;
+    
+    
+  public:
+    // constructor: keep track of Irrlicht object pointers
+	ObjectCarrier(irr::scene::ISceneManager *smgr,
+	              irr::IrrlichtDevice *device,
+	              irr::scene::ICameraSceneNode *camera);
 	
+	// "pick up", or keep track of, the given scene node
 	void pickUp(irr::scene::ISceneNode *selected);
+	
+	// throw the object: set the target destination and throw it
 	irr::core::vector3df throwObj();
+	
+	// returns TRUE if the last object recently thrown has been flying
+	//  for the pre-determined constant amount of flight-time.
+	bool objectDoneFlying();
+	
 }; // end of ObjectCarrier class
 
 

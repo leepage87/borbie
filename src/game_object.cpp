@@ -110,16 +110,17 @@ bool GameObject::hasExploded(){
     return this->hasBeenExploded;
 }
 
+
 // Causes this object to explode, making it vanish, and return a particle
 //	effect node animating the explosion effect in its current position.
 void GameObject::explode(){
     // TODO - fix this code up
 
-    // if an explosion already happened, remove it first
-	if(this->explosionParticleSystem){
-	    this->explosionParticleSystem->remove();
-			this->explosionParticleSystemLarge->remove();
-	}
+    // if an explosion already happened, remove the old particle systems first
+    if(this->explosionParticleSystem)
+        this->explosionParticleSystem->remove();
+    if(this->explosionParticleSystemLarge)
+        this->explosionParticleSystemLarge->remove();
 	
 	// add a new explosion particle system
     this->explosionParticleSystem =

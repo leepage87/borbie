@@ -11,14 +11,29 @@ using namespace scene;
 using namespace core;
 
 const f32 RAY_LENGTH_IN_UNITS = 350.0f;
+
+// constant: how long a thrown object will fly until it explodes
+//  (it will explode sooner if it collides with something first)
+const f32 TIME_TO_FLY = 1000.0f;
+
 //TODO: initialize this in gameInstance and pass it to the event receiver, pass in smgr and camera
 //constructor:
 //sets sceneManager and camera
-ObjectCarrier::ObjectCarrier(irr::scene::ISceneManager *_smgr, irr::scene::ICameraSceneNode *_camera){
+ObjectCarrier::ObjectCarrier(
+    irr::scene::ISceneManager *_smgr,
+    irr::IrrlichtDevice *_device,
+    irr::scene::ICameraSceneNode *_camera)
+{
 	this->smgr = _smgr;
 	this->camera = _camera;
 	this->selected = 0;
+	
+	this->timer = _device->getTimer();
+	this->timerStopTime = 0;
 }
+
+
+// pick up an object: keep track of its node pointer.
 void ObjectCarrier::pickUp(irr::scene::ISceneNode *selected) {
 	this->selected = selected;
 	
@@ -29,18 +44,32 @@ void ObjectCarrier::pickUp(irr::scene::ISceneNode *selected) {
 //irrtests src main line 106
 }
 
+
+// throw the object that is currently selected (picked up), if any
 vector3df ObjectCarrier::throwObj(){
-		selected->setParent(smgr->getRootSceneNode());//removes camera as parent
-		vector3df targetPos = camera->getTarget();
-		ISceneNodeAnimator *flyAnimator =
-		    smgr->createFlyStraightAnimator(camera->getPosition(),
-							targetPos, 1000, false);
-		selected->addAnimator(flyAnimator);
-		flyAnimator->drop();
-		//explodeObj(targetPos);
-		selected = 0;
-		return targetPos;
+    if(!selected) // if nothing is selected, return an empty vector and do nothing
+        return vector3df(0,0,0);
+
+    // send the selected object flying straight out towards the camera's target
+    selected->setParent(smgr->getRootSceneNode()); //removes camera as parent
+    vector3df targetPos = camera->getTarget();
+    ISceneNodeAnimator *flyAnimator =
+        smgr->createFlyStraightAnimator(camera->getPosition(),
+        targetPos, TIME_TO_FLY, false);
+    selected->addAnimator(flyAnimator);
+    flyAnimator->drop();
+    selected = 0;
+    
+    // update timer stop time to current time plus TIME_TO_FLY
+    this->timerStopTime = this->timer->getTime() + TIME_TO_FLY;
+    
+    // return the target position of the object's destination
+    return targetPos;
 }
 
 
-
+// returns TRUE if the thrown object (if any) is done flying. Does not
+//  return valid information if no object has yet been thrown.
+bool ObjectCarrier::objectDoneFlying(){
+    return (this->timer->getTime() >= this->timerStopTime);
+}
