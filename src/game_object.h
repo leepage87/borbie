@@ -24,6 +24,17 @@
 #define GAME_OBJ_EXPLOSION_TIME_MS 75
 
 
+// define update return values: what to do after update is called
+#define GAME_OBJ_DO_NOTHING 0 // do nothing (keep the object in the update list)
+#define GAME_OBJ_REMOVE_FROM_UPDATE_LIST 1 // remove it from the update list
+#define GAME_OBJ_DELETE 2 // call delete on the object
+
+// define update modes:
+#define GAME_OBJ_MODE_IDLE 0
+#define GAME_OBJ_MODE_EXPLODED 1
+#define GAME_OBJ_MODE_PENDING_DELETE 2
+
+
 // GameObject class (abstract):
 class GameObject {
 
@@ -41,6 +52,13 @@ class GameObject {
 	irr::scene::IParticleSystemSceneNode *explosionParticleSystemLarge;
 	irr::u32 explosionStopTime;
 	bool hasBeenExploded;
+	
+	// memory management - because Irrlicht is too crap to provide this basic
+	//  functionality that should be trivial in any system like this
+	// Used to update each frame to manage events and memory (you know,
+	//  features Irrlicht should have provided out of the box).
+	unsigned int updateMode;
+	unsigned int timeToDelete;
 	
 	// object variables
 	int health;
@@ -73,9 +91,10 @@ class GameObject {
 	virtual void explode();
 	virtual bool hasExploded(); // returns TRUE if this object has exploded
 	
-	// updates the object's animation/effects timer
-	// TODO: perhaps change name to just update() - maybe
-	virtual bool updateTimer();
+	// updates the object's animation/effects and other possible timers;
+	// RETURNS: value (defined as constants above) of action that the
+	//  caller of this update function should take on this object.
+	virtual unsigned int update();
 	
 	
 	// pure virtual functions (override mandatory)

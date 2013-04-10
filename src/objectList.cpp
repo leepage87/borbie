@@ -8,7 +8,8 @@
  *  It also holds 
  */
 #include <iostream>
-#include <stdlib.h>
+//#include <stdlib.h> ???
+#include <algorithm>
 #include "objectList.h"
 #include "game_object.h"
 
@@ -49,23 +50,30 @@ GameObject* ObjectList::getObject(irr::scene::ISceneNode* pointer){
 	for(std::vector<GameObject *>::iterator it = objList.begin();
 		it != objList.end(); ++it){
 		if ((*it)->getNode() == pointer) {//pointer match, return this object
-		    std::cout << "about to return" << std::endl;
 			return *it;
 	    }
 	}//no match found
 	return 0;
 }
 
+// delete object using the Irrlicht node pointer
 void ObjectList::deleteObject(irr::scene::ISceneNode* pointer){
-for(std::vector<GameObject *>::iterator it = objList.begin();
+    for(std::vector<GameObject *>::iterator it = objList.begin();
 		it != objList.end(); ++it){
 		if ((*it)->getNode() == pointer) {//pointer match, delete this object
-		    std::cout << "Deleting object" << std::endl;
-        this->objList.erase(it);
-        delete (*it);			
+            this->objList.erase(it);
+            delete (*it);			
 	    }
 	}
 }
 
 
-
+// delete object using the object pointer
+void ObjectList::deleteObject(GameObject *pointer) {
+    std::vector<GameObject *>::iterator it;
+    it = std::find(this->objList.begin(), this->objList.end(), pointer);
+    if(it != this->objList.end()){
+        delete (*it);
+        this->objList.erase(it);
+    }
+}

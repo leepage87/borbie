@@ -165,7 +165,7 @@ GameInstance::GameInstance(
 	
 	
 	// TODO: remove
-	BuildingInstance *x =
+	/*BuildingInstance *x =
 		this->buildings->addRandomBuilding(3500, 50, 5000);
 	removeCollision(x->getNode()->getTriangleSelector());
 	x->setAblaze(); // TODO - setAblaze should be private
@@ -179,7 +179,7 @@ GameInstance::GameInstance(
 	z->setAblaze();
 	std::cout << "exploded!" << std::endl;*/
 	// TODO- remove
-	this->setWorldState_wrecked();
+	//this->setWorldState_wrecked();
 }
 
 
@@ -294,12 +294,18 @@ void GameInstance::update(){
     for(std::vector<GameObject *>::iterator it = this->updateList.begin();
         it != this->updateList.end(); ++it)
     {
-        bool finished = (*it)->updateTimer();
-        if(finished){
-            this->updateList.erase(it);
-            it--;
+        unsigned int retval = (*it)->update();
+        switch(retval){
+            case GAME_OBJ_DELETE: // delete object AND remove it from lists
+                this->vehicles->deleteObject(*it);
+            case GAME_OBJ_REMOVE_FROM_UPDATE_LIST: // remove object from list
+                this->updateList.erase(it);
+                it--;
+                break;
+            case GAME_OBJ_DO_NOTHING: // if do nothing, or unknown, do nothing
+            default:
+                break;
         }
-        std::cout << finished << std::endl;
     }
 }
 
@@ -347,6 +353,7 @@ void GameInstance::updateSelector(){
 	    ((BorbiesEventReceiver *)receiver)->isLeftMouseDown())
 	{
 	    // throw the selected object
+	    // NOTE: it may be necessary that this comes BEFORE adding collision below
 		this->targetPos = objCarry->throwObj();
 		vehicleThrown = true;
 	    
@@ -368,6 +375,7 @@ void GameInstance::updateSelector(){
 }
 
 
+// (private)
 // Check to see if a vehicle is currently being thrown. If it has been thrown,
 //  then it is flying through the air (wheeeeeeeeee!). Once it reaches its
 //  destination, make it explode.
@@ -404,7 +412,7 @@ void GameInstance::updateThrownObject(){
 			carriedVehicle->explode();
 			this->updateList.push_back(carriedVehicle);
 			//vehicleNode->setVisible(false);
-			carriedVehicle->getNode()->setVisible(false);
+			//carriedVehicle->getNode()->setVisible(false);
 		    //TODO: DELETE VEHICLE FROM VECTOR
 
 			// clean up temporaries (make we can pick up more vehicles)

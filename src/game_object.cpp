@@ -35,6 +35,9 @@ GameObject::GameObject(
 	this->explosionParticleSystem = 0;
 	this->explosionParticleSystemLarge = 0;
 	this->hasBeenExploded = false;
+	this->timeToDelete = 0;
+	
+	this->updateMode = GAME_OBJ_MODE_IDLE;
 	
 	// ensure that internal node pointer is null
 	this->sceneNode = 0;
@@ -47,14 +50,18 @@ GameObject::GameObject(
 
 /* DESTRUCTOR:
  *	Removes the Irrlicht IMeshSceneNode associated with this object from
- *	the game (if it exists).
+ *	the game (if it exists), as well as all of its associated particle systems.
  * NOTE: With inheritence, c++ automatically calls super destructors after
  *	child destructors are called. An overriding destructor needs not to
- *	delete the interal IMeshSceneNode. (I think)
+ *	delete the interal IMeshSceneNode.
  */
 GameObject::~GameObject(){
 	if(this->sceneNode)
 		sceneNode->remove();
+    if(this->explosionParticleSystem)
+        explosionParticleSystem->remove();
+    if(this->explosionParticleSystemLarge)
+        explosionParticleSystemLarge->remove();
 }
 
 
@@ -88,18 +95,40 @@ void GameObject::setExplosionRadius(int newRadius){
 }
 
 
-// updates animation timer. If finished, returns true. Otherwise, returns false.
-//  If exploded, also sets the hasBeenExploded bool flag to true.
-bool GameObject::updateTimer(){
-    if( this->explosionParticleSystem &&
-        this->device->getTimer()->getTime() >= this->explosionStopTime)
-    {
-        this->explosionParticleSystem->setEmitter(0);
-				this->explosionParticleSystemLarge->setEmitter(0);
-        this->hasBeenExploded = true;
-        return true;
+// updates all timers. If a timer is finished, returns the correct action to
+//  take upon this happening. If this update was called for no reason, then
+//  GAME_OBJ_REMOVE_FROM_UPDATE_LIST will be returned, indicating that this
+//  object should no longer be updated each frame.
+unsigned int GameObject::update(){
+    // if object was exploded, check if explosion timer is up. If so, keep it
+    //  in the list but flag it for deleting.
+    if(this->updateMode == GAME_OBJ_MODE_EXPLODED){
+        unsigned int curTime = this->device->getTimer()->getTime();
+        if(curTime >= this->explosionStopTime) { // if explosion is done
+            // stop the explosion
+            this->explosionParticleSystem->setEmitter(0);
+            this->explosionParticleSystemLarge->setEmitter(0);
+            this->hasBeenExploded = true;
+            this->updateMode = GAME_OBJ_MODE_PENDING_DELETE;
+            this->timeToDelete = curTime + 5000; // delete after 5 seconds
+        }
+        return GAME_OBJ_DO_NOTHING; // do nothing to the object in this mode
     }
-    return false;
+    
+    // if object is waiting to be deleted, then check if time to delete timer
+    //  is up. If so, return the correct value to be deleted from the game.
+    else if(this->updateMode == GAME_OBJ_MODE_PENDING_DELETE){
+        unsigned int curTime = this->device->getTimer()->getTime();
+        if(curTime >= this->timeToDelete) {
+            return GAME_OBJ_DELETE; // if deleted, say so
+        }
+        else
+            return GAME_OBJ_DO_NOTHING; // otherwise, do nothing so far
+    }
+    
+    // if object is idle, or otherwise not flagged, it shouldn't be updated
+    else
+        return GAME_OBJ_REMOVE_FROM_UPDATE_LIST;
 }
 
 
@@ -114,6 +143,10 @@ bool GameObject::hasExploded(){
 // Causes this object to explode, making it vanish, and return a particle
 //	effect node animating the explosion effect in its current position.
 void GameObject::explode(){
+    // if already exploded, don't do it again
+    if(this->hasBeenExploded)
+        return;
+    
 	// add a new explosion particle systems (for the two intermixed explosions)
     this->explosionParticleSystem =
 		this->smgr->addParticleSystemSceneNode(false);
@@ -186,6 +219,7 @@ void GameObject::explode(){
 	// run this explosion for the predefined number of miliseconds.
 	this->explosionStopTime = this->device->getTimer()->getTime()
 	    + GAME_OBJ_EXPLOSION_TIME_MS;
+	this->updateMode = GAME_OBJ_MODE_EXPLODED;
 	
-	//this->sceneNode->setVisible(false);
+	this->sceneNode->setVisible(false);
 }
