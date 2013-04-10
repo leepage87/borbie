@@ -342,9 +342,12 @@ void GameInstance::updateSelector(){
 	if (carriedVehicle && !vehicleThrown &&
 	    ((BorbiesEventReceiver *)receiver)->isLeftMouseDown())
 	{
+	    // throw the selected object
 		this->targetPos = objCarry->throwObj();
 		vehicleThrown = true;
 	    
+	    // remove the selected (thrown) object from the meta collision system,
+	    //  and enable it to track its own collision with other objects.
 	    this->removeCollision(carriedVehicle->getNode()->getTriangleSelector());
         ISceneNodeAnimator* collisionAnimator =
             this->smgr->createCollisionResponseAnimator(
@@ -369,6 +372,7 @@ void GameInstance::updateThrownObject(){
 	// check if a carried vehicle exists and it has been thrown:
 	if (carriedVehicle != 0 && vehicleThrown){
 	    
+	    // check if the thrown object collided with anything
 	    ISceneNode *vehicleNode = carriedVehicle->getNode();
 	    // yup -- seriously. I hate Irrlicht.
 	    core::list<ISceneNodeAnimator *> animators = vehicleNode->getAnimators();
@@ -390,9 +394,6 @@ void GameInstance::updateThrownObject(){
             std::cout << "Thrown object went underground: "
                 << vehicleNode->getPosition().Y << std::endl;
 	    }
-	    
-	    if(collided)
-    	    std::cout << "COLLISION DETECTED" << std::endl;
 	    
 	    // check if thrown vehicle flew far enough or collided with something
 		if(collided || this->objCarry->objectDoneFlying()){
