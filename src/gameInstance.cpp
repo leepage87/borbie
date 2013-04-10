@@ -344,17 +344,17 @@ void GameInstance::updateSelector(){
 	{
 		this->targetPos = objCarry->throwObj();
 		vehicleThrown = true;
-	        
-        this->removeCollision(carriedVehicle->getNode()->getTriangleSelector());
+	    
+	    this->removeCollision(carriedVehicle->getNode()->getTriangleSelector());
         ISceneNodeAnimator* collisionAnimator =
-		this->smgr->createCollisionResponseAnimator(
-		    this->metaTriSelector, // global meta triangle selector
-		    carriedVehicle->getNode(), // node to be affected (node of vehicle)
-		    core::vector3df(100, 100, 100),//, // radius
-		    //core::vector3df(0, GLOBAL_GRAVITY, 0), // gravity (-y = down)
-            core::vector3df(0, -5, 0)); // gravity (-y = down)
-	    carriedVehicle->getNode()->addAnimator(collisionAnimator);
-	    collisionAnimator->drop();
+            this->smgr->createCollisionResponseAnimator(
+                this->metaTriSelector, // global meta triangle selector
+                carriedVehicle->getNode(), // node to be affected (node of v
+                core::vector3df(100, 100, 100), // radius
+                core::vector3df(0, 0, 0)); // gravity (-y = down)
+        carriedVehicle->getNode()->addAnimator(collisionAnimator);
+        collisionAnimator->drop();
+
 	}
 	
 	// update thrownObject (checks if vehicles need to be thrown)
@@ -368,6 +368,7 @@ void GameInstance::updateSelector(){
 void GameInstance::updateThrownObject(){
 	// check if a carried vehicle exists and it has been thrown:
 	if (carriedVehicle != 0 && vehicleThrown){
+	    
 	    ISceneNode *vehicleNode = carriedVehicle->getNode();
 	    // yup -- seriously. I hate Irrlicht.
 	    core::list<ISceneNodeAnimator *> animators = vehicleNode->getAnimators();
@@ -398,7 +399,8 @@ void GameInstance::updateThrownObject(){
 		    // blow it up
 			carriedVehicle->explode();
 			this->updateList.push_back(carriedVehicle);
-			vehicleNode->setVisible(false);
+			//vehicleNode->setVisible(false);
+			carriedVehicle->getNode()->setVisible(false);
 		    //TODO: DELETE VEHICLE FROM VECTOR
 
 			// clean up temporaries (make we can pick up more vehicles)
