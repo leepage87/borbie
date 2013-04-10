@@ -335,6 +335,9 @@ void GameInstance::updateSelector(){
 	    if(vehicle) { // if vehicle was in fact selected, pick it up
 	        carriedVehicle = vehicle; // VehicleInstance* (carriedVehicle)
 	        objCarry->pickUp(highlightedSceneNode); // ISceneNode* (highlighted)
+	        
+	        // remove the vehicle's collision so it doesn't make Borbie glitch out
+	        this->removeCollision(carriedVehicle->getNode()->getTriangleSelector());
 	    }
 	}
     
@@ -347,9 +350,8 @@ void GameInstance::updateSelector(){
 		this->targetPos = objCarry->throwObj();
 		vehicleThrown = true;
 	    
-	    // remove the selected (thrown) object from the meta collision system,
-	    //  and enable it to track its own collision with other objects.
-	    this->removeCollision(carriedVehicle->getNode()->getTriangleSelector());
+	    // Add a collision response animator the the thrown vehicle in order
+	    //  to enable it to track its own collision with other objects.
         ISceneNodeAnimator* collisionAnimator =
             this->smgr->createCollisionResponseAnimator(
                 this->metaTriSelector, // global meta triangle selector
