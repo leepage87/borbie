@@ -21,6 +21,8 @@
 #define GAME_OBJ_MAXHEALTH 1000
 #define GAME_OBJ_STDRADIUS 1000
 
+#define GAME_OBJ_EXPLOSION_TIME_MS 75
+
 
 // GameObject class (abstract):
 class GameObject {

@@ -352,7 +352,7 @@ void GameInstance::updateSelector(){
 		    carriedVehicle->getNode(), // node to be affected (node of vehicle)
 		    core::vector3df(100, 100, 100));//, // radius
 		    //core::vector3df(0, GLOBAL_GRAVITY, 0), // gravity (-y = down)
-            //core::vector3df(0, -1000, 0)); // gravity (-y = down)
+            core::vector3df(0, -5, 0)); // gravity (-y = down)
 	    carriedVehicle->getNode()->addAnimator(collisionAnimator);
 	    collisionAnimator->drop();
 	}
@@ -389,6 +389,9 @@ void GameInstance::updateThrownObject(){
             std::cout << "Thrown object went underground: "
                 << vehicleNode->getPosition().Y << std::endl;
 	    }
+	    
+	    if(collided)
+    	    std::cout << "COLLISION DETECTED" << std::endl;
 	    
 	    // check if thrown vehicle flew far enough or collided with something
 		if(collided || this->objCarry->objectDoneFlying()){
