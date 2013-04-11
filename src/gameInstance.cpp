@@ -72,8 +72,8 @@ GameInstance::GameInstance(
 	smgr->setShadowColor(video::SColor(120,35,20,47));
 	
 	this->rainParticleSystem = 0;
-	
 
+	
 	/*** Setup Game Objects (BUILDINGS, VEHICLES) ***/
     
     // add the buildings and generate city based on coordinate file
@@ -164,6 +164,11 @@ GameInstance::GameInstance(
 	((BorbiesEventReceiver *)receiver)->setRightMouse(false);
 	
 	
+
+
+	//TESTING SOLDIER CLASS
+	Soldier *test = new Soldier (smgr, driver, device, 10200.0, 75.0, 10200.0);
+
 	// TODO: remove
 	/*BuildingInstance *x =
 		this->buildings->addRandomBuilding(3500, 50, 5000);

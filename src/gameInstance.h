@@ -24,6 +24,7 @@
 #include "objectCarrier.h"
 #include "borbiesEventReceiver.h"
 #include "vehicleInstance.h"
+#include "soldier.h"
 
 
 // world constants
