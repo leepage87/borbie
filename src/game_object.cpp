@@ -1,5 +1,5 @@
 /*	File: game_object.cpp
- *	Authors: idk your names
+ *	Authors: teamKillYourself
  *
  *	Description: this file contains the class definition for the abstract
  *	class GameObject. GameObject is responsible for keeping track of most
@@ -7,13 +7,20 @@
  *	appear in the world, such as buildings, vehicles or NPCs.
  */
 
+// application headers
 #include "game_object.h"
+#include "objectList.h"
 #include "game.h"
 
+// used for c++ variable arguments
+#include <cstdarg>
+
+// Irrlicht namespaces
 using namespace irr;
 using namespace scene;
 using namespace core;
 using namespace video;
+
 
 /* CONSTRUCTOR:
  *	Copies the pointer to the Irrlicht engine scene manager, and initializes
@@ -32,19 +39,21 @@ GameObject::GameObject(
 	this->driver = driver;
 	this->device = device;
 	
-	this->explosionParticleSystem = 0;
-	this->explosionParticleSystemLarge = 0;
+	// default values
+	this->health = GAME_OBJ_MAXHEALTH;
+	this->explosionRadius = GAME_OBJ_EXPLOSION_RADIUS;
+	this->explosionDamage = GAME_OBJ_EXPLOSION_DAMAGE;
 	this->hasBeenExploded = false;
 	this->timeToDelete = 0;
 	
+	// set all pointers to null initially
+	this->sceneNode = 0;
+	this->explosionParticleSystem = 0;
+	this->explosionParticleSystemLarge = 0;
+	
+	// start mode on idle (not doing anything with updates)
 	this->updateMode = GAME_OBJ_MODE_IDLE;
 	
-	// ensure that internal node pointer is null
-	this->sceneNode = 0;
-	
-	// set up default object values
-	this->health = GAME_OBJ_MAXHEALTH;
-	this->explosionRadius = GAME_OBJ_STDRADIUS;
 }
 
 
@@ -65,31 +74,51 @@ GameObject::~GameObject(){
 }
 
 
-/* GET: health
- *	returns the object's current health (in int form)
- */
+// (private)
+// Returns an invisible ISceneNode (sphere) that represents the explosion
+//  radius of this node.
+ISceneNode* GameObject::getExplosionSphere(){
+    ISceneNode *sphere =
+        this->smgr->addSphereSceneNode(this->explosionRadius);
+    sphere->setPosition(this->getNode()->getPosition());
+    
+    return sphere;
+}
+
+
+// this is hackery!
+void GameObject::applyExplosionDamage(int numLists, ...){
+    // get list of function arguments
+    va_list args;
+    va_start(args, numLists);
+    
+    // iterate through the list of arguments
+    for(int i=0; i<numLists; ++i){
+        ObjectList *objList = va_arg(args, ObjectList *);
+    }
+    
+    // done with arguments
+    va_end(args);
+}
+
+
+// GET: health - returns the object's current health (in int form)
 int GameObject::getHealth() const {
 	return this->health;
 }
 
-/* GET: explosion radius
- *	returns the object's current explosion radius (in int form).
- */
+// GET: explosion radius - returns the object's current explosion radius (int).
 int GameObject::getExplosionRadius() const {
 	return this->explosionRadius;
 }
 
 
-/* SET: health
- *	set the objects current health
- */
+// SET: health - set the objects current health
 void GameObject::setHealth(int newHealth){
 	this->health = newHealth;
 }
 
-/* SET: explosion radius
- *	set the objects current explosion radius
- */
+// SET: explosion radius - set the objects current explosion radius
 void GameObject::setExplosionRadius(int newRadius){
 	this->health = newRadius;
 }
@@ -110,7 +139,8 @@ unsigned int GameObject::update(){
             this->explosionParticleSystemLarge->setEmitter(0);
             this->hasBeenExploded = true;
             this->updateMode = GAME_OBJ_MODE_PENDING_DELETE;
-            this->timeToDelete = curTime + 5000; // delete after 5 seconds
+            // delete after 5 seconds
+            this->timeToDelete = curTime + GAME_OBJ_DELETE_TIME_MS;
         }
         return GAME_OBJ_DO_NOTHING; // do nothing to the object in this mode
     }
