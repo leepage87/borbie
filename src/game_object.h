@@ -1,5 +1,5 @@
 /*	File: game_object.h
- *	Authors: idk your names
+ *	Authors: teamKillYourself
  *
  *	Description: this file contains the class declaration for the abstract
  *	class GameObject. GameObject is responsible for keeping track of most
@@ -16,18 +16,26 @@
 // include irrlicht
 #include <irrlicht.h>
 
-// GameObject definitions
+// declare ObjectList - (ObjectList in objectList.h): GameObject is included
+//  in that header.
+class ObjectList;
+
+
+// GameObject standard values
 //	TODO: modify as needed
 #define GAME_OBJ_MAXHEALTH 1000
-#define GAME_OBJ_STDRADIUS 1000
+#define GAME_OBJ_EXPLOSION_RADIUS 1000
+#define GAME_OBJ_EXPLOSION_DAMAGE 1000
 
+// timer value constants
 #define GAME_OBJ_EXPLOSION_TIME_MS 75
+#define GAME_OBJ_DELETE_TIME_MS 5000
 
 
 // define update return values: what to do after update is called
 #define GAME_OBJ_DO_NOTHING 0 // do nothing (keep the object in the update list)
 #define GAME_OBJ_REMOVE_FROM_UPDATE_LIST 1 // remove it from the update list
-#define GAME_OBJ_DELETE 2 // call delete on the object
+#define GAME_OBJ_DELETE 2 // call delete on the object (and remove from list)
 
 // define update modes:
 #define GAME_OBJ_MODE_IDLE 0
@@ -47,23 +55,27 @@ class GameObject {
 	// internal Irrlicht scene node
 	irr::scene::IMeshSceneNode *sceneNode;
 	
+	// object variables
+	int health;
+	int explosionRadius;
+	int explosionDamage;
+	
 	// explosion variables
 	irr::scene::IParticleSystemSceneNode *explosionParticleSystem;
 	irr::scene::IParticleSystemSceneNode *explosionParticleSystemLarge;
 	irr::u32 explosionStopTime;
 	bool hasBeenExploded;
 	
+	// returns an invisible Irrlicht node (sphere) that represents the collision
+	//  of the object's explosion radius.
+	virtual irr::scene::ISceneNode* getExplosionSphere();
+	
 	// memory management - because Irrlicht is too crap to provide this basic
-	//  functionality that should be trivial in any system like this
+	//  functionality that should be trivial in any system like this.
 	// Used to update each frame to manage events and memory (you know,
 	//  features Irrlicht should have provided out of the box).
 	unsigned int updateMode;
 	unsigned int timeToDelete;
-	
-	// object variables
-	int health;
-	int explosionRadius;
-	bool pickUp; // TODO - is this used?
 
 
   public:
@@ -87,9 +99,10 @@ class GameObject {
 	// Causes this object to explode, creating a particle effect around it.
 	//  For the explosion to fade out, it is necessary to call update() each
 	//  frame until update() returns true (implying explosion is finished).
-	// TODO: object should also disappear here (be set to invisible)
 	virtual void explode();
 	virtual bool hasExploded(); // returns TRUE if this object has exploded
+	
+	virtual void applyExplosionDamage(int numLists, ...);
 	
 	// updates the object's animation/effects and other possible timers;
 	// RETURNS: value (defined as constants above) of action that the

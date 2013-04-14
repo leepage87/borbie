@@ -400,6 +400,8 @@ void GameInstance::updateThrownObject(){
 	    //  from scratch then dealing with this pile of useless crap (Irrlicht).
 	    // True, they make excuses that Irrlicht is only a graphics engine - but
 	    //  it sucks at that too, so really, it's good for absolutely nothing.
+	    // TODO: maybe cast a ray and figure out collision BEFORE throwing the
+	    //  object. Gravity is screwed anyway.
         bool collided = ((ISceneNodeAnimatorCollisionResponse *)collisionAnimator)
             ->collisionOccurred();
         
@@ -416,9 +418,6 @@ void GameInstance::updateThrownObject(){
 		    // blow it up
 			carriedVehicle->explode();
 			this->updateList.push_back(carriedVehicle);
-			//vehicleNode->setVisible(false);
-			//carriedVehicle->getNode()->setVisible(false);
-		    //TODO: DELETE VEHICLE FROM VECTOR
 
 			// clean up temporaries (make we can pick up more vehicles)
 			vehicleThrown = false;
