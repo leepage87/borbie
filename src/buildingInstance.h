@@ -39,7 +39,8 @@ class BuildingInstance : public GameObject {
 	    irr::IrrlichtDevice *device,
 		float width, float height, float depth,
 		float posX, float posY, float posZ,
-		irr::video::ITexture *texture
+		irr::video::ITexture *texture,
+		irr::video::ITexture *roofTexture
 	);
 	~BuildingInstance();
 	

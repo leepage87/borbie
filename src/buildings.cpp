@@ -58,6 +58,10 @@ Buildings::Buildings(
 	this->textureList.push_back("assets/textures/buildings/building15.jpg");
 	this->textureList.push_back("assets/textures/buildings/building16.jpg");
 	this->textureList.push_back("assets/textures/buildings/building17.jpg");
+	this->textureList.push_back("assets/textures/buildings/RoofOp1.jpg");
+	this->textureList.push_back("assets/textures/buildings/RoofOp2.jpg");
+	this->textureList.push_back("assets/textures/buildings/RoofOp3.jpg");
+	
 }
 
 
@@ -137,10 +141,11 @@ BuildingInstance* Buildings::addRandomBuilding(
 {
     // get random height and texture index
     float rHeight = this->getRandomHeight();
-    int textureIndex = rand() % this->textureList.size();
+    int textureIndex = rand() % (this->textureList.size()-3);
+    int topTexture = (rand()%3) +17;
     
     // make the building with those parameters and the given position
-	return this->makeBuilding(textureIndex, rHeight, xPos, yPos, zPos);
+	return this->makeBuilding(textureIndex, topTexture, rHeight, xPos, yPos, zPos);
 }
 
 
@@ -186,12 +191,14 @@ float Buildings::getRandomHeight(){
 // RETURNS the building object created.
 // --- (private) ---
 BuildingInstance* Buildings::makeBuilding(
-    int textureIndex, float height,
+    int textureIndex, int topTexture, float height,
 	float xPos, float yPos, float zPos)
 {
     // create texture, w, h, d based on building type
 	ITexture *texture =
 	    this->driver->getTexture(this->textureList[textureIndex]);
+	ITexture *roofTexture =
+ 	    this->driver->getTexture(this->textureList[topTexture]);
 	
 	// create the new building objects, make it apply its collision
 	//  to the global meta, and add it to the building list
@@ -202,7 +209,7 @@ BuildingInstance* Buildings::makeBuilding(
 			this->device,
 			BUILDING_WIDTH, height, BUILDING_DEPTH,
 			xPos, yPos, zPos,
-			texture
+			texture, roofTexture
 		);
 	newBuilding->applyCollision(this->metaTriSelector);
 	this->objList.push_back(newBuilding);

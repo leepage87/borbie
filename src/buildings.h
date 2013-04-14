@@ -52,7 +52,7 @@ class Buildings : public ObjectList {
     float getRandomHeight();
 	
 	// building construction functions
-	BuildingInstance* makeBuilding(int textureIndex, float height,
+	BuildingInstance* makeBuilding(int textureIndex, int roofTexture, float height,
 		float xPos, float yPos, float zPos);
 	
   
