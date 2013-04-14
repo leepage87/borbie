@@ -10,7 +10,8 @@ enum GameButton
   QUIT,
   CREDITS,
   HIGH_SCORES,
-  KILL_YOURSELF
+  KILL_YOURSELF,
+  TITLE
 };
 
 class GameMenu
@@ -22,10 +23,12 @@ class GameMenu
     AudioSystem *audioSystem;
     SoundClip *sound;
     
+    float screenHeight;    
     irr::gui::IGUIButton *startButton;
     irr::gui::IGUIButton *quitButton;
     irr::gui::IGUIButton *creditsButton;
     irr::gui::IGUIButton *scoresButton;
+    irr::gui::IGUIButton *titleButton; 
 
     irr::gui::IGUIEnvironment *guienv;
     irr::video::IVideoDriver *driver;

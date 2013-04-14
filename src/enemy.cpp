@@ -5,7 +5,6 @@
  */
 
 #include "enemy.h"
-
 #include <iostream> // TODO: debug (remove)
 using namespace std;
 
@@ -19,37 +18,24 @@ Enemy::Enemy(
 	ISceneManager *smgr,
 	IVideoDriver *driver,
 	IrrlichtDevice *device,
+	IMetaTriangleSelector *metaTriSelector,
 	GameInstance *gameInstance)
-	// call super GameObject constructor first:
-	: GameObject(smgr, driver, device, gameInstance)
+	// call super ObjectList constructor first:
+	: ObjectList(smgr, driver, device, metaTriSelector, gameInstance)
 {}
 
-
-void Enemy::doDamage(int damage){
-	this->health -= damage;
+void Enemy::makeEnemy(){
+	//testing with hardcoded position
+	float xPos = 10200;
+	float yPos = 70;
+	float zPos = 10200;
+	Soldier *newSoldier
+		= new Soldier(
+			this->smgr, this->driver, this->device, this->gameInstance,
+			xPos, yPos, zPos
+		);
+	
+	newSoldier->applyCollision(this->metaTriSelector);
 }
 
-void Enemy::applyCollision(
-	irr::scene::IMetaTriangleSelector *metaTriSelector)
-{
-	// add its triangles to the global collision meta selector
-	ITriangleSelector *selector =
-		smgr->createTriangleSelectorFromBoundingBox(sceneNode);
-	sceneNode->setTriangleSelector(selector);
-	selector->drop();
-	metaTriSelector->addTriangleSelector(sceneNode->getTriangleSelector());
 
-// get bounds
-	/*core::aabbox3d<f32> modelBounds = this->sceneNode->getTransformedBoundingBox();
-	// add a collision response animator to it
-	core::vector3df radius = modelBounds.MaxEdge - modelBounds.getCenter();
-	ISceneNodeAnimator* anim = this->smgr->createCollisionResponseAnimator(
-		metaTriSelector, this->sceneNode,
-		radius, // radius of collision
-		vector3df(0, -5, 0), // gravity (negative y = down)
-		vector3df(0, -radius.Y, 0)); // radius offset
-	this->sceneNode->addAnimator(anim);
-	anim->drop();*/
-
-
-}

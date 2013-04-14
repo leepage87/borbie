@@ -1,6 +1,7 @@
 #include "gameInstance.h"
 #include "game.h"
 #include "keyBindings.h"
+#include "enemy.h"
 
 #include <iostream> // TODO - remove (debug)
 
@@ -167,8 +168,13 @@ GameInstance::GameInstance(
 
 
 	//TESTING SOLDIER CLASS
-	Soldier *test =
-	    new Soldier (smgr, driver, device, this, 10200.0, 75.0, 10200.0);
+	/*Soldier *test =
+	    new Soldier (smgr, driver, device, this, 10200.0, 75.0, 10200.0);*/
+	    
+	//TESTING ENEMY CLASS
+	Enemy * enemies = new Enemy (smgr, driver, device, metaTriSelector, this);
+	enemies->makeEnemy();
+	// TODO - memory leak (erase enemies in destructor)
 
 	// TODO: remove
 	/*BuildingInstance *x =
