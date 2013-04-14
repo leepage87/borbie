@@ -25,7 +25,7 @@ BuildingInstance::BuildingInstance(
 	GameInstance *gameInstance,
 	float width, float height, float depth,
 	float posX, float posY, float posZ,
-	ITexture *texture)
+	ITexture *texture, ITexture *roofTexture)
 	// call super GameObject constructor first:
 	: GameObject(smgr, driver, device, gameInstance)
 {
@@ -43,6 +43,14 @@ BuildingInstance::BuildingInstance(
 	this->sceneNode->setMaterialTexture(0, texture);
 	this->sceneNode->setMaterialFlag(EMF_LIGHTING, true);
 	this->sceneNode->addShadowVolumeSceneNode(0,-1,true,25.0f);
+
+	this->sceneNode = smgr->addCubeSceneNode();
+	this->sceneNode->setScale(vector3df(width+1, 2, depth+1));
+	this->sceneNode->setPosition(vector3df(actualPosX, (actualPosY*2-40), actualPosZ));
+	this->sceneNode->setMaterialTexture(0, roofTexture);
+	this->sceneNode->setMaterialFlag(EMF_LIGHTING, true);
+	this->sceneNode->addShadowVolumeSceneNode(0,-1,true,25.0f);
+
 	
 	this->fireParticleSystem = 0;
 	this->sparkParticleSystem = 0;
