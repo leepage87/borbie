@@ -162,8 +162,8 @@ int Game::run()
           gameInstance->update();
 												
         
-       // if(gameMenu)
-       //   gameMenu->update();
+        if(gameMenu)
+          gameMenu->update();
         	
         driver->endScene();
     }

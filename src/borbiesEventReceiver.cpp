@@ -43,7 +43,7 @@ bool BorbiesEventReceiver::OnEvent(const irr::SEvent& event){
             switch(id)
             {
               default:
-                if(mm)
+                if(mm && id!=TITLE)
                 audioSystem->playSound2d(mm);
                
             }

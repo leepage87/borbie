@@ -1,6 +1,7 @@
 #include "gameInstance.h"
 #include "game.h"
 #include "keyBindings.h"
+#include "enemy.h"
 
 #include <iostream> // TODO - remove (debug)
 
