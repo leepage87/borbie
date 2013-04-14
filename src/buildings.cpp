@@ -205,7 +205,7 @@ BuildingInstance* Buildings::makeBuilding(
 			texture
 		);
 	newBuilding->applyCollision(this->metaTriSelector);
-	this->objList.push_back(newBuilding);
+	this->addObject(newBuilding);
 	
 	return newBuilding;
 }

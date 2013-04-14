@@ -43,8 +43,17 @@ class ObjectList;
 #define GAME_OBJ_MODE_PENDING_DELETE 2
 
 
+struct CollisionSphere {
+    irr::scene::ISceneNode *sphere;
+    irr::scene::ISceneNodeAnimator* collisionAnimator;
+};
+
+
 // GameObject class (abstract):
 class GameObject {
+
+    // declare friend to have access to all of GameObject's members
+    friend class ObjectList;
 
   protected:
 	// pointers to Irrlicht scene objects as needed
@@ -52,8 +61,12 @@ class GameObject {
 	irr::video::IVideoDriver *driver;
 	irr::IrrlichtDevice *device;
 	
-	// internal Irrlicht scene node
+	// internal Irrlicht scene node and global meta triangle selector
 	irr::scene::IMeshSceneNode *sceneNode;
+	irr::scene::IMetaTriangleSelector *metaTriSelector;
+	
+	// allow a triangle selector to be set here
+	void setMetaTriSelector(irr::scene::IMetaTriangleSelector *metaTriSelector);
 	
 	// object variables
 	int health;
@@ -66,7 +79,7 @@ class GameObject {
 	irr::u32 explosionStopTime;
 	bool hasBeenExploded;
 	
-	// returns an invisible Irrlicht node (sphere) that represents the collision
+	// returns an invisible node (sphere) that represents the collision
 	//  of the object's explosion radius.
 	virtual irr::scene::ISceneNode* getExplosionSphere();
 	

@@ -43,6 +43,7 @@ ObjectList::~ObjectList(){
 //Adds an object to the list for tracking purposes
 void ObjectList::addObject(GameObject* object){
 	this->objList.push_back(object);
+	object->setMetaTriSelector(this->metaTriSelector);
 }
 
 //Takes a pointer and returns the associated object if its found

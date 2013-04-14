@@ -69,5 +69,5 @@ void Vehicles::makeVehicle(int modelIndex,
 	
 	newVehicle->applyCollision(this->metaTriSelector);
 	
-	this->objList.push_back(newVehicle);
+	this->addObject(newVehicle);
 }

@@ -18,6 +18,8 @@
 // objectList class (abstract):
 class ObjectList {
 
+    friend class GameObject;
+    
   protected:
     // Irrlicht objects
 	irr::scene::ISceneManager *smgr;

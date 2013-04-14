@@ -418,6 +418,9 @@ void GameInstance::updateThrownObject(){
 		    // blow it up
 			carriedVehicle->explode();
 			this->updateList.push_back(carriedVehicle);
+			
+			// make everything take damage around it
+			carriedVehicle->applyExplosionDamage(2, this->vehicles, this->buildings);
 
 			// clean up temporaries (make we can pick up more vehicles)
 			vehicleThrown = false;

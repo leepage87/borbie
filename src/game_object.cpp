@@ -15,6 +15,9 @@
 // used for c++ variable arguments
 #include <cstdarg>
 
+// TODO - remove
+#include <iostream>
+
 // Irrlicht namespaces
 using namespace irr;
 using namespace scene;
@@ -74,6 +77,12 @@ GameObject::~GameObject(){
 }
 
 
+// (private, friend-accessible by ObjectList's addObject function)
+// Set the meta triangle selector to the given selector.
+void GameObject::setMetaTriSelector(IMetaTriangleSelector *metaTriSelector){
+    this->metaTriSelector = metaTriSelector;
+}
+
 // (private)
 // Returns an invisible ISceneNode (sphere) that represents the explosion
 //  radius of this node.
@@ -81,24 +90,42 @@ ISceneNode* GameObject::getExplosionSphere(){
     ISceneNode *sphere =
         this->smgr->addSphereSceneNode(this->explosionRadius);
     sphere->setPosition(this->getNode()->getPosition());
-    
+    sphere->setVisible(false);
     return sphere;
 }
 
 
 // this is hackery!
 void GameObject::applyExplosionDamage(int numLists, ...){
+    // get the collision sphere
+    //CollisionSphere colSphere = this->getExplosionSphere();
+    //I//SceneNode *sphere = colSphere.sphere;
+
     // get list of function arguments
     va_list args;
     va_start(args, numLists);
     
     // iterate through the list of arguments
     for(int i=0; i<numLists; ++i){
-        ObjectList *objList = va_arg(args, ObjectList *);
+        ObjectList *objects = va_arg(args, ObjectList *);
+        int numObjs = objects->objList.size();
+        for(int j=0; j<numObjs; ++j){
+            GameObject *curObj = objects->objList[j];
+            ISceneNode *curNode = curObj->getNode();
+            //colSphere.collisionAnimator->
+            float distance =
+                curNode->getPosition().getDistanceFrom(this->getNode()->getPosition());
+            if(distance <= this->explosionRadius)
+                std::cout << distance << std::endl;
+        }
     }
     
     // done with arguments
     va_end(args);
+    
+    // drop the sphere like a hot potato
+    //colSphere.collisionAnimator->drop();
+    //colSphere.sphere->remove();
 }
 
 
