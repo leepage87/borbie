@@ -5,23 +5,22 @@
 
 
 #include <irrlicht.h>
-#include "game_object.h"
+#include "objectList.h"
+#include "soldier.h"
+
 
 
 // Enemy class: abstract, extends GameObject
-class Enemy : public GameObject {
-	protected:
-	irr::scene::IAnimatedMeshSceneNode *sceneNode;
+class Enemy : public ObjectList {
+	
 	public:
 	Enemy (irr::scene::ISceneManager *smgr,
-				irr::video::IVideoDriver *driver,
-				irr::IrrlichtDevice *device);
+			irr::video::IVideoDriver *driver,
+			irr::IrrlichtDevice *device, 
+			irr::scene::IMetaTriangleSelector *metaTriSelector);
+	void makeEnemy();
+	
 
-	virtual void doDamage(int damage);
-
-	virtual void applyCollision(
-			irr::scene::IMetaTriangleSelector *metaTriSelector
-		);
 }; // end of Enemy class
 
 
