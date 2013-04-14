@@ -176,20 +176,6 @@ GameInstance::GameInstance(
 	enemies->makeEnemy();
 	// TODO - memory leak (erase enemies in destructor)
 
-	// TODO: remove
-	/*BuildingInstance *x =
-		this->buildings->addRandomBuilding(3500, 50, 5000);
-	removeCollision(x->getNode()->getTriangleSelector());
-	x->setAblaze(); // TODO - setAblaze should be private
-	/*BuildingInstance *y =
-		this->buildings->addRandomBuilding(3500, 50, 5600);
-	removeCollision(y->getNode()->getTriangleSelector());
-	y->setAblaze();
-	BuildingInstance *z =
-		this->buildings->addRandomBuilding(3500, 50, 6200);
-	removeCollision(z->getNode()->getTriangleSelector());
-	z->setAblaze();
-	std::cout << "exploded!" << std::endl;*/
 	// TODO- remove
 	//this->setWorldState_wrecked();
 }
@@ -435,8 +421,14 @@ void GameInstance::updateThrownObject(){
 			carriedVehicle->explode();
 			//this->updateList.push_back(carriedVehicle);
 			
-			// make everything take damage around it
-			carriedVehicle->applyExplosionDamage(2, this->vehicles, this->buildings);
+			// make everything around it take damage:
+			//  This method supports an arbitrary number of parameters of type
+			//  ObjectList. The first parameter indicates how many ObjectLists
+			//  are being passed in, followed by that many ObjectList pointers.
+			carriedVehicle->applyExplosionDamage(
+			    2,                  // total number of lists given
+			    this->vehicles,     // list of vehicles (list 1)
+			    this->buildings);   // list of buildings (list 2)
 
 			// clean up temporaries (make we can pick up more vehicles)
 			vehicleThrown = false;

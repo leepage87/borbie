@@ -121,10 +121,14 @@ void GameObject::applyExplosionDamage(int numLists, ...){
             //  based on the distance to the explosion center
             float distance = curNode->getPosition().getDistanceFrom(explodePos);
             if(distance <= this->explosionRadius){
-                float scale = distance / this->explosionRadius;
-                int damage = 400;//int(this->explosionDamage * scale);
+                int damage = this->explosionDamage; // max damage
+                if(distance > 400){ // if more than 400 away, scale down damage
+                    float scale = (distance-400) / (this->explosionRadius-400);
+                    damage = int(this->explosionDamage * scale);
+                }
                 objects->objList[j]->applyDamage(damage);
-                std::cout << distance << std::endl;
+                std::cout << "Damaged @distance=" << distance <<
+                    " for @damage=" << damage << std::endl;
             }
         }
     }

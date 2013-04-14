@@ -91,7 +91,11 @@ void BuildingInstance::applyCollision(
 void BuildingInstance::applyDamage(int amount) {
     GameObject::applyDamage(amount);
     
-    if(this->health <= 300)
+    // if building isn't destroyed yet, but it's health is below
+    //  30%, set it ablaze! (if already ablaze, nothing happens)
+    // TODO: instead of 300, make this value a percentage of an arbitrary
+    //  maximum health value
+    if(this->health <= 300 && this->health > 0)
         this->setAblaze();
 }
 

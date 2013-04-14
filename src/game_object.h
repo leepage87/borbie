@@ -26,8 +26,8 @@ class GameInstance;
 // GameObject standard values
 //	TODO: modify as needed
 #define GAME_OBJ_MAXHEALTH 1000
-#define GAME_OBJ_EXPLOSION_RADIUS 1000
-#define GAME_OBJ_EXPLOSION_DAMAGE 500
+#define GAME_OBJ_EXPLOSION_RADIUS 1500
+#define GAME_OBJ_EXPLOSION_DAMAGE 400
 
 // timer value constants
 #define GAME_OBJ_EXPLOSION_TIME_MS 75

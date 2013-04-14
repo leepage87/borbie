@@ -32,6 +32,7 @@ class BuildingInstance : public GameObject {
     bool isOnFire; // whether building is already on fire or not
     
     irr::scene::ISceneNode *roofNode;
+    void setAblaze();
     
     // height and Y-position of the building
     float height;
@@ -39,7 +40,6 @@ class BuildingInstance : public GameObject {
     
 
   public:
-    void setAblaze();
 	BuildingInstance(
 		irr::scene::ISceneManager *smgr,
 		irr::video::IVideoDriver *driver,
