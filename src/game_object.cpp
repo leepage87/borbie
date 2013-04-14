@@ -73,12 +73,18 @@ GameObject::GameObject(
  *	delete the interal IMeshSceneNode.
  */
 GameObject::~GameObject(){
-	if(this->sceneNode)
-		sceneNode->remove();
-    if(this->explosionParticleSystem)
+	if(this->sceneNode){
+		this->sceneNode->remove();
+		this->sceneNode = 0;
+	}
+    if(this->explosionParticleSystem){
         explosionParticleSystem->remove();
-    if(this->explosionParticleSystemLarge)
+        explosionParticleSystem = 0;
+    }
+    if(this->explosionParticleSystemLarge){
         explosionParticleSystemLarge->remove();
+        explosionParticleSystemLarge = 0;
+    }
 }
 
 
@@ -108,12 +114,15 @@ void GameObject::applyExplosionDamage(int numLists, ...){
             // if this (thrown) object IS the current node, ignore it
             if(curNode == this->sceneNode)
                 continue;
+            // if this (thrown) node is NOT visible, ignore it
+            else if(!curNode->isVisible())
+                continue;
             // otherwise, check if the distance is close enough, and apply damage
             //  based on the distance to the explosion center
             float distance = curNode->getPosition().getDistanceFrom(explodePos);
             if(distance <= this->explosionRadius){
                 float scale = distance / this->explosionRadius;
-                int damage = int(this->explosionDamage * scale);
+                int damage = 400;//int(this->explosionDamage * scale);
                 objects->objList[j]->applyDamage(damage);
                 std::cout << distance << std::endl;
             }
@@ -160,6 +169,7 @@ void GameObject::applyDamage(int amount){
     this->health -= amount;
     if(this->health <= 0){
         this->health = 0;
+        std::cout << "GameObject called explode" << std::endl;
         this->explode();
     }
 }
@@ -214,6 +224,8 @@ bool GameObject::hasExploded(){
 // Causes this object to explode, making it vanish, and return a particle
 //	effect node animating the explosion effect in its current position.
 void GameObject::explode(){
+    // TODO - make explosion size scale with this->explosionRadius
+
     // if already exploded, don't do it again
     if(this->hasBeenExploded)
         return;
@@ -292,7 +304,9 @@ void GameObject::explode(){
 	    + GAME_OBJ_EXPLOSION_TIME_MS;
 	this->updateMode = GAME_OBJ_MODE_EXPLODED;
 	
+	// set the node visible, and remove it from the global collision meta
 	this->sceneNode->setVisible(false);
+	this->gameInstance->removeCollision(this->sceneNode->getTriangleSelector());
 	
 	// add this object to the GameInstance's updator to keep the timers going
 	this->gameInstance->addUpdateObject(this);

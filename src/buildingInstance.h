@@ -29,6 +29,9 @@ class BuildingInstance : public GameObject {
     // on fire effect particle system
     irr::scene::IParticleSystemSceneNode *fireParticleSystem;
     irr::scene::IParticleSystemSceneNode *sparkParticleSystem;
+    bool isOnFire; // whether building is already on fire or not
+    
+    irr::scene::ISceneNode *roofNode;
     
     // height and Y-position of the building
     float height;
@@ -47,9 +50,12 @@ class BuildingInstance : public GameObject {
 		irr::video::ITexture *texture,
 		irr::video::ITexture *roofTexture
 	);
-	~BuildingInstance();
+	//~BuildingInstance();
 	
-	virtual void doDamage(int damage);
+	// override to remove the roof and disable fire effects
+	virtual void explode();
+	
+	virtual void applyDamage(int amount);
 	virtual void applyCollision(
 			irr::scene::IMetaTriangleSelector *metaTriSelector
 		);

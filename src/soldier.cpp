@@ -41,10 +41,6 @@ Soldier::Soldier(
     bill->setID(0);//not pickable by ray caster
 }
 
-void Soldier::doDamage(int damage){
-	this->health -= damage;
-}
-
 void Soldier::applyCollision(
 	irr::scene::IMetaTriangleSelector *metaTriSelector)
 {

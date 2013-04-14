@@ -64,10 +64,6 @@ class GameInstance {
     // collision detection pointers
 	irr::scene::IMetaTriangleSelector *metaTriSelector;
 	
-	// collision detection functions (add and remove from meta tri selector)
-	void addCollision(irr::scene::ITriangleSelector *selector);
-	void removeCollision(irr::scene::ITriangleSelector *selector);
-	
 	// game objects (e.g. terrain, GUI, etc.)
 	AudioSystem *audioSystem;
     SoundClip *bgSound;
@@ -115,6 +111,10 @@ class GameInstance {
     void update();
 
     irr::scene::ICameraSceneNode* getCamera() { return camera; }
+	
+	// collision detection functions (add and remove from meta tri selector)
+	void addCollision(irr::scene::ITriangleSelector *selector);
+	void removeCollision(irr::scene::ITriangleSelector *selector);
 
 
 }; // end of GameInstance class

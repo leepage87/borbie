@@ -34,7 +34,6 @@ class VehicleInstance : public GameObject {
 		float posX, float posY, float posZ, irr::scene::IAnimatedMesh *mesh, int modelIndex
 	);
 	
-	virtual void doDamage(int damage);
 	virtual void applyCollision(
 			irr::scene::IMetaTriangleSelector *metaTriSelector
 		);

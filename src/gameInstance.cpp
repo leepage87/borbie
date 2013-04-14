@@ -312,7 +312,7 @@ void GameInstance::update(){
     for(std::vector<GameObject *>::iterator it = this->updateList.begin();
         it != this->updateList.end(); ++it)
     {
-        std::cout << updateList.size() << std::endl;
+        //std::cout << updateList.size() << std::endl;
         unsigned int retval = (*it)->update();
         switch(retval){
             case GAME_OBJ_DELETE: // delete object AND remove it from lists
@@ -320,6 +320,8 @@ void GameInstance::update(){
             case GAME_OBJ_REMOVE_FROM_UPDATE_LIST: // remove object from list
                 this->updateList.erase(it);
                 it--;
+                std::cout << "Deleted from update list; new size = "
+                    << updateList.size() << std::endl;
                 break;
             case GAME_OBJ_DO_NOTHING: // if do nothing, or unknown, do nothing
             default:

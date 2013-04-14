@@ -22,8 +22,6 @@ class Soldier : public GameObject {
 	    GameInstance *gameInstance,
 		float posX, float posY, float posZ);
 
-	virtual void doDamage(int damage);
-
 	virtual void applyCollision(
 			irr::scene::IMetaTriangleSelector *metaTriSelector
 		);

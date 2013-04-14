@@ -40,11 +40,6 @@ VehicleInstance::VehicleInstance(
 	//this->sceneNode->addShadowVolumeSceneNode(0,-1,true,25.0f);
 }
 
-
-void VehicleInstance::doDamage(int damage){
-	this->health -= damage;
-}
-
 void VehicleInstance::applyCollision(
 	irr::scene::IMetaTriangleSelector *metaTriSelector)
 {

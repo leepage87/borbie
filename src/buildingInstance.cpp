@@ -44,14 +44,14 @@ BuildingInstance::BuildingInstance(
 	this->sceneNode->setMaterialFlag(EMF_LIGHTING, true);
 	this->sceneNode->addShadowVolumeSceneNode(0,-1,true,25.0f);
 
-	this->sceneNode = smgr->addCubeSceneNode();
-	this->sceneNode->setScale(vector3df(width+1, 2, depth+1));
-	this->sceneNode->setPosition(vector3df(actualPosX, (actualPosY*2-40), actualPosZ));
-	this->sceneNode->setMaterialTexture(0, roofTexture);
-	this->sceneNode->setMaterialFlag(EMF_LIGHTING, true);
-	this->sceneNode->addShadowVolumeSceneNode(0,-1,true,25.0f);
+	this->roofNode = smgr->addCubeSceneNode();
+	this->roofNode->setScale(vector3df(width+1, 2, depth+1));
+	this->roofNode->setPosition(vector3df(actualPosX, (actualPosY*2-40), actualPosZ));
+	this->roofNode->setMaterialTexture(0, roofTexture);
+	this->roofNode->setMaterialFlag(EMF_LIGHTING, true);
+	//this->roofNode->addShadowVolumeSceneNode(0,-1,true,25.0f);
 
-	
+	this->isOnFire = false;
 	this->fireParticleSystem = 0;
 	this->sparkParticleSystem = 0;
 	this->height = height;
@@ -59,15 +59,15 @@ BuildingInstance::BuildingInstance(
 }
 
 
-BuildingInstance::~BuildingInstance(){
+/*BuildingInstance::~BuildingInstance(){
+    std::cout << "Deleted" << std::endl;
 	if(this->fireParticleSystem)
 		this->fireParticleSystem->remove();
-}
-
-
-void BuildingInstance::doDamage(int damage){
-	this->health -= damage;
-}
+    if(this->sparkParticleSystem)
+        this->sparkParticleSystem->remove();
+    if(this->roofNode)
+        this->roofNode->remove();
+}*/
 
 
 // Adds a triangle selector to the given meta triangle selectior to add this
@@ -86,9 +86,24 @@ void BuildingInstance::applyCollision(
 }
 
 
+// @Override
+// do damage
+void BuildingInstance::applyDamage(int amount) {
+    GameObject::applyDamage(amount);
+    
+    if(this->health <= 300)
+        this->setAblaze();
+}
+
+
 // Sets this building on fire. Oh boy.
 // (adds a fire animation to the building model using particle effects)
 void BuildingInstance::setAblaze(){
+    // if already exploded or already on fire, prevent adding the fire again
+    if(this->hasBeenExploded || this->isOnFire)
+        return;
+    std::cout << "Added fire" << std::endl;
+    
     // ADD FIRE EFFECT
     // if a particle system for fire already exists, clean it off
     if(this->fireParticleSystem)
@@ -169,4 +184,33 @@ void BuildingInstance::setAblaze(){
 	this->sparkParticleSystem->setMaterialTexture(0,
 	    this->driver->getTexture("assets/textures/pinkfire.bmp")); // pink
 	this->sparkParticleSystem->setMaterialType(EMT_TRANSPARENT_ADD_COLOR);
+	
+	// flag building as on fire
+	this->isOnFire = true;
+}
+
+
+void BuildingInstance::explode(){
+    // call super class explode
+    GameObject::explode();
+    
+    std::cout << "BooM? (about to remove stuff)" << std::endl;
+    if(this->fireParticleSystem){
+        this->fireParticleSystem->remove();
+        this->fireParticleSystem = 0;
+        std::cout << "Deleted firePartSys" << std::endl;
+    }
+    if(this->sparkParticleSystem){
+        this->sparkParticleSystem->remove();
+        this->sparkParticleSystem = 0;
+        std::cout << "Deleted sparkPartSys" << std::endl;
+    }
+    if(this->roofNode){
+        this->roofNode->remove();
+        this->roofNode = 0;
+        std::cout << "Deleted roof" << std::endl;
+    }
+            
+    std::cout << "BooM done?" << std::endl;
+
 }

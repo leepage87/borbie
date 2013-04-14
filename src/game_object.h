@@ -100,7 +100,7 @@ class GameObject {
 				irr::IrrlichtDevice *device,
 				GameInstance *gameInstance);
 	// destructor: automatically removes the node from the scene.
-	~GameObject();
+	virtual ~GameObject();
 	
 	// TODO - perhaps these can be private, and only friend-accessible
 	// standard getters
@@ -138,7 +138,6 @@ class GameObject {
 	
 	
 	// pure virtual functions (override mandatory)
-	virtual void doDamage(int damage) = 0;
 	virtual void applyCollision(
 			irr::scene::IMetaTriangleSelector *metaTriSelector
 		) = 0;

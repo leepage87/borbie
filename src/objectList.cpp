@@ -66,7 +66,8 @@ void ObjectList::deleteObject(irr::scene::ISceneNode* pointer){
 		it != objList.end(); ++it){
 		if ((*it)->getNode() == pointer) {//pointer match, delete this object
             this->objList.erase(it);
-            delete (*it);			
+            delete (*it);
+            break;
 	    }
 	}
 }
