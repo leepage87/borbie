@@ -8,6 +8,10 @@
 #include "game_object.h"
 
 
+// define GameInstance to use pointer
+class GameInstance;
+
+
 // Enemy class: abstract, extends GameObject
 class Enemy : public GameObject {
 	protected:
@@ -15,7 +19,8 @@ class Enemy : public GameObject {
 	public:
 	Enemy (irr::scene::ISceneManager *smgr,
 				irr::video::IVideoDriver *driver,
-				irr::IrrlichtDevice *device);
+				irr::IrrlichtDevice *device,
+				GameInstance *gameInstance);
 
 	virtual void doDamage(int damage);
 

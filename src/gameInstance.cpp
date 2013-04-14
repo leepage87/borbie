@@ -77,14 +77,14 @@ GameInstance::GameInstance(
 	/*** Setup Game Objects (BUILDINGS, VEHICLES) ***/
     
     // add the buildings and generate city based on coordinate file
-	this->buildings = new Buildings(smgr, driver, device, metaTriSelector);
+	this->buildings = new Buildings(smgr, driver, device, metaTriSelector, this);
     this->buildings->generateBuildings("assets/map/coords.bor");
     
 	const int ROAD_HEIGHT = 70;
 	const int farX = 20000.0f;
 	const int farY = 20000.0f;
 	//add vehicle(s) - TODO: add this functionality into the vehicles object
-	this->vehicles = new Vehicles(smgr, driver, device, metaTriSelector);
+	this->vehicles = new Vehicles(smgr, driver, device, metaTriSelector, this);
 	this->vehicles->addRandomVehicle(farX*.1953, ROAD_HEIGHT, farY*.2207);
     this->vehicles->addRandomVehicle(farX*.2453, ROAD_HEIGHT, farY*.2207);
     this->vehicles->addRandomVehicle(farX*.2953, ROAD_HEIGHT, farY*.2207);
@@ -167,7 +167,8 @@ GameInstance::GameInstance(
 
 
 	//TESTING SOLDIER CLASS
-	Soldier *test = new Soldier (smgr, driver, device, 10200.0, 75.0, 10200.0);
+	Soldier *test =
+	    new Soldier (smgr, driver, device, this, 10200.0, 75.0, 10200.0);
 
 	// TODO: remove
 	/*BuildingInstance *x =
@@ -204,8 +205,6 @@ GameInstance::~GameInstance(){
     this->smgr->clear();
 	//turn the mouse cursor back on
     device->getCursorControl()->setVisible(true);
-
-
 }
 
 
@@ -282,6 +281,14 @@ void GameInstance::createRainParticleSystem(){
 }
 
 
+// Adds an object to the list of update-required objects, where they will
+//  be updated by the standard update system until they request themselves
+//  to be removed. Thanks Irrlicht.
+void GameInstance::addUpdateObject(GameObject *toUpdate){
+    this->updateList.push_back(toUpdate);
+}
+
+
 
 /*** PER-FRAME UPDATE METHODS ***/
 
@@ -299,6 +306,7 @@ void GameInstance::update(){
     for(std::vector<GameObject *>::iterator it = this->updateList.begin();
         it != this->updateList.end(); ++it)
     {
+        std::cout << updateList.size() << std::endl;
         unsigned int retval = (*it)->update();
         switch(retval){
             case GAME_OBJ_DELETE: // delete object AND remove it from lists
@@ -417,7 +425,7 @@ void GameInstance::updateThrownObject(){
 		if(collided || this->objCarry->objectDoneFlying()){
 		    // blow it up
 			carriedVehicle->explode();
-			this->updateList.push_back(carriedVehicle);
+			//this->updateList.push_back(carriedVehicle);
 			
 			// make everything take damage around it
 			carriedVehicle->applyExplosionDamage(2, this->vehicles, this->buildings);

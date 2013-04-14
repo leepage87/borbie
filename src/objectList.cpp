@@ -12,6 +12,7 @@
 #include <algorithm>
 #include "objectList.h"
 #include "game_object.h"
+#include "gameInstance.h"
 
 
 
@@ -25,11 +26,13 @@ using namespace video;
 ObjectList::ObjectList(	ISceneManager *smgr,
 	IVideoDriver *driver,
 	IrrlichtDevice *device,
-	IMetaTriangleSelector *metaTriSelector){
+	IMetaTriangleSelector *metaTriSelector,
+	GameInstance *gameInstance){
 	this->smgr = smgr;
 	this->driver = driver;
 	this->device = device;
 	this->metaTriSelector = metaTriSelector;
+	this->gameInstance = gameInstance;
 }
 
 // delete all of the objects

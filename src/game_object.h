@@ -19,13 +19,15 @@
 // declare ObjectList - (ObjectList in objectList.h): GameObject is included
 //  in that header.
 class ObjectList;
+// similarly, GameInstance is used
+class GameInstance;
 
 
 // GameObject standard values
 //	TODO: modify as needed
 #define GAME_OBJ_MAXHEALTH 1000
 #define GAME_OBJ_EXPLOSION_RADIUS 1000
-#define GAME_OBJ_EXPLOSION_DAMAGE 1000
+#define GAME_OBJ_EXPLOSION_DAMAGE 500
 
 // timer value constants
 #define GAME_OBJ_EXPLOSION_TIME_MS 75
@@ -65,6 +67,9 @@ class GameObject {
 	irr::scene::IMeshSceneNode *sceneNode;
 	irr::scene::IMetaTriangleSelector *metaTriSelector;
 	
+	// pointer to gameInstance (to add itself to the updator)
+	GameInstance *gameInstance;
+	
 	// allow a triangle selector to be set here
 	void setMetaTriSelector(irr::scene::IMetaTriangleSelector *metaTriSelector);
 	
@@ -79,10 +84,6 @@ class GameObject {
 	irr::u32 explosionStopTime;
 	bool hasBeenExploded;
 	
-	// returns an invisible node (sphere) that represents the collision
-	//  of the object's explosion radius.
-	virtual irr::scene::ISceneNode* getExplosionSphere();
-	
 	// memory management - because Irrlicht is too crap to provide this basic
 	//  functionality that should be trivial in any system like this.
 	// Used to update each frame to manage events and memory (you know,
@@ -96,18 +97,28 @@ class GameObject {
 	//	necessary Irrlicht object pointers to keep track of.
 	GameObject(	irr::scene::ISceneManager *smgr,
 				irr::video::IVideoDriver *driver,
-				irr::IrrlichtDevice *device);
+				irr::IrrlichtDevice *device,
+				GameInstance *gameInstance);
 	// destructor: automatically removes the node from the scene.
 	~GameObject();
 	
+	// TODO - perhaps these can be private, and only friend-accessible
 	// standard getters
 	virtual int getHealth() const;
 	virtual int getExplosionRadius() const;
+	virtual int getExplosionDamage() const;
 	virtual irr::scene::IMeshSceneNode* getNode() { return this->sceneNode; }
 	
 	// standard setters
 	virtual void setHealth(int newHealth);
 	virtual void setExplosionRadius(int newRadius);
+	virtual void setExplosionDamage(int newDamage);
+	
+	// Apply damage to this node. To "heal", apply negative damage. Damage
+	//  applied may automatically change the visible state of this object,
+	//  based on its health. If damage causes this object's heatlth to dip
+	//  to or below 0, this object also explodes.
+	virtual void applyDamage(int amount);
 	
 	// Causes this object to explode, creating a particle effect around it.
 	//  For the explosion to fade out, it is necessary to call update() each
@@ -115,6 +126,9 @@ class GameObject {
 	virtual void explode();
 	virtual bool hasExploded(); // returns TRUE if this object has exploded
 	
+	// if this node exploded, apply explosion damage around its own explosion
+	//  radius (scaled based on distance from explosion center), and apply
+	//  the appropriate amount of explosion damage.
 	virtual void applyExplosionDamage(int numLists, ...);
 	
 	// updates the object's animation/effects and other possible timers;

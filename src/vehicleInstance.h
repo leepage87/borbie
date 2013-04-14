@@ -18,6 +18,10 @@
 #include "game_object.h"
 
 
+// define GameInstance to use pointer
+class GameInstance;
+
+
 // VehicleInstance class:
 class VehicleInstance : public GameObject {
 
@@ -26,6 +30,7 @@ class VehicleInstance : public GameObject {
 		irr::scene::ISceneManager *smgr,
 	    irr::video::IVideoDriver *driver,
 	    irr::IrrlichtDevice *device,
+	    GameInstance *gameInstance,
 		float posX, float posY, float posZ, irr::scene::IAnimatedMesh *mesh, int modelIndex
 	);
 	

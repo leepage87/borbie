@@ -22,10 +22,12 @@ BuildingInstance::BuildingInstance(
 	ISceneManager *smgr,
 	IVideoDriver *driver,
 	IrrlichtDevice *device,
+	GameInstance *gameInstance,
 	float width, float height, float depth,
 	float posX, float posY, float posZ,
 	ITexture *texture)
-	: GameObject(smgr, driver, device) // call super GameObject constructor first
+	// call super GameObject constructor first:
+	: GameObject(smgr, driver, device, gameInstance)
 {
     // calculate y-position based on height (with posY being the base
     //  of the building. Irrlicht centers objects at 1/2 height.

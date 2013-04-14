@@ -22,8 +22,10 @@ VehicleInstance::VehicleInstance(
 	ISceneManager *smgr,
 	IVideoDriver *driver,
 	IrrlichtDevice *device,
+	GameInstance *gameInstance,
 	float posX, float posY, float posZ, IAnimatedMesh *mesh, int modelIndex)
-	: GameObject(smgr, driver, device) // call super GameObject constructor first
+	// call super GameObject constructor first:
+	: GameObject(smgr, driver, device, gameInstance)
 {
 
     

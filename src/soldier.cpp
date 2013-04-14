@@ -19,8 +19,10 @@ Soldier::Soldier(
 	ISceneManager *smgr,
 	IVideoDriver *driver,
 	IrrlichtDevice *device,
+	GameInstance *gameInstance,
 	float posX, float posY, float posZ)
-	: Enemy(smgr, driver, device) // call super GameObject constructor first
+	// call super GameObject constructor first:
+	: Enemy(smgr, driver, device, gameInstance)
 {
     sceneNode =
     	smgr->addAnimatedMeshSceneNode(smgr->getMesh("assets/models/enemies/soldier/soldier_1.obj"));

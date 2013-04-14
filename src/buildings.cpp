@@ -34,8 +34,10 @@ Buildings::Buildings(
 	ISceneManager *smgr,
 	IVideoDriver *driver,
 	IrrlichtDevice *device,
-	IMetaTriangleSelector *metaTriSelector)
-	: ObjectList(smgr, driver, device, metaTriSelector)//passing these to supah constructah
+	IMetaTriangleSelector *metaTriSelector,
+	GameInstance *gameInstance)
+	//passing these to supah constructah:
+	: ObjectList(smgr, driver, device, metaTriSelector, gameInstance)
 {
 	// seed the random number generator (using system time)
 	srand(time(NULL)); // TODO - do this elsewhere
@@ -200,6 +202,7 @@ BuildingInstance* Buildings::makeBuilding(
 			this->smgr,
 			this->driver,
 			this->device,
+			this->gameInstance,
 			BUILDING_WIDTH, height, BUILDING_DEPTH,
 			xPos, yPos, zPos,
 			texture

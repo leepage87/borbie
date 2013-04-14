@@ -11,6 +11,7 @@
 #include "game_object.h"
 #include "objectList.h"
 #include "game.h"
+#include "gameInstance.h"
 
 // used for c++ variable arguments
 #include <cstdarg>
@@ -35,12 +36,16 @@ using namespace video;
 GameObject::GameObject(
 	irr::scene::ISceneManager *smgr,
 	irr::video::IVideoDriver *driver,
-	IrrlichtDevice *device)
+	IrrlichtDevice *device,
+	GameInstance *gameInstance)
 {
-	// link reference to scene manager
+	// link pointer to Irrlicht objects
 	this->smgr = smgr;
 	this->driver = driver;
 	this->device = device;
+	
+	// link pointer to game instance
+	this->gameInstance = gameInstance;
 	
 	// default values
 	this->health = GAME_OBJ_MAXHEALTH;
@@ -83,49 +88,40 @@ void GameObject::setMetaTriSelector(IMetaTriangleSelector *metaTriSelector){
     this->metaTriSelector = metaTriSelector;
 }
 
-// (private)
-// Returns an invisible ISceneNode (sphere) that represents the explosion
-//  radius of this node.
-ISceneNode* GameObject::getExplosionSphere(){
-    ISceneNode *sphere =
-        this->smgr->addSphereSceneNode(this->explosionRadius);
-    sphere->setPosition(this->getNode()->getPosition());
-    sphere->setVisible(false);
-    return sphere;
-}
-
 
 // this is hackery!
 void GameObject::applyExplosionDamage(int numLists, ...){
-    // get the collision sphere
-    //CollisionSphere colSphere = this->getExplosionSphere();
-    //I//SceneNode *sphere = colSphere.sphere;
-
     // get list of function arguments
     va_list args;
     va_start(args, numLists);
     
+    // get this node's position (optimizing!)
+    vector3df explodePos = this->sceneNode->getPosition();
+    
     // iterate through the list of arguments
     for(int i=0; i<numLists; ++i){
         ObjectList *objects = va_arg(args, ObjectList *);
+        // iterate through each list and check if it's close enough to this obj
         int numObjs = objects->objList.size();
         for(int j=0; j<numObjs; ++j){
-            GameObject *curObj = objects->objList[j];
-            ISceneNode *curNode = curObj->getNode();
-            //colSphere.collisionAnimator->
-            float distance =
-                curNode->getPosition().getDistanceFrom(this->getNode()->getPosition());
-            if(distance <= this->explosionRadius)
+            ISceneNode *curNode = objects->objList[j]->getNode();
+            // if this (thrown) object IS the current node, ignore it
+            if(curNode == this->sceneNode)
+                continue;
+            // otherwise, check if the distance is close enough, and apply damage
+            //  based on the distance to the explosion center
+            float distance = curNode->getPosition().getDistanceFrom(explodePos);
+            if(distance <= this->explosionRadius){
+                float scale = distance / this->explosionRadius;
+                int damage = int(this->explosionDamage * scale);
+                objects->objList[j]->applyDamage(damage);
                 std::cout << distance << std::endl;
+            }
         }
     }
     
     // done with arguments
     va_end(args);
-    
-    // drop the sphere like a hot potato
-    //colSphere.collisionAnimator->drop();
-    //colSphere.sphere->remove();
 }
 
 
@@ -139,6 +135,11 @@ int GameObject::getExplosionRadius() const {
 	return this->explosionRadius;
 }
 
+// GET: explosion radius - returns the object's current explosion radius (int).
+int GameObject::getExplosionDamage() const {
+	return this->explosionDamage;
+}
+
 
 // SET: health - set the objects current health
 void GameObject::setHealth(int newHealth){
@@ -147,7 +148,20 @@ void GameObject::setHealth(int newHealth){
 
 // SET: explosion radius - set the objects current explosion radius
 void GameObject::setExplosionRadius(int newRadius){
-	this->health = newRadius;
+	this->explosionRadius = newRadius;
+}
+
+// SET: explosion damage - set the objects current explosion damage
+void GameObject::setExplosionDamage(int newDamage){
+	this->explosionDamage = newDamage;
+}
+
+void GameObject::applyDamage(int amount){
+    this->health -= amount;
+    if(this->health <= 0){
+        this->health = 0;
+        this->explode();
+    }
 }
 
 
@@ -279,4 +293,7 @@ void GameObject::explode(){
 	this->updateMode = GAME_OBJ_MODE_EXPLODED;
 	
 	this->sceneNode->setVisible(false);
+	
+	// add this object to the GameInstance's updator to keep the timers going
+	this->gameInstance->addUpdateObject(this);
 }

@@ -15,6 +15,11 @@
 #include <vector>
 #include "game_object.h"
 
+
+// declare GameInstance to use its pointer
+class GameInstance;
+
+
 // objectList class (abstract):
 class ObjectList {
 
@@ -27,6 +32,9 @@ class ObjectList {
 	irr::IrrlichtDevice *device;
 	irr::scene::IMetaTriangleSelector *metaTriSelector;
 	
+	// pointer to the active GameInstance
+	GameInstance *gameInstance;
+	
 	//vector containing the objects (e.g. vehicles, buildings)
 	std::vector<GameObject *> objList;
 
@@ -35,7 +43,8 @@ class ObjectList {
 	ObjectList(	irr::scene::ISceneManager *smgr,
         irr::video::IVideoDriver *driver,
         irr::IrrlichtDevice *device,
-        irr::scene::IMetaTriangleSelector *metaTriSelector);
+        irr::scene::IMetaTriangleSelector *metaTriSelector,
+        GameInstance *gameInstance);
 	// destructor: automatically removes the node from the scene.
 	~ObjectList();
 	

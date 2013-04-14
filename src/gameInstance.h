@@ -108,6 +108,9 @@ class GameInstance {
 
     ~GameInstance();
 	
+	// sets a new object to the update list
+	void addUpdateObject(GameObject *toUpdate);
+	
     // updates all of the game subsystems (hud, selectors, sounds, etc.)
     void update();
 

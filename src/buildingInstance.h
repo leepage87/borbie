@@ -18,6 +18,10 @@
 #include "game_object.h"
 
 
+// define GameInstance to use pointer
+class GameInstance;
+
+
 // BuildingInstance class:
 class BuildingInstance : public GameObject {
 
@@ -37,6 +41,7 @@ class BuildingInstance : public GameObject {
 		irr::scene::ISceneManager *smgr,
 		irr::video::IVideoDriver *driver,
 	    irr::IrrlichtDevice *device,
+	    GameInstance *gameInstance,
 		float width, float height, float depth,
 		float posX, float posY, float posZ,
 		irr::video::ITexture *texture

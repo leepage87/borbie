@@ -22,6 +22,10 @@
 #include "vehicleInstance.h"
 
 
+// declare GameInstance to use its pointer
+class GameInstance;
+
+
 // types of vehicles
 enum VehicleTypes {
 	VEHICLE1 = 1
@@ -44,7 +48,8 @@ class Vehicles : public ObjectList {
 		irr::scene::ISceneManager *smgr,
 		irr::video::IVideoDriver *driver,
 		irr::IrrlichtDevice *device,
-		irr::scene::IMetaTriangleSelector *metaTriSelector);
+		irr::scene::IMetaTriangleSelector *metaTriSelector,
+		GameInstance *gameInstance);
 	
 	void addRandomVehicle(float xPos, float yPos, float zPos);
 	

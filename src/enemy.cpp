@@ -18,8 +18,10 @@ using namespace video;
 Enemy::Enemy(
 	ISceneManager *smgr,
 	IVideoDriver *driver,
-	IrrlichtDevice *device)
-	: GameObject(smgr, driver, device) // call super GameObject constructor first
+	IrrlichtDevice *device,
+	GameInstance *gameInstance)
+	// call super GameObject constructor first:
+	: GameObject(smgr, driver, device, gameInstance)
 {}
 
 

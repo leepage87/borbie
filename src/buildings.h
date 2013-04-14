@@ -34,6 +34,11 @@
 // random building height bias (1+):
 #define BUILDING_HEIGHT_BIAS 2 // larger => more biased to average height
 
+
+// declare GameInstance to use its pointer
+class GameInstance;
+
+
 // types of buildings
 enum BuildingTypes {
 	BUILDING1 = 1
@@ -62,7 +67,8 @@ class Buildings : public ObjectList {
 		irr::scene::ISceneManager *smgr,
 		irr::video::IVideoDriver *driver,
 		irr::IrrlichtDevice *device,
-		irr::scene::IMetaTriangleSelector *metaTriSelector);
+		irr::scene::IMetaTriangleSelector *metaTriSelector,
+		GameInstance *gameInstance);
 
 	
 	// build the city using the given building coordinates file path

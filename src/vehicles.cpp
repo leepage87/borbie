@@ -25,8 +25,10 @@ Vehicles::Vehicles(
 	ISceneManager *smgr,
 	IVideoDriver *driver,
 	IrrlichtDevice *device,
-	IMetaTriangleSelector *metaTriSelector)
-	: ObjectList(smgr, driver, device, metaTriSelector)//passing these to supah constructah
+	IMetaTriangleSelector *metaTriSelector,
+	GameInstance *gameInstance)
+	//passing these to supah constructah:
+	: ObjectList(smgr, driver, device, metaTriSelector, gameInstance)
 {
     // seed the random number generator (using system time)
 	srand(time(NULL)); // TODO - do this elsewhere
@@ -63,7 +65,7 @@ void Vehicles::makeVehicle(int modelIndex,
 
 	VehicleInstance *newVehicle
 		= new VehicleInstance(
-			this->smgr, this->driver, this->device,
+			this->smgr, this->driver, this->device, this->gameInstance,
 			xPos, yPos, zPos, mesh, modelIndex
 		);
 	
