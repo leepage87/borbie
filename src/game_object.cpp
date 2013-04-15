@@ -33,16 +33,11 @@ using namespace video;
  *	this constructor first. You can do this by:
  *  ExtendedChild(int foo, int bar) : AbstractBase(foo) { ... }
  */
-GameObject::GameObject(
-	irr::scene::ISceneManager *smgr,
-	irr::video::IVideoDriver *driver,
-	IrrlichtDevice *device,
-	GameInstance *gameInstance)
-{
-	// link pointer to Irrlicht objects
-	this->smgr = smgr;
-	this->driver = driver;
-	this->device = device;
+GameObject::GameObject(GameInstance *gameInstance){
+	// link pointers to Irrlicht objects
+	this->smgr = gameInstance->getSceneManager();
+	this->driver = gameInstance->getDriver();
+	this->device = gameInstance->getDevice();
 	
 	// link pointer to game instance
 	this->gameInstance = gameInstance;

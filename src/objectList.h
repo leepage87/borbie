@@ -40,9 +40,7 @@ class ObjectList {
 
   public:
 	// constructor: initializes a vector to hold each object's pointer
-	ObjectList(	irr::scene::ISceneManager *smgr,
-        irr::video::IVideoDriver *driver,
-        irr::IrrlichtDevice *device,
+	ObjectList(
         irr::scene::IMetaTriangleSelector *metaTriSelector,
         GameInstance *gameInstance);
 	// destructor: automatically removes the node from the scene.

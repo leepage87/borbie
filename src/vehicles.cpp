@@ -22,13 +22,10 @@ using namespace video;
 
 
 Vehicles::Vehicles(
-	ISceneManager *smgr,
-	IVideoDriver *driver,
-	IrrlichtDevice *device,
 	IMetaTriangleSelector *metaTriSelector,
 	GameInstance *gameInstance)
 	//passing these to supah constructah:
-	: ObjectList(smgr, driver, device, metaTriSelector, gameInstance)
+	: ObjectList(metaTriSelector, gameInstance)
 {
     // seed the random number generator (using system time)
 	srand(time(NULL)); // TODO - do this elsewhere
@@ -65,7 +62,7 @@ void Vehicles::makeVehicle(int modelIndex,
 
 	VehicleInstance *newVehicle
 		= new VehicleInstance(
-			this->smgr, this->driver, this->device, this->gameInstance,
+			this->gameInstance,
 			xPos, yPos, zPos, mesh, modelIndex
 		);
 	

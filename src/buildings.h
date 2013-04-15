@@ -64,9 +64,6 @@ class Buildings : public ObjectList {
   public:
     // constructor/destructor
 	Buildings(
-		irr::scene::ISceneManager *smgr,
-		irr::video::IVideoDriver *driver,
-		irr::IrrlichtDevice *device,
 		irr::scene::IMetaTriangleSelector *metaTriSelector,
 		GameInstance *gameInstance);
 

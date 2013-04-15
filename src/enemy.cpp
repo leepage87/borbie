@@ -15,13 +15,10 @@ using namespace video;
 
 
 Enemy::Enemy(
-	ISceneManager *smgr,
-	IVideoDriver *driver,
-	IrrlichtDevice *device,
 	IMetaTriangleSelector *metaTriSelector,
 	GameInstance *gameInstance)
 	// call super ObjectList constructor first:
-	: ObjectList(smgr, driver, device, metaTriSelector, gameInstance)
+	: ObjectList(metaTriSelector, gameInstance)
 {}
 
 void Enemy::makeEnemy(){
@@ -31,7 +28,7 @@ void Enemy::makeEnemy(){
 	float zPos = 10200;
 	Soldier *newSoldier
 		= new Soldier(
-			this->smgr, this->driver, this->device, this->gameInstance,
+			this->gameInstance,
 			xPos, yPos, zPos
 		);
 	

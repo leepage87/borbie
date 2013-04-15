@@ -31,13 +31,10 @@ using namespace video;
 //  be applied to each generated building. Sets up pointers to keep track
 //  of Irrlicht objects, and also seeds the random generator using system time.
 Buildings::Buildings(
-	ISceneManager *smgr,
-	IVideoDriver *driver,
-	IrrlichtDevice *device,
 	IMetaTriangleSelector *metaTriSelector,
 	GameInstance *gameInstance)
 	//passing these to supah constructah:
-	: ObjectList(smgr, driver, device, metaTriSelector, gameInstance)
+	: ObjectList(metaTriSelector, gameInstance)
 {
 	// seed the random number generator (using system time)
 	srand(time(NULL)); // TODO - do this elsewhere
@@ -206,9 +203,6 @@ BuildingInstance* Buildings::makeBuilding(
 	//  to the global meta, and add it to the building list
 	BuildingInstance *newBuilding
 		= new BuildingInstance(
-			this->smgr,
-			this->driver,
-			this->device,
 			this->gameInstance,
 			BUILDING_WIDTH, height, BUILDING_DEPTH,
 			xPos, yPos, zPos,

@@ -16,13 +16,10 @@ using namespace video;
 
 
 Soldier::Soldier(
-	ISceneManager *smgr,
-	IVideoDriver *driver,
-	IrrlichtDevice *device,
 	GameInstance *gameInstance,
 	float posX, float posY, float posZ)
 	// call super GameObject constructor first:
-	: GameObject(smgr, driver, device, gameInstance)
+	: GameObject(gameInstance)
 {
     sceneNode =
     	smgr->addAnimatedMeshSceneNode(smgr->getMesh("assets/models/enemies/soldier/soldier_1.obj"));

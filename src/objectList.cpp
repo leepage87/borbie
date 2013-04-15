@@ -23,14 +23,13 @@ using namespace video;
 
 
 
-ObjectList::ObjectList(	ISceneManager *smgr,
-	IVideoDriver *driver,
-	IrrlichtDevice *device,
+ObjectList::ObjectList(
 	IMetaTriangleSelector *metaTriSelector,
-	GameInstance *gameInstance){
-	this->smgr = smgr;
-	this->driver = driver;
-	this->device = device;
+	GameInstance *gameInstance)
+{
+	this->smgr = gameInstance->getSceneManager();
+	this->driver = gameInstance->getDriver();
+	this->device = gameInstance->getDevice();
 	this->metaTriSelector = metaTriSelector;
 	this->gameInstance = gameInstance;
 }

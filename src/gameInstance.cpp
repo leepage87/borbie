@@ -78,14 +78,14 @@ GameInstance::GameInstance(
 	/*** Setup Game Objects (BUILDINGS, VEHICLES) ***/
     
     // add the buildings and generate city based on coordinate file
-	this->buildings = new Buildings(smgr, driver, device, metaTriSelector, this);
+	this->buildings = new Buildings(metaTriSelector, this);
     this->buildings->generateBuildings("assets/map/coords.bor");
     
 	const int ROAD_HEIGHT = 70;
 	const int farX = 20000.0f;
 	const int farY = 20000.0f;
 	//add vehicle(s) - TODO: add this functionality into the vehicles object
-	this->vehicles = new Vehicles(smgr, driver, device, metaTriSelector, this);
+	this->vehicles = new Vehicles(metaTriSelector, this);
 	this->vehicles->addRandomVehicle(farX*.1953, ROAD_HEIGHT, farY*.2207);
     this->vehicles->addRandomVehicle(farX*.2453, ROAD_HEIGHT, farY*.2207);
     this->vehicles->addRandomVehicle(farX*.2953, ROAD_HEIGHT, farY*.2207);
@@ -172,7 +172,7 @@ GameInstance::GameInstance(
 	    new Soldier (smgr, driver, device, this, 10200.0, 75.0, 10200.0);*/
 	    
 	//TESTING ENEMY CLASS
-	Enemy * enemies = new Enemy (smgr, driver, device, metaTriSelector, this);
+	Enemy * enemies = new Enemy (metaTriSelector, this);
 	enemies->makeEnemy();
 	// TODO - memory leak (erase enemies in destructor)
 

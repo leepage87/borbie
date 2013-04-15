@@ -18,9 +18,7 @@ class GameInstance;
 class Enemy : public ObjectList {
 	
 	public:
-	Enemy (irr::scene::ISceneManager *smgr,
-				irr::video::IVideoDriver *driver,
-				irr::IrrlichtDevice *device,
+	Enemy (
 			    irr::scene::IMetaTriangleSelector *metaTriSelector,
 				GameInstance *gameInstance);
 

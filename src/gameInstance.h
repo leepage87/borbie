@@ -53,13 +53,13 @@ class GameInstance {
     irr::gui::IGUIEnvironment *guienv;
     irr::video::IVideoDriver *driver;
     irr::IrrlichtDevice *device;
-		CastRay *selector;
-		ObjectCarrier *objCarry;
-		irr::scene::ISceneNode *highlightedSceneNode;
-		irr::IEventReceiver *receiver;
-		irr::core::vector3df targetPos; //position object was thrown at
-		VehicleInstance *carriedVehicle; //object being carried/thrown
-		bool vehicleThrown; // true if a vehicle has been thrown
+	CastRay *selector;
+	ObjectCarrier *objCarry;
+	irr::scene::ISceneNode *highlightedSceneNode;
+	irr::IEventReceiver *receiver;
+	irr::core::vector3df targetPos; //position object was thrown at
+	VehicleInstance *carriedVehicle; //object being carried/thrown
+	bool vehicleThrown; // true if a vehicle has been thrown
     
     // collision detection pointers
 	irr::scene::IMetaTriangleSelector *metaTriSelector;
@@ -103,6 +103,15 @@ class GameInstance {
 					irr::IEventReceiver *receiver);
 
     ~GameInstance();
+    
+    // getters for all Irrlicht objects: used by objects in the game
+    //  to get pointers to all necessary Irrlicht objects.
+    irr::scene::ISceneManager* getSceneManager() { return this->smgr; }
+    irr::video::IVideoDriver* getDriver() { return this->driver; }
+    irr::IrrlichtDevice* getDevice() { return this->device; }
+    irr::scene::IMetaTriangleSelector* getMetaSelector() {
+            return this->metaTriSelector;
+        }
 	
 	// sets a new object to the update list
 	void addUpdateObject(GameObject *toUpdate);
