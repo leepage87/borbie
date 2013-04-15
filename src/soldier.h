@@ -16,9 +16,7 @@ class Soldier : public GameObject {
 	irr::scene::IBillboardSceneNode * bill;
 	
 	public:
-	Soldier(irr::scene::ISceneManager *smgr,
-	    irr::video::IVideoDriver *driver,
-	    irr::IrrlichtDevice *device,
+	Soldier(
 	    GameInstance *gameInstance,
 		float posX, float posY, float posZ);
 

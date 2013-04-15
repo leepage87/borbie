@@ -95,10 +95,7 @@ class GameObject {
   public:
 	// constructor: initializes standard object values, and saves the
 	//	necessary Irrlicht object pointers to keep track of.
-	GameObject(	irr::scene::ISceneManager *smgr,
-				irr::video::IVideoDriver *driver,
-				irr::IrrlichtDevice *device,
-				GameInstance *gameInstance);
+	GameObject(GameInstance *gameInstance);
 	// destructor: automatically removes the node from the scene.
 	virtual ~GameObject();
 	
