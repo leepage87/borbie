@@ -234,7 +234,7 @@ void GameObject::explode(){
 		this->smgr->addParticleSystemSceneNode(false);
     this->explosionParticleSystemLarge =
         this->smgr->addParticleSystemSceneNode(false);
-	
+
 	// add an emitter to the first explosion particle system (pink sparkles)
 	IParticleEmitter *explosionEmitter =
 	    this->explosionParticleSystem->createBoxEmitter(
@@ -250,6 +250,12 @@ void GameObject::explode(){
 	this->explosionParticleSystem->setEmitter(explosionEmitter);
 	explosionEmitter->drop(); // drop (re-created later)
 	
+	//add gravity affector to pink sparkles
+	IParticleGravityAffector* pgaf = explosionParticleSystem->createGravityAffector
+											(vector3df(0.F,-0.2F,0.F), 200U);
+	explosionParticleSystem->addAffector(pgaf);
+    pgaf->drop();
+
 	// add fade-out affector to the fire particle system
 	IParticleAffector* explosionFadeOutAffector =
 	    explosionParticleSystem->createFadeOutParticleAffector();
@@ -260,6 +266,7 @@ void GameObject::explode(){
 	vector3df explosionPos = this->sceneNode->getPosition();
 	if(explosionPos.Y < 0) // adjust position: no explosions underground!
 	    explosionPos.Y = 0;
+
 	
 	// adjust the pink sparkes explosion position and rendering values
 	this->explosionParticleSystem->setPosition(explosionPos);
