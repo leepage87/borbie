@@ -375,6 +375,11 @@ void GameInstance::updateSelector(){
         carriedVehicle->getNode()->addAnimator(collisionAnimator);
         collisionAnimator->drop();
 
+        ISceneNode *target = selector->getThrowTarget();
+        if(target)
+            std::cout << "Target in sight at distance = " <<
+            target->getPosition().getDistanceFrom(carriedVehicle->
+                getNode()->getPosition()) << std::endl;
 	}
 	
 	// update thrownObject (checks if vehicles need to be thrown)

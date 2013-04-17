@@ -15,15 +15,27 @@
 
 // CastRay class:
 class CastRay {
-	public:
+  private:
 	irr::scene::ISceneManager * smgr;
 	irr::scene::ICameraSceneNode *camera;
 
+    // returns the first node in front of the camera up to the given
+    //  maximum distance. Returns NULL (0) if nothing is in range.
+    irr::scene::ISceneNode* getTarget(float distance);
 
-  //public:
-	CastRay(irr::scene::ISceneManager *smgr, irr::scene::ICameraSceneNode *camera );
+  public:
+	CastRay(
+        irr::scene::ISceneManager *smgr,
+        irr::scene::ICameraSceneNode *camera);
 	
-	irr::scene::ISceneNode* getTarget();
+    // Returns the node of the nearest object when clicked, up to a
+    //  distance of 400 game units.
+	irr::scene::ISceneNode* getTarget(); // DEPRECATED: use getClickTarget()
+    irr::scene::ISceneNode* getClickTarget();
+
+    // Returns the node of the nearest object thrown at, up to a
+    //  distance of ??? game units.
+    irr::scene::ISceneNode* getThrowTarget();
 	
 }; // end of CastRay class
 
