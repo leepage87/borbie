@@ -3,6 +3,7 @@
 
 
 #include <irrlicht.h>
+class GameInstance;
 
 // Hud class
 class Hud {
@@ -18,7 +19,7 @@ class Hud {
     irr::gui::IGUIFont *font;
 
   public:
-    Hud(irr::gui::IGUIEnvironment *guienv, irr::video::IVideoDriver *driver);
+    Hud(GameInstance *gameInstance);
     ~Hud();
     
     void changeHealthState(const int healthState);

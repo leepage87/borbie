@@ -106,6 +106,7 @@ class GameInstance {
     
     // getters for all Irrlicht objects: used by objects in the game
     //  to get pointers to all necessary Irrlicht objects.
+    irr::gui::IGUIEnvironment* getIGUIEnvironment() {return this->guienv;}
     irr::scene::ISceneManager* getSceneManager() { return this->smgr; }
     irr::video::IVideoDriver* getDriver() { return this->driver; }
     irr::IrrlichtDevice* getDevice() { return this->device; }
