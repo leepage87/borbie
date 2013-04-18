@@ -1,4 +1,5 @@
 #include "hud.h"
+#include "gameInstance.h"
 
 #include <iostream> // TODO: debug
 
@@ -8,9 +9,10 @@ using namespace video;
 using namespace core;
 
 
-Hud::Hud(IGUIEnvironment *guienv, IVideoDriver *driver){
-    this->guienv = guienv;
-    this->driver = driver;
+Hud::Hud(GameInstance *gameInstance){
+
+    this->guienv = gameInstance->getIGUIEnvironment();
+    this->driver = gameInstance->getDriver();
 
     // get hud font
     this->font = guienv->getFont("assets/fonts/bigfont.png");
@@ -18,7 +20,7 @@ Hud::Hud(IGUIEnvironment *guienv, IVideoDriver *driver){
         std::cout << "ERROR: Font can't load." << std::endl;
 
     // get the main hud texture
-    this->hudTexture = driver->getTexture("assets/textures/hudTexture.jpg");
+    this->hudTexture = driver->getTexture("assets/textures/hudTexture1.jpg");
     this->hudTextureSize = this->hudTexture->getSize();
 }
 
@@ -49,7 +51,13 @@ void Hud::drawHud(){
     // draw text
     if(font){
         font->draw(
-            "Borbie's Big Adventure",
+            "fuck you",
+            rect<s32>(hudW-250, hudY, hudX+hudW, hudY+hudH),
+            SColor(255, 0,0,255),
+            true, true);
+                 
+        font->draw(
+            "Borbie",
             rect<s32>(hudX, hudY, hudX+hudW, hudY+hudH),
             SColor(255, 0, 0, 255),
             true, true); 
