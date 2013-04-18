@@ -3,6 +3,7 @@
  *
  */
 #include "objectCarrier.h"
+#include <iostream> // TODO - debug (remove)
 
 using namespace std;
 
@@ -15,6 +16,7 @@ const f32 RAY_LENGTH_IN_UNITS = 350.0f;
 // constant: how long a thrown object will fly until it explodes
 //  (it will explode sooner if it collides with something first)
 const f32 TIME_TO_FLY = 1000.0f;
+const f32 SPEED_UNITS_PER_MS = 10000.0f / 1000.0f; // 10000 units per second
 
 //TODO: initialize this in gameInstance and pass it to the event receiver, pass in smgr and camera
 //constructor:
@@ -46,25 +48,40 @@ void ObjectCarrier::pickUp(irr::scene::ISceneNode *selected) {
 
 
 // throw the object that is currently selected (picked up), if any
-vector3df ObjectCarrier::throwObj(){
-    if(!selected) // if nothing is selected, return an empty vector and do nothing
-        return vector3df(0,0,0);
+void ObjectCarrier::throwObj(ISceneNode *target){
+    if(!selected) // if nothing is selected, return (do nothing)
+        return;
 
+    vector3df targetPos;
+    float actualTimeToFly = TIME_TO_FLY;
+    
+    // if there is a target, cut time to fly by max distance
+    // 15k game units per second fly speed
+    if(target){
+        targetPos = target->getPosition();
+        f32 flyDist = camera->getPosition().getDistanceFrom(targetPos);
+        //actualTimeToFly = 
+        actualTimeToFly = flyDist / SPEED_UNITS_PER_MS;
+        std::cout << "FLY TIME: " << actualTimeToFly << std::endl;
+    }
+    else{
+        targetPos = camera->getTarget();
+    }
     // send the selected object flying straight out towards the camera's target
     selected->setParent(smgr->getRootSceneNode()); //removes camera as parent
-    vector3df targetPos = camera->getTarget();
+    //vector3df targetPos = camera->getTarget();
     ISceneNodeAnimator *flyAnimator =
         smgr->createFlyStraightAnimator(camera->getPosition(),
-        targetPos, TIME_TO_FLY, false);
+            targetPos, actualTimeToFly, false);
     selected->addAnimator(flyAnimator);
     flyAnimator->drop();
     selected = 0;
     
-    // update timer stop time to current time plus TIME_TO_FLY
-    this->timerStopTime = this->timer->getTime() + TIME_TO_FLY;
+    // update timer stop time to current time plus actualTimeToFly
+    this->timerStopTime = this->timer->getTime() + actualTimeToFly;
     
     // return the target position of the object's destination
-    return targetPos;
+    //return targetPos;
 }
 
 

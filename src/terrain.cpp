@@ -5,6 +5,7 @@
 */
 
 #include "terrain.h"
+#include "castRay.h"
 
 #include <iostream>
 
@@ -23,7 +24,7 @@ using namespace gui;
 Terrain::Terrain(IVideoDriver * _driver, ISceneManager * _smgr, irr::scene::IMetaTriangleSelector *metaTriSelector) {
 	driver = _driver;
 	smgr = _smgr;
-  this->metaTriSelector = metaTriSelector;
+    this->metaTriSelector = metaTriSelector;
 
 	terrainNode = _smgr->addTerrainSceneNode(
 		"assets/map/valleyHeightMap.bmp",
@@ -41,6 +42,8 @@ Terrain::Terrain(IVideoDriver * _driver, ISceneManager * _smgr, irr::scene::IMet
 		4					// smoothFactor
 		);
 
+    // make this node NOT pickable :( What a loser LOL!
+    terrainNode->setID(IDFlag_IsNotPickable);
 	
 	terrainNode->setMaterialFlag(video::EMF_LIGHTING, true);
  

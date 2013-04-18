@@ -13,6 +13,14 @@
 #include <irrlicht.h>
 
 
+// pickable stuff
+enum PickingIDs {
+	IDFlag_IsNotPickable = 0,               // 0
+	IDFlag_IsPickable = 1 << 0,             // 1 
+	IDFlag_IsHighlightable = 1 << 1         // 2 
+};
+
+
 // CastRay class:
 class CastRay {
   private:

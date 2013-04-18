@@ -351,6 +351,9 @@ void GameInstance::updateSelector(){
 	        
 	        // remove the vehicle's collision so it doesn't make Borbie glitch out
 	        this->removeCollision(carriedVehicle->getNode()->getTriangleSelector());
+	        
+	        // flag carried vehicle as no longer pickable
+	        carriedVehicle->getNode()->setID(IDFlag_IsNotPickable);
 	    }
 	}
     
@@ -361,25 +364,33 @@ void GameInstance::updateSelector(){
 	{
 	    // throw the selected object
 	    // NOTE: it may be necessary that this comes BEFORE adding collision below
-		this->targetPos = objCarry->throwObj();
-		vehicleThrown = true;
+		//this->targetPos = objCarry->throwObj();
+		//vehicleThrown = true;
 	    
 	    // Add a collision response animator the the thrown vehicle in order
 	    //  to enable it to track its own collision with other objects.
-        ISceneNodeAnimator* collisionAnimator =
+        /*ISceneNodeAnimator* collisionAnimator =
             this->smgr->createCollisionResponseAnimator(
                 this->metaTriSelector, // global meta triangle selector
                 carriedVehicle->getNode(), // node to be affected (node of v
                 core::vector3df(100, 100, 100), // radius
                 core::vector3df(0, 0, 0)); // gravity (-y = down)
         carriedVehicle->getNode()->addAnimator(collisionAnimator);
-        collisionAnimator->drop();
-
+        collisionAnimator->drop();*/
+        
+        // get the player's target node
         ISceneNode *target = selector->getThrowTarget();
+        //target->setVisible(false);
         if(target)
             std::cout << "Target in sight at distance = " <<
             target->getPosition().getDistanceFrom(carriedVehicle->
                 getNode()->getPosition()) << std::endl;
+        
+	    // throw the selected object at the found target; if target is null
+	    //  (not found), it will just fly to the maximum distance possible.
+	    // This will start an animator to fly to the target.
+		objCarry->throwObj(target);
+		vehicleThrown = true;
 	}
 	
 	// update thrownObject (checks if vehicles need to be thrown)
@@ -396,7 +407,7 @@ void GameInstance::updateThrownObject(){
 	if (carriedVehicle != 0 && vehicleThrown){
 	    
 	    // check if the thrown object collided with anything
-	    ISceneNode *vehicleNode = carriedVehicle->getNode();
+	    /*ISceneNode *vehicleNode = carriedVehicle->getNode();
 	    // yup -- seriously. I hate Irrlicht.
 	    core::list<ISceneNodeAnimator *> animators = vehicleNode->getAnimators();
 	    ISceneNodeAnimator *collisionAnimator = *(animators.begin()+1);
@@ -409,7 +420,7 @@ void GameInstance::updateThrownObject(){
 	    //  it sucks at that too, so really, it's good for absolutely nothing.
 	    // TODO: maybe cast a ray and figure out collision BEFORE throwing the
 	    //  object. Gravity is screwed anyway.
-        bool collided = ((ISceneNodeAnimatorCollisionResponse *)collisionAnimator)
+        //bool collided = ((ISceneNodeAnimatorCollisionResponse *)collisionAnimator)
             ->collisionOccurred();
         
         // to ensure object doesn't go below the ground, explode it automatically
@@ -418,10 +429,13 @@ void GameInstance::updateThrownObject(){
             collided = true;
             std::cout << "Thrown object went underground: "
                 << vehicleNode->getPosition().Y << std::endl;
-	    }
+	    }*/
 	    
 	    // check if thrown vehicle flew far enough or collided with something
-		if(collided || this->objCarry->objectDoneFlying()){
+		//if(collided || this->objCarry->objectDoneFlying()){
+		if(carriedVehicle->getNode()->getPosition().Y < -50
+		    || this->objCarry->objectDoneFlying())
+		{
 		    // blow it up
 			carriedVehicle->explode();
 			//this->updateList.push_back(carriedVehicle);
