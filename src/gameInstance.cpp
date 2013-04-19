@@ -178,7 +178,6 @@ GameInstance::GameInstance(
 
 	// TODO- remove
 	//this->setWorldState_wrecked();
-	this->hud->setTargetMarkerEnabled(true);
 }
 
 
@@ -355,6 +354,9 @@ void GameInstance::updateSelector(){
 	        
 	        // flag carried vehicle as no longer pickable
 	        carriedVehicle->getNode()->setID(IDFlag_IsNotPickable);
+	        
+	        // display the target marker on the GUI
+        	this->hud->setTargetMarkerEnabled(true);
 	    }
 	}
     
@@ -363,22 +365,6 @@ void GameInstance::updateSelector(){
 	if (carriedVehicle && !vehicleThrown &&
 	    ((BorbiesEventReceiver *)receiver)->isLeftMouseDown())
 	{
-	    // throw the selected object
-	    // NOTE: it may be necessary that this comes BEFORE adding collision below
-		//this->targetPos = objCarry->throwObj();
-		//vehicleThrown = true;
-	    
-	    // Add a collision response animator the the thrown vehicle in order
-	    //  to enable it to track its own collision with other objects.
-        /*ISceneNodeAnimator* collisionAnimator =
-            this->smgr->createCollisionResponseAnimator(
-                this->metaTriSelector, // global meta triangle selector
-                carriedVehicle->getNode(), // node to be affected (node of v
-                core::vector3df(100, 100, 100), // radius
-                core::vector3df(0, 0, 0)); // gravity (-y = down)
-        carriedVehicle->getNode()->addAnimator(collisionAnimator);
-        collisionAnimator->drop();*/
-        
         // get the player's target node
         ISceneNode *target = selector->getThrowTarget();
         //target->setVisible(false);
@@ -392,6 +378,9 @@ void GameInstance::updateSelector(){
 	    // This will start an animator to fly to the target.
 		objCarry->throwObj(target);
 		vehicleThrown = true;
+		
+		// hide the target marker (no longer needed)
+        this->hud->setTargetMarkerEnabled(false);
 	}
 	
 	// update thrownObject (checks if vehicles need to be thrown)
@@ -406,32 +395,6 @@ void GameInstance::updateSelector(){
 void GameInstance::updateThrownObject(){
 	// check if a carried vehicle exists and it has been thrown:
 	if (carriedVehicle != 0 && vehicleThrown){
-	    
-	    // check if the thrown object collided with anything
-	    /*ISceneNode *vehicleNode = carriedVehicle->getNode();
-	    // yup -- seriously. I hate Irrlicht.
-	    core::list<ISceneNodeAnimator *> animators = vehicleNode->getAnimators();
-	    ISceneNodeAnimator *collisionAnimator = *(animators.begin()+1);
-	    // TODO: potential segfault if pointer isn't perfectly typed, but
-	    //  at this point the only other possible solution would be to re-implement
-	    //  the entire collision system. On the other hand, it's probably easier
-	    //  and less time consuming to just create your own collision system
-	    //  from scratch then dealing with this pile of useless crap (Irrlicht).
-	    // True, they make excuses that Irrlicht is only a graphics engine - but
-	    //  it sucks at that too, so really, it's good for absolutely nothing.
-	    // TODO: maybe cast a ray and figure out collision BEFORE throwing the
-	    //  object. Gravity is screwed anyway.
-        //bool collided = ((ISceneNodeAnimatorCollisionResponse *)collisionAnimator)
-            ->collisionOccurred();
-        
-        // to ensure object doesn't go below the ground, explode it automatically
-        //  if its y-position is lower than the ground:
-        if(vehicleNode->getPosition().Y < -50){ // TODO - tweak this value
-            collided = true;
-            std::cout << "Thrown object went underground: "
-                << vehicleNode->getPosition().Y << std::endl;
-	    }*/
-	    
 	    // check if thrown vehicle flew far enough or collided with something
 		//if(collided || this->objCarry->objectDoneFlying()){
 		if(carriedVehicle->getNode()->getPosition().Y < -50
