@@ -178,6 +178,7 @@ GameInstance::GameInstance(
 
 	// TODO- remove
 	//this->setWorldState_wrecked();
+	this->hud->setTargetMarkerEnabled(true);
 }
 
 
