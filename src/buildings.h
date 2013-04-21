@@ -69,7 +69,7 @@ class Buildings : public ObjectList {
 
 	
 	// build the city using the given building coordinates file path
-	void generateBuildings(const char *buildingCoords);
+	void generateBuildings();
 	
 	// add a randomly sized and textured building to the scene, returning the
 	//	pointer to the newly created building object

@@ -70,7 +70,7 @@ Buildings::Buildings(
 // TODO: return int that can return error codes if file failed to load,
 //  file data is inappropriate, etc.
 // --- (public) ---
-void Buildings::generateBuildings(const char *buildingCoords){
+void Buildings::generateBuildings(){
     
 	/* Positions explained:
 	 *  x: 0 to 20000  0 is RIGHT edge of texture
