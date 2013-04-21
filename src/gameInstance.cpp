@@ -2,6 +2,7 @@
 #include "game.h"
 #include "keyBindings.h"
 #include "enemy.h"
+#include "mapReader.h"
 #include "borbie.h"
 
 #include <iostream> // TODO - remove (debug)
@@ -80,10 +81,13 @@ GameInstance::GameInstance(
 
 	
 	/*** Setup Game Objects (BUILDINGS, VEHICLES) ***/
+	
+	// Read the map file into the global static MapReader object.
+	MapReader::readCoordFile("assets/map/coords.bor");
     
     // add the buildings and generate city based on coordinate file
 	this->buildings = new Buildings(metaTriSelector, this);
-    this->buildings->generateBuildings("assets/map/coords.bor");
+    this->buildings->generateBuildings();
     
 	const int ROAD_HEIGHT = 70;
 	const int farX = 20000.0f;
@@ -176,7 +180,7 @@ GameInstance::GameInstance(
 	    new Soldier (smgr, driver, device, this, 10200.0, 75.0, 10200.0);*/
 	    
 	//TESTING ENEMY CLASS
-	Enemy * enemies = new Enemy (metaTriSelector, this);
+	enemies = new Enemy (metaTriSelector, this);
 	enemies->makeEnemy();
 	// TODO - memory leak (erase enemies in destructor)
 
@@ -273,7 +277,7 @@ void GameInstance::createRainParticleSystem(){
 	this->rainParticleSystem->setMaterialFlag(EMF_LIGHTING, false);
 	this->rainParticleSystem->setMaterialFlag(EMF_ZWRITE_ENABLE, false);
 	this->rainParticleSystem->setMaterialTexture(0,
-	    this->driver->getTexture("assets/textures/darkpinkfire.bmp"));
+	this->driver->getTexture("assets/textures/darkpinkfire.bmp"));
 	this->rainParticleSystem->setMaterialType(EMT_TRANSPARENT_ADD_COLOR);
 }
 
@@ -295,6 +299,7 @@ void GameInstance::update(){
     this->drawGUI();
     this->updateSelector();
     this->updateSound();
+	enemies->updateEnemy();
     
     // check objects in the update list that need to be updated each frame;
     //  if they are done needing to be updated (their updateTimer function

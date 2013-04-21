@@ -25,7 +25,9 @@
 #include "borbiesEventReceiver.h"
 #include "vehicleInstance.h"
 #include "soldier.h"
+#include "enemy.h"
 #include "borbie.h"
+
 
 // world constants
 #define GLOBAL_GRAVITY -40.0f
@@ -73,6 +75,7 @@ class GameInstance {
 	WorldLight *light;
 	Buildings *buildings;
 	Vehicles *vehicles;
+	Enemy * enemies;
 	Hud *hud;
 	
 	// private update methods to update the various subsystems:

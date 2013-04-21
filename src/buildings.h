@@ -22,8 +22,9 @@
 #include "objectList.h"
 
 
+// TODO - move these into .cpp file, maybe?
 // building constants:
-#define BUILDING_GROUND_HEIGHT 0.0f
+#define BUILDING_GROUND_HEIGHT 50.0f
 #define BUILDING_WIDTH 40.0f
 #define BUILDING_DEPTH 40.0f
 // height max and min values:
@@ -69,7 +70,7 @@ class Buildings : public ObjectList {
 
 	
 	// build the city using the given building coordinates file path
-	void generateBuildings(const char *buildingCoords);
+	void generateBuildings();
 	
 	// add a randomly sized and textured building to the scene, returning the
 	//	pointer to the newly created building object
