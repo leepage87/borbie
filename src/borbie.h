@@ -15,6 +15,15 @@ class Borbie : public GameObject{
    virtual void applyCollision(
 			irr::scene::IMetaTriangleSelector *metaTriSelector);	
 
+  //getters
+   irr::scene::ICameraSceneNode* getCamera()
+   {
+     return this->camera;
+   }
+
+
+  private:
+   irr::scene::ICameraSceneNode* camera;
 };
 
 #endif
