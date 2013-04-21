@@ -28,7 +28,8 @@ class VehicleInstance : public GameObject {
   public:
 	VehicleInstance(
 	    GameInstance *gameInstance,
-		float posX, float posY, float posZ, irr::scene::IAnimatedMesh *mesh, int modelIndex
+		float posX, float posY, float posZ,
+		irr::scene::IAnimatedMesh *mesh, int modelIndex
 	);
 	
 	virtual void applyCollision(
