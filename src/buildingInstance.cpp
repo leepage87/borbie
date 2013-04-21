@@ -39,7 +39,7 @@ BuildingInstance::BuildingInstance(
 	this->sceneNode->setPosition(vector3df(actualPosX, actualPosY , actualPosZ));
 	this->sceneNode->setMaterialTexture(0, texture);
 	this->sceneNode->setMaterialFlag(EMF_LIGHTING, true);
-	this->sceneNode->addShadowVolumeSceneNode(0,-1,true,25.0f);
+	((IMeshSceneNode* )this->sceneNode)->addShadowVolumeSceneNode(0,-1,true,25.0f);
 
 	this->roofNode = smgr->addCubeSceneNode();
 	this->roofNode->setScale(vector3df(width+1, 2, depth+1));

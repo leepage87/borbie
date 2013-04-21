@@ -1,9 +1,10 @@
 #include "borbiesEventReceiver.h"
 #include "game.h"
 #include "gameMenu.h"
+#include "gameInstance.h"
 
 #include <iostream>
-  
+
 
 bool BorbiesEventReceiver::OnEvent(const irr::SEvent& event){
 
@@ -11,10 +12,10 @@ bool BorbiesEventReceiver::OnEvent(const irr::SEvent& event){
   if(game)
   {
     SoundClip *mm = audioSystem->createSound2d("assets/sounds/menuMouseOver.wav");
-    
+
     if(game->getGameState() == BORBIE_MAIN_MENU_STATE)
     {
-    
+
       if(event.EventType == irr::EET_GUI_EVENT)
       {
         irr::s32 id = event.GUIEvent.Caller->getID();
@@ -44,8 +45,8 @@ bool BorbiesEventReceiver::OnEvent(const irr::SEvent& event){
             {
               default:
                 if(mm && id!=TITLE)
-                audioSystem->playSound2d(mm);
-               
+                  audioSystem->playSound2d(mm);
+
             }
         }
       }    
@@ -59,6 +60,12 @@ bool BorbiesEventReceiver::OnEvent(const irr::SEvent& event){
     if(game->getGameState() == BORBIE_GAME_STATE)
     {
       if (event.EventType == irr::EET_KEY_INPUT_EVENT){
+        //FIXME  TODO this is testing shit to see if borbi updates her health
+        if(event.KeyInput.Key == irr::KEY_MINUS && !event.KeyInput.PressedDown){
+          if(gameInstance && gameInstance->player)
+            gameInstance->player->applyDamage(10);        
+        } 
+
         if(event.KeyInput.Key == irr::KEY_ESCAPE && !event.KeyInput.PressedDown){
           if(device){
             std::cout << "Escape Key Pressed: Switching States" << std::endl;

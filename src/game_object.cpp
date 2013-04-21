@@ -61,11 +61,11 @@ GameObject::GameObject(GameInstance *gameInstance){
 
 
 /* DESTRUCTOR:
- *	Removes the Irrlicht IMeshSceneNode associated with this object from
+ *	Removes the Irrlicht ISceneNode associated with this object from
  *	the game (if it exists), as well as all of its associated particle systems.
  * NOTE: With inheritence, c++ automatically calls super destructors after
  *	child destructors are called. An overriding destructor needs not to
- *	delete the interal IMeshSceneNode.
+ *	delete the interal ISceneNode.
  */
 GameObject::~GameObject(){
 	if(this->sceneNode){

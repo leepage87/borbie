@@ -6,7 +6,9 @@
 #include "objectCarrier.h"
 #include "castRay.h"
 #include "audioSystem.h"
+#include "gameInstance.h"
 
+class gameInstance;
 class Game;
 /*
 	struct SMouseState{
@@ -24,12 +26,26 @@ class BorbiesEventReceiver : public irr::IEventReceiver {
 		CastRay *selector;
 		bool rightButtonDown;
 		bool leftButtonDown;
+    GameInstance* gameInstance;
+
   public:
+   
    // set the device pointer
-   void setDevice(irr::IrrlichtDevice *device, Game *game, AudioSystem *audioSystem){
+   void setDevice(GameInstance* gameInstance, irr::IrrlichtDevice *device, Game *game, AudioSystem *audioSystem){
     this->audioSystem = audioSystem;
    	this->device = device;
    	this->game = game;
+    this->gameInstance=gameInstance;
+   }
+
+   void setGameInstance(GameInstance* gI)
+   {
+    this->gameInstance=gI;
+   }
+
+   void removeGameInstance()
+   {
+      this->gameInstance = 0;
    }
 
    // process input events

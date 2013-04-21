@@ -64,7 +64,7 @@ class GameObject {
 	irr::IrrlichtDevice *device;
 	
 	// internal Irrlicht scene node and global meta triangle selector
-	irr::scene::IMeshSceneNode *sceneNode;
+	irr::scene::ISceneNode *sceneNode;
 	irr::scene::IMetaTriangleSelector *metaTriSelector;
 	
 	// pointer to gameInstance (to add itself to the updator)
@@ -104,7 +104,7 @@ class GameObject {
 	virtual int getHealth() const;
 	virtual int getExplosionRadius() const;
 	virtual int getExplosionDamage() const;
-	virtual irr::scene::IMeshSceneNode* getNode() { return this->sceneNode; }
+	virtual irr::scene::ISceneNode* getNode() { return this->sceneNode; }
 	
 	// standard setters
 	virtual void setHealth(int newHealth);

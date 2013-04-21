@@ -34,6 +34,9 @@ GameInstance::GameInstance(
 	this->device = device;
 	this->audioSystem = audioSystem;
 	this->receiver = receiver;
+  
+  ((BorbiesEventReceiver*)(this->receiver))->setGameInstance(this);
+
   this->bgSound = audioSystem->createSound2d("assets/sounds/yumyum.ogg");
  
   //Start the shitty music and loop! 
@@ -185,6 +188,7 @@ GameInstance::GameInstance(
 // destructor: removes all objects from memory and ensures that the scene
 //  manager is completely wiped clean of all Irrlicht objects.
 GameInstance::~GameInstance(){
+  ((BorbiesEventReceiver*)receiver)->removeGameInstance();
   bgSound->release();  
   delete this->terrain;
 	delete this->skybox;

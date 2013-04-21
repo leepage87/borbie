@@ -47,7 +47,7 @@ Game::Game(unsigned int runMode)
     this->audioSystem = new AudioSystem();
 
     // set the event receiver's device pointer to the current device.
-    ((BorbiesEventReceiver *)receiver)->setDevice(device, this, audioSystem);
+    ((BorbiesEventReceiver *)receiver)->setDevice(this->gameInstance, device, this, audioSystem);
 
     device->setWindowCaption(L"Borbie's Big Adventure: LET'S HIT THE TOWN!");
 
