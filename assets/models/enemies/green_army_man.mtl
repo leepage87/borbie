@@ -1,0 +1,138 @@
+# 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
+# File Created: 21.04.2013 16:15:48
+
+newmtl smdimport_animal_reference2_smd_mesh_01
+	Ns 1.2000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.7000 1.0000 0.4000
+	Kd 0.0000 0.0000 0.0000
+	Ks 0.1000 0.1000 0.1000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Users\Ian\Desktop\Models\Soldier01\Soldier01\solid-green-background.jpg
+	map_Kd C:\Users\Ian\Desktop\Models\Soldier01\Soldier01\solid-green-background.jpg
+
+newmtl smdimport_animal_reference2_smd_mesh_03
+	Ns 1.8000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.4000 1.0000 0.4000
+	Kd 0.0000 0.0000 0.0000
+	Ks 0.1000 0.1000 0.1000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Users\Ian\Desktop\Models\Soldier01\Soldier01\solid-green-background.jpg
+	map_Kd C:\Users\Ian\Desktop\Models\Soldier01\Soldier01\solid-green-background.jpg
+
+newmtl smdimport_animal_reference2_smd_mesh_05
+	Ns 7.9000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.4000 0.9000 0.6000
+	Kd 0.0000 0.0000 0.0000
+	Ks 1.0000 1.0000 1.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl smdimport_animal_reference2_smd_mesh_07
+	Ns 2.4000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5000 1.0000 0.4000
+	Kd 0.0000 0.0000 0.0000
+	Ks 0.1000 0.1000 0.1000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Users\Ian\Desktop\Models\Soldier01\Soldier01\solid-green-background.jpg
+	map_Kd C:\Users\Ian\Desktop\Models\Soldier01\Soldier01\solid-green-background.jpg
+
+newmtl smdimport_animal_reference2_smd_mesh_015
+	Ns 1.5000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.4000 1.0000 0.4000
+	Kd 0.0000 0.0000 0.0000
+	Ks 0.1000 0.1000 0.1000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Users\Ian\Desktop\Models\Soldier01\Soldier01\solid-green-background.jpg
+	map_Kd C:\Users\Ian\Desktop\Models\Soldier01\Soldier01\solid-green-background.jpg
+
+newmtl smdimport_animal_reference2_smd_mesh_013
+	Ns 3.1000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.4000 0.9000 0.4000
+	Kd 0.0000 0.0000 0.0000
+	Ks 0.1000 0.1000 0.1000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Users\Ian\Desktop\Models\Soldier01\Soldier01\solid-green-background.jpg
+	map_Kd C:\Users\Ian\Desktop\Models\Soldier01\Soldier01\solid-green-background.jpg
+
+newmtl smdimport_animal_reference2_smd_mesh_017
+	Ns 1.5000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.4000 0.9000 0.4000
+	Kd 0.0000 0.0000 0.0000
+	Ks 0.1000 0.1000 0.1000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Users\Ian\Desktop\Models\Soldier01\Soldier01\solid-green-background.jpg
+	map_Kd C:\Users\Ian\Desktop\Models\Soldier01\Soldier01\solid-green-background.jpg
+
+newmtl smdimport_animal_reference2_smd_mesh_10
+	Ns 2.8000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.4000 0.9000 0.4000
+	Kd 0.0000 0.0000 0.0000
+	Ks 1.0000 1.0000 1.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl Material__25
+	Ns 7.9000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.4000 0.9000 0.6000
+	Kd 0.0000 0.0000 0.0000
+	Ks 1.0000 1.0000 1.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Users\Ian\Desktop\Models\Soldier01\Soldier01\solid-green-background.jpg
+	map_Kd C:\Users\Ian\Desktop\Models\Soldier01\Soldier01\solid-green-background.jpg
+
+newmtl ___Default
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.6000 0.6000 0.6000
+	Kd 0.0000 0.0000 0.0000
+	Ks 0.9000 0.9000 0.9000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Users\Ian\Desktop\Models\Soldier01\Soldier01\solid-green-background.jpg
+	map_Kd C:\Users\Ian\Desktop\Models\Soldier01\Soldier01\solid-green-background.jpg

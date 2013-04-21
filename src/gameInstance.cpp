@@ -3,6 +3,7 @@
 #include "keyBindings.h"
 #include "enemy.h"
 #include "mapReader.h"
+#include "borbie.h"
 
 #include <iostream> // TODO - remove (debug)
 
@@ -168,8 +169,8 @@ GameInstance::GameInstance(
 	//tell the mouse listener that right mouse isn't pressed to start with
 	((BorbiesEventReceiver *)receiver)->setRightMouse(false);
 	
-	
-
+  this->player = new Borbie(this); 	
+  
 
 	//TESTING SOLDIER CLASS
 	/*Soldier *test =
