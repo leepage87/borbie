@@ -39,7 +39,10 @@ void Enemy::makeEnemy(){
 void Enemy::updateEnemy(){
 	int numObjs = objList.size();
         for(int j=0; j<numObjs; ++j){
-            ((Soldier*)objList[j])->fire();
+			if(objList[j]){
+			
+            	((Soldier*)objList[j])->fire();
+			}	
 		}
 
 }

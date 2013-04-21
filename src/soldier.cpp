@@ -23,9 +23,9 @@ Soldier::Soldier(
 	: GameObject(gameInstance)
 {
     sceneNode =
-    	smgr->addAnimatedMeshSceneNode(smgr->getMesh("assets/models/enemies/soldier/soldier_1.obj"));
+    	smgr->addAnimatedMeshSceneNode(smgr->getMesh("assets/models/enemies/green_army_man.3DS"));
 	sceneNode->setPosition(vector3df(posX, posY, posZ));
-	sceneNode->setScale(vector3df(.7,.7,.7));
+	sceneNode->setScale(vector3df(0.7,0.7,0.7));
 	sceneNode->setVisible(true);
 	sceneNode->setMaterialFlag(EMF_LIGHTING, false);
 
@@ -68,17 +68,22 @@ void Soldier::fire(){
 	//get the length of the distance we're shooting
 	//hard coded target for testing
 	vector3df end = gameInstance->getCamera()->getPosition();
+
+	//get enemy position, adjust bullet height to barrel
 	vector3df start = sceneNode->getPosition();
+	float gunPosition[3];
+	start.getAs3Values(gunPosition);
+	start = vector3df(gunPosition[0], gunPosition[1]+15, gunPosition[2]);
 
 	f32 length = (f32)(end - start).getLength();
 	const f32 speed = 7.0f;
 	//figure out how long it should take to get there, so the animator speed is constant
 	u32 time = (u32)(length / speed);
-
-	ISceneNodeAnimator* anim = smgr->createFlyStraightAnimator(start, end, time);
+	ISceneNodeAnimator* anim = gameInstance->getSceneManager()->createFlyStraightAnimator(start, end, time);
 	bill->addAnimator(anim);
-	anim = smgr->createDeleteAnimator(time);
-	bill->addAnimator(anim);
+	anim->drop();
+	anim = gameInstance->getSceneManager()->createDeleteAnimator(time);
+	//bill->addAnimator(anim);
 	anim->drop();
 	
 }

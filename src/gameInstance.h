@@ -25,12 +25,9 @@
 #include "borbiesEventReceiver.h"
 #include "vehicleInstance.h"
 #include "soldier.h"
-<<<<<<< HEAD
 #include "enemy.h"
-
-=======
 #include "borbie.h"
->>>>>>> 0da5636733ad75a7b32067d29b9dc552fc143990
+
 
 // world constants
 #define GLOBAL_GRAVITY -40.0f

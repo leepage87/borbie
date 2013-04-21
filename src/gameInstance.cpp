@@ -291,7 +291,7 @@ void GameInstance::update(){
     this->drawGUI();
     this->updateSelector();
     this->updateSound();
-	enemy->updateEnemy();
+	enemies->updateEnemy();
     
     // check objects in the update list that need to be updated each frame;
     //  if they are done needing to be updated (their updateTimer function
