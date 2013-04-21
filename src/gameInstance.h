@@ -25,6 +25,7 @@
 #include "borbiesEventReceiver.h"
 #include "vehicleInstance.h"
 #include "soldier.h"
+#include "enemy.h"
 
 
 // world constants
@@ -72,6 +73,7 @@ class GameInstance {
 	WorldLight *light;
 	Buildings *buildings;
 	Vehicles *vehicles;
+	Enemy * enemies;
 	Hud *hud;
 	
 	// private update methods to update the various subsystems:

@@ -5,6 +5,7 @@
  */
 
 #include "soldier.h"
+#include "gameInstance.h"
 
 #include <iostream> // TODO: debug (remove)
 using namespace std;
@@ -24,7 +25,7 @@ Soldier::Soldier(
     sceneNode =
     	smgr->addAnimatedMeshSceneNode(smgr->getMesh("assets/models/enemies/soldier/soldier_1.obj"));
 	sceneNode->setPosition(vector3df(posX, posY, posZ));
-	sceneNode->setScale(vector3df(30,30,30));
+	sceneNode->setScale(vector3df(.7,.7,.7));
 	sceneNode->setVisible(true);
 	sceneNode->setMaterialFlag(EMF_LIGHTING, false);
 
@@ -63,10 +64,10 @@ void Soldier::applyCollision(
 
 }
 
-/*void Soldier::fire(){
+void Soldier::fire(){
 	//get the length of the distance we're shooting
 	//hard coded target for testing
-	vector3df end = (500.0, 50.0, 0.0);
+	vector3df end = gameInstance->getCamera()->getPosition();
 	vector3df start = sceneNode->getPosition();
 
 	f32 length = (f32)(end - start).getLength();
@@ -78,6 +79,6 @@ void Soldier::applyCollision(
 	bill->addAnimator(anim);
 	anim = smgr->createDeleteAnimator(time);
 	bill->addAnimator(anim);
-	anim->drop;
+	anim->drop();
 	
-}*/
+}

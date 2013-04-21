@@ -23,7 +23,7 @@ class Soldier : public GameObject {
 	virtual void applyCollision(
 			irr::scene::IMetaTriangleSelector *metaTriSelector
 		);
-
+	void fire();
 	//void fire();
 };
 #endif

@@ -33,6 +33,15 @@ void Enemy::makeEnemy(){
 		);
 	
 	newSoldier->applyCollision(this->metaTriSelector);
+	this->addObject(newSoldier);
+}
+
+void Enemy::updateEnemy(){
+	int numObjs = objList.size();
+        for(int j=0; j<numObjs; ++j){
+            ((Soldier*)objList[j])->fire();
+		}
+
 }
 
 
