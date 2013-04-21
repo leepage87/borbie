@@ -8,9 +8,8 @@ using namespace gui;
 using namespace video;
 using namespace core;
 
-
 Hud::Hud(GameInstance *gameInstance){
-
+    this->gameInstance=gameInstance;
     this->guienv = gameInstance->getIGUIEnvironment();
     this->driver = gameInstance->getDriver();
 
@@ -50,27 +49,12 @@ void Hud::drawHud(){
     
     // draw text
     if(font){
+        stringw s;
+        s += gameInstance->player->getHealth(); 
         font->draw(
-            "fuck you",
-            rect<s32>(hudW-250, hudY, hudX+hudW, hudY+hudH),
+            s, rect<s32>(hudW-250, hudY, hudX+hudW, hudY+hudH),
             SColor(255, 0,0,255),
             true, true);
-                 
-        font->draw(
-            "Borbie",
-            rect<s32>(hudX, hudY, hudX+hudW, hudY+hudH),
-            SColor(255, 0, 0, 255),
-            true, true); 
-		    //bool  	hcenter = false,
-		    //bool  	vcenter = false,
-    }
-}
-
-    
-void Hud::changeHealthState(const int healthState){
-
-}
-
-void Hud::changeMoodText(const char *text){
-
+        font->draw( "Borbie", rect<s32>(hudX, hudY, hudX+hudW, hudY+hudH), SColor(255, 0, 0, 255), true, true); //bool  	hcenter = false, //bool  	vcenter = false, } } void Hud::changeHealthState(const int healthState){ } void Hud::changeMoodText(const char *text){ }
+        }
 }

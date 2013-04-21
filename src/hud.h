@@ -17,6 +17,7 @@ class Hud {
     
     // font
     irr::gui::IGUIFont *font;
+    GameInstance *gameInstance;
 
   public:
     Hud(GameInstance *gameInstance);
