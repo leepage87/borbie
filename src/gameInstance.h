@@ -98,7 +98,7 @@ class GameInstance {
     
 
   public:
-     Borbie *player;
+    Borbie *player;
     
     GameInstance(irr::scene::ISceneManager *smgr,
                 irr::gui::IGUIEnvironment *guienv,
@@ -127,11 +127,13 @@ class GameInstance {
     void update();
 
     irr::scene::ICameraSceneNode* getCamera() { return camera; }
-	
+
+  //the coziest place
+  void applyExplosionDamage(GameObject *gameObject);
 	// collision detection functions (add and remove from meta tri selector)
 	void addCollision(irr::scene::ITriangleSelector *selector);
 	void removeCollision(irr::scene::ITriangleSelector *selector);
-
+  
 
 }; // end of GameInstance class
 

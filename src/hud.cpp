@@ -73,13 +73,13 @@ void Hud::drawHud(){
         s += gameInstance->player->getHealth(); 
         font->draw(
             s, rect<s32>(hudW-250, hudY, hudX+hudW, hudY+hudH),
-            SColor(255, 0,0,255),
+            SColor(255, 239,9,107),
             true, true);
 
         font->draw(
             "Borbie",
             rect<s32>(hudX, hudY, hudX+hudW, hudY+hudH),
-            SColor(255, 0, 0, 255),
+            SColor(255, 239,9,107),
             true, true); 
 		    //bool  	hcenter = false,
 		    //bool  	vcenter = false,

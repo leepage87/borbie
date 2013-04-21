@@ -24,7 +24,8 @@ class GameInstance;
 class ObjectList {
 
     friend class GameObject;
-    
+    friend class GameInstance;
+
   protected:
     // Irrlicht objects
 	irr::scene::ISceneManager *smgr;
