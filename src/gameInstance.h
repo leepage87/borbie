@@ -25,8 +25,12 @@
 #include "borbiesEventReceiver.h"
 #include "vehicleInstance.h"
 #include "soldier.h"
+<<<<<<< HEAD
 #include "enemy.h"
 
+=======
+#include "borbie.h"
+>>>>>>> 0da5636733ad75a7b32067d29b9dc552fc143990
 
 // world constants
 #define GLOBAL_GRAVITY -40.0f
@@ -54,7 +58,8 @@ class GameInstance {
     irr::gui::IGUIEnvironment *guienv;
     irr::video::IVideoDriver *driver;
     irr::IrrlichtDevice *device;
-	CastRay *selector;
+
+  CastRay *selector;
 	ObjectCarrier *objCarry;
 	irr::scene::ISceneNode *highlightedSceneNode;
 	irr::IEventReceiver *receiver;
@@ -96,6 +101,8 @@ class GameInstance {
     
 
   public:
+     Borbie *player;
+    
     GameInstance(irr::scene::ISceneManager *smgr,
                 irr::gui::IGUIEnvironment *guienv,
     			irr::video::IVideoDriver *driver,
