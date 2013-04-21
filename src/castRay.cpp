@@ -24,12 +24,6 @@ CastRay::CastRay(ISceneManager *_smgr, ICameraSceneNode *_camera){
 	this->camera = _camera;
 }
 
-enum PickingIDs {
-	IDFlag_IsNotPickable = 0,               // 0
-	IDFlag_IsPickable = 1 << 0,             // 1 
-	IDFlag_IsHighlightable = 1 << 1         // 2 
-};
-
 // (private)
 // Returns the first ISceneNode in the current scene that is directly in front
 //  of the camera, up to given number game units away. If no target is within range,

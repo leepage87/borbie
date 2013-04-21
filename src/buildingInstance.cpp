@@ -195,23 +195,19 @@ void BuildingInstance::explode(){
     // call super class explode
     GameObject::explode();
     
-    std::cout << "BooM? (about to remove stuff)" << std::endl;
+    // if the fire effect particles still exist, get rid of them
     if(this->fireParticleSystem){
         this->fireParticleSystem->remove();
         this->fireParticleSystem = 0;
-        std::cout << "Deleted firePartSys" << std::endl;
     }
     if(this->sparkParticleSystem){
         this->sparkParticleSystem->remove();
         this->sparkParticleSystem = 0;
-        std::cout << "Deleted sparkPartSys" << std::endl;
     }
+    // delete the roof (separate node)
     if(this->roofNode){
         this->roofNode->remove();
         this->roofNode = 0;
-        std::cout << "Deleted roof" << std::endl;
     }
-            
-    std::cout << "BooM done?" << std::endl;
 
 }

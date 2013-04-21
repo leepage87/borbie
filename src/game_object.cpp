@@ -239,11 +239,11 @@ void GameObject::explode(){
 	IParticleEmitter *explosionEmitter =
 	    this->explosionParticleSystem->createBoxEmitter(
 		    aabbox3d<f32>(-5, 0, -5, 5, 1, 5),  // emitter size
-		    vector3df(0.0f,2.0f,0.0f),          // direction + speed
+		    vector3df(0.0f,0.0f,0.2f),          // direction + speed
 		    12000, 14000,                       // min,max particles per second
 		    SColor(0,255,255,255),              // darkest color
 		    SColor(0,255,255,255),              // brightest color
-		    200, 2500,                          // min, max particle lifetime
+		    200, 2000,                          // min, max particle lifetime
 		    360,                                // max angle degrees
 		    dimension2df(30.0f, 30.0f),         // min start size
 		    dimension2df(50.0f, 50.0f));        // max start size
@@ -252,9 +252,9 @@ void GameObject::explode(){
 	
 	//add gravity affector to pink sparkles
 	IParticleGravityAffector* pgaf = explosionParticleSystem->createGravityAffector
-											(vector3df(0.F,-0.2F,0.F), 200U);
+											(vector3df(0.F,-0.5F,0.0F), 200U);
 	explosionParticleSystem->addAffector(pgaf);
-    pgaf->drop();
+  pgaf->drop();
 
 	// add fade-out affector to the fire particle system
 	IParticleAffector* explosionFadeOutAffector =

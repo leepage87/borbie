@@ -35,7 +35,8 @@ class ObjectCarrier {
 	void pickUp(irr::scene::ISceneNode *selected);
 	
 	// throw the object: set the target destination and throw it
-	irr::core::vector3df throwObj();
+	//irr::core::vector3df throwObj(irr::scene::ISceneNode *target);
+	void throwObj(irr::scene::ISceneNode *target);
 	
 	// returns TRUE if the last object recently thrown has been flying
 	//  for the pre-determined constant amount of flight-time.
