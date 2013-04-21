@@ -8,6 +8,7 @@
  */
 
 #include "buildings.h"
+#include "mapReader.h"
 
 // include cpp library headers for random number generation
 // TODO: make the random generator global (static object)
@@ -15,12 +16,7 @@
 #include <time.h>       /* time */
 #include <math.h>       /* pow */
 
-// include cpp library headers for reading the building coordinate file
-#include <fstream>
-#include <string>
 #include <iostream>
-#include <istream>
-#include <sstream>
 
 using namespace irr;
 using namespace scene;
@@ -64,68 +60,18 @@ Buildings::Buildings(
 }
 
 
-// Build the city using the given building coordinates file path,
-//  adding a randomly sized building at each point as dictated
-//  by the loaded file.
-// TODO: return int that can return error codes if file failed to load,
-//  file data is inappropriate, etc.
+// Build the city using the given building coordinates from the MapReader,
+//  adding a randomly sized building at each point as dictated by the
+//  coordinate list.
 // --- (public) ---
 void Buildings::generateBuildings(){
-    
-	/* Positions explained:
-	 *  x: 0 to 20000  0 is RIGHT edge of texture
-	 *  y: height (~500 is slightly over ground level)
-	 *  z: 0 to 20000  0 is TOP edge of texture
-	 *
-	 *  10000 is half-way; (10000, 10000) = center of texture
-	 */
-	
     // read in the map building coordinate file
-    // TODO: adapt to support trees, lamps, and other objects, too
-	const int farX = 20400.0f;
-	const int farY = 20400.0f;//19840.0f;
-	const int xOffset = -190;
-	const int yOffset = -190; // TODO: what the hell?
-	std::ifstream mapfile("assets/map/coords.bor");
-	if(mapfile.fail()){
-	    std::cerr << "ERROR: Cannot open map file." << std::endl;
-	    return;
-	}
-	for(std::string line; getline(mapfile, line); ) {
-        if(line.size() == 0) // skip empty lines
-            continue;
-        else if(line[0] == '#') // skip commented lines (beginning w/ "#")
-            continue;
-        else if(line[0] != 'b'){ // skip lines that are not building coordinates
-            std::cout << "Non-building ignored." << std::endl; // TODO - remove this print
-            continue;
-        }
-        else {
-            // try to parse the line into two floats
-            std::istringstream lineParser(line);
-            // ignore first thing (the 'b')
-            std::string ignore;
-            lineParser >> ignore;
-            // try to read the two floats
-            float coordX, coordY;
-            lineParser >> coordX;
-            lineParser >> coordY;
-            // if something failed, don't bother making the building
-            if(lineParser.fail()){
-                std::cerr << "ERROR: Invalid line in map file:" << std::endl
-                          << "       " << line << std::endl;
-                continue;
-            }
-            // use coordinates to add the building at specified location
-            this->addRandomBuilding(
-		        (farX * coordX) + xOffset,
-		        //BUILDING_GROUND_HEIGHT,
-		        50.0f,
-		        (farY * coordY) + yOffset
-	        );
-            std::cout << "Generated building at " <<
-                "x: " << coordX << ", y: " << coordY << std::endl;
-        }
+    for(std::vector<Point>::iterator it = MapReader::buildingCoords.begin();
+		it != MapReader::buildingCoords.end(); ++it)
+	{
+        this->addRandomBuilding((*it).x, BUILDING_GROUND_HEIGHT, (*it).y);
+        std::cout << "Generated building at " <<
+            "x: " << (*it).x << ", y: " << (*it).y << std::endl;
     }
 }
 

@@ -22,8 +22,9 @@
 #include "objectList.h"
 
 
+// TODO - move these into .cpp file, maybe?
 // building constants:
-#define BUILDING_GROUND_HEIGHT 0.0f
+#define BUILDING_GROUND_HEIGHT 50.0f
 #define BUILDING_WIDTH 40.0f
 #define BUILDING_DEPTH 40.0f
 // height max and min values:
