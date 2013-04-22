@@ -68,7 +68,8 @@ void Soldier::fire(){
     bill->setSize(core::dimension2d<f32>(20.0f, 20.0f));
     bill->setID(0);//not pickable by ray caster
 
-	
+
+
 	//hard coded target for testing
 	float posAdjust[3];
 	vector3df end = gameInstance->getCamera()->getPosition();
@@ -77,7 +78,7 @@ void Soldier::fire(){
 	//get enemy position, adjust bullet height to barrel
 	vector3df start = sceneNode->getPosition();	
 	start.getAs3Values(posAdjust);
-	start = vector3df(posAdjust[0], posAdjust[1]+15, posAdjust[2]);
+	start = vector3df(posAdjust[0], posAdjust[1]+45, posAdjust[2]);
 	//get the length of the distance we're shooting
 	f32 length = (f32)(end - start).getLength();
 	const f32 speed = 14.0f;
@@ -89,5 +90,12 @@ void Soldier::fire(){
 	anim = gameInstance->getSceneManager()->createDeleteAnimator(time);
 	bill->addAnimator(anim);
 	anim->drop();
+
+
+	//turn the soldier to look at you
+	end.getAs3Values(posAdjust);
+	end = vector3df(posAdjust[0], posAdjust[1]-125, posAdjust[2]);
+	vector3df vect = start-end;
+	sceneNode->setRotation(vect.getHorizontalAngle());
 	
 }

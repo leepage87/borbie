@@ -463,7 +463,32 @@ void GameInstance::updateThrownObject(){
     float explosionRadius = gameObject->getExplosionRadius();
     float explosionDamage = gameObject->getExplosionDamage();
     vector3df explodePos = iSceneNode->getPosition();
+	/*/calculate damage to enemies
+    int numEnemies = enemies->objList.size();
+    for(int i = 0 ; i < numEnemies ; i++){
+      ISceneNode *curNode = enemies->objList[i]->getNode();
+      // if this (thrown) object IS the current node, ignore it
+      if(curNode == iSceneNode)
+        continue;
+      // if this (thrown) node is NOT visible, ignore it
+      else if(!curNode->isVisible())
+        continue;
+      // otherwise, check if the distance is close enough, and apply damage
+      //  based on the distance to the explosion center
+      float distance = curNode->getPosition().getDistanceFrom(explodePos);
+      if(distance <= explosionRadius){
+        int damage = explosionDamage; // max damage
+        if(distance > 400){ // if more than 400 away, scale down damage
+          float scale = (distance-400) / (explosionRadius-400);
+          damage = int(explosionDamage * scale);
+        }
+        buildings->objList[i]->applyDamage(damage);
+        std::cout << "Damaged enemy @distance=" << distance <<
+          " for @damage=" << damage << std::endl;
+      }
+    }*/
 
+	//calculate damage for buildings
     int numBuild = buildings->objList.size();
     for(int i = 0 ; i < numBuild ; i++){
       ISceneNode *curNode = buildings->objList[i]->getNode();
@@ -483,11 +508,11 @@ void GameInstance::updateThrownObject(){
           damage = int(explosionDamage * scale);
         }
         buildings->objList[i]->applyDamage(damage);
-        std::cout << "Damaged @distance=" << distance <<
+        std::cout << "Damaged building @distance=" << distance <<
           " for @damage=" << damage << std::endl;
       }
     }
-
+	//calculate damage for vehicles
     int numVehicles = vehicles->objList.size();
     for(int i = 0 ; i < numVehicles ; i++){
       ISceneNode *curNode = vehicles->objList[i]->getNode();
@@ -507,7 +532,7 @@ void GameInstance::updateThrownObject(){
           damage = int(explosionDamage * scale);
         }
         vehicles->objList[i]->applyDamage(damage);
-        std::cout << "Damaged @distance=" << distance <<
+        std::cout << "Damaged vehicle @distance=" << distance <<
           " for @damage=" << damage << std::endl;
       } 
     } 
@@ -519,7 +544,7 @@ void GameInstance::updateThrownObject(){
         damage = int(explosionDamage * scale);
       }
       player->applyDamage(damage);
-      std::cout << "Damaged @distance=" << distance <<
+      std::cout << "Damaged borbie @distance=" << distance <<
         " for @damage=" << damage << std::endl;
     } 
   }
