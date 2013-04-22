@@ -11,8 +11,8 @@ class GameInstance;
 
 
 class Soldier : public GameObject {
-	private:
-	irr::scene::IAnimatedMeshSceneNode *sceneNode;
+	//private:
+	//irr::scene::IAnimatedMeshSceneNode *sceneNode;
 	
 	public:
 	Soldier(
@@ -23,6 +23,5 @@ class Soldier : public GameObject {
 			irr::scene::IMetaTriangleSelector *metaTriSelector
 		);
 	void fire();
-	//void fire();
 };
 #endif

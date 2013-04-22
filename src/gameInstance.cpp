@@ -463,30 +463,37 @@ void GameInstance::updateThrownObject(){
     float explosionRadius = gameObject->getExplosionRadius();
     float explosionDamage = gameObject->getExplosionDamage();
     vector3df explodePos = iSceneNode->getPosition();
-	/*/calculate damage to enemies
+
+	//calculate damage to enemies
     int numEnemies = enemies->objList.size();
     for(int i = 0 ; i < numEnemies ; i++){
+		std::cout<<"INSIDE FOR ENEMIES, numEnemies:" + numEnemies<<std::endl;
       ISceneNode *curNode = enemies->objList[i]->getNode();
-      // if this (thrown) object IS the current node, ignore it
-      if(curNode == iSceneNode)
+		std::cout<<"getNode has worked"<<std::endl;
+      //if this (thrown) object IS the current node, ignore it
+      /*if(curNode == iSceneNode){
         continue;
+		
+		}*/
       // if this (thrown) node is NOT visible, ignore it
-      else if(!curNode->isVisible())
-        continue;
+      //else if(!curNode->isVisible())
+      //  continue;
       // otherwise, check if the distance is close enough, and apply damage
       //  based on the distance to the explosion center
       float distance = curNode->getPosition().getDistanceFrom(explodePos);
+		std::cout<<"got distance"<<std::endl;
       if(distance <= explosionRadius){
+		std::cout<<"inside if for explosion radius"<<std::endl;
         int damage = explosionDamage; // max damage
         if(distance > 400){ // if more than 400 away, scale down damage
           float scale = (distance-400) / (explosionRadius-400);
           damage = int(explosionDamage * scale);
         }
-        buildings->objList[i]->applyDamage(damage);
+        enemies->objList[i]->applyDamage(damage);
         std::cout << "Damaged enemy @distance=" << distance <<
           " for @damage=" << damage << std::endl;
       }
-    }*/
+    }
 
 	//calculate damage for buildings
     int numBuild = buildings->objList.size();

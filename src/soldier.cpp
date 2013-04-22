@@ -28,8 +28,7 @@ Soldier::Soldier(
 	sceneNode->setScale(vector3df(0.7,0.7,0.7));
 	sceneNode->setVisible(true);
 	sceneNode->setMaterialFlag(EMF_LIGHTING, false);
-
-
+	setHealth(350);
 }
 
 void Soldier::applyCollision(
