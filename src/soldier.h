@@ -13,7 +13,6 @@ class GameInstance;
 class Soldier : public GameObject {
 	private:
 	irr::scene::IAnimatedMeshSceneNode *sceneNode;
-	irr::scene::IBillboardSceneNode * bill;
 	
 	public:
 	Soldier(
