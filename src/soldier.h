@@ -3,7 +3,7 @@
 
 
 #include <irrlicht.h>
-#include "game_object.h"
+#include "gameObject.h"
 
 
 // define GameInstance to use pointer

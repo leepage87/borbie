@@ -13,7 +13,7 @@
 // include irrlicht
 #include <irrlicht.h>
 #include <vector>
-#include "game_object.h"
+#include "gameObject.h"
 
 
 // declare GameInstance to use its pointer

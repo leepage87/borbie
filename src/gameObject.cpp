@@ -8,7 +8,7 @@
  */
 
 // application headers
-#include "game_object.h"
+#include "gameObject.h"
 #include "objectList.h"
 #include "game.h"
 #include "gameInstance.h"

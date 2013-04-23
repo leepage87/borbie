@@ -1,16 +1,11 @@
-1)  Target castRay should return the distance, not the target, and throwing
-    a car should still go in a straight line, but the calculated damage
-    impact can be centralized at the target node's actual position.
-2)  Take out applyExplosionDamage from GameObject, and have it be done in
-    GameInstance instead - make GameInstance just apply a given amount of
-    damage to all damage-able objects around a given position for a given
-    max damage.
-3)  CastRay distance is fine (for picking up targets), but making the ray
+1)  CastRay distance is fine (for picking up targets), but making the ray
     slightly wider (if possible?) wouldn't hurt. Picking up cars, especially
     when they will be moving, might be annoying with such a small window
     size for clicking.
-4)  For throwing cars, it would be nice to get the ray cast to determine
+2)  For throwing cars, it would be nice to get the ray cast to determine
     the target to be wider also - that is, so you can't "accidentally" target
     a building hiding behind other buildings only visible by like 1 pixel,
     and then the throwing calculations won't figure out that there are other
     buildings in front of it through which the car flies.
+3)  Pre-load textures for particle systems BEFORE calling them, that way
+    the first explosion is actually seen by the player.

@@ -15,7 +15,7 @@
 #include <irrlicht.h>
 
 // include obj header
-#include "game_object.h"
+#include "gameObject.h"
 
 
 // define GameInstance to use pointer

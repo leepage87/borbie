@@ -14,7 +14,7 @@
 // include game object definitions
 #include "terrain.h"
 #include "sky.h"
-#include "game_object.h"
+#include "gameObject.h"
 #include "worldLight.h"
 #include "buildings.h"
 #include "vehicles.h"

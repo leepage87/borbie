@@ -2,7 +2,7 @@
 #define BORBIE_H
 
 #include <irrlicht.h>
-#include "game_object.h"
+#include "gameObject.h"
 
 class GameInstance;
 
