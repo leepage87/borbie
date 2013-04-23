@@ -26,7 +26,16 @@ struct RoadIntersection {
     int x;
     int y;
     int id;
-    std::vector<RoadIntersection> connections;
+    std::vector<RoadIntersection *> connections;
+};
+
+// Basic x, y point, but attached with a reference to the road intersection
+//  that the spawned object will first travel to in order to connect to the
+//  road graph (network of interconnected road intersections).
+struct RoadSpawnPoint {
+    int x;
+    int y;
+    RoadIntersection *connection;
 };
 
 
@@ -35,12 +44,21 @@ class MapReader {
 
 
   public: // All static (globally accessible)
+  
+    // Non-moving object coordinates:
 	static std::vector<Point> buildingCoords;
 	static std::vector<Point> streetLampCoords;
 	static std::vector<Point> treeCoords;
 	static std::vector<Point> fireHydrantCoords;
 	static std::vector<RoadIntersection> roadIntersectionCoords;
 	
+	// Spawn point coordinates:
+	static std::vector<Point> enemySpawnPoints;
+	static std::vector<RoadSpawnPoint> vehicleSpawnPoints;
+	
+	
+	// Function that reads a correctly-formatted coordinate file and
+	//  adds all values to the static lists.
 	static void readCoordFile(const char *fileName);
 	
 	

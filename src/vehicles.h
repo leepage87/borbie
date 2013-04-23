@@ -42,6 +42,9 @@ class Vehicles : public ObjectList {
 	// vehicle construction functions
 	void makeVehicle(int modelIndex, float xPos, float yPos, float zPos);
 	
+	// Randomly spawns a vehicle into the world using a Map spawnpoint.
+	void spawnRandomVehicle(); // TODO - not done implementing.
+	
   
   public:
 	Vehicles(

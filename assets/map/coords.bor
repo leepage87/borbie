@@ -24,14 +24,19 @@ b 0.503418 0.553223
 
 ########## added these manually: road intersections and paths ########## 
 # r indicates road intersection: (x, y, id)
-r 0.5 0.5 0
-r 0.4 0.4 1
+r 0.4 0.4 0
+r 0.6 0.4 1
+r 0.6 0.6 2
+r 0.4 0.6 3
 # p indicates a path (i.e. road intersection by id 0 and 1 are connected)
 p 0 1
-r 0.3 0.3 2
 p 1 2
-r 0.3 0.7 3
-p 1 3
+p 2 3
+p 3 0
 
 # spawn point (s): coordX, coordY, type (v, e, etc.), id
-s 0.1 0.1 v 1
+#s 0.1 0.1 v 1
+
+# spawn point (s): coordX, coordY, type (v, e, etc.),
+#               nearest road connection id (if not type v, just use 0)
+s 0.3, 0.4 v 0

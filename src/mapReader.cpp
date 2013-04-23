@@ -45,17 +45,34 @@ void MapReader::readCoordFile(const char *fileName){
         // Increment curLine for error printing.
         curLine++;
         
-        // Attempt to read the two coordinates (x, y)
+        // ignore first character (type indicator)
         std::string ignore;
-        float coordX, coordY;
         std::istringstream lineParser(line);
         lineParser >> ignore;
-        lineParser >> coordX;
-        lineParser >> coordY;
         
-        int roadID; // ignored unless reading a road coordinate
+        // Attempt to read the values
+        float coordX, coordY;
+        int id1, id2;
+        if(type == 'p') { // if path value, read integer ID values
+            lineParser >> id1;
+            lineParser >> id2;
+        }
+        else { // otherwise, it will be a float coordinate value
+            lineParser >> coordX;
+            lineParser >> coordY;
+        }
+        
+        // ignored for all types except road coords and spawn coords:
+        int roadID;
+        char spawnType;
+        
         if(type == 'r') // if reading a road, also read the ID
             lineParser >> roadID;
+        
+        else if(type == 's'){ // if spawnpoint, also read spawn type + road id
+            lineParser >> spawnType;
+            lineParser >> roadID;
+        }
         
         // If something failed, it's an invalid format, just skip.
         if(lineParser.fail()){
@@ -81,6 +98,9 @@ void MapReader::readCoordFile(const char *fileName){
             case 't': // tree
                 MapReader::treeCoords.push_back(pos);
                 break;
+            case 'f': // fire hydrant
+                MapReader::fireHydrantCoords.push_back(pos);
+                break;
             case 'r': // road intersection
             {
                 // create a new road intersection struct
@@ -93,8 +113,6 @@ void MapReader::readCoordFile(const char *fileName){
                 break;
             case 'p': // path (connecting two road intersections)
             {
-                int id1 = (int)coordX;
-                int id2 = (int)coordX;
                 int numIntersections = MapReader::roadIntersectionCoords.size();
                 
                 // find road intersection w/ id1
@@ -117,15 +135,47 @@ void MapReader::readCoordFile(const char *fileName){
                 if(index2 >= numIntersections)
                     break;
                 
-                // assign intersections as interconnected
+                // Assign intersections as interconnected (get references).
                 MapReader::roadIntersectionCoords[index1].connections.push_back
-                    (MapReader::roadIntersectionCoords[index2]);
+                    (&(MapReader::roadIntersectionCoords[index2]));
                 MapReader::roadIntersectionCoords[index2].connections.push_back
-                    (MapReader::roadIntersectionCoords[index1]);
+                    (&(MapReader::roadIntersectionCoords[index1]));
             }
                 break;
-            case 'f': // fire hydrant
-                MapReader::fireHydrantCoords.push_back(pos);
+            case 's': // spawnpoint (for enemies, vehicles, etc.)
+            {
+                switch(spawnType){
+                    case 'v': // vehicle
+                    {
+                        // find road intersection with matching id
+                        int numIntersections =
+                            MapReader::roadIntersectionCoords.size();
+                        int index;
+                        for(index=0; index<numIntersections; ++index) {
+                            if(MapReader::roadIntersectionCoords[index].id
+                                == roadID)
+                            {
+                                break;
+                            }
+                        }
+                        if(index >= numIntersections) // if out of bounds, gtfo
+                            break;
+                        
+                        // create spawnpoint, and link initial connection to
+                        //  the intersection by the located id.
+                        RoadSpawnPoint spawnPoint;
+                        spawnPoint.x = pos.x;
+                        spawnPoint.y = pos.y;
+                        spawnPoint.connection =
+                            &(MapReader::roadIntersectionCoords[index]);
+                    }
+                        break;
+                    case 'e': // enemy - TODO
+                        break;
+                    default:
+                        break;
+                }
+            }
                 break;
             default:
                 std::cerr << "WARNING: Unknown coordinate type in map file ("

@@ -9,6 +9,7 @@
 
 #include "vehicles.h"
 #include "gameInstance.h"
+#include "mapReader.h"
 
 // include cpp library headers for random number generation
 #include <stdlib.h>     /* srand, rand */
@@ -38,6 +39,18 @@ Vehicles::Vehicles(
 	//this->modelList.push_back("assets/models/vehicles/pigMobile/PoliceCar.3DS");
 	//this->modelList.push_back("assets/models/vehicles/lambo/Lamborghini.x");
 	this->modelList.push_back("assets/models/vehicles/riviera/car_riviera.obj");
+}
+
+
+// Spawn a vehicle into the world using a SpawnPoint from the MapReader.
+//  If the MapReader has no spawn points, does nothing. Vehicle type is
+//  is completely randomized.
+void Vehicles::spawnRandomVehicle(){
+    int numSpawnPoints = MapReader::vehicleSpawnPoints.size();
+    if(numSpawnPoints == 0)
+        return;
+    
+    // choose a random spawn point
 }
 
 
