@@ -18,6 +18,9 @@ using namespace video;
 
 #include <iostream>
 
+const unsigned int MAX_NUMBER_VEHICLES = 10;
+const unsigned int SPAWN_TIME_MS = 7 * 1000; // 7 seconds
+
 
 Vehicles::Vehicles(
 	IMetaTriangleSelector *metaTriSelector,
@@ -33,6 +36,8 @@ Vehicles::Vehicles(
 	//this->modelList.push_back("assets/models/vehicles/pigMobile/PoliceCar.3DS");
 	//this->modelList.push_back("assets/models/vehicles/lambo/Lamborghini.x");
 	this->modelList.push_back("assets/models/vehicles/riviera/car_riviera.obj");
+	
+	this->nextSpawnTime = 0;
 }
 
 
@@ -44,7 +49,15 @@ void Vehicles::update(){
 		((VehicleInstance *)(*it))->updateMovement();
 	}
 	
-	// if spawn timer is ready, create a new vehicle TODO
+	// if spawn timer is ready, and there aren't too many vehicles in the
+	//  world, create a new vehicle at a random spawn point.
+	u32 curTime = this->device->getTimer()->getTime();
+	if( curTime >= this->nextSpawnTime &&
+	    this->objList.size() < MAX_NUMBER_VEHICLES)
+	{
+	    this->spawnRandomVehicle();
+	    this->nextSpawnTime = curTime + SPAWN_TIME_MS;
+	}
 }
 
 

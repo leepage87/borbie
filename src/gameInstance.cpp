@@ -109,8 +109,6 @@ GameInstance::GameInstance(
   this->vehicles->addRandomVehicle(farX*.7953, ROAD_HEIGHT, farY*.2207);
   this->vehicles->addRandomVehicle(farX*.8453, ROAD_HEIGHT, farY*.2207);
   this->vehicles->addRandomVehicle(farX*.8953, ROAD_HEIGHT, farY*.2207);*/
-  
-  this->vehicles->spawnRandomVehicle();
 
   // default vehicle throwing variables to nothing
   this->carriedVehicle = 0;

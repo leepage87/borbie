@@ -65,7 +65,7 @@ void VehicleInstance::go() {
     this->motionAnimator = this->smgr->createFlyStraightAnimator(
             startPoint,
             endPoint,
-		    10000
+		    5000
        );
     this->sceneNode->addAnimator(this->motionAnimator);
 }

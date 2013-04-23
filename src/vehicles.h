@@ -42,6 +42,9 @@ class Vehicles : public ObjectList {
 	// vehicle construction functions
 	VehicleInstance* makeVehicle(int modelIndex, float xPos, float yPos, float zPos);
 	
+	// virtual game time indicating when to spawn the next vehicle.
+	unsigned int nextSpawnTime;
+	
   
   public:
 	Vehicles(
