@@ -9,14 +9,12 @@
 
 #include "buildings.h"
 #include "mapReader.h"
+#include "random.h"
 
-// include cpp library headers for random number generation
-// TODO: make the random generator global (static object)
-#include <stdlib.h>     /* srand, rand */
-#include <time.h>       /* time */
-#include <math.h>       /* pow */
-
+// include cpp library headers for random building sizing
+#include <math.h> // pow function
 #include <iostream>
+
 
 using namespace irr;
 using namespace scene;
@@ -32,9 +30,6 @@ Buildings::Buildings(
 	//passing these to supah constructah:
 	: ObjectList(metaTriSelector, gameInstance)
 {
-	// seed the random number generator (using system time)
-	srand(time(NULL)); // TODO - do this elsewhere
-	
 	// populate the texture list
 	this->textureList.push_back("assets/textures/buildings/building1.png");
 	this->textureList.push_back("assets/textures/buildings/building2.jpg");
@@ -56,7 +51,6 @@ Buildings::Buildings(
 	this->textureList.push_back("assets/textures/buildings/RoofOp1.jpg");
 	this->textureList.push_back("assets/textures/buildings/RoofOp2.jpg");
 	this->textureList.push_back("assets/textures/buildings/RoofOp3.jpg");
-	
 }
 
 
@@ -98,16 +92,15 @@ BuildingInstance* Buildings::addRandomBuilding(
 //  with a general bias towards mid-ranged heights. The bias and all height
 //  restriction constants can be adjusted in the buildings.h file.
 float Buildings::getRandomHeight(){
-    // generate a random number
-    int randNum = rand() % 100000; // 0 to 99999
-    float randf = randNum / 100000.0; // 0 to .99999
+    // get a random number between 0 and 1 (excluding 1)
+    float randf = Random::randomFloat();
     
     // scew the random value (scaled between 0 and 0.5)
     float adjusted = (pow(randf, BUILDING_HEIGHT_BIAS)) / 2.0;
     
     // decide randomly whether or not the building is taller or
     //  smaller than average, and calculate bias outcome between 0 and 1
-    int selector = rand() % 2; // 0 or 1
+    int selector = Random::randomInt(2); // 0 or 1
     float bias = 0.f;
     if(selector == 0)
         bias = 0.5 - adjusted;

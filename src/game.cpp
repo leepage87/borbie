@@ -10,6 +10,7 @@
  */
 
 #include "game.h"
+#include "random.h"
 #include <iostream>
 
 // using Irrlicht engine namespaces:
@@ -26,6 +27,9 @@ Game::Game(unsigned int runMode)
 {
     // remember the run mode flag
     this->runMode = runMode;
+    
+    // seed the random number generator
+    Random::init();
 
     gameMenu = 0;
     gameInstance = 0;
