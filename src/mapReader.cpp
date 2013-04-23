@@ -13,6 +13,9 @@ std::vector<Point> MapReader::treeCoords;
 std::vector<Point> MapReader::fireHydrantCoords;
 std::vector<RoadIntersection> MapReader::roadIntersectionCoords;
 
+std::vector<Point> MapReader::enemySpawnPoints;
+std::vector<RoadSpawnPoint> MapReader::vehicleSpawnPoints;
+
 
 // Reads the coordinate file.
 void MapReader::readCoordFile(const char *fileName){
@@ -168,6 +171,7 @@ void MapReader::readCoordFile(const char *fileName){
                         spawnPoint.y = pos.y;
                         spawnPoint.connection =
                             &(MapReader::roadIntersectionCoords[index]);
+                        MapReader::vehicleSpawnPoints.push_back(spawnPoint);
                     }
                         break;
                     case 'e': // enemy - TODO

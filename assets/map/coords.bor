@@ -39,4 +39,4 @@ p 3 0
 
 # spawn point (s): coordX, coordY, type (v, e, etc.),
 #               nearest road connection id (if not type v, just use 0)
-s 0.3, 0.4 v 0
+s 0.3 0.4 v 0

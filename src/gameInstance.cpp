@@ -94,7 +94,7 @@ GameInstance::GameInstance(
   const int farY = 20000.0f;
   //add vehicle(s) - TODO: add this functionality into the vehicles object
   this->vehicles = new Vehicles(metaTriSelector, this);
-  this->vehicles->addRandomVehicle(farX*.1953, ROAD_HEIGHT, farY*.2207);
+  /*this->vehicles->addRandomVehicle(farX*.1953, ROAD_HEIGHT, farY*.2207);
   this->vehicles->addRandomVehicle(farX*.2453, ROAD_HEIGHT, farY*.2207);
   this->vehicles->addRandomVehicle(farX*.2953, ROAD_HEIGHT, farY*.2207);
   this->vehicles->addRandomVehicle(farX*.3453, ROAD_HEIGHT, farY*.2207);
@@ -108,7 +108,9 @@ GameInstance::GameInstance(
   this->vehicles->addRandomVehicle(farX*.7453, ROAD_HEIGHT, farY*.2207);
   this->vehicles->addRandomVehicle(farX*.7953, ROAD_HEIGHT, farY*.2207);
   this->vehicles->addRandomVehicle(farX*.8453, ROAD_HEIGHT, farY*.2207);
-  this->vehicles->addRandomVehicle(farX*.8953, ROAD_HEIGHT, farY*.2207);
+  this->vehicles->addRandomVehicle(farX*.8953, ROAD_HEIGHT, farY*.2207);*/
+  
+  this->vehicles->spawnRandomVehicle();
 
   // default vehicle throwing variables to nothing
   this->carriedVehicle = 0;

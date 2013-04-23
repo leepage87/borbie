@@ -42,9 +42,6 @@ class Vehicles : public ObjectList {
 	// vehicle construction functions
 	void makeVehicle(int modelIndex, float xPos, float yPos, float zPos);
 	
-	// Randomly spawns a vehicle into the world using a Map spawnpoint.
-	void spawnRandomVehicle(); // TODO - not done implementing.
-	
   
   public:
 	Vehicles(
@@ -52,6 +49,10 @@ class Vehicles : public ObjectList {
 		GameInstance *gameInstance);
 	
 	void addRandomVehicle(float xPos, float yPos, float zPos);
+	
+	// Randomly spawns a vehicle into the world using a Map spawnpoint.
+	void spawnRandomVehicle(); // TODO - make private
+	
 	
 }; // end of Vehicles class
 

@@ -40,11 +40,22 @@ Vehicles::Vehicles(
 //  If the MapReader has no spawn points, does nothing. Vehicle type is
 //  is completely randomized.
 void Vehicles::spawnRandomVehicle(){
+    std::cout << "-------------METHOD CALLED--------------------" << std::endl;
+    std::cout << "-------------METHOD CALLED--------------------" << std::endl;
+    std::cout << "-------------METHOD CALLED--------------------" << std::endl;
+    std::cout << "-------------METHOD CALLED--------------------" << std::endl;
     int numSpawnPoints = MapReader::vehicleSpawnPoints.size();
     if(numSpawnPoints == 0)
         return;
+    std::cout << "-------------NON-ZERO, whoopie!!!--------------------" << std::endl;
     
     // choose a random spawn point
+    int spawnPointIndex = Random::randomInt(numSpawnPoints);
+    this->addRandomVehicle(
+        MapReader::vehicleSpawnPoints[spawnPointIndex].x,
+        120, //70, // road height
+        MapReader::vehicleSpawnPoints[spawnPointIndex].y );
+    std::cout << "-------------ADDED--------------------" << std::endl;
 }
 
 
@@ -52,6 +63,7 @@ void Vehicles::spawnRandomVehicle(){
 void Vehicles::addRandomVehicle(
 	float xPos, float yPos, float zPos)
 {
+    std::cout << "RANDOM VEHICLE CREATED AT: " << xPos << ", " << zPos << std::endl;
     // get a random index from the model list
     int modelIndex = Random::randomInt(this->modelList.size());
     
