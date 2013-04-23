@@ -21,6 +21,14 @@ struct Point {
     int y;
 };
 
+// Road object with connected nodes list.
+struct RoadIntersection {
+    int x;
+    int y;
+    int id;
+    std::vector<RoadIntersection> connections;
+};
+
 
 // MapReader class:
 class MapReader {
@@ -31,7 +39,7 @@ class MapReader {
 	static std::vector<Point> streetLampCoords;
 	static std::vector<Point> treeCoords;
 	static std::vector<Point> fireHydrantCoords;
-	static std::vector<Point> roadIntersectionCoords;
+	static std::vector<RoadIntersection> roadIntersectionCoords;
 	
 	static void readCoordFile(const char *fileName);
 	
