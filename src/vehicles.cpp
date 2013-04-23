@@ -18,8 +18,8 @@ using namespace video;
 
 #include <iostream>
 
-const unsigned int MAX_NUMBER_VEHICLES = 10;
-const unsigned int SPAWN_TIME_MS = 7 * 1000; // 7 seconds
+const unsigned int MAX_NUMBER_VEHICLES = 20;
+const unsigned int SPAWN_TIME_MS = 3 * 1000; // 3 seconds
 
 
 Vehicles::Vehicles(

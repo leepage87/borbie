@@ -53,6 +53,9 @@ class VehicleInstance : public GameObject {
 	// Start moving towards the next intersection.
 	void go();
 	
+	// Stops moving and removes all animators.
+	void stop();
+	
 	// Updates animator checks. If animation done, selects next random
 	//  position to go to.
 	void updateMovement();

@@ -69,6 +69,16 @@ void VehicleInstance::go() {
        );
     this->sceneNode->addAnimator(this->motionAnimator);
 }
+
+// Stops moving and removes all animators.
+void VehicleInstance::stop() {
+    if(this->motionAnimator){
+        this->sceneNode->removeAnimators();
+        this->motionAnimator->drop();
+        this->motionAnimator = 0;
+    }
+}
+
 	
 // Updates animator checks. If animation done, selects next random
 //  position to go to.

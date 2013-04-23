@@ -358,6 +358,7 @@ void GameInstance::updateSelector(){
       (VehicleInstance *)(vehicles->getObject(highlightedSceneNode));
     if(vehicle) { // if vehicle was in fact selected, pick it up
       carriedVehicle = vehicle; // VehicleInstance* (carriedVehicle)
+      carriedVehicle->stop(); // remove all animators from the vehicle
       objCarry->pickUp(highlightedSceneNode); // ISceneNode* (highlighted)
 
       // remove the vehicle's collision so it doesn't make Borbie glitch out
