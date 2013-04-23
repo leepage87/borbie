@@ -8,6 +8,7 @@
  */
 
 #include "vehicleInstance.h"
+#include "random.h"
 
 #include <iostream> // TODO: debug (remove)
 using namespace std;
@@ -24,7 +25,9 @@ VehicleInstance::VehicleInstance(
 	// call super GameObject constructor first:
 	: GameObject(gameInstance)
 {
-
+    this->motionAnimator = 0;
+    this->lastIntersection = 0;
+    this->nextIntersection = 0;
     
 	this->sceneNode = smgr->addMeshSceneNode(mesh);
 	if (modelIndex == 0){//its a jeep
@@ -36,6 +39,82 @@ VehicleInstance::VehicleInstance(
 	this->sceneNode->setMaterialFlag(EMF_LIGHTING, true);
 	//this->sceneNode->addShadowVolumeSceneNode(0,-1,true,25.0f);
 }
+
+VehicleInstance::~VehicleInstance(){
+    if(this->motionAnimator)
+        this->motionAnimator->drop();
+}
+
+// Set the next intersection of this vehicle (where to go).
+void VehicleInstance::setNextIntersection(RoadIntersection *nextIntersection) {
+    this->nextIntersection = nextIntersection;
+}
+	
+// Start moving towards the next intersection.
+void VehicleInstance::go() {
+    // make sure nextIntersection is set!
+    if(!this->nextIntersection)
+        return;
+    
+    // Start animating to next point:
+    vector3df startPoint = this->sceneNode->getPosition();
+    vector3df endPoint;
+    endPoint.X = this->nextIntersection->X;
+    endPoint.Y = startPoint.Y;
+    endPoint.Z = this->nextIntersection->Y;
+    this->motionAnimator = this->smgr->createFlyStraightAnimator(
+            startPoint,
+            endPoint,
+		    10000
+       );
+    this->sceneNode->addAnimator(this->motionAnimator);
+}
+	
+// Updates animator checks. If animation done, selects next random
+//  position to go to.
+void VehicleInstance::updateMovement() {
+    // If animation is done, remove animator and switch to next node.
+    if(this->motionAnimator && this->motionAnimator->hasFinished()){
+        this->motionAnimator->drop();
+        
+        // randomly choose a new intersection. If none are available,
+        //  choose to go back.
+        int numAvailablePaths = this->nextIntersection->connections.size();
+        
+        // If no paths available, do nothing.
+        if(numAvailablePaths == 0)
+            return;
+        
+        // If only one path is available, animate to that path, even if
+        //  if means going back again.
+        else if(numAvailablePaths == 1){ // if only one path, go to it
+            this->lastIntersection = this->nextIntersection;
+            this->nextIntersection = this->nextIntersection->connections[0];
+        }
+        
+        // If more than one path is available, randomly choose a path that
+        //  is not the same as where the vehicle just came from.
+        else {
+            // TODO - this is bias. Path in list after the one we just came
+            //  from gets a random weight of 2.
+            int pathIndex = Random::randomInt(numAvailablePaths);
+            if( this->nextIntersection->connections[pathIndex] ==
+                this->lastIntersection)
+            {
+                pathIndex++;
+                if(pathIndex >= numAvailablePaths)
+                    pathIndex = 0; // wrap index around if necessary
+            }
+            this->lastIntersection = this->nextIntersection;
+            this->nextIntersection =
+                this->nextIntersection->connections[pathIndex];
+        }
+        
+        std::cout << "Switching paths." << std::endl;
+        this->go();
+    }
+}
+
 
 void VehicleInstance::applyCollision(
 	irr::scene::IMetaTriangleSelector *metaTriSelector)

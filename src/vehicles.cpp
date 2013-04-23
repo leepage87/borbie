@@ -36,42 +36,52 @@ Vehicles::Vehicles(
 }
 
 
+void Vehicles::update(){
+    // update all vehicles
+    for(std::vector<GameObject *>::iterator it = this->objList.begin();
+	    it != this->objList.end(); ++it)
+	{
+		((VehicleInstance *)(*it))->updateMovement();
+	}
+	
+	// if spawn timer is ready, create a new vehicle TODO
+}
+
+
 // Spawn a vehicle into the world using a SpawnPoint from the MapReader.
 //  If the MapReader has no spawn points, does nothing. Vehicle type is
 //  is completely randomized.
 void Vehicles::spawnRandomVehicle(){
-    std::cout << "-------------METHOD CALLED--------------------" << std::endl;
-    std::cout << "-------------METHOD CALLED--------------------" << std::endl;
-    std::cout << "-------------METHOD CALLED--------------------" << std::endl;
-    std::cout << "-------------METHOD CALLED--------------------" << std::endl;
     int numSpawnPoints = MapReader::vehicleSpawnPoints.size();
     if(numSpawnPoints == 0)
         return;
-    std::cout << "-------------NON-ZERO, whoopie!!!--------------------" << std::endl;
     
     // choose a random spawn point
     int spawnPointIndex = Random::randomInt(numSpawnPoints);
-    this->addRandomVehicle(
-        MapReader::vehicleSpawnPoints[spawnPointIndex].x,
+    RoadSpawnPoint spawnPoint = MapReader::vehicleSpawnPoints[spawnPointIndex];
+    VehicleInstance *spawnedVehicle = this->addRandomVehicle(
+        spawnPoint.X,
         120, //70, // road height
-        MapReader::vehicleSpawnPoints[spawnPointIndex].y );
-    std::cout << "-------------ADDED--------------------" << std::endl;
+        spawnPoint.Y );
+    
+    spawnedVehicle->setNextIntersection(spawnPoint.connection);
+    spawnedVehicle->go();
 }
 
 
 // public addRandomVehicle: add a random vehicle at the given position.
-void Vehicles::addRandomVehicle(
+VehicleInstance* Vehicles::addRandomVehicle(
 	float xPos, float yPos, float zPos)
 {
     std::cout << "RANDOM VEHICLE CREATED AT: " << xPos << ", " << zPos << std::endl;
     // get a random index from the model list
     int modelIndex = Random::randomInt(this->modelList.size());
     
-	this->makeVehicle(modelIndex, xPos, yPos, zPos);
+	return this->makeVehicle(modelIndex, xPos, yPos, zPos);
 }
 
 // make a vehicle with the given texture and height value
-void Vehicles::makeVehicle(int modelIndex,
+VehicleInstance* Vehicles::makeVehicle(int modelIndex,
 	float xPos, float yPos, float zPos)
 {
     // get the vehicle mesh
@@ -88,4 +98,6 @@ void Vehicles::makeVehicle(int modelIndex,
 	newVehicle->applyCollision(this->metaTriSelector);
 	
 	this->addObject(newVehicle);
+	
+	return newVehicle;
 }

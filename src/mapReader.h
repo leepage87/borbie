@@ -17,14 +17,14 @@
 
 // Basic x, y point object.
 struct Point {
-    int x;
-    int y;
+    int X;
+    int Y;
 };
 
 // Road object with connected nodes list.
 struct RoadIntersection {
-    int x;
-    int y;
+    int X;
+    int Y;
     int id;
     std::vector<RoadIntersection *> connections;
 };
@@ -33,8 +33,8 @@ struct RoadIntersection {
 //  that the spawned object will first travel to in order to connect to the
 //  road graph (network of interconnected road intersections).
 struct RoadSpawnPoint {
-    int x;
-    int y;
+    int X;
+    int Y;
     RoadIntersection *connection;
 };
 

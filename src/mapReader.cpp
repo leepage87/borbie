@@ -87,8 +87,8 @@ void MapReader::readCoordFile(const char *fileName){
         
         // Create the Point, scaled to the map's scale
         Point pos;
-        pos.x = (farX * coordX) + xOffset;
-        pos.y = (farY * coordY) + yOffset;
+        pos.X = (farX * coordX) + xOffset;
+        pos.Y = (farY * coordY) + yOffset;
         
         // Push the coordinates to the correct list, based on type.
         switch(type){
@@ -108,8 +108,8 @@ void MapReader::readCoordFile(const char *fileName){
             {
                 // create a new road intersection struct
                 RoadIntersection intersection;
-                intersection.x = pos.x;
-                intersection.y = pos.y;
+                intersection.X = pos.X;
+                intersection.Y = pos.Y;
                 intersection.id = roadID;
                 MapReader::roadIntersectionCoords.push_back(intersection);
             }
@@ -167,8 +167,8 @@ void MapReader::readCoordFile(const char *fileName){
                         // create spawnpoint, and link initial connection to
                         //  the intersection by the located id.
                         RoadSpawnPoint spawnPoint;
-                        spawnPoint.x = pos.x;
-                        spawnPoint.y = pos.y;
+                        spawnPoint.X = pos.X;
+                        spawnPoint.Y = pos.Y;
                         spawnPoint.connection =
                             &(MapReader::roadIntersectionCoords[index]);
                         MapReader::vehicleSpawnPoints.push_back(spawnPoint);

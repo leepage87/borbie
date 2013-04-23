@@ -65,9 +65,9 @@ void Buildings::generateBuildings(){
     for(std::vector<Point>::iterator it = MapReader::buildingCoords.begin();
 		it != MapReader::buildingCoords.end(); ++it)
 	{
-        this->addRandomBuilding((*it).x, BUILDING_GROUND_HEIGHT, (*it).y);
+        this->addRandomBuilding((*it).X, BUILDING_GROUND_HEIGHT, (*it).Y);
         std::cout << "Generated building at " <<
-            "x: " << (*it).x << ", y: " << (*it).y << std::endl;
+            "x: " << (*it).X << ", y: " << (*it).Y << std::endl;
     }
 }
 

@@ -40,7 +40,7 @@ class Vehicles : public ObjectList {
 	std::vector<const char *> modelList;
 	
 	// vehicle construction functions
-	void makeVehicle(int modelIndex, float xPos, float yPos, float zPos);
+	VehicleInstance* makeVehicle(int modelIndex, float xPos, float yPos, float zPos);
 	
   
   public:
@@ -48,7 +48,11 @@ class Vehicles : public ObjectList {
 		irr::scene::IMetaTriangleSelector *metaTriSelector,
 		GameInstance *gameInstance);
 	
-	void addRandomVehicle(float xPos, float yPos, float zPos);
+	VehicleInstance* addRandomVehicle(float xPos, float yPos, float zPos);
+	
+	// Updates all vehicles to keep on moving, and also spawns vehicles at
+	//  appropriate times.
+	void update();
 	
 	// Randomly spawns a vehicle into the world using a Map spawnpoint.
 	void spawnRandomVehicle(); // TODO - make private
