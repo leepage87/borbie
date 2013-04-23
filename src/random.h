@@ -9,10 +9,6 @@
 #ifndef RANDOM_H
 #define RANDOM_H
 
-// c++ includes for random number generator
-#include <stdlib.h>     /* srand, rand */
-#include <time.h>       /* time */
-
 
 // Random class:
 class Random {

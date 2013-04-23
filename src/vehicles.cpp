@@ -10,10 +10,7 @@
 #include "vehicles.h"
 #include "gameInstance.h"
 #include "mapReader.h"
-
-// include cpp library headers for random number generation
-#include <stdlib.h>     /* srand, rand */
-#include <time.h>       /* time */
+#include "random.h"
 
 using namespace irr;
 using namespace scene;
@@ -28,9 +25,6 @@ Vehicles::Vehicles(
 	//passing these to supah constructah:
 	: ObjectList(metaTriSelector, gameInstance)
 {
-    // seed the random number generator (using system time)
-	srand(time(NULL)); // TODO - do this elsewhere
-	
 	// populate the model list
 	//this->modelList.push_back("assets/models/vehicles/eclipse/2003eclipse.obj");
 	//this->modelList.push_back("assets/models/vehicles/h2/h2.3ds");
@@ -59,7 +53,7 @@ void Vehicles::addRandomVehicle(
 	float xPos, float yPos, float zPos)
 {
     // get a random index from the model list
-    int modelIndex = rand() % this->modelList.size();
+    int modelIndex = Random::randomInt(this->modelList.size());
     
 	this->makeVehicle(modelIndex, xPos, yPos, zPos);
 }

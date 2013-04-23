@@ -48,9 +48,11 @@ Buildings::Buildings(
 	this->textureList.push_back("assets/textures/buildings/building15.jpg");
 	this->textureList.push_back("assets/textures/buildings/building16.jpg");
 	this->textureList.push_back("assets/textures/buildings/building17.jpg");
-	this->textureList.push_back("assets/textures/buildings/RoofOp1.jpg");
-	this->textureList.push_back("assets/textures/buildings/RoofOp2.jpg");
-	this->textureList.push_back("assets/textures/buildings/RoofOp3.jpg");
+	
+	// pupulate new roof texture list, too
+	this->roofTextures.push_back("assets/textures/buildings/RoofOp1.jpg");
+	this->roofTextures.push_back("assets/textures/buildings/RoofOp2.jpg");
+	this->roofTextures.push_back("assets/textures/buildings/RoofOp3.jpg");
 }
 
 
@@ -80,8 +82,8 @@ BuildingInstance* Buildings::addRandomBuilding(
 {
     // get random height and texture index
     float rHeight = this->getRandomHeight();
-    int textureIndex = rand() % (this->textureList.size()-3);
-    int topTexture = (rand()%3) +17;
+    int textureIndex = Random::randomInt(this->textureList.size());
+    int topTexture = Random::randomInt(this->roofTextures.size());
     
     // make the building with those parameters and the given position
 	return this->makeBuilding(textureIndex, topTexture, rHeight, xPos, yPos, zPos);

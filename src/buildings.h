@@ -52,6 +52,7 @@ class Buildings : public ObjectList {
   private:
 	// list of building textures
 	std::vector<const char *> textureList;
+	std::vector<const char *> roofTextures;
 	
 	// random height generator function (restricted to a certain height range,
 	//  and bias towards mid-ranged heights)

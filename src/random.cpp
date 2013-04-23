@@ -8,6 +8,10 @@
 
 #include "random.h"
 
+// c++ includes for random number generator
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
+
 
 // Seeds the c/c++ random number generator.
 void Random::init() {
