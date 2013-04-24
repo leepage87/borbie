@@ -61,9 +61,11 @@ public class MapPanel extends JPanel {
     
     // object images
     private Image buildingImage;
-    private Image roadImage;
+    private Image roadIntersectionImage;
+    private Image roadPathImage;
     private Image lampImage;
     private Image treeImage;
+    private Image fireHydrantImage;
     private Image eraseImage;
     
     
@@ -99,9 +101,11 @@ public class MapPanel extends JPanel {
         
         // try to set up all images
         buildingImage = getScaledImage("buildingSquare.png");
-        roadImage = getScaledImage("road.png"); // SQUARE ?
+        roadIntersectionImage = getScaledImage("intersection.png");
+        roadPathImage = getScaledImage("road.png");
         lampImage = getScaledImage("yellowDot.png", dotWidth, dotHeight);
         treeImage = getScaledImage("greenDot.png", dotWidth, dotHeight);
+        fireHydrantImage = getScaledImage("redDot.png", dotWidth, dotHeight);
         eraseImage = getScaledImage("eraser.png");
         
         // set up the map objects arraylists
@@ -174,8 +178,13 @@ public class MapPanel extends JPanel {
                         new MapObject(xPos, yPos, objectWidth, objectHeight,
                                 MapObject.TYPE_BUILDING));
                 break;
-            case ROAD:
-                //this.roads.add(new MapObject(xPos, yPos));
+            case ROAD_INTERSECTION:
+                this.mapObjects.add(
+                        new MapObject(xPos, yPos, objectWidth, objectHeight,
+                                MapObject.TYPE_ROAD_INTERSECTION));
+                break;
+            case ROAD_PATH:
+                // TODO - add functionality
                 break;
             case LAMP: // if lamp, add a new lamp to the map
                 this.mapObjects.add(
@@ -186,6 +195,11 @@ public class MapPanel extends JPanel {
                 this.mapObjects.add(
                         new MapObject(xPos, yPos, dotWidth, dotHeight,
                                 MapObject.TYPE_TREE));
+                break;
+            case HYDRANT:
+                this.mapObjects.add(
+                        new MapObject(xPos, yPos, dotWidth, dotHeight,
+                                MapObject.TYPE_FIRE_HYDRANT));
                 break;
             case ERASE: // if eraser, check if any objects is to be deleted
                 checkDelete(xPos, yPos);
@@ -466,14 +480,20 @@ public class MapPanel extends JPanel {
             case BUILDING:
                 selectedImg = buildingImage;
                 break;
-            case ROAD:
-                selectedImg = roadImage;
+            case ROAD_INTERSECTION:
+                selectedImg = roadIntersectionImage;
+                break;
+            case ROAD_PATH:
+                selectedImg = roadPathImage;
                 break;
             case LAMP:
                 selectedImg = lampImage;
                 break;
             case TREE:
                 selectedImg = treeImage;
+                break;
+            case HYDRANT:
+                selectedImg = fireHydrantImage;
                 break;
             case ERASE: // in this case, also set the hotspot to the bottom left
                 selectedImg = eraseImage;
@@ -550,11 +570,17 @@ public class MapPanel extends JPanel {
                 case MapObject.TYPE_BUILDING:
                     img = this.buildingImage;
                     break;
+                case MapObject.TYPE_ROAD_INTERSECTION:
+                    img = this.roadIntersectionImage;
+                    break;
                 case MapObject.TYPE_LAMP:
                     img = this.lampImage;
                     break;
                 case MapObject.TYPE_TREE:
                     img = this.treeImage;
+                    break;
+                case MapObject.TYPE_FIRE_HYDRANT:
+                    img = this.fireHydrantImage;
                     break;
                 default:
                     break;

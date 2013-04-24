@@ -21,15 +21,18 @@ public class MenuPanel extends JPanel {
     
     // selection mode: which button is currently selected
     public static enum MenuSelection {
-        POINTER, BUILDING, ROAD, LAMP, TREE, ERASE, SELECT
+        POINTER, BUILDING, ROAD_INTERSECTION, ROAD_PATH,
+        LAMP, TREE, HYDRANT, ERASE, SELECT
     }
     
     // list of editor buttons
     private final JButton pointerButton;
     private final JButton buildingButton;
     private final JButton roadButton;
+    private final JButton roadPathButton;
     private final JButton lampButton;
     private final JButton treeButton;
+    private final JButton fireHydrantButton;
     private final JButton eraseButton;
     private final JButton selectButton;
     
@@ -50,9 +53,11 @@ public class MenuPanel extends JPanel {
         // get all icons here
         ImageIcon pointerIcon = getIcon("pointer.png");
         ImageIcon buildingIcon = getIcon("building.png");
-        ImageIcon roadIcon = getIcon("road.png");
+        ImageIcon roadIcon = getIcon("intersection.png");
+        ImageIcon roadPathIcon = getIcon("road.png");
         ImageIcon lampIcon = getIcon("lamp.png");
         ImageIcon treeIcon = getIcon("tree.png");
+        ImageIcon fireHydrantIcon = getIcon("hydrant.png");
         ImageIcon eraseIcon = getIcon("eraser.png");
         ImageIcon selectIcon = getIcon("select.png");
         
@@ -86,11 +91,11 @@ public class MenuPanel extends JPanel {
         buildingButton.setEnabled(false);
         buildingButton.setFocusable(false);
         this.add(buildingButton);
-        
-        roadButton = new JButton(" Road        ", roadIcon);
+
+        roadButton = new JButton(" Intersection", roadIcon);
         roadButton.setVerticalTextPosition(AbstractButton.CENTER);
         roadButton.setHorizontalTextPosition(AbstractButton.TRAILING);
-        roadButton.setToolTipText("Add road segments to the map.");
+        roadButton.setToolTipText("Add road intersections to the map.");
         roadButton.setFont(buttonFont);
         roadButton.addActionListener(new ActionListener() {
             @Override
@@ -101,6 +106,21 @@ public class MenuPanel extends JPanel {
         roadButton.setEnabled(false);
         roadButton.setFocusable(false);
         this.add(roadButton);
+
+        roadPathButton = new JButton(" Road Path   ", roadPathIcon);
+        roadPathButton.setVerticalTextPosition(AbstractButton.CENTER);
+        roadPathButton.setHorizontalTextPosition(AbstractButton.TRAILING);
+        roadPathButton.setToolTipText("Add road segments to the map.");
+        roadPathButton.setFont(buttonFont);
+        roadPathButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                selectAddRoadPath();
+            }
+        });
+        roadPathButton.setEnabled(false);
+        roadPathButton.setFocusable(false);
+        this.add(roadPathButton);
         
         lampButton = new JButton(" Street Lamp ", lampIcon);
         lampButton.setVerticalTextPosition(AbstractButton.CENTER);
@@ -116,7 +136,7 @@ public class MenuPanel extends JPanel {
         lampButton.setEnabled(false);
         lampButton.setFocusable(false);
         this.add(lampButton);
-        
+
         treeButton = new JButton(" Tree        ", treeIcon);
         treeButton.setVerticalTextPosition(AbstractButton.CENTER);
         treeButton.setHorizontalTextPosition(AbstractButton.TRAILING);
@@ -131,6 +151,21 @@ public class MenuPanel extends JPanel {
         treeButton.setEnabled(false);
         treeButton.setFocusable(false);
         this.add(treeButton);
+
+        fireHydrantButton = new JButton(" Fire Hydrant", fireHydrantIcon);
+        fireHydrantButton.setVerticalTextPosition(AbstractButton.CENTER);
+        fireHydrantButton.setHorizontalTextPosition(AbstractButton.TRAILING);
+        fireHydrantButton.setToolTipText("Add a fire hydrant to the map.");
+        fireHydrantButton.setFont(buttonFont);
+        fireHydrantButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                selectAddHydrant();
+            }
+        });
+        fireHydrantButton.setEnabled(false);
+        fireHydrantButton.setFocusable(false);
+        this.add(fireHydrantButton);
         
         eraseButton = new JButton(" Erase       ", eraseIcon);
         eraseButton.setVerticalTextPosition(AbstractButton.CENTER);
@@ -169,8 +204,10 @@ public class MenuPanel extends JPanel {
         pointerButton.setSelected(true);
         buildingButton.setSelected(false);
         roadButton.setSelected(false);
+        roadPathButton.setSelected(false);
         lampButton.setSelected(false);
         treeButton.setSelected(false);
+        fireHydrantButton.setSelected(false);
         eraseButton.setSelected(false);
         selectButton.setSelected(false);
         selection = MenuSelection.POINTER;
@@ -179,8 +216,10 @@ public class MenuPanel extends JPanel {
         buildingButton.setSelected(true);
         pointerButton.setSelected(false);
         roadButton.setSelected(false);
+        roadPathButton.setSelected(false);
         lampButton.setSelected(false);
         treeButton.setSelected(false);
+        fireHydrantButton.setSelected(false);
         eraseButton.setSelected(false);
         selectButton.setSelected(false);
         selection = MenuSelection.BUILDING;
@@ -189,18 +228,34 @@ public class MenuPanel extends JPanel {
         roadButton.setSelected(true);
         pointerButton.setSelected(false);
         buildingButton.setSelected(false);
+        roadPathButton.setSelected(false);
         lampButton.setSelected(false);
         treeButton.setSelected(false);
+        fireHydrantButton.setSelected(false);
         eraseButton.setSelected(false);
         selectButton.setSelected(false);
-        selection = MenuSelection.ROAD;
+        selection = MenuSelection.ROAD_INTERSECTION;
+    }
+    public void selectAddRoadPath() {
+        roadPathButton.setSelected(true);
+        pointerButton.setSelected(false);
+        buildingButton.setSelected(false);
+        roadButton.setSelected(false);
+        lampButton.setSelected(false);
+        treeButton.setSelected(false);
+        fireHydrantButton.setSelected(false);
+        eraseButton.setSelected(false);
+        selectButton.setSelected(false);
+        selection = MenuSelection.ROAD_PATH;
     }
     public void selectAddLamp() {
         lampButton.setSelected(true);
         pointerButton.setSelected(false);
         buildingButton.setSelected(false);
         roadButton.setSelected(false);
+        roadPathButton.setSelected(false);
         treeButton.setSelected(false);
+        fireHydrantButton.setSelected(false);
         eraseButton.setSelected(false);
         selectButton.setSelected(false);
         selection = MenuSelection.LAMP;
@@ -210,18 +265,34 @@ public class MenuPanel extends JPanel {
         pointerButton.setSelected(false);
         buildingButton.setSelected(false);
         roadButton.setSelected(false);
+        roadPathButton.setSelected(false);
         lampButton.setSelected(false);
+        fireHydrantButton.setSelected(false);
         eraseButton.setSelected(false);
         selectButton.setSelected(false);
         selection = MenuSelection.TREE;
+    }
+    public void selectAddHydrant() {
+        fireHydrantButton.setSelected(true);
+        pointerButton.setSelected(false);
+        buildingButton.setSelected(false);
+        roadButton.setSelected(false);
+        roadPathButton.setSelected(false);
+        lampButton.setSelected(false);
+        treeButton.setSelected(false);
+        eraseButton.setSelected(false);
+        selectButton.setSelected(false);
+        selection = MenuSelection.HYDRANT;
     }
     public void selectErase() {
         eraseButton.setSelected(true);
         pointerButton.setSelected(false);
         buildingButton.setSelected(false);
         roadButton.setSelected(false);
+        roadPathButton.setSelected(false);
         lampButton.setSelected(false);
         treeButton.setSelected(false);
+        fireHydrantButton.setSelected(false);
         selectButton.setSelected(false);
         selection = MenuSelection.ERASE;
     }
@@ -230,8 +301,10 @@ public class MenuPanel extends JPanel {
         pointerButton.setSelected(false);
         buildingButton.setSelected(false);
         roadButton.setSelected(false);
+        roadPathButton.setSelected(false);
         lampButton.setSelected(false);
         treeButton.setSelected(false);
+        fireHydrantButton.setSelected(false);
         eraseButton.setSelected(false);
         selection = MenuSelection.SELECT;
     }
@@ -241,9 +314,11 @@ public class MenuPanel extends JPanel {
     public void setEditMode(){
         pointerButton.setEnabled(true);
         buildingButton.setEnabled(true);
-        //roadButton.setEnabled(true);
+        roadButton.setEnabled(true);
+        roadPathButton.setEnabled(true);
         lampButton.setEnabled(true);
         treeButton.setEnabled(true);
+        fireHydrantButton.setEnabled(true);
         eraseButton.setEnabled(true);
         selectButton.setEnabled(true);
         selectPointer();

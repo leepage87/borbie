@@ -201,7 +201,7 @@ public class EditorMenuBar extends JMenuBar {
                 mainWindow.getMapPanel().deleteAllSelected();
             }
         });
-        e_clearSelected.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0));
+        e_clearSelected.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
         e_clearSelected.setEnabled(false);
         editMenu.add(e_clearSelected);
         

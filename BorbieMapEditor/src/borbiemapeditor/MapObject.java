@@ -12,6 +12,8 @@ public class MapObject {
     public static final int TYPE_BUILDING = 0;
     public static final int TYPE_LAMP = 1;
     public static final int TYPE_TREE = 2;
+    public static final int TYPE_FIRE_HYDRANT = 3;
+    public static final int TYPE_ROAD_INTERSECTION = 4;
     
     // internal object variables: X and Y represent the CENTER
     public int x;
