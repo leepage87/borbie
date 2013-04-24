@@ -16,6 +16,8 @@
 
 
 // Define the static values here.
+std::string MapReader::mapTextureDirectory;
+
 std::vector<Point> MapReader::buildingCoords;
 std::vector<Point> MapReader::streetLampCoords;
 std::vector<Point> MapReader::treeCoords;
@@ -64,6 +66,19 @@ void MapReader::readCoordFile(const char *fileName){
         std::string ignore;
         std::istringstream lineParser(line);
         lineParser >> ignore;
+        
+        // If line is 'i' (image/texture directory path), read and continue
+        if(type == 'i') {
+            lineParser >> MapReader::mapTextureDirectory;
+            if(lineParser.fail()){
+                std::cerr << "WARNING: Invalid entry in map file ("
+                          << fileName << ", line " << curLine << "):" << std::endl
+                          << "       " << line << std::endl;
+                // reset directory
+                MapReader::mapTextureDirectory = "assets/textures/";
+            }
+            continue;
+        }
         
         // Attempt to read the values
         float coordX, coordY;

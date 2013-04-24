@@ -13,6 +13,7 @@
 
 // include cpp standard library objects
 #include <vector>
+#include <string>
 
 
 // Basic x, y point object.
@@ -44,6 +45,9 @@ class MapReader {
 
 
   public: // All static (globally accessible)
+  
+    // Map texture directory path:
+    static std::string mapTextureDirectory;
   
     // Non-moving object coordinates:
 	static std::vector<Point> buildingCoords;

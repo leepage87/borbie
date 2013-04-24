@@ -33,15 +33,13 @@ Buildings::Buildings(
 {
     // populate building texture list with all available file names
     DirectoryReader::getDirectoryFiles(
-        "assets/textures/buildingsNight/",    // relative path
+        MapReader::mapTextureDirectory, // relative path
         this->textureList, "building"); // e.g. "building1.jpg"
   
     // populate roof texture list with all available file names
     DirectoryReader::getDirectoryFiles(
-        "assets/textures/buildings/",    // relative path
+        MapReader::mapTextureDirectory,  // relative path
         this->roofTextures, "Roof");     // e.g. "RoofOp1.jpg"
-    for(int i=0; i<roofTextures.size(); i++)
-        std::cout << "TEXTURE = " << roofTextures[i] << std::endl;
 }
 
 
