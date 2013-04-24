@@ -31,40 +31,12 @@ Buildings::Buildings(
 	//passing these to supah constructah:
 	: ObjectList(metaTriSelector, gameInstance)
 {
-	// populate the texture list
-	/*this->textureList.push_back("assets/textures/buildings/building1.png");
-	this->textureList.push_back("assets/textures/buildings/building2.jpg");
-	this->textureList.push_back("assets/textures/buildings/building3.jpg");
-	this->textureList.push_back("assets/textures/buildings/building4.jpg");
-	this->textureList.push_back("assets/textures/buildings/building5.jpg");
-	this->textureList.push_back("assets/textures/buildings/building6.jpg");
-	this->textureList.push_back("assets/textures/buildings/building7.jpg");
-	this->textureList.push_back("assets/textures/buildings/building8.jpg");
-	this->textureList.push_back("assets/textures/buildings/building9.jpg");
-	this->textureList.push_back("assets/textures/buildings/building10.jpg");
-	this->textureList.push_back("assets/textures/buildings/building11.jpg");
-	this->textureList.push_back("assets/textures/buildings/building12.jpg");
-	this->textureList.push_back("assets/textures/buildings/building13.png");
-	this->textureList.push_back("assets/textures/buildings/building14.jpg");
-	this->textureList.push_back("assets/textures/buildings/building15.jpg");
-	this->textureList.push_back("assets/textures/buildings/building16.jpg");
-	this->textureList.push_back("assets/textures/buildings/building17.jpg");
-	this->textureList.push_back("assets/textures/buildings/building18.jpg");*/
-  
     // populate building texture list with all available file names
     DirectoryReader::getDirectoryFiles(
         "assets/textures/buildings/",    // relative path
         this->textureList, "building"); // e.g. "building1.jpg"
-    
-    for(int i=0; i<(this->textureList.size()); i++)
-        std::cout << "TEXTURE: " << this->textureList[i] << std::endl;
-	
-	// pupulate new roof texture list, too
-	/*this->roofTextures.push_back("assets/textures/buildings/RoofOp1.jpg");
-	this->roofTextures.push_back("assets/textures/buildings/RoofOp2.jpg");
-	this->roofTextures.push_back("assets/textures/buildings/RoofOp3.jpg");*/
   
-    // populate rooof texture list with all available file names
+    // populate roof texture list with all available file names
     DirectoryReader::getDirectoryFiles(
         "assets/textures/buildings/",    // relative path
         this->roofTextures, "Roof");     // e.g. "RoofOp1.jpg"
