@@ -7,6 +7,8 @@
 
 #include <iostream> // TODO - remove (debug)
 
+#include "directoryReader.h" // TODO - remove
+
 using namespace irr;
 using namespace scene;
 using namespace video;
@@ -186,6 +188,13 @@ GameInstance::GameInstance(
 
   // TODO- remove
   //this->setWorldState_wrecked();
+  
+  std::vector<const char *> temp;
+  DirectoryReader::getDirectoryFiles(
+    "assets/textures/buildings",
+    temp, "building");
+  for(int i=0; i<temp.size(); i++)
+    std::cout << temp[i] << std::endl;
 }
 
 

@@ -1,10 +1,10 @@
 /*	File: mapReader.h
- *	Authors: idk your names
+ *	Authors: teamKillYourself
  *
- *	Description: this file contains the class declaration of the
- *	buildings list object. The building list object contains a
- *	function for constructing all buildings and placing them into the
- *	scene automatically.
+ *	Description: provides a global interface for reading the map coordinate
+ *  file, and storing all of the coordinate data for all map game objects,
+ *  such as buildings, trees, lamps, spawn points, etc. This data can be
+ *  access globally (static).
  */
 
 #ifndef MAP_READER_H

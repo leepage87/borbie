@@ -1,3 +1,12 @@
+/*	File: mapReader.cpp
+ *	Authors: teamKillYourself
+ *
+ *	Description: provides a global interface for reading the map coordinate
+ *  file, and storing all of the coordinate data for all map game objects,
+ *  such as buildings, trees, lamps, spawn points, etc. This data can be
+ *  access globally (static).
+ */
+
 #include "mapReader.h"
 
 #include <string>
