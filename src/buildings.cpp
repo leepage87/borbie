@@ -33,13 +33,15 @@ Buildings::Buildings(
 {
     // populate building texture list with all available file names
     DirectoryReader::getDirectoryFiles(
-        "assets/textures/buildings/",    // relative path
+        "assets/textures/buildingsNight/",    // relative path
         this->textureList, "building"); // e.g. "building1.jpg"
   
     // populate roof texture list with all available file names
     DirectoryReader::getDirectoryFiles(
         "assets/textures/buildings/",    // relative path
         this->roofTextures, "Roof");     // e.g. "RoofOp1.jpg"
+    for(int i=0; i<roofTextures.size(); i++)
+        std::cout << "TEXTURE = " << roofTextures[i] << std::endl;
 }
 
 
@@ -125,7 +127,7 @@ BuildingInstance* Buildings::makeBuilding(
 	ITexture *texture =
 	    this->driver->getTexture(this->textureList[textureIndex].c_str());
 	ITexture *roofTexture =
- 	    this->driver->getTexture(this->textureList[topTexture].c_str());
+ 	    this->driver->getTexture(this->roofTextures[topTexture].c_str());
 	
 	// create the new building objects, make it apply its collision
 	//  to the global meta, and add it to the building list
