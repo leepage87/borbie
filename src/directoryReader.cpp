@@ -15,9 +15,9 @@ using namespace std;
 
 
 void DirectoryReader::getDirectoryFiles(
-    string dirName,                     // directory name
-    std::vector<const char *> &list, // list to be populated
-    string startsWith)                  // optional regex to filter values
+    string dirName,         // directory name
+    vector<string> &list,   // list to be populated
+    string startsWith)      // optional regex to filter values
 {
     DIR *dp;
     struct dirent *dirp;
@@ -32,6 +32,8 @@ void DirectoryReader::getDirectoryFiles(
     if(dirName.length() > 0 && dirName[dirName.length() - 1] != '/')
         dirName += "/";
     
+    cout << dirName << endl;
+    
     while((dirp = readdir(dp)) != NULL) {
         // Make sure file name is correctly named / long enough.
         string fileName(dirp->d_name);
@@ -44,7 +46,8 @@ void DirectoryReader::getDirectoryFiles(
             continue;
         
         // If all went well, add the string to the list.
-        list.push_back((string(dirName + "/" + dirp->d_name).c_str()));
+        list.push_back(string(dirName + dirp->d_name));
+        cout << dirp->d_name << endl;
     }
     
     closedir(dp);

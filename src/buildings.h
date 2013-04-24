@@ -13,6 +13,7 @@
 
 // include cpp standard library objects
 #include <vector>
+#include <string>
 
 // include irrlicht
 #include <irrlicht.h>
@@ -51,8 +52,8 @@ class Buildings : public ObjectList {
 
   private:
 	// list of building textures
-	std::vector<const char *> textureList;
-	std::vector<const char *> roofTextures;
+	std::vector<std::string> textureList;
+	std::vector<std::string> roofTextures;
 	
 	// random height generator function (restricted to a certain height range,
 	//  and bias towards mid-ranged heights)

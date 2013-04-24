@@ -9,6 +9,7 @@
 
 #include "buildings.h"
 #include "mapReader.h"
+#include "directoryReader.h"
 #include "random.h"
 
 // include cpp library headers for random building sizing
@@ -31,7 +32,7 @@ Buildings::Buildings(
 	: ObjectList(metaTriSelector, gameInstance)
 {
 	// populate the texture list
-	this->textureList.push_back("assets/textures/buildings/building1.png");
+	/*this->textureList.push_back("assets/textures/buildings/building1.png");
 	this->textureList.push_back("assets/textures/buildings/building2.jpg");
 	this->textureList.push_back("assets/textures/buildings/building3.jpg");
 	this->textureList.push_back("assets/textures/buildings/building4.jpg");
@@ -48,12 +49,25 @@ Buildings::Buildings(
 	this->textureList.push_back("assets/textures/buildings/building15.jpg");
 	this->textureList.push_back("assets/textures/buildings/building16.jpg");
 	this->textureList.push_back("assets/textures/buildings/building17.jpg");
-	this->textureList.push_back("assets/textures/buildings/building18.jpg");
+	this->textureList.push_back("assets/textures/buildings/building18.jpg");*/
+  
+    // populate building texture list with all available file names
+    DirectoryReader::getDirectoryFiles(
+        "assets/textures/buildings/",    // relative path
+        this->textureList, "building"); // e.g. "building1.jpg"
+    
+    for(int i=0; i<(this->textureList.size()); i++)
+        std::cout << "TEXTURE: " << this->textureList[i] << std::endl;
 	
 	// pupulate new roof texture list, too
-	this->roofTextures.push_back("assets/textures/buildings/RoofOp1.jpg");
+	/*this->roofTextures.push_back("assets/textures/buildings/RoofOp1.jpg");
 	this->roofTextures.push_back("assets/textures/buildings/RoofOp2.jpg");
-	this->roofTextures.push_back("assets/textures/buildings/RoofOp3.jpg");
+	this->roofTextures.push_back("assets/textures/buildings/RoofOp3.jpg");*/
+  
+    // populate rooof texture list with all available file names
+    DirectoryReader::getDirectoryFiles(
+        "assets/textures/buildings/",    // relative path
+        this->roofTextures, "Roof");     // e.g. "RoofOp1.jpg"
 }
 
 
@@ -137,9 +151,9 @@ BuildingInstance* Buildings::makeBuilding(
 {
     // create texture, w, h, d based on building type
 	ITexture *texture =
-	    this->driver->getTexture(this->textureList[textureIndex]);
+	    this->driver->getTexture(this->textureList[textureIndex].c_str());
 	ITexture *roofTexture =
- 	    this->driver->getTexture(this->textureList[topTexture]);
+ 	    this->driver->getTexture(this->textureList[topTexture].c_str());
 	
 	// create the new building objects, make it apply its collision
 	//  to the global meta, and add it to the building list
