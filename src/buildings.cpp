@@ -48,6 +48,7 @@ Buildings::Buildings(
 	this->textureList.push_back("assets/textures/buildings/building15.jpg");
 	this->textureList.push_back("assets/textures/buildings/building16.jpg");
 	this->textureList.push_back("assets/textures/buildings/building17.jpg");
+	this->textureList.push_back("assets/textures/buildings/building18.jpg");
 	
 	// pupulate new roof texture list, too
 	this->roofTextures.push_back("assets/textures/buildings/RoofOp1.jpg");

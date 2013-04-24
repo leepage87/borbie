@@ -204,8 +204,12 @@ GameInstance::~GameInstance(){
   if(this->rainParticleSystem)
     this->rainParticleSystem->remove();
   this->smgr->clear();
+  
   //turn the mouse cursor back on
   device->getCursorControl()->setVisible(true);
+  
+  // Clear off map
+  MapReader::clearMap();
 }
 
 

@@ -17,7 +17,10 @@ std::vector<Point> MapReader::enemySpawnPoints;
 std::vector<RoadSpawnPoint> MapReader::vehicleSpawnPoints;
 
 
-// Reads the coordinate file.
+// Reads the coordinate file, and parses it. Populates the lists of
+//  coordinates as dictated by the file. See documentation on the map
+//  file for more information.
+// TODO - make documentation for the map file.
 void MapReader::readCoordFile(const char *fileName){
     // TODO - make this global or returned from Terrain map object
     const int farX = 20400.0f;
@@ -188,4 +191,17 @@ void MapReader::readCoordFile(const char *fileName){
                 break;
         }
     }
+}
+
+
+// Clears off all coordinates and information about the map from the existing
+//  lists. This should be done when a game is finished.
+void MapReader::clearMap() {
+    MapReader::buildingCoords.clear();
+    MapReader::streetLampCoords.clear();
+    MapReader::treeCoords.clear();
+    MapReader::fireHydrantCoords.clear();
+    MapReader::roadIntersectionCoords.clear();
+    enemySpawnPoints.clear();
+    vehicleSpawnPoints.clear();
 }

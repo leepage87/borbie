@@ -58,8 +58,13 @@ class MapReader {
 	
 	
 	// Function that reads a correctly-formatted coordinate file and
-	//  adds all values to the static lists.
+	//  adds all values to the static lists. This should be done before
+	//  a game starts.
 	static void readCoordFile(const char *fileName);
+	
+	// Clears out all of the coordinate lists so that they can be
+	//  over-written. This should be done when a game finishes.
+	static void clearMap();
 	
 	
 }; // end of MapReader class
