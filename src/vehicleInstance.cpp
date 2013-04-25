@@ -21,16 +21,17 @@ using namespace video;
 
 VehicleInstance::VehicleInstance(
 	GameInstance *gameInstance,
-	float posX, float posY, float posZ, IAnimatedMesh *mesh, int modelIndex)
+	float posX, float posY, float posZ, IAnimatedMesh *mesh, int model)
 	// call super GameObject constructor first:
 	: GameObject(gameInstance)
 {
+	this->model = model;
     this->motionAnimator = 0;
     this->lastIntersection = 0;
     this->nextIntersection = 0;
     
 	this->sceneNode = smgr->addMeshSceneNode(mesh);
-	if (modelIndex == 0){//its a jeep
+	if (model == 0){//its a jeep
 		this->sceneNode->setScale(vector3df(.2, .2, .2));
 	}else{//its a riviera
 		this->sceneNode->setScale(vector3df(40,40,40));
@@ -62,12 +63,19 @@ void VehicleInstance::go() {
     endPoint.X = this->nextIntersection->X;
     endPoint.Y = startPoint.Y;
     endPoint.Z = this->nextIntersection->Y;
+	f32 length = (f32)(endPoint - startPoint).getLength();
+	const f32 SPEED = 0.5f;
+	u32 time = (u32)(length / SPEED);
     this->motionAnimator = this->smgr->createFlyStraightAnimator(
             startPoint,
             endPoint,
-		    5000
+		    time
        );
     this->sceneNode->addAnimator(this->motionAnimator);
+	if(model == 0)//its a jeep
+		sceneNode->setRotation((endPoint-startPoint).getHorizontalAngle());
+	else//its a buick
+		sceneNode->setRotation((startPoint-endPoint).getHorizontalAngle());
 }
 
 // Stops moving and removes all animators.

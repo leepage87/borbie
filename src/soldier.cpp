@@ -72,17 +72,17 @@ void Soldier::fire(){
 	//hard coded target for testing
 	float posAdjust[3];
 	vector3df end = gameInstance->getCamera()->getPosition();
-	end.getAs3Values(posAdjust);
-	end = vector3df(posAdjust[0], posAdjust[1]-30, posAdjust[2]);
+	end.Y-=30;
+
 	//get enemy position, adjust bullet height to barrel
-	vector3df start = sceneNode->getPosition();	
-	start.getAs3Values(posAdjust);
-	start = vector3df(posAdjust[0], posAdjust[1]+45, posAdjust[2]);
+	vector3df start = sceneNode->getPosition();
+	start.Y+=45;
+
 	//get the length of the distance we're shooting
 	f32 length = (f32)(end - start).getLength();
-	const f32 speed = 14.0f;
-	//figure out how long it should take to get there, so the animator speed is constant
-	u32 time = (u32)(length / speed);
+	const f32 SPEED = 14.0f;
+	//figure out how long it should take to get there, so the animator SPEED is constant
+	u32 time = (u32)(length / SPEED);
 	ISceneNodeAnimator* anim = gameInstance->getSceneManager()->createFlyStraightAnimator(start, end, time);
 	bill->addAnimator(anim);
 	anim->drop();
@@ -92,8 +92,7 @@ void Soldier::fire(){
 
 
 	//turn the soldier to look at you
-	end.getAs3Values(posAdjust);
-	end = vector3df(posAdjust[0], posAdjust[1]-125, posAdjust[2]);
+	end.Y -= 125;
 	vector3df vect = start-end;
 	sceneNode->setRotation(vect.getHorizontalAngle());
 	

@@ -12,6 +12,7 @@ bool BorbiesEventReceiver::OnEvent(const irr::SEvent& event){
   if(game)
   {
     SoundClip *mm = audioSystem->createSound2d("assets/sounds/menuMouseOver.wav");
+    SoundClip *newGame = audioSystem->createSound2d("assets/sounds/hugebitch.wav");
 
     if(game->getGameState() == BORBIE_MAIN_MENU_STATE)
     {
@@ -25,6 +26,8 @@ bool BorbiesEventReceiver::OnEvent(const irr::SEvent& event){
             switch(id)
             {
               case NEW_GAME:
+                if(newGame)
+                 audioSystem->playSound2d(newGame); 
                 game->manageStates();
                 std::cout<<"Hello from New Game"<<std::endl;
                 break; 

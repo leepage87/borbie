@@ -30,7 +30,7 @@ class VehicleInstance : public GameObject {
     // location of the next intersection to go to
     RoadIntersection *lastIntersection;
     RoadIntersection *nextIntersection;
-    
+    int model;
     // Animator animating movement
     irr::scene::ISceneNodeAnimator *motionAnimator;
     
