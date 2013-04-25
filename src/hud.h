@@ -18,7 +18,7 @@ class Hud {
     irr::video::ITexture *borbieMeh;
     irr::video::ITexture *borbieBad;
     irr::video::ITexture *borbieDead;
- 
+    irr::video::ITexture *borbieFace; 
     
     irr::core::dimension2d<irr::u32> hudTextureSize;
     irr::core::dimension2d<irr::u32> borbieTextureSize;
