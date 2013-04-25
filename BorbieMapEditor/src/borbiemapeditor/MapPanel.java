@@ -27,6 +27,7 @@ public class MapPanel extends JPanel {
     
     // final colors (as drawn on the screen)
     private final Color underglowColor = Color.CYAN;
+    private final Color lineColor = Color.WHITE;
     private final Color selectionColor = new Color(255, 255, 255, 100);
     
     // references to internal Image and the Main Window.
@@ -59,6 +60,10 @@ public class MapPanel extends JPanel {
     
     // list of all copied objects
     private ArrayList<MapObject> copyObjects;
+
+    // list of connected road paths:
+    //  x is road-vertex 1, y is road-vertex 2
+    private ArrayList<Point> roadPaths;
     
     // object images
     private Image buildingImage;
@@ -113,9 +118,10 @@ public class MapPanel extends JPanel {
         enemySpawnImage = getScaledImage("enemySpawn.png");
         eraseImage = getScaledImage("eraser.png");
         
-        // set up the map objects arraylists
+        // set up the map object arraylists
         this.mapObjects = new ArrayList<MapObject>();
         this.copyObjects = new ArrayList<MapObject>();
+        this.roadPaths = new ArrayList<Point>();
         this.numRoadIntersections = 0;
         
         
@@ -189,6 +195,7 @@ public class MapPanel extends JPanel {
                         new MapObject(xPos, yPos, objectWidth, objectHeight,
                                 MapObject.TYPE_ROAD_INTERSECTION);
                 intersection.id = this.numRoadIntersections;
+                System.err.println("Assigned ID: " + intersection.id);
                 this.mapObjects.add(intersection);
                 this.numRoadIntersections++;
                 break;
@@ -215,7 +222,9 @@ public class MapPanel extends JPanel {
                         new MapObject(xPos, yPos, objectWidth, objectHeight,
                                 MapObject.TYPE_VEHICLE_SPAWN);
                 vSpawnPoint.sType = 'v';
+                vSpawnPoint.id = this.numRoadIntersections;
                 this.mapObjects.add(vSpawnPoint);
+                this.numRoadIntersections++;
                 break;
             case ENEMY_SPAWN:
                 MapObject eSpawnPoint =
@@ -492,11 +501,67 @@ public class MapPanel extends JPanel {
 
 
     // If exactly two linkable road objects are selected, link them together.
-    // TODO
-    //  need to link them with a list, and ensure they are linked only
-    //  once - the MapReader object reads p id1 id2, and interconnects
-    //  BOTH nodes.
-    // Actually, just create a list of paths. Don't even link them below.
+    public void linkRoadObjects() {
+        int numSelected = 0;
+        MapObject selected[] = new MapObject[2];
+        int numObjects = this.mapObjects.size();
+        for(int i=0; i<numObjects; i++){
+            // If object is selected, increment number selected; if it is a valid
+            //  type (i.e. spawn point or intersection), remember the index.
+            // If it's an invalid type, get out.
+            if(mapObjects.get(i).selected){
+                // if valid type and none or only 1 selected so far, remember index
+                if(     numSelected < 2 &&
+                        (mapObjects.get(i).type == MapObject.TYPE_ROAD_INTERSECTION ||
+                        mapObjects.get(i).type == MapObject.TYPE_VEHICLE_SPAWN)){
+                    selected[numSelected] = mapObjects.get(i);
+                    numSelected++;
+                }
+                else{
+                    return;
+                }
+            }
+        }
+
+        // If both nodes are spawn points, it's a no-go
+        if(     selected[0].type == MapObject.TYPE_VEHICLE_SPAWN &&
+                selected[1].type == MapObject.TYPE_VEHICLE_SPAWN){
+            System.out.println("Both spawn points!");
+            return;
+        }
+        
+        // If one of the selected ones is a spawn point, just link it to the
+        //  second node and leave. Add to the paths just for drawing reference.
+        else if(selected[0].type == MapObject.TYPE_VEHICLE_SPAWN){
+            this.roadPaths.add(new Point(selected[0].id, selected[1].id));
+            selected[0].id = selected[1].id;
+            System.out.println("Spawn linked: " + selected[0].id + ", " + selected[1].id);
+            repaint();
+            return;
+        }
+        else if(selected[1].type == MapObject.TYPE_VEHICLE_SPAWN){
+            this.roadPaths.add(new Point(selected[0].id, selected[1].id));
+            selected[1].id = selected[0].id;
+            System.out.println("Spawn linked: " + selected[1].id + ", " + selected[0].id);
+            repaint();
+            return;
+        }
+
+        // Check if path isn't already set. If not, set it.
+        int numPaths = this.roadPaths.size();
+        int id1 = selected[0].id;
+        int id2 = selected[1].id;
+        for(int i=0; i<numPaths; i++){
+            Point path = this.roadPaths.get(i);
+            // if path was already created before, ignore
+            if(     (path.x == id1 && path.y == id2) ||
+                    (path.y == id1 && path.x == id2))
+                return;
+        }
+        System.out.println("CONNECTED: " + id1 + ", " + id2);
+        this.roadPaths.add(new Point(id1, id2));
+        repaint();
+    }
 
     // If exactly two linkable road objects are selected, unlink them (if they
     //  are already linked).
@@ -598,10 +663,33 @@ public class MapPanel extends JPanel {
         g.drawImage(this.mapImg, 0, 0, imgW, imgH, this);
         
         // set color for filling underglow if necessary
+        g.setColor(this.lineColor);
+
+        // draw each connected path (lines)
+        int numObjects = this.mapObjects.size();
+        int numPaths = this.roadPaths.size();
+        for(int i=0; i<numPaths; i++){
+            Point path = this.roadPaths.get(i);
+            MapObject first = null;
+            MapObject second = null;
+            // look up the matching point; if not exist, remove it
+            for(int j=0; j<numObjects; j++) {
+                MapObject mapObj = this.mapObjects.get(j);
+                if(     mapObj.type == MapObject.TYPE_ROAD_INTERSECTION){
+                    if(mapObj.id == path.x)
+                        first = mapObj;
+                    else if(mapObj.id == path.y)
+                        second = mapObj;
+                }
+            }
+            if(first != null && second != null)
+                g.drawLine(first.x, first.y, second.x, second.y);
+        }
+
+        // set color for filling underglow if necessary
         g.setColor(this.underglowColor);
         
         // draw each of the map objects
-        int numObjects = this.mapObjects.size();
         for(int i=0; i<numObjects; i++){
             MapObject mapObj = this.mapObjects.get(i);
             int imgX = mapObj.x - mapObj.width/2;
@@ -683,5 +771,10 @@ public class MapPanel extends JPanel {
     // PUBLIC GETTER: List of all map object
     public List<MapObject> getMapObjects(){
         return this.mapObjects;
+    }
+
+    // PUBLIC GETTER: List of all road paths
+    public List<Point> getRoadPaths(){
+        return this.roadPaths;
     }
 }
