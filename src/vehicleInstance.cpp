@@ -64,7 +64,7 @@ void VehicleInstance::go() {
     endPoint.Y = startPoint.Y;
     endPoint.Z = this->nextIntersection->Y;
 	f32 length = (f32)(endPoint - startPoint).getLength();
-	const f32 SPEED = 0.9f;
+	const f32 SPEED = 0.5f;
 	u32 time = (u32)(length / SPEED);
     this->motionAnimator = this->smgr->createFlyStraightAnimator(
             startPoint,

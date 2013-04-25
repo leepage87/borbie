@@ -44,9 +44,6 @@ void ObjectCarrier::pickUp(irr::scene::ISceneNode *selected) {
 	vector3df rotation = (selected->getPosition()-camera->getPosition()).getHorizontalAngle();
 	rotation.Y -=210;
 	selected->setRotation(rotation);
-
-//get bounding box and then get edges and find center
-//irrtests src main line 106
 }
 
 
