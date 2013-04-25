@@ -71,7 +71,7 @@ void Soldier::fire(){
 
 	//hard coded target for testing
 	float posAdjust[3];
-	vector3df end = gameInstance->getCamera()->getPosition();
+	vector3df end = (gameInstance->getCamera()->getPosition());
 	end.Y-=30;
 
 	//get enemy position, adjust bullet height to barrel
@@ -80,17 +80,22 @@ void Soldier::fire(){
 
 	//get the length of the distance we're shooting
 	f32 length = (f32)start.getDistanceFrom(end);
-
-	vector3df bulletEnd = gameInstance->getCamera()->getPosition();
+	
+	vector3df bulletEnd = end*10000;
 	if (length < 4000){
+		//end = end*20000;
 		const f32 SPEED = 14.0f;
 		//figure out how long it should take to get there, so the animator SPEED is constant
-		u32 time = (u32)(length / SPEED);
-		f32 scale = 20000/length;
-		std::cout<<"Scale is: " + scale <<std::endl;
-		bulletEnd.X *= scale;
-		bulletEnd.Z *= scale;
-
+		f32 length2 = (f32) start.getDistanceFrom(bulletEnd);
+		u32 time = (u32)(length2 / SPEED);
+		int scale = 20000/length;
+		std::cout<<scale <<std::endl;
+		/*
+		IF BORBIE Z IS < SOLDIER Z MULTIPLY BY NEGATIVE, ETC
+		//bulletEnd.X *= scale;
+		//bulletEnd.Y *= scale;
+		//bulletEnd.Z *= scale;
+		*/
 		ISceneNodeAnimator* anim = gameInstance->getSceneManager()->createFlyStraightAnimator(start, bulletEnd, time);
 		bill->addAnimator(anim);
 		anim->drop();
