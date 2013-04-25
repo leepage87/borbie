@@ -92,8 +92,7 @@ void Soldier::fire(){
 
 
 	//turn the soldier to look at you
-	end.getAs3Values(posAdjust);
-	end = vector3df(posAdjust[0], posAdjust[1]-125, posAdjust[2]);
+	end.Y -= 125;
 	vector3df vect = start-end;
 	sceneNode->setRotation(vect.getHorizontalAngle());
 	
