@@ -245,7 +245,7 @@ public class EditorMenuBar extends JMenuBar {
         e_connectPath.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
-                // link path
+                mainWindow.getMapPanel().linkRoadObjects();
             }
         });
         e_connectPath.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, 0));

@@ -79,17 +79,25 @@ void Soldier::fire(){
 	start.Y+=45;
 
 	//get the length of the distance we're shooting
-	f32 length = (f32)(end - start).getLength();
-	const f32 SPEED = 14.0f;
-	//figure out how long it should take to get there, so the animator SPEED is constant
-	u32 time = (u32)(length / SPEED);
-	ISceneNodeAnimator* anim = gameInstance->getSceneManager()->createFlyStraightAnimator(start, end, time);
-	bill->addAnimator(anim);
-	anim->drop();
-	anim = gameInstance->getSceneManager()->createDeleteAnimator(time);
-	bill->addAnimator(anim);
-	anim->drop();
+	f32 length = (f32)start.getDistanceFrom(end);
 
+	vector3df bulletEnd = gameInstance->getCamera()->getPosition();
+	if (length < 4000){
+		const f32 SPEED = 14.0f;
+		//figure out how long it should take to get there, so the animator SPEED is constant
+		u32 time = (u32)(length / SPEED);
+		f32 scale = 20000/length;
+		std::cout<<"Scale is: " + scale <<std::endl;
+		bulletEnd.X *= scale;
+		bulletEnd.Z *= scale;
+
+		ISceneNodeAnimator* anim = gameInstance->getSceneManager()->createFlyStraightAnimator(start, bulletEnd, time);
+		bill->addAnimator(anim);
+		anim->drop();
+		anim = gameInstance->getSceneManager()->createDeleteAnimator(time);
+		bill->addAnimator(anim);
+		anim->drop();
+	}
 
 	//turn the soldier to look at you
 	end.Y -= 125;

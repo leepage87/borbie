@@ -3,6 +3,7 @@ package borbiemapeditor;
 
 import borbiemapeditor.MenuPanel.MenuSelection;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -193,11 +194,12 @@ public class MainWindow extends JFrame {
             int mapW = map.getMapWidth();
             int mapH = map.getMapHeight();
             List<MapObject> mapObjects = map.getMapObjects();
+            List<Point> roadPaths = map.getRoadPaths();
             
             try{
                 // try to write the new file to the given file name
                 CoordinateFileManager.exportCoordinatesToFile(
-                        mapObjects, mapW, mapH, filePath);
+                        mapObjects, roadPaths, mapW, mapH, filePath);
             }
             catch(Exception e){
                 JOptionPane.showMessageDialog(this,
