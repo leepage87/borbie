@@ -1,5 +1,6 @@
 package borbiemapeditor;
 
+import java.awt.Point;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.List;
@@ -32,6 +33,7 @@ public class CoordinateFileManager {
     //              targetFileName is the FULL PATH of the target coordinate file.
     public static void exportCoordinatesToFile(
             List<MapObject> mapObjects,
+            List<Point> roadPaths,
             int mapWidth, int mapHeight,
             String targetFilePath) throws Exception {
 
@@ -96,6 +98,38 @@ public class CoordinateFileManager {
             if(!extra.equals("")) // if extra is non-empty, write it out, too
                 out.write(" " + extra);
             out.newLine();
+        }
+
+        int numPaths = roadPaths.size();
+        for(int i=0; i<numPaths; i++){
+            Point path = roadPaths.get(i);
+            System.err.println("Path #(" + (i+1) + "): " + path.x + " <-> " + path.y);
+            MapObject first = null;
+            MapObject second = null;
+            // look up the matching point; if not exist, remove it
+            for(int j=0; j<numObjects; j++) {
+                MapObject mapObj = mapObjects.get(j);
+                if(mapObj.type == MapObject.TYPE_ROAD_INTERSECTION){
+                    System.err.println("Trying id: " + mapObj.id);
+                    if(mapObj.id == path.x)
+                        first = mapObj;
+                    else if(mapObj.id == path.y)
+                        second = mapObj;
+                    else
+                        System.err.println("Mismatched.");
+                }
+                else {
+                    System.err.println("Invalid type");
+                }
+            }
+            if(first != null && second != null){
+                out.write("p " + first.id + " " + second.id);
+                out.newLine();
+            }
+            if(first == null)
+                System.out.println("First null");
+            if(second == null)
+                System.out.println("Second null");
         }
         
         out.close();
