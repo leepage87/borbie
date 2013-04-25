@@ -9,7 +9,9 @@
 #   i (texture image directory)
 
 # i is the image directory containing map textures:
-i assets/textures/buildingsNight
+#i assets/textures/buildingsNight
+
+i assets/textures/buildings
 
 b 0.654297 0.247559
 b 0.503418 0.553223
