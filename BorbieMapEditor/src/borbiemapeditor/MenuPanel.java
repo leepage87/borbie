@@ -21,8 +21,8 @@ public class MenuPanel extends JPanel {
     
     // selection mode: which button is currently selected
     public static enum MenuSelection {
-        POINTER, BUILDING, ROAD_INTERSECTION, ROAD_PATH,
-        LAMP, TREE, HYDRANT, ERASE, SELECT
+        POINTER, BUILDING, ROAD_INTERSECTION, ROAD_PATH, LAMP, TREE, HYDRANT,
+        VEHICLE_SPAWN, ENEMY_SPAWN, ERASE, SELECT
     }
     
     // list of editor buttons
@@ -33,6 +33,8 @@ public class MenuPanel extends JPanel {
     private final JButton lampButton;
     private final JButton treeButton;
     private final JButton fireHydrantButton;
+    private final JButton vehicleSpawnButton;
+    private final JButton enemySpawnButton;
     private final JButton eraseButton;
     private final JButton selectButton;
     
@@ -58,6 +60,8 @@ public class MenuPanel extends JPanel {
         ImageIcon lampIcon = getIcon("lamp.png");
         ImageIcon treeIcon = getIcon("tree.png");
         ImageIcon fireHydrantIcon = getIcon("hydrant.png");
+        ImageIcon vehicleSpawnIcon = getIcon("vehicleSpawn.png");
+        ImageIcon enemySpawnIcon = getIcon("enemySpawn.png");
         ImageIcon eraseIcon = getIcon("eraser.png");
         ImageIcon selectIcon = getIcon("select.png");
         
@@ -166,6 +170,36 @@ public class MenuPanel extends JPanel {
         fireHydrantButton.setEnabled(false);
         fireHydrantButton.setFocusable(false);
         this.add(fireHydrantButton);
+
+        vehicleSpawnButton = new JButton(" Vehicle Spwn", vehicleSpawnIcon);
+        vehicleSpawnButton.setVerticalTextPosition(AbstractButton.CENTER);
+        vehicleSpawnButton.setHorizontalTextPosition(AbstractButton.TRAILING);
+        vehicleSpawnButton.setToolTipText("Add a vehicle spawn point to the map.");
+        vehicleSpawnButton.setFont(buttonFont);
+        vehicleSpawnButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                selectAddVehicleSpawn();
+            }
+        });
+        vehicleSpawnButton.setEnabled(false);
+        vehicleSpawnButton.setFocusable(false);
+        this.add(vehicleSpawnButton);
+
+        enemySpawnButton = new JButton(" Enemy Spawn ", enemySpawnIcon);
+        enemySpawnButton.setVerticalTextPosition(AbstractButton.CENTER);
+        enemySpawnButton.setHorizontalTextPosition(AbstractButton.TRAILING);
+        enemySpawnButton.setToolTipText("Add an enemy spawn point to the map.");
+        enemySpawnButton.setFont(buttonFont);
+        enemySpawnButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                selectAddEnemySpawn();
+            }
+        });
+        enemySpawnButton.setEnabled(false);
+        enemySpawnButton.setFocusable(false);
+        this.add(enemySpawnButton);
         
         eraseButton = new JButton(" Erase       ", eraseIcon);
         eraseButton.setVerticalTextPosition(AbstractButton.CENTER);
@@ -208,6 +242,8 @@ public class MenuPanel extends JPanel {
         lampButton.setSelected(false);
         treeButton.setSelected(false);
         fireHydrantButton.setSelected(false);
+        vehicleSpawnButton.setSelected(false);
+        enemySpawnButton.setSelected(false);
         eraseButton.setSelected(false);
         selectButton.setSelected(false);
         selection = MenuSelection.POINTER;
@@ -220,6 +256,8 @@ public class MenuPanel extends JPanel {
         lampButton.setSelected(false);
         treeButton.setSelected(false);
         fireHydrantButton.setSelected(false);
+        vehicleSpawnButton.setSelected(false);
+        enemySpawnButton.setSelected(false);
         eraseButton.setSelected(false);
         selectButton.setSelected(false);
         selection = MenuSelection.BUILDING;
@@ -232,6 +270,8 @@ public class MenuPanel extends JPanel {
         lampButton.setSelected(false);
         treeButton.setSelected(false);
         fireHydrantButton.setSelected(false);
+        vehicleSpawnButton.setSelected(false);
+        enemySpawnButton.setSelected(false);
         eraseButton.setSelected(false);
         selectButton.setSelected(false);
         selection = MenuSelection.ROAD_INTERSECTION;
@@ -244,6 +284,8 @@ public class MenuPanel extends JPanel {
         lampButton.setSelected(false);
         treeButton.setSelected(false);
         fireHydrantButton.setSelected(false);
+        vehicleSpawnButton.setSelected(false);
+        enemySpawnButton.setSelected(false);
         eraseButton.setSelected(false);
         selectButton.setSelected(false);
         selection = MenuSelection.ROAD_PATH;
@@ -256,6 +298,8 @@ public class MenuPanel extends JPanel {
         roadPathButton.setSelected(false);
         treeButton.setSelected(false);
         fireHydrantButton.setSelected(false);
+        vehicleSpawnButton.setSelected(false);
+        enemySpawnButton.setSelected(false);
         eraseButton.setSelected(false);
         selectButton.setSelected(false);
         selection = MenuSelection.LAMP;
@@ -268,6 +312,8 @@ public class MenuPanel extends JPanel {
         roadPathButton.setSelected(false);
         lampButton.setSelected(false);
         fireHydrantButton.setSelected(false);
+        vehicleSpawnButton.setSelected(false);
+        enemySpawnButton.setSelected(false);
         eraseButton.setSelected(false);
         selectButton.setSelected(false);
         selection = MenuSelection.TREE;
@@ -280,9 +326,39 @@ public class MenuPanel extends JPanel {
         roadPathButton.setSelected(false);
         lampButton.setSelected(false);
         treeButton.setSelected(false);
+        vehicleSpawnButton.setSelected(false);
+        enemySpawnButton.setSelected(false);
         eraseButton.setSelected(false);
         selectButton.setSelected(false);
         selection = MenuSelection.HYDRANT;
+    }
+    public void selectAddVehicleSpawn() {
+        vehicleSpawnButton.setSelected(true);
+        pointerButton.setSelected(false);
+        buildingButton.setSelected(false);
+        roadButton.setSelected(false);
+        roadPathButton.setSelected(false);
+        lampButton.setSelected(false);
+        treeButton.setSelected(false);
+        fireHydrantButton.setSelected(false);
+        enemySpawnButton.setSelected(false);
+        eraseButton.setSelected(false);
+        selectButton.setSelected(false);
+        selection = MenuSelection.VEHICLE_SPAWN;
+    }
+    public void selectAddEnemySpawn() {
+        enemySpawnButton.setSelected(true);
+        pointerButton.setSelected(false);
+        buildingButton.setSelected(false);
+        roadButton.setSelected(false);
+        roadPathButton.setSelected(false);
+        lampButton.setSelected(false);
+        treeButton.setSelected(false);
+        fireHydrantButton.setSelected(false);
+        vehicleSpawnButton.setSelected(false);
+        eraseButton.setSelected(false);
+        selectButton.setSelected(false);
+        selection = MenuSelection.ENEMY_SPAWN;
     }
     public void selectErase() {
         eraseButton.setSelected(true);
@@ -293,6 +369,8 @@ public class MenuPanel extends JPanel {
         lampButton.setSelected(false);
         treeButton.setSelected(false);
         fireHydrantButton.setSelected(false);
+        vehicleSpawnButton.setSelected(false);
+        enemySpawnButton.setSelected(false);
         selectButton.setSelected(false);
         selection = MenuSelection.ERASE;
     }
@@ -305,6 +383,8 @@ public class MenuPanel extends JPanel {
         lampButton.setSelected(false);
         treeButton.setSelected(false);
         fireHydrantButton.setSelected(false);
+        vehicleSpawnButton.setSelected(false);
+        enemySpawnButton.setSelected(false);
         eraseButton.setSelected(false);
         selection = MenuSelection.SELECT;
     }
@@ -315,10 +395,12 @@ public class MenuPanel extends JPanel {
         pointerButton.setEnabled(true);
         buildingButton.setEnabled(true);
         roadButton.setEnabled(true);
-        roadPathButton.setEnabled(true);
+        //roadPathButton.setEnabled(true);
         lampButton.setEnabled(true);
         treeButton.setEnabled(true);
         fireHydrantButton.setEnabled(true);
+        vehicleSpawnButton.setEnabled(true);
+        enemySpawnButton.setEnabled(true);
         eraseButton.setEnabled(true);
         selectButton.setEnabled(true);
         selectPointer();

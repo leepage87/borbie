@@ -14,6 +14,8 @@ public class MapObject {
     public static final int TYPE_TREE = 2;
     public static final int TYPE_FIRE_HYDRANT = 3;
     public static final int TYPE_ROAD_INTERSECTION = 4;
+    public static final int TYPE_VEHICLE_SPAWN = 5;
+    public static final int TYPE_ENEMY_SPAWN = 6;
     
     // internal object variables: X and Y represent the CENTER
     public int x;
@@ -21,6 +23,12 @@ public class MapObject {
     public int width;
     public int height;
     public boolean selected;
+    
+    // values used externally for only some types (i.e. road intersections,
+    //  spawn points)
+    public int id;
+    public char sType;
+    public int connectedWith;
     
     // type of this specific object
     public int type;
@@ -34,6 +42,8 @@ public class MapObject {
         this.width = width;
         this.height = height;
         this.type = type;
+        this.id = 0;
+        this.connectedWith = -1;
         this.selected = false;
     }
     

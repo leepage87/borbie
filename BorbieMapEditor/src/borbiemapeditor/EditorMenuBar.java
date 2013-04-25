@@ -34,6 +34,8 @@ public class EditorMenuBar extends JMenuBar {
     private JMenuItem e_clearSelected;
     private JMenuItem e_selectAll;
     private JMenuItem e_clearAll;
+    private JMenuItem e_connectPath;
+    private JMenuItem e_disconnectPath;
     private JMenuItem e_preferences;
     
     
@@ -234,7 +236,34 @@ public class EditorMenuBar extends JMenuBar {
         });
         e_clearAll.setEnabled(false);
         editMenu.add(e_clearAll);
-        
+
+        // separator
+        editMenu.addSeparator();
+
+        // button to link together two linkable road objects (e.g. intersections)
+        e_connectPath = new JMenuItem("Connect Path");
+        e_connectPath.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                // link path
+            }
+        });
+        e_connectPath.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, 0));
+        e_connectPath.setEnabled(false);
+        editMenu.add(e_connectPath);
+
+        // button to unlink together two linkable road objects
+        e_disconnectPath = new JMenuItem("Disconnect Path");
+        e_disconnectPath.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                // link path
+            }
+        });
+        e_disconnectPath.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, 0));
+        e_disconnectPath.setEnabled(false);
+        editMenu.add(e_disconnectPath);
+
         // separator
         editMenu.addSeparator();
         
@@ -264,5 +293,7 @@ public class EditorMenuBar extends JMenuBar {
         e_clearSelected.setEnabled(true);
         e_selectAll.setEnabled(true);
         e_clearAll.setEnabled(true);
+        e_connectPath.setEnabled(true);
+        e_disconnectPath.setEnabled(true);
     }
 }

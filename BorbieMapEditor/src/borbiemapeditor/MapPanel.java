@@ -55,6 +55,7 @@ public class MapPanel extends JPanel {
     
     // pointers to mapped objects
     private ArrayList<MapObject> mapObjects;
+    private int numRoadIntersections;
     
     // list of all copied objects
     private ArrayList<MapObject> copyObjects;
@@ -66,6 +67,8 @@ public class MapPanel extends JPanel {
     private Image lampImage;
     private Image treeImage;
     private Image fireHydrantImage;
+    private Image vehicleSpawnImage;
+    private Image enemySpawnImage;
     private Image eraseImage;
     
     
@@ -106,11 +109,14 @@ public class MapPanel extends JPanel {
         lampImage = getScaledImage("yellowDot.png", dotWidth, dotHeight);
         treeImage = getScaledImage("greenDot.png", dotWidth, dotHeight);
         fireHydrantImage = getScaledImage("redDot.png", dotWidth, dotHeight);
+        vehicleSpawnImage = getScaledImage("vehicleSpawn.png");
+        enemySpawnImage = getScaledImage("enemySpawn.png");
         eraseImage = getScaledImage("eraser.png");
         
         // set up the map objects arraylists
         this.mapObjects = new ArrayList<MapObject>();
         this.copyObjects = new ArrayList<MapObject>();
+        this.numRoadIntersections = 0;
         
         
         // add mouse listener: standard mouse events
@@ -179,9 +185,12 @@ public class MapPanel extends JPanel {
                                 MapObject.TYPE_BUILDING));
                 break;
             case ROAD_INTERSECTION:
-                this.mapObjects.add(
+                MapObject intersection =
                         new MapObject(xPos, yPos, objectWidth, objectHeight,
-                                MapObject.TYPE_ROAD_INTERSECTION));
+                                MapObject.TYPE_ROAD_INTERSECTION);
+                intersection.id = this.numRoadIntersections;
+                this.mapObjects.add(intersection);
+                this.numRoadIntersections++;
                 break;
             case ROAD_PATH:
                 // TODO - add functionality
@@ -200,6 +209,20 @@ public class MapPanel extends JPanel {
                 this.mapObjects.add(
                         new MapObject(xPos, yPos, dotWidth, dotHeight,
                                 MapObject.TYPE_FIRE_HYDRANT));
+                break;
+            case VEHICLE_SPAWN:
+                MapObject vSpawnPoint =
+                        new MapObject(xPos, yPos, objectWidth, objectHeight,
+                                MapObject.TYPE_VEHICLE_SPAWN);
+                vSpawnPoint.sType = 'v';
+                this.mapObjects.add(vSpawnPoint);
+                break;
+            case ENEMY_SPAWN:
+                MapObject eSpawnPoint =
+                        new MapObject(xPos, yPos, objectWidth, objectHeight,
+                                MapObject.TYPE_ENEMY_SPAWN);
+                eSpawnPoint.sType = 'e';
+                this.mapObjects.add(eSpawnPoint);
                 break;
             case ERASE: // if eraser, check if any objects is to be deleted
                 checkDelete(xPos, yPos);
@@ -466,6 +489,18 @@ public class MapPanel extends JPanel {
         this.mapObjects.clear();
         repaint();
     }
+
+
+    // If exactly two linkable road objects are selected, link them together.
+    // TODO
+    //  need to link them with a list, and ensure they are linked only
+    //  once - the MapReader object reads p id1 id2, and interconnects
+    //  BOTH nodes.
+    // Actually, just create a list of paths. Don't even link them below.
+
+    // If exactly two linkable road objects are selected, unlink them (if they
+    //  are already linked).
+    // TODO
     
     
     // Get a custom cursor based on the given input
@@ -494,6 +529,12 @@ public class MapPanel extends JPanel {
                 break;
             case HYDRANT:
                 selectedImg = fireHydrantImage;
+                break;
+            case VEHICLE_SPAWN:
+                selectedImg = vehicleSpawnImage;
+                break;
+            case ENEMY_SPAWN:
+                selectedImg = enemySpawnImage;
                 break;
             case ERASE: // in this case, also set the hotspot to the bottom left
                 selectedImg = eraseImage;
@@ -581,6 +622,12 @@ public class MapPanel extends JPanel {
                     break;
                 case MapObject.TYPE_FIRE_HYDRANT:
                     img = this.fireHydrantImage;
+                    break;
+                case MapObject.TYPE_VEHICLE_SPAWN:
+                    img = vehicleSpawnImage;
+                    break;
+                case MapObject.TYPE_ENEMY_SPAWN:
+                    img = enemySpawnImage;
                     break;
                 default:
                     break;

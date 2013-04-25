@@ -12,7 +12,7 @@ public class CoordinateFileManager {
     
     
     // file version
-    public static final String COORDINATE_FILE_VERSION = "1.0";
+    public static final String COORDINATE_FILE_VERSION = "1.1";
     
     // number of decimal places to export with
     public static final int COORDINATE_DECIMAL_PLACES = 6;
@@ -64,9 +64,14 @@ public class CoordinateFileManager {
             
             // write the position to the file (depending on type)
             String typeLabel = "";
+            String extra = "";
             switch(mapObj.type){
                 case MapObject.TYPE_BUILDING:
                     typeLabel = "b";
+                    break;
+                case MapObject.TYPE_ROAD_INTERSECTION:
+                    typeLabel = "r";
+                    extra = "" + mapObj.id;
                     break;
                 case MapObject.TYPE_TREE:
                     typeLabel = "t";
@@ -74,10 +79,22 @@ public class CoordinateFileManager {
                 case MapObject.TYPE_LAMP:
                     typeLabel = "l";
                     break;
+                case MapObject.TYPE_VEHICLE_SPAWN:
+                    typeLabel = "s";
+                    extra = "v " + mapObj.id; // sType v, connection id to road
+                    break;
+                case MapObject.TYPE_ENEMY_SPAWN:
+                    typeLabel = "s";
+                    extra = "e 0"; // sType e, no connections
+                    break;
                 default:
+                    // if unknown, comment the line out
+                    typeLabel = "#";
                     break;
             }
             out.write(typeLabel + " " + xCoord + " " + yCoord);
+            if(!extra.equals("")) // if extra is non-empty, write it out, too
+                out.write(" " + extra);
             out.newLine();
         }
         
