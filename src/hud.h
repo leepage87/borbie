@@ -13,8 +13,16 @@ class Hud {
     
     // main hud texture (background)
     irr::video::ITexture *hudTexture;
-    irr::core::dimension2d<irr::u32> hudTextureSize;
+    //the borbie faces
+    irr::video::ITexture *borbieFine;
+    irr::video::ITexture *borbieMeh;
+    irr::video::ITexture *borbieBad;
+    irr::video::ITexture *borbieDead;
+ 
     
+    irr::core::dimension2d<irr::u32> hudTextureSize;
+    irr::core::dimension2d<irr::u32> borbieTextureSize;
+
     // target icon texture
     bool targetMarkerEnabled;
     irr::video::ITexture *targetImage;

@@ -22,6 +22,14 @@ Hud::Hud(GameInstance *gameInstance){
     this->hudTexture = driver->getTexture("assets/textures/hudTexture1.jpg");
     this->hudTextureSize = this->hudTexture->getSize();
     
+    //load in the borbie textures
+    this->borbieFine = driver->getTexture("assets/textures/borbieFine.jpg");
+    this->borbieMeh = driver->getTexture("assets/textures/borbieFine.jpg");
+    this->borbieBad = driver->getTexture("assets/textures/borbieFine.jpg");
+    this->borbieDead = driver->getTexture("assets/textures/borbieFine.jpg");
+    
+    this->borbieTextureSize = borbieFine->getSize();
+
     this->targetMarkerEnabled = false;
     this->targetImage = driver->getTexture("assets/textures/target.png");
     this->targetImageSize = this->targetImage->getSize();
@@ -59,13 +67,20 @@ void Hud::drawHud(){
     float hudY = screenHeight - (screenHeight / 8);
     float hudH = screenHeight / 8;
     
-    // draw the hud background
+// draw the hud background
     driver->draw2DImage(
         this->hudTexture,
         rect<s32>(hudX, hudY, hudX+hudW, hudY+hudH),
-        rect<s32>(0, 0,
+       rect<s32>(0, 0,
             this->hudTextureSize.Width,
             this->hudTextureSize.Height));
+
+    driver->draw2DImage(
+        this->borbieFine,
+        rect<s32>((hudW/2)-70, hudY+5, (hudW/2)+70, hudY+hudH-5),
+        rect<s32>(0, 0,
+            this->borbieTextureSize.Width,
+            this->borbieTextureSize.Height));
     
     // draw text
     if(font){
@@ -76,11 +91,11 @@ void Hud::drawHud(){
             SColor(255, 239,9,107),
             true, true);
 
-        font->draw(
-            "Borbie",
-            rect<s32>(hudX, hudY, hudX+hudW, hudY+hudH),
-            SColor(255, 239,9,107),
-            true, true); 
+//        font->draw(
+//            "Borbie",
+//            rect<s32>(hudX, hudY, hudX+hudW, hudY+hudH),
+//            SColor(255, 239,9,107),
+//            true, true); 
 		    //bool  	hcenter = false,
 		    //bool  	vcenter = false,
     }
