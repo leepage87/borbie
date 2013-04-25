@@ -26,6 +26,7 @@ Hud::Hud(GameInstance *gameInstance){
     this->borbieFine = driver->getTexture("assets/textures/borbieFine.jpg");
     this->borbieMeh = driver->getTexture("assets/textures/borbieMeh.jpg");
     this->borbieBad = driver->getTexture("assets/textures/borbieBad.jpg");
+    this->borbieVeryBad = driver->getTexture("assets/textures/borbieVeryBad.jpg");
     this->borbieDead = driver->getTexture("assets/textures/borbieDead.jpg");
     
     this->borbieTextureSize = borbieFine->getSize();
@@ -75,9 +76,12 @@ void Hud::drawHud(){
     }else if(health < 750 && health > 500)
     {
       this->borbieFace = borbieMeh;
-    }else if(health <=500 && health > 0)
+    }else if(health <=500 && health >250)
     {
       this->borbieFace = borbieBad;
+    }else if(health <=250 && health >0)
+    {
+      this->borbieFace = borbieVeryBad;
     }else
     {
       this->borbieFace = borbieDead;

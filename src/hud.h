@@ -17,6 +17,7 @@ class Hud {
     irr::video::ITexture *borbieFine;
     irr::video::ITexture *borbieMeh;
     irr::video::ITexture *borbieBad;
+    irr::video::ITexture *borbieVeryBad;
     irr::video::ITexture *borbieDead;
     irr::video::ITexture *borbieFace; 
     
