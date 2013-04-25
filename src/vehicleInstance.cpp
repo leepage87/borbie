@@ -127,8 +127,6 @@ void VehicleInstance::updateMovement() {
             this->nextIntersection =
                 this->nextIntersection->connections[pathIndex];
         }
-        
-        std::cout << "Switching paths." << std::endl;
         this->go();
     }
 }

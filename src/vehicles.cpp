@@ -74,7 +74,7 @@ void Vehicles::spawnRandomVehicle(){
     RoadSpawnPoint spawnPoint = MapReader::vehicleSpawnPoints[spawnPointIndex];
     VehicleInstance *spawnedVehicle = this->addRandomVehicle(
         spawnPoint.X,
-        120, //70, // road height
+        70, //70, // road height
         spawnPoint.Y );
     
     spawnedVehicle->setNextIntersection(spawnPoint.connection);
