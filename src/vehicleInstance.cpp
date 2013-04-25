@@ -63,10 +63,13 @@ void VehicleInstance::go() {
     endPoint.X = this->nextIntersection->X;
     endPoint.Y = startPoint.Y;
     endPoint.Z = this->nextIntersection->Y;
+	f32 length = (f32)(endPoint - startPoint).getLength();
+	const f32 SPEED = 0.9f;
+	u32 time = (u32)(length / SPEED);
     this->motionAnimator = this->smgr->createFlyStraightAnimator(
             startPoint,
             endPoint,
-		    5000
+		    time
        );
     this->sceneNode->addAnimator(this->motionAnimator);
 	if(model == 0)//its a jeep
