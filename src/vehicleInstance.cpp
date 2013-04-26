@@ -30,6 +30,9 @@ VehicleInstance::VehicleInstance(
     this->lastIntersection = 0;
     this->nextIntersection = 0;
     
+    // set health
+    this->setHealth(350);
+    
 	this->sceneNode = smgr->addMeshSceneNode(mesh);
 	if (model == 0){//its a jeep
 		this->sceneNode->setScale(vector3df(.2, .2, .2));

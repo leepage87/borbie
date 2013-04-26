@@ -20,7 +20,7 @@ using namespace video;
 
 const unsigned int MAX_NUMBER_VEHICLES = 30;
 const unsigned int SPAWN_TIME_MS = 3 * 1000; // 3 seconds
-const unsigned int VEHICLE_HEIGHT = 30;
+const unsigned int ROAD_HEIGHT = 30;
 
 
 Vehicles::Vehicles(
@@ -75,7 +75,7 @@ void Vehicles::spawnRandomVehicle(){
     RoadSpawnPoint spawnPoint = MapReader::vehicleSpawnPoints[spawnPointIndex];
     VehicleInstance *spawnedVehicle = this->addRandomVehicle(
         spawnPoint.X,
-        VEHICLE_HEIGHT, //70, // road height
+        ROAD_HEIGHT, //70, // road height
         spawnPoint.Y );
     
     spawnedVehicle->setNextIntersection(spawnPoint.connection);
@@ -101,6 +101,7 @@ VehicleInstance* Vehicles::makeVehicle(int modelIndex,
     // get the vehicle mesh
 	IAnimatedMesh *mesh =
 	    smgr->getMesh(this->modelList[modelIndex]);
+	// TODO - if you don't drop this, is it a memory leak?
 
 
 	VehicleInstance *newVehicle
