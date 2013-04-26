@@ -98,7 +98,7 @@ void Hud::drawHud(){
     // draw the hud background
     driver->draw2DImage(
         this->borbieFace,
-        rect<s32>((hudW/2)-70, hudY+5, (hudW/2)+70, hudY+hudH-5),
+        rect<s32>((hudW/2)-60, hudY+5, (hudW/2)+60, hudY+hudH-5),
         rect<s32>(0, 0,
             this->borbieTextureSize.Width,
             this->borbieTextureSize.Height));
