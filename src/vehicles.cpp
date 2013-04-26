@@ -18,8 +18,9 @@ using namespace video;
 
 #include <iostream>
 
-const unsigned int MAX_NUMBER_VEHICLES = 20;
+const unsigned int MAX_NUMBER_VEHICLES = 30;
 const unsigned int SPAWN_TIME_MS = 3 * 1000; // 3 seconds
+const unsigned int VEHICLE_HEIGHT = 30;
 
 
 Vehicles::Vehicles(
@@ -74,7 +75,7 @@ void Vehicles::spawnRandomVehicle(){
     RoadSpawnPoint spawnPoint = MapReader::vehicleSpawnPoints[spawnPointIndex];
     VehicleInstance *spawnedVehicle = this->addRandomVehicle(
         spawnPoint.X,
-        70, //70, // road height
+        VEHICLE_HEIGHT, //70, // road height
         spawnPoint.Y );
     
     spawnedVehicle->setNextIntersection(spawnPoint.connection);
@@ -86,7 +87,7 @@ void Vehicles::spawnRandomVehicle(){
 VehicleInstance* Vehicles::addRandomVehicle(
 	float xPos, float yPos, float zPos)
 {
-    std::cout << "RANDOM VEHICLE CREATED AT: " << xPos << ", " << zPos << std::endl;
+    //std::cout << "RANDOM VEHICLE CREATED AT: " << xPos << ", " << zPos << std::endl;
     // get a random index from the model list
     int modelIndex = Random::randomInt(this->modelList.size());
     

@@ -48,7 +48,11 @@ public class MapPanel extends JPanel {
     private int selY1;
     private int selX2;
     private int selY2;
-    
+
+    // last action performed tracker: used to write the status info
+    private String lastAction;
+    private String positionText;
+
     // object dragging variables
     private boolean dragging;
     private int lastMouseX;
@@ -101,6 +105,10 @@ public class MapPanel extends JPanel {
         // initially NOT selecting
         selecting = false;
         selX1 = selX2 = selY1 = selY2 = 0; // 0 all selection values
+
+        // default status text are nothing
+        lastAction = "";
+        positionText = "";
         
         // initially NOT dragging
         dragging = false;
@@ -169,10 +177,21 @@ public class MapPanel extends JPanel {
                 else if(dragging){
                     dragSelected(e.getX(), e.getY());
                 }
+                positionText = " " + e.getX() + ", " + e.getY();
+                updateStatusBar();
             }
             @Override
-            public void mouseMoved(MouseEvent e){}
+            public void mouseMoved(MouseEvent e){
+                positionText = " " + e.getX() + ", " + e.getY();
+                updateStatusBar();
+            }
         });
+    }
+
+
+    // Using the position and action text, update the window's status bar.
+    private void updateStatusBar(){
+        mainWindow.setStatusText(positionText + "    " + lastAction);
     }
     
     
@@ -189,6 +208,8 @@ public class MapPanel extends JPanel {
                 this.mapObjects.add(
                         new MapObject(xPos, yPos, objectWidth, objectHeight,
                                 MapObject.TYPE_BUILDING));
+                lastAction = "Added building at: " + xPos + ", " + yPos;
+                updateStatusBar();
                 break;
             case ROAD_INTERSECTION:
                 MapObject intersection =
@@ -198,6 +219,8 @@ public class MapPanel extends JPanel {
                 System.err.println("Assigned ID: " + intersection.id);
                 this.mapObjects.add(intersection);
                 this.numRoadIntersections++;
+                lastAction = "Added road intersection at: " + xPos + ", " + yPos;
+                updateStatusBar();
                 break;
             case ROAD_PATH:
                 // TODO - add functionality
@@ -206,16 +229,22 @@ public class MapPanel extends JPanel {
                 this.mapObjects.add(
                         new MapObject(xPos, yPos, dotWidth, dotHeight,
                                 MapObject.TYPE_LAMP));
+                lastAction = "Added street lamp at: " + xPos + ", " + yPos;
+                updateStatusBar();
                 break;
             case TREE: // if tree, add a new tree to the map
                 this.mapObjects.add(
                         new MapObject(xPos, yPos, dotWidth, dotHeight,
                                 MapObject.TYPE_TREE));
+                lastAction = "Added tree at: " + xPos + ", " + yPos;
+                updateStatusBar();
                 break;
             case HYDRANT:
                 this.mapObjects.add(
                         new MapObject(xPos, yPos, dotWidth, dotHeight,
                                 MapObject.TYPE_FIRE_HYDRANT));
+                lastAction = "Added fire hydrant at: " + xPos + ", " + yPos;
+                updateStatusBar();
                 break;
             case VEHICLE_SPAWN:
                 MapObject vSpawnPoint =
@@ -225,6 +254,8 @@ public class MapPanel extends JPanel {
                 vSpawnPoint.id = this.numRoadIntersections;
                 this.mapObjects.add(vSpawnPoint);
                 this.numRoadIntersections++;
+                lastAction = "Added vehicle spawn point at: " + xPos + ", " + yPos;
+                updateStatusBar();
                 break;
             case ENEMY_SPAWN:
                 MapObject eSpawnPoint =
@@ -232,6 +263,8 @@ public class MapPanel extends JPanel {
                                 MapObject.TYPE_ENEMY_SPAWN);
                 eSpawnPoint.sType = 'e';
                 this.mapObjects.add(eSpawnPoint);
+                lastAction = "Added enemy spawn point at: " + xPos + ", " + yPos;
+                updateStatusBar();
                 break;
             case ERASE: // if eraser, check if any objects is to be deleted
                 checkDelete(xPos, yPos);
@@ -285,6 +318,8 @@ public class MapPanel extends JPanel {
             //  to the list of selected
             else if(clicked && mainWindow.multiSelect){
                 mapObj.selected = true;
+                lastAction = "Clicked object: " + x + ", " + y + " (with multiselect)";
+                updateStatusBar();
                 return;
             }
             
@@ -292,6 +327,8 @@ public class MapPanel extends JPanel {
             else if(clicked){
                 deselectAll();
                 mapObj.selected = true;
+                lastAction = "Clicked object at: " + mapObj.x + ", " + mapObj.y;
+                updateStatusBar();
                 return;
             }
         }
@@ -339,8 +376,11 @@ public class MapPanel extends JPanel {
             boolean intersects =
                     mapObj.intersects(lowSelX, lowSelY, highSelX, highSelY);
             
-            if(intersects)
+            if(intersects){
                 mapObj.selected = true;
+                lastAction = "Drag selection +obj: " + mapObj.x + ", " + mapObj.y;
+                updateStatusBar();
+            }
             else if(!mainWindow.multiSelect)
                 mapObj.selected = false;
         }
@@ -394,10 +434,16 @@ public class MapPanel extends JPanel {
         for(int i=0; i<numObjects; i++){
             MapObject mapObj = mapObjects.get(i);
             if(mapObj.intersects(x, y)){
-                if(mapObj.selected)
+                if(mapObj.selected){
                     deleteAllSelected();
-                else
+                    lastAction = "Deleted all selected objects";
+                    updateStatusBar();
+                }
+                else{
+                    lastAction = "Removed object at: " + mapObj.x + ", " + mapObj.y;
+                    updateStatusBar();
                     mapObjects.remove(i);
+                }
                 return true;
             }
         }

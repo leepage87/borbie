@@ -135,8 +135,8 @@ void MapReader::readCoordFile(const char *fileName){
             {
                 // create a new road intersection struct
                 RoadIntersection intersection;
-                intersection.X = pos.X;
-                intersection.Y = pos.Y;
+                intersection.X = pos.X - xOffset;
+                intersection.Y = pos.Y - yOffset;
                 intersection.id = roadID;
                 MapReader::roadIntersectionCoords.push_back(intersection);
             }
