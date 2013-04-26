@@ -81,22 +81,30 @@ void Soldier::fire(){
 	//get the length of the distance we're shooting
 	f32 length = (f32)start.getDistanceFrom(end);
 	
-	vector3df bulletEnd = end*10000;
-	if (length < 4000){
-		//end = end*20000;
+	const float maxDistance = 4000;
+	
+	//vector3df bulletEnd = end;
+	if (length < maxDistance){
+		float scale = maxDistance/length;
+		float diffX = end.X - start.X;
+		float diffZ = end.Z - start.Z;
+		end.X = start.X + diffX * scale;
+		end.Z = start.Z + diffZ * scale;
 		const f32 SPEED = 14.0f;
+		//Borbie's Shit Adventure: Let's Fuck the Town!
 		//figure out how long it should take to get there, so the animator SPEED is constant
-		f32 length2 = (f32) start.getDistanceFrom(bulletEnd);
+		f32 length2 = (f32) start.getDistanceFrom(end);
 		u32 time = (u32)(length2 / SPEED);
-		int scale = 20000/length;
-		std::cout<<scale <<std::endl;
+		//bulletEnd.X = bulletEnd.X * scale;
+		//bulletEnd.Z = bulletEnd.Z * scale;
+		//std::cout<<scale <<std::endl;
 		/*
 		IF BORBIE Z IS < SOLDIER Z MULTIPLY BY NEGATIVE, ETC
 		//bulletEnd.X *= scale;
 		//bulletEnd.Y *= scale;
 		//bulletEnd.Z *= scale;
 		*/
-		ISceneNodeAnimator* anim = gameInstance->getSceneManager()->createFlyStraightAnimator(start, bulletEnd, time);
+		ISceneNodeAnimator* anim = gameInstance->getSceneManager()->createFlyStraightAnimator(start, end, time);
 		bill->addAnimator(anim);
 		anim->drop();
 		anim = gameInstance->getSceneManager()->createDeleteAnimator(time);
