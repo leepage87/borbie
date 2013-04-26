@@ -84,7 +84,7 @@ void Soldier::fire(){
 	const float maxDistance = 10000;
 	
 	//vector3df bulletEnd = end;
-	if (length < maxDistance){
+	if (length < 4000){
 		int offsetX = Random::randomInt(-40,40);
 		int offsetY = Random::randomInt(-40,40);
 		int offsetZ = Random::randomInt(-40,40);
@@ -93,7 +93,7 @@ void Soldier::fire(){
 		float diffY = end.Y - start.Y;
 		float diffZ = end.Z - start.Z;
 		end.X = start.X + diffX * scale + offsetX*scale;
-		end.Y = start.Y + diffX * scale + offsetY*scale;
+		end.Y = start.Y + diffY * scale + offsetY*scale;
 		end.Z = start.Z + diffZ * scale + offsetZ*scale;
 		const f32 SPEED = 14.0f;
 		//Borbie's Shit Adventure: Let's Fuck the Town!

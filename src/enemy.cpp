@@ -40,7 +40,7 @@ void Enemy::updateEnemy(){
 	int numObjs = objList.size();
         for(int j=0; j<numObjs; ++j){
 			if(objList[j]){
-			
+				if(objList[j]->getNode()->isVisible())
             	((Soldier*)objList[j])->fire();
 			}	
 		}
