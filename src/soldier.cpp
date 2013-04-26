@@ -40,20 +40,6 @@ void Soldier::applyCollision(
 	sceneNode->setTriangleSelector(selector);
 	selector->drop();
 	metaTriSelector->addTriangleSelector(sceneNode->getTriangleSelector());
-
-// get bounds
-	/*core::aabbox3d<f32> modelBounds = this->sceneNode->getTransformedBoundingBox();
-	// add a collision response animator to it
-	core::vector3df radius = modelBounds.MaxEdge - modelBounds.getCenter();
-	ISceneNodeAnimator* anim = this->smgr->createCollisionResponseAnimator(
-		metaTriSelector, this->sceneNode,
-		radius, // radius of collision
-		vector3df(0, -5, 0), // gravity (negative y = down)
-		vector3df(0, -radius.Y, 0)); // radius offset
-	this->sceneNode->addAnimator(anim);
-	anim->drop();*/
-
-
 }
 
 void Soldier::fire(){
@@ -114,4 +100,104 @@ void Soldier::fire(){
 	vector3df vect = start-end;
 	sceneNode->setRotation(vect.getHorizontalAngle());
 	
+}
+
+// Causes this object to explode, making it vanish, and return a particle
+//	effect node animating the explosion effect in its current position.
+void Soldier::explode(){
+    // TODO - make explosion size scale with this->explosionRadius
+
+    // if already exploded, don't do it again
+    if(this->hasBeenExploded)
+        return;
+    
+	// add a new explosion particle systems (for the two intermixed explosions)
+    this->explosionParticleSystem =
+		this->smgr->addParticleSystemSceneNode(false);
+    this->explosionParticleSystemLarge =
+        this->smgr->addParticleSystemSceneNode(false);
+
+	// add an emitter to the first explosion particle system (pink sparkles)
+	IParticleEmitter *explosionEmitter =
+	    this->explosionParticleSystem->createBoxEmitter(
+		    aabbox3d<f32>(-5, 0, -5, 5, 1, 5),  // emitter size
+		    vector3df(0.0f,0.0f,0.1f),          // direction + speed
+		    12000, 14000,                       // min,max particles per second
+		    SColor(0,255,255,255),              // darkest color
+		    SColor(0,255,255,255),              // brightest color
+		    200, 800,                          // min, max particle lifetime
+		    360,                                // max angle degrees
+		    dimension2df(20.0f, 20.0f),         // min start size
+		    dimension2df(40.0f, 40.0f));        // max start size
+	this->explosionParticleSystem->setEmitter(explosionEmitter);
+	explosionEmitter->drop(); // drop (re-created later)
+	
+	//add gravity affector to pink sparkles
+	IParticleGravityAffector* pgaf = explosionParticleSystem->createGravityAffector
+											(vector3df(0.F,-0.2F,0.0F), 200U);
+	explosionParticleSystem->addAffector(pgaf);
+  pgaf->drop();
+
+	// add fade-out affector to the fire particle system
+	IParticleAffector* explosionFadeOutAffector =
+	    explosionParticleSystem->createFadeOutParticleAffector();
+	this->explosionParticleSystem->addAffector(explosionFadeOutAffector);
+	// DO NOT DROP! - recycling it for the second particle system
+	
+	// customize the first fire particle system positioning, etc.
+	vector3df explosionPos = this->sceneNode->getPosition();
+	if(explosionPos.Y < 0) // adjust position: no explosions underground!
+	    explosionPos.Y = 0;
+
+	
+	// adjust the blood
+	this->explosionParticleSystem->setPosition(explosionPos);
+	this->explosionParticleSystem->setScale(vector3df(45, 45, 45));
+	this->explosionParticleSystem->setMaterialFlag(EMF_LIGHTING, false);
+	this->explosionParticleSystem->setMaterialFlag(EMF_ZWRITE_ENABLE, false);
+	this->explosionParticleSystem->setMaterialTexture(0,
+	this->driver->getTexture("assets/textures/blood.bmp"));
+	this->explosionParticleSystem->setMaterialType(EMT_TRANSPARENT_ADD_COLOR);
+/*
+    // configure the large fireballs for the second (larger) particle system
+    explosionEmitter =
+        this->explosionParticleSystemLarge->createBoxEmitter(
+		    aabbox3d<f32>(-5, 0, -5, 5, 1, 5),  // emitter size
+		    vector3df(0.0f,0.5f,0.0f),          // direction + speed
+		    300, 700,                       // min,max particles per second
+		    SColor(0,255,255,255),              // darkest color
+		    SColor(0,255,255,255),              // brightest color
+		    200, 1000,                          // min, max particle lifetime
+		    360,                                // max angle degrees
+		    dimension2df(400.0f, 400.0f),         // min start size
+		    dimension2df(700.0f, 700.0f));        // max start size
+	this->explosionParticleSystemLarge->setEmitter(explosionEmitter);
+	explosionEmitter->drop(); // clean up emitter
+	
+	// add the same fade-out affector to the second fire particle system
+	this->explosionParticleSystemLarge->addAffector(explosionFadeOutAffector);
+	explosionFadeOutAffector->drop(); // drop - done with it now
+	
+	// customize the second fire particle system positioning, etc.
+	this->explosionParticleSystemLarge->setPosition(explosionPos);
+	this->explosionParticleSystemLarge->setScale(vector3df(45, 45, 45));
+	this->explosionParticleSystemLarge->setMaterialFlag(EMF_LIGHTING, false);
+	this->explosionParticleSystemLarge->setMaterialFlag(EMF_ZWRITE_ENABLE, false);
+	this->explosionParticleSystemLarge->setMaterialTexture(0,
+	this->driver->getTexture("assets/textures/fire.bmp")); // fire colored
+	this->explosionParticleSystemLarge->setMaterialType(EMT_TRANSPARENT_ADD_COLOR);
+	*/
+	// run this explosion for the predefined number of miliseconds.
+	this->explosionStopTime = this->device->getTimer()->getTime()
+	    + GAME_OBJ_EXPLOSION_TIME_MS;
+	this->updateMode = GAME_OBJ_MODE_EXPLODED;
+	
+	// set the node visible, and remove it from the global collision meta
+	this->sceneNode->setVisible(false);
+	this->gameInstance->removeCollision(this->sceneNode->getTriangleSelector());
+	
+	// add this object to the GameInstance's updator to keep the timers going
+	this->gameInstance->addUpdateObject(this);
+	//attempt at splash damage on exploding buildings and shit
+	//this->gameInstance->applyExplosionDamage(this);
 }

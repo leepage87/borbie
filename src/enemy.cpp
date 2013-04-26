@@ -26,14 +26,18 @@ void Enemy::makeEnemy(){
 	float xPos = 10200;
 	float yPos = 70;
 	float zPos = 10200;
-	Soldier *newSoldier
-		= new Soldier(
-			this->gameInstance,
-			xPos, yPos, zPos
-		);
+	for (int i = 0; i <= 1200; i+=300){
+	  Soldier *newSoldier
+		  = new Soldier(
+			  this->gameInstance,
+			  xPos+i, yPos, zPos+i
+		  );
+		  
+		newSoldier->applyCollision(this->metaTriSelector);
+	  this->addObject(newSoldier);
+		}
 	
-	newSoldier->applyCollision(this->metaTriSelector);
-	this->addObject(newSoldier);
+
 }
 
 void Enemy::updateEnemy(){
