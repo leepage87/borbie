@@ -62,10 +62,14 @@ GameInstance::GameInstance(
     noVerticalMovement = false; // vertical movement enabled
     playerMoveSpeed = PLAYER_MOVEMENT_SPEED_DEBUG;
   }
-
+  
+  
+  /*** Pre-load global sounds ***/
+  this->burningSound = this->audioSystem->createSound3d("assets/sounds/jaguar.wav");
 
 
   /*** Setup Environment ***/
+  
   // Add Terrain and collision
   this->terrain = new Terrain(driver, smgr, metaTriSelector);
   addCollision(this->terrain->getTriSelector());
@@ -206,6 +210,10 @@ GameInstance::~GameInstance(){
   if(this->rainParticleSystem)
     this->rainParticleSystem->remove();
   this->smgr->clear();
+  
+  // release all sound clips from memory
+  if(this->burningSound)
+	  this->burningSound->release();
   
   //turn the mouse cursor back on
   device->getCursorControl()->setVisible(true);

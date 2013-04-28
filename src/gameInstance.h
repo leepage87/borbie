@@ -48,6 +48,10 @@ enum WorldState {
 
 // GameInstance class:
 class GameInstance {
+  public:
+  	// list of game sounds used by multiple game classes
+  	SoundClip *burningSound;
+  	
   private:
     // irrlicht renderer pointers
     irr::scene::ISceneManager *smgr;
