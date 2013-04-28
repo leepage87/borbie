@@ -16,11 +16,13 @@
 // include irrlicht
 #include <irrlicht.h>
 
+
 // declare ObjectList - (ObjectList in objectList.h): GameObject is included
 //  in that header.
 class ObjectList;
-// similarly, GameInstance is used
+// similarly, GameInstance and AudioSystem is used
 class GameInstance;
+class AudioSystem;
 
 
 // GameObject standard values
@@ -66,6 +68,9 @@ class GameObject {
 	// internal Irrlicht scene node and global meta triangle selector
 	irr::scene::ISceneNode *sceneNode;
 	irr::scene::IMetaTriangleSelector *metaTriSelector;
+	
+	// pointer to the audio system
+	AudioSystem *audioSystem;
 	
 	// pointer to gameInstance (to add itself to the updator)
 	GameInstance *gameInstance;

@@ -12,6 +12,7 @@
 #include "objectList.h"
 #include "game.h"
 #include "gameInstance.h"
+#include "audioSystem.h"
 
 // used for c++ variable arguments
 #include <cstdarg>
@@ -41,6 +42,9 @@ GameObject::GameObject(GameInstance *gameInstance){
 	
 	// link pointer to game instance
 	this->gameInstance = gameInstance;
+	
+	// link pointer to audio system
+	this->audioSystem = gameInstance->getAudioSystem();
 	
 	// default values
 	this->health = GAME_OBJ_MAXHEALTH;

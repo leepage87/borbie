@@ -38,9 +38,9 @@ class BorbiesEventReceiver : public irr::IEventReceiver {
     this->gameInstance=gameInstance;
    }
 
-   void setGameInstance(GameInstance* gI)
+   void setGameInstance(GameInstance* gameInstance)
    {
-    this->gameInstance=gI;
+    this->gameInstance=gameInstance;
    }
 
    void removeGameInstance()

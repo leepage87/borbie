@@ -40,14 +40,19 @@ GameInstance::GameInstance(
 
   ((BorbiesEventReceiver*)(this->receiver))->setGameInstance(this);
 
+
+  /*** Setup Sounds and Music ***/
+  
   this->bgSound = audioSystem->createSound2d("assets/sounds/yumyum.ogg");
 
   //Start the shitty music and loop! 
   audioSystem->playMusicLoop(bgSound); 
-  audioSystem->setMusicVolume(0.3);
+  audioSystem->setMusicVolume(0.0);
   // setup global collision meta selector
   this->metaTriSelector = smgr->createMetaTriangleSelector();
-
+  
+  this->burningSound =
+    audioSystem->createSound3d("assets/sounds/soundEffects/burning.mp3");
 
 
   /*** Setup Runtime Flags ***/
@@ -62,10 +67,6 @@ GameInstance::GameInstance(
     noVerticalMovement = false; // vertical movement enabled
     playerMoveSpeed = PLAYER_MOVEMENT_SPEED_DEBUG;
   }
-  
-  
-  /*** Pre-load global sounds ***/
-  this->burningSound = this->audioSystem->createSound3d("assets/sounds/jaguar.wav");
 
 
   /*** Setup Environment ***/
@@ -304,7 +305,6 @@ void GameInstance::addUpdateObject(GameObject *toUpdate){
 }
 
 
-
 /*** PER-FRAME UPDATE METHODS ***/
 
 // called each frame by Game object to upda all of the GameInstance
@@ -464,16 +464,16 @@ void GameInstance::updateThrownObject(){
   //	irr::scene::ISceneNode->getTriangleSelector() to get one.
   //	Make sure to set it up first with:
   //	smgr->createTriangleSelectorFromBoundingBox(node); (or something)
-  void GameInstance::addCollision(irr::scene::ITriangleSelector *selector){
+void GameInstance::addCollision(irr::scene::ITriangleSelector *selector){
     this->metaTriSelector->addTriangleSelector(selector);
-  }
+}
 
   // Remove a node's Triangle Selector from the global meta selector.
-  void GameInstance::removeCollision(irr::scene::ITriangleSelector *selector){
+void GameInstance::removeCollision(irr::scene::ITriangleSelector *selector){
     this->metaTriSelector->removeTriangleSelector(selector);
-  }
+}
 
-  void GameInstance::applyExplosionDamage(GameObject *gameObject)
+void GameInstance::applyExplosionDamage(GameObject *gameObject)
   {
     ISceneNode *iSceneNode = gameObject->getNode();
     float explosionRadius = gameObject->getExplosionRadius();
@@ -571,4 +571,3 @@ void GameInstance::updateThrownObject(){
         " for @damage=" << damage << std::endl;
     } 
   }
-

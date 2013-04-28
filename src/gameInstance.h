@@ -52,6 +52,7 @@ class GameInstance {
   	// list of game sounds used by multiple game classes
   	SoundClip *burningSound;
   	
+  	
   private:
     // irrlicht renderer pointers
     irr::scene::ISceneManager *smgr;
@@ -123,6 +124,7 @@ class GameInstance {
     irr::scene::IMetaTriangleSelector* getMetaSelector() {
             return this->metaTriSelector;
         }
+    AudioSystem* getAudioSystem() { return this->audioSystem; }
 	
 	// sets a new object to the update list
 	void addUpdateObject(GameObject *toUpdate);

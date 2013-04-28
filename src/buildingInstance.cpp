@@ -8,6 +8,8 @@
  */
 
 #include "buildingInstance.h"
+#include "gameInstance.h"
+#include "audioSystem.h"
 
 #include <iostream> // TODO: debug (remove)
 using namespace std;
@@ -103,7 +105,6 @@ void BuildingInstance::setAblaze(){
     // if already exploded or already on fire, prevent adding the fire again
     if(this->hasBeenExploded || this->isOnFire)
         return;
-    std::cout << "Added fire" << std::endl;
     
     // ADD FIRE EFFECT
     // if a particle system for fire already exists, clean it off
@@ -188,6 +189,11 @@ void BuildingInstance::setAblaze(){
 	
 	// flag building as on fire
 	this->isOnFire = true;
+	
+	// play the 3d burning sound
+	this->audioSystem->playSound3dLoop(
+	    this->gameInstance->burningSound,
+	    this);
 }
 
 

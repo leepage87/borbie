@@ -302,9 +302,9 @@ void AudioSystem::playSound3d(
     
     // set the sound position in 3D space
     FMOD_VECTOR pos;
-    pos.x = sourcePos.X;
-    pos.y = sourcePos.Y;
-    pos.z = sourcePos.Z;
+    pos.x = sourcePos.X / AUDIO_WORLD_SCALE;
+    pos.y = sourcePos.Y / AUDIO_WORLD_SCALE;
+    pos.z = sourcePos.Z / AUDIO_WORLD_SCALE;
     result = soundChannel->set3DAttributes(&pos, 0);
     if(result != FMOD_OK)
         std::cout << "FMOD ERROR: 3dset3dAttributes failed: " << std::endl;
@@ -381,9 +381,9 @@ void AudioSystem::playSound3dFollowTarget(FMOD::Sound *sound,
     // set the sound's initial position in 3D space
     irr::core::vector3df targetPos = target->getNode()->getPosition();
     FMOD_VECTOR pos;
-    pos.x = targetPos.X;
-    pos.y = targetPos.Y;
-    pos.z = targetPos.Z;
+    pos.x = targetPos.X / AUDIO_WORLD_SCALE;
+    pos.y = targetPos.Y / AUDIO_WORLD_SCALE;
+    pos.z = targetPos.Z / AUDIO_WORLD_SCALE;
     result = soundChannel->set3DAttributes(&pos, 0);
     if(result != FMOD_OK)
         std::cout << "FMOD ERROR: 3dset3dAttributes failed: " << std::endl;
@@ -503,6 +503,11 @@ void AudioSystem::update(
         // if target is lost or if channel is done playing, remove the sound
         bool isChannelPlaying;
         fs.channel->isPlaying(&isChannelPlaying);
+        
+        // if target object is dead and/or is exploded, stop playing
+        if(!fs.target || fs.target->hasExploded())
+            fs.channel->stop();
+            
         if(!fs.target || fs.target->hasExploded() || !isChannelPlaying) {
             followSounds.erase(followSounds.begin() + i);
             numFollowSounds--;
@@ -512,9 +517,9 @@ void AudioSystem::update(
         else {
             irr::core::vector3df targetPos = fs.target->getNode()->getPosition();
             FMOD_VECTOR pos;
-            pos.x = targetPos.X;
-            pos.y = targetPos.Y;
-            pos.z = targetPos.Z;
+            pos.x = targetPos.X / AUDIO_WORLD_SCALE;
+            pos.y = targetPos.Y / AUDIO_WORLD_SCALE;
+            pos.z = targetPos.Z / AUDIO_WORLD_SCALE;
             fs.channel->set3DAttributes(&pos, 0);
         }
     }
