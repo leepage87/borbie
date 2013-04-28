@@ -23,5 +23,6 @@ class Soldier : public GameObject {
 			irr::scene::IMetaTriangleSelector *metaTriSelector
 		);
 	void fire();
+	void explode();
 };
 #endif
