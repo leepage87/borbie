@@ -13,7 +13,7 @@ using namespace irr;
 using namespace scene;
 using namespace core;
 
-const f32 CLICK_RAY_LENGTH = 400.0f;
+const f32 CLICK_RAY_LENGTH = 500.0f;
 const f32 THROW_RAY_LENGTH = 10000.0f;
 
 //constructor:
