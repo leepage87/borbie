@@ -123,6 +123,10 @@ void Game::manageStates()
 	}
 }
 
+GameMenu* Game::getGameMenu()
+{
+    return gameMenu; 
+}
 
 //TODO eventually refactor to call a run either playable game or gui-menu
 int Game::run()

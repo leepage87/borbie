@@ -11,8 +11,8 @@ class GameInstance;
 
 
 class Soldier : public GameObject {
-	//private:
-	//irr::scene::IAnimatedMeshSceneNode *sceneNode;
+	private:
+	irr::core::line3d<irr::f32> ray;
 	
 	public:
 	Soldier(
@@ -22,6 +22,9 @@ class Soldier : public GameObject {
 	virtual void applyCollision(
 			irr::scene::IMetaTriangleSelector *metaTriSelector
 		);
+	void updatePosition();
+	void aim();
+	void targetRay();
 	void fire();
 	void explode();
 };

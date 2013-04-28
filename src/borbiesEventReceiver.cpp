@@ -31,7 +31,6 @@ bool BorbiesEventReceiver::OnEvent(const irr::SEvent& event){
                 game->manageStates();
                 std::cout<<"Hello from New Game"<<std::endl;
                 break; 
-
               case QUIT:
                 if(device)
                 {

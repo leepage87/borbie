@@ -92,6 +92,7 @@ class Game {
 
   //getters
   GameState getGameState(void);
+  GameMenu* getGameMenu(void);
 
   // start the game
 	void manageStates();

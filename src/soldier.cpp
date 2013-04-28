@@ -42,6 +42,37 @@ void Soldier::applyCollision(
 	metaTriSelector->addTriangleSelector(sceneNode->getTriangleSelector());
 }
 
+void Soldier::updatePosition(){
+	aim();
+	fire();
+}
+
+void Soldier::aim(){
+	//turn the soldier to look at you
+	vector3df start = sceneNode->getPosition();
+	start.Y += 75;
+	vector3df end = gameInstance->getCamera()->getPosition();
+	end.Y -= 125;
+	vector3df vect = start-end;
+	sceneNode->setRotation(vect.getHorizontalAngle());
+}
+
+void Soldier::targetRay(){
+	ray.start = sceneNode->getPosition();
+	ray.end = gameInstance->getCamera()->getPosition();
+
+	ISceneCollisionManager* collMan = gameInstance->getSceneManager()->getSceneCollisionManager();
+	vector3df intersection;
+	triangle3df hitTriangle;
+	
+	ISceneNode * selected =
+		collMan->getSceneNodeAndCollisionPointFromRay(
+		ray, intersection, hitTriangle, IDFlag_IsPickable, 0);
+	if (selected){
+		std::cout<<selected->getID()<<std::endl;	
+	}
+}
+
 void Soldier::fire(){
 	//create the billboard for the "bullet"
 	IBillboardSceneNode * bill;
@@ -53,9 +84,6 @@ void Soldier::fire(){
     bill->setSize(core::dimension2d<f32>(20.0f, 20.0f));
     bill->setID(0);//not pickable by ray caster
 
-
-
-	//hard coded target for testing
 	float posAdjust[3];
 	vector3df end = (gameInstance->getCamera()->getPosition());
 	end.Y-=30;
@@ -68,8 +96,7 @@ void Soldier::fire(){
 	f32 length = (f32)start.getDistanceFrom(end);
 	
 	const float maxDistance = 10000;
-	
-	//vector3df bulletEnd = end;
+
 	if (length < 4000){
 		int offsetX = Random::randomInt(-40,40);
 		int offsetY = Random::randomInt(-40,40);
@@ -81,7 +108,7 @@ void Soldier::fire(){
 		end.X = start.X + diffX * scale + offsetX*scale;
 		end.Y = start.Y + diffY * scale + offsetY*scale;
 		end.Z = start.Z + diffZ * scale + offsetZ*scale;
-		const f32 SPEED = 14.0f;
+		const f32 SPEED = 30.0f;
 		//Borbie's Shit Adventure: Let's Fuck the Town!
 		//figure out how long it should take to get there, so the animator SPEED is constant
 		f32 length2 = (f32) start.getDistanceFrom(end);
@@ -93,13 +120,8 @@ void Soldier::fire(){
 		anim = gameInstance->getSceneManager()->createDeleteAnimator(time);
 		bill->addAnimator(anim);
 		anim->drop();
-	}
-
-	//turn the soldier to look at you
-	end.Y -= 125;
-	vector3df vect = start-end;
-	sceneNode->setRotation(vect.getHorizontalAngle());
-	
+		targetRay();
+	}	
 }
 
 // Causes this object to explode, making it vanish, and return a particle
@@ -149,7 +171,6 @@ void Soldier::explode(){
 	if(explosionPos.Y < 0) // adjust position: no explosions underground!
 	    explosionPos.Y = 0;
 
-	
 	// adjust the blood
 	this->explosionParticleSystem->setPosition(explosionPos);
 	this->explosionParticleSystem->setScale(vector3df(45, 45, 45));
@@ -158,35 +179,7 @@ void Soldier::explode(){
 	this->explosionParticleSystem->setMaterialTexture(0,
 	this->driver->getTexture("assets/textures/blood.bmp"));
 	this->explosionParticleSystem->setMaterialType(EMT_TRANSPARENT_ADD_COLOR);
-/*
-    // configure the large fireballs for the second (larger) particle system
-    explosionEmitter =
-        this->explosionParticleSystemLarge->createBoxEmitter(
-		    aabbox3d<f32>(-5, 0, -5, 5, 1, 5),  // emitter size
-		    vector3df(0.0f,0.5f,0.0f),          // direction + speed
-		    300, 700,                       // min,max particles per second
-		    SColor(0,255,255,255),              // darkest color
-		    SColor(0,255,255,255),              // brightest color
-		    200, 1000,                          // min, max particle lifetime
-		    360,                                // max angle degrees
-		    dimension2df(400.0f, 400.0f),         // min start size
-		    dimension2df(700.0f, 700.0f));        // max start size
-	this->explosionParticleSystemLarge->setEmitter(explosionEmitter);
-	explosionEmitter->drop(); // clean up emitter
-	
-	// add the same fade-out affector to the second fire particle system
-	this->explosionParticleSystemLarge->addAffector(explosionFadeOutAffector);
-	explosionFadeOutAffector->drop(); // drop - done with it now
-	
-	// customize the second fire particle system positioning, etc.
-	this->explosionParticleSystemLarge->setPosition(explosionPos);
-	this->explosionParticleSystemLarge->setScale(vector3df(45, 45, 45));
-	this->explosionParticleSystemLarge->setMaterialFlag(EMF_LIGHTING, false);
-	this->explosionParticleSystemLarge->setMaterialFlag(EMF_ZWRITE_ENABLE, false);
-	this->explosionParticleSystemLarge->setMaterialTexture(0,
-	this->driver->getTexture("assets/textures/fire.bmp")); // fire colored
-	this->explosionParticleSystemLarge->setMaterialType(EMT_TRANSPARENT_ADD_COLOR);
-	*/
+
 	// run this explosion for the predefined number of miliseconds.
 	this->explosionStopTime = this->device->getTimer()->getTime()
 	    + GAME_OBJ_EXPLOSION_TIME_MS;

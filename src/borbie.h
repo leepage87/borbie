@@ -11,6 +11,8 @@ class Borbie : public GameObject{
   public:
    Borbie(GameInstance *gameInstance); 
    
+   int getScore();
+   void updateScore(int addition);
    
    virtual void applyCollision(
 			irr::scene::IMetaTriangleSelector *metaTriSelector);	
@@ -23,6 +25,7 @@ class Borbie : public GameObject{
 
 
   private:
+   int score;
    irr::scene::ICameraSceneNode* camera;
 };
 
