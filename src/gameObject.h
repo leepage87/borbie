@@ -74,7 +74,8 @@ class GameObject {
 	void setMetaTriSelector(irr::scene::IMetaTriangleSelector *metaTriSelector);
 	
 	// object variables
-	int health;
+	int startingHealth;
+  int health;
 	int explosionRadius;
 	int explosionDamage;
 	

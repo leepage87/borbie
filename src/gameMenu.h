@@ -47,7 +47,6 @@ class GameMenu
    
     GameButton getGameButton(void); 
     void update();
-
 };
 #endif
 

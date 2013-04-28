@@ -44,6 +44,7 @@ GameObject::GameObject(GameInstance *gameInstance){
 	
 	// default values
 	this->health = GAME_OBJ_MAXHEALTH;
+  this->startingHealth = GAME_OBJ_MAXHEALTH;
 	this->explosionRadius = GAME_OBJ_EXPLOSION_RADIUS;
 	this->explosionDamage = GAME_OBJ_EXPLOSION_DAMAGE;
 	this->hasBeenExploded = false;
@@ -223,7 +224,9 @@ bool GameObject::hasExploded(){
 // Causes this object to explode, making it vanish, and return a particle
 //	effect node animating the explosion effect in its current position.
 void GameObject::explode(){
-    // TODO - make explosion size scale with this->explosionRadius
+    this->gameInstance->player->updateScore(startingHealth);
+    
+  // TODO - make explosion size scale with this->explosionRadius
 
     // if already exploded, don't do it again
     if(this->hasBeenExploded)
