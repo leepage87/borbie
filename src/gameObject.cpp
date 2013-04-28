@@ -57,6 +57,7 @@ GameObject::GameObject(GameInstance *gameInstance){
 	// start mode on idle (not doing anything with updates)
 	this->updateMode = GAME_OBJ_MODE_IDLE;
 	
+	
 }
 
 
