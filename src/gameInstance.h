@@ -51,6 +51,7 @@ class GameInstance {
   public:
   	// list of game sounds used by multiple game classes
   	SoundClip *burningSound;
+  	SoundClip *explosionSound1;
   	
   	
   private:

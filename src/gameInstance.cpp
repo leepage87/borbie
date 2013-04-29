@@ -47,12 +47,14 @@ GameInstance::GameInstance(
 
   //Start the shitty music and loop! 
   audioSystem->playMusicLoop(bgSound); 
-  audioSystem->setMusicVolume(0.0);
+  audioSystem->setMusicVolume(0.3);
   // setup global collision meta selector
   this->metaTriSelector = smgr->createMetaTriangleSelector();
   
   this->burningSound =
     audioSystem->createSound3d("assets/sounds/soundEffects/burning.mp3");
+  this->explosionSound1 =
+    audioSystem->createSound3d("assets/sounds/soundEffects/explosion1.wav");
 
 
   /*** Setup Runtime Flags ***/

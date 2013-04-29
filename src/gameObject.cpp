@@ -326,4 +326,8 @@ void GameObject::explode(){
 	this->gameInstance->addUpdateObject(this);
 	//attempt at splash damage on exploding buildings and shit
 	//this->gameInstance->applyExplosionDamage(this);
+	
+	this->audioSystem->playSound3d(
+	    this->gameInstance->explosionSound1,
+	    this);
 }
