@@ -201,6 +201,7 @@ GameInstance::GameInstance(
 
   // TODO- remove
   //this->setWorldState_wrecked();
+  this->setWorldState_fabulous();
 }
 
 
@@ -248,7 +249,7 @@ GameInstance::~GameInstance(){
 void GameInstance::setWorldState_wrecked(){
   // add a particle system effect to rain pink debree:
   if(!this->rainParticleSystem)
-    this->createRainParticleSystem();
+    this->createRainParticleSystem("assets/textures/darkpinkfire.bmp");
 
   // add the rain emitter to the rain particle system
   IParticleEmitter *rainEmitter =
@@ -271,6 +272,34 @@ void GameInstance::setWorldState_wrecked(){
 }
 
 
+// Set the mood and visible state of the world to a light, happy "fabulous"
+//  mode - bright pink sparkles lightly fall from the sky.
+void GameInstance::setWorldState_fabulous() {
+  // add a particle system effect to rain pink debree:
+  if(this->rainParticleSystem)
+    this->rainParticleSystem->drop();
+  this->createRainParticleSystem("assets/textures/pinkfire.bmp");
+
+  // add the rain emitter to the rain particle system
+  IParticleEmitter *rainEmitter =
+    this->rainParticleSystem->createBoxEmitter(
+        aabbox3d<f32>(-100, 0, -100, 100, 100, 100),  // emitter size
+        vector3df(0.0f, -0.5f, 0.0f),          // direction + speed
+        100, 200,                       // min,max particles per second
+        SColor(0,255,255,255),              // darkest color
+        SColor(0,255,255,255),              // brightest color
+        500, 3000,                       // min, max particle lifetime
+        0,                                // max angle degrees
+        dimension2df(20.0f, 20.0f),         // min start size
+        dimension2df(60.0f, 60.0f));        // max start size
+  this->setRainEmitter(rainEmitter);
+  rainEmitter->drop();
+
+  // set the ambiance to pretty
+  this->light->setAmbientLight(255, 172, 253);
+}
+
+
 // Sets the rain source to the current emitter, and automatically adds fade-out
 //  affector.
 // TODO: fix this to pass in values instead of an emitter pointer
@@ -287,7 +316,7 @@ void GameInstance::setRainEmitter(IParticleEmitter *rainEmitter){
 
 // Creates a rain particle system above the world map, but does not start making
 //  particles yet.
-void GameInstance::createRainParticleSystem(){
+void GameInstance::createRainParticleSystem(const char *texture){
   // if not yet created, create the particle system
   this->rainParticleSystem =
     this->smgr->addParticleSystemSceneNode(false);
@@ -300,7 +329,7 @@ void GameInstance::createRainParticleSystem(){
   this->rainParticleSystem->setMaterialFlag(EMF_LIGHTING, false);
   this->rainParticleSystem->setMaterialFlag(EMF_ZWRITE_ENABLE, false);
   this->rainParticleSystem->setMaterialTexture(0,
-      this->driver->getTexture("assets/textures/darkpinkfire.bmp"));
+      this->driver->getTexture(texture));
   this->rainParticleSystem->setMaterialType(EMT_TRANSPARENT_ADD_COLOR);
 }
 
