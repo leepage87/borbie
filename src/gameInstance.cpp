@@ -47,7 +47,7 @@ GameInstance::GameInstance(
 
   //Start the shitty music and loop! 
   audioSystem->playMusicLoop(bgSound); 
-  audioSystem->setMusicVolume(0.3);
+  audioSystem->setMusicVolume(0.15);
   // setup global collision meta selector
   this->metaTriSelector = smgr->createMetaTriangleSelector();
   
