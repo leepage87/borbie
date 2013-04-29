@@ -96,10 +96,11 @@ class GameInstance {
     //  music, ambiant sound, ambiant colors and applying various world effects.
     void setWorldState(WorldState state);
     void setWorldState_wrecked();
+    void setWorldState_fabulous();
     
     // world effect values
     irr::scene::IParticleSystemSceneNode *rainParticleSystem;
-    void createRainParticleSystem();
+    void createRainParticleSystem(const char *texture);
     void setRainEmitter(irr::scene::IParticleEmitter *emitter);
     
 
