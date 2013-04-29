@@ -93,6 +93,7 @@ void Hud::drawHud(){
   // draw the current health
   if(font){
     stringw s;
+    s += "health: \n";
     s += gameInstance->player->getHealth(); 
     font->draw(
         s, rect<s32>(hudW-250, hudY, hudX+hudW, hudY+hudH),
@@ -102,6 +103,7 @@ void Hud::drawHud(){
     //draw the score
     if(font){
       stringw s;
+      s += "Score: \n";
       s += gameInstance->player->getScore();
       font->draw(
           s, rect<s32>(40, hudY, hudW/4, hudY+hudH),
