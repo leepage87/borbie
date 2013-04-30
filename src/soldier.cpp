@@ -30,8 +30,12 @@ Soldier::Soldier(
 	sceneNode->setScale(vector3df(0.7,0.7,0.7));
 	sceneNode->setVisible(true);
 	sceneNode->setMaterialFlag(EMF_LIGHTING, false);
-    
+
+	sceneNode->setID(IDFlag_IsPickable);
+	
 	setHealth(350);
+	lastFireTime = 0;
+	
 }
 
 void Soldier::applyCollision(
@@ -45,10 +49,7 @@ void Soldier::applyCollision(
 	metaTriSelector->addTriangleSelector(sceneNode->getTriangleSelector());
 }
 
-void Soldier::updatePosition(){
-	aim();
-	fire();
-}
+
 
 void Soldier::aim(){
 	//turn the soldier to look at you
@@ -58,73 +59,63 @@ void Soldier::aim(){
 	end.Y -= 125;
 	vector3df vect = start-end;
 	sceneNode->setRotation(vect.getHorizontalAngle());
+	f32 length = (f32)start.getDistanceFrom(end);
+	//start casting rays to test line of sight if player is within 4000 units
+	if (length < 4000)
+		targetRay();	
 }
 
 void Soldier::targetRay(){
-	ray.start = sceneNode->getPosition();
-	ray.end = gameInstance->getCamera()->getPosition();
-
-	ISceneCollisionManager* collMan = gameInstance->getSceneManager()->getSceneCollisionManager();
-	vector3df intersection;
-	triangle3df hitTriangle;
+	if(canShoot()){
+		ray.end = sceneNode->getPosition();
+		ray.start = gameInstance->getCamera()->getPosition();
 	
-	ISceneNode * selected =
-		collMan->getSceneNodeAndCollisionPointFromRay(
-		ray, intersection, hitTriangle, IDFlag_IsPickable, 0);
-	if (selected){
-		std::cout<<selected->getID()<<std::endl;	
+		ISceneCollisionManager* collMan = gameInstance->getSceneManager()->getSceneCollisionManager();
+		vector3df intersection;
+		triangle3df hitTriangle;
+	
+		ISceneNode * selected =
+			collMan->getSceneNodeAndCollisionPointFromRay(
+			ray, intersection, hitTriangle, IDFlag_IsPickable, 0);
+		if (selected == sceneNode)
+			fire();
 	}
 }
 
+bool Soldier::canShoot(){
+	const int FIRE_TIME_DELAY = 3000;
+	unsigned int currentTime = gameInstance->getDevice()->getTimer()->getTime();
+	if (currentTime - lastFireTime  > FIRE_TIME_DELAY)
+		return true;
+	return false;
+}
+
 void Soldier::fire(){
-	//create the billboard for the "bullet"
-	IBillboardSceneNode * bill;
-	bill = smgr->addBillboardSceneNode();
-    bill->setMaterialType(video::EMT_TRANSPARENT_ADD_COLOR );
-    bill->setMaterialTexture(0, driver->getTexture("assets/textures/particle.bmp"));
-    bill->setMaterialFlag(video::EMF_LIGHTING, false);
-    bill->setMaterialFlag(video::EMF_ZBUFFER, false);
-    bill->setSize(core::dimension2d<f32>(20.0f, 20.0f));
-    bill->setID(0);//not pickable by ray caster
-
-	float posAdjust[3];
-	vector3df end = (gameInstance->getCamera()->getPosition());
-	end.Y-=30;
-
-	//get enemy position, adjust bullet height to barrel
-	vector3df start = sceneNode->getPosition();
-	start.Y+=45;
-
-	//get the length of the distance we're shooting
-	f32 length = (f32)start.getDistanceFrom(end);
+	lastFireTime = gameInstance->getDevice()->getTimer()->getTime();
+	//create the billboard for the "bullet", fire 3 round burst
+	for (int i = 0; i < 3; i++){
+		IBillboardSceneNode * bill;
+		bill = smgr->addBillboardSceneNode();
+    	bill->setMaterialType(video::EMT_TRANSPARENT_ADD_COLOR );
+    		bill->setMaterialTexture(0, driver->getTexture("assets/textures/particle.bmp"));
+    	bill->setMaterialFlag(video::EMF_LIGHTING, false);
+    	bill->setMaterialFlag(video::EMF_ZBUFFER, false);
+		float randomNum = Random::randomFloat(-10.0, 15.0);
+    	bill->setSize(core::dimension2d<f32>(20.0+randomNum, 20.0+randomNum));
+    	bill->setID(0);//not pickable by ray caster
 	
-	const float maxDistance = 10000;
-
-	if (length < 4000){
-		int offsetX = Random::randomInt(-40,40);
-		int offsetY = Random::randomInt(-40,40);
-		int offsetZ = Random::randomInt(-40,40);
-		float scale = maxDistance/length;
-		float diffX = end.X - start.X;
-		float diffY = end.Y - start.Y;
-		float diffZ = end.Z - start.Z;
-		end.X = start.X + diffX * scale + offsetX*scale;
-		end.Y = start.Y + diffY * scale + offsetY*scale;
-		end.Z = start.Z + diffZ * scale + offsetZ*scale;
-		const f32 SPEED = 30.0f;
-		//Borbie's Shit Adventure: Let's Fuck the Town!
-		//figure out how long it should take to get there, so the animator SPEED is constant
-		f32 length2 = (f32) start.getDistanceFrom(end);
-		u32 time = (u32)(length2 / SPEED);
-
-		ISceneNodeAnimator* anim = gameInstance->getSceneManager()->createFlyStraightAnimator(start, end, time);
+		//get enemy position, adjust muzzle flash height to barrel
+		vector3df start = sceneNode->getPosition();
+		start.Y+=45;
+		bill->setPosition(start);
+	
+		const int MUZZLE_FLASH_TIME = 300;
+	
+		ISceneNodeAnimator* anim = gameInstance->getSceneManager()->createDeleteAnimator(MUZZLE_FLASH_TIME);
 		bill->addAnimator(anim);
 		anim->drop();
-		anim = gameInstance->getSceneManager()->createDeleteAnimator(time);
-		bill->addAnimator(anim);
-		anim->drop();
-		targetRay();
-	}	
+	}
+	gameInstance->player->applyDamage(3);		
 }
 
 // Causes this object to explode, making it vanish, and return a particle

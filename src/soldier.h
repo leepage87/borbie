@@ -13,6 +13,7 @@ class GameInstance;
 class Soldier : public GameObject {
 	private:
 	irr::core::line3d<irr::f32> ray;
+	unsigned int lastFireTime;
 	
 	public:
 	Soldier(
@@ -22,9 +23,9 @@ class Soldier : public GameObject {
 	virtual void applyCollision(
 			irr::scene::IMetaTriangleSelector *metaTriSelector
 		);
-	void updatePosition();
 	void aim();
 	void targetRay();
+	bool canShoot();
 	void fire();
 	void explode();
 };

@@ -84,7 +84,7 @@ class GameObject {
 	
 	// object variables
 	int startingHealth;
-    int health;
+	int health;
 	int explosionRadius;
 	int explosionDamage;
 	
