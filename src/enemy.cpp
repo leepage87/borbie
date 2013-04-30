@@ -26,22 +26,26 @@ void Enemy::makeEnemy(){
 	float xPos = 10200;
 	float yPos = 70;
 	float zPos = 10200;
-	Soldier *newSoldier
-		= new Soldier(
-			this->gameInstance,
-			xPos, yPos, zPos
-		);
+	//for (int i = 0; i <= 1200; i+=300){
+	  Soldier *newSoldier
+		  = new Soldier(
+			  this->gameInstance,
+			  xPos, yPos, zPos
+		  );
+		  
+		newSoldier->applyCollision(this->metaTriSelector);
+	  this->addObject(newSoldier);
+		//}
 	
-	newSoldier->applyCollision(this->metaTriSelector);
-	this->addObject(newSoldier);
+
 }
 
 void Enemy::updateEnemy(){
 	int numObjs = objList.size();
         for(int j=0; j<numObjs; ++j){
 			if(objList[j]){
-			
-            	((Soldier*)objList[j])->fire();
+				if(objList[j]->getNode()->isVisible())
+            	((Soldier*)objList[j])->aim();
 			}	
 		}
 

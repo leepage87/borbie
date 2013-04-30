@@ -39,12 +39,13 @@ class Hud {
     
     void changeHealthState(const int healthState);
     void changeMoodText(const char *text);
-    
+       
     // start or stop displaying of the target icon in the middle of the screen
     void setTargetMarkerEnabled(bool val);
     
     void drawHud();
-    
+    void updateFace(int health);    
+    void drawFace();
 }; // end of Hud class
 
 #endif

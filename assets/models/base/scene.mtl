@@ -1,0 +1,18 @@
+newmtl c92b01b_dds
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd f6381e95.tif
+Ni 1.50
+Ks 0.00 0.00 0.00
+Ns 0.00
+newmtl d680eee1_dds
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd 89459ed6.tif
+Ni 1.50
+Ks 0.00 0.00 0.00
+Ns 0.00

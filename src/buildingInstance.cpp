@@ -8,6 +8,8 @@
  */
 
 #include "buildingInstance.h"
+#include "gameInstance.h"
+#include "audioSystem.h"
 
 #include <iostream> // TODO: debug (remove)
 using namespace std;
@@ -26,24 +28,24 @@ BuildingInstance::BuildingInstance(
 	// call super GameObject constructor first:
 	: GameObject(gameInstance)
 {
+    this->objectType = TYPE_BUILDING;
+    
     // calculate y-position based on height (with posY being the base
     //  of the building. Irrlicht centers objects at 1/2 height.
     float actualPosY = posY + (height * 10) / 2;
     
-    // set x,z positions based on width and depth respectively (center it)
-    float actualPosX = posX + (width * 10) / 2;
-    float actualPosZ = posZ + (depth * 10) / 2;
-    
+    // add the building node
 	this->sceneNode = smgr->addCubeSceneNode();
 	this->sceneNode->setScale(vector3df(width, height, depth));
-	this->sceneNode->setPosition(vector3df(actualPosX, actualPosY , actualPosZ));
+	this->sceneNode->setPosition(vector3df(posX, actualPosY , posZ));
 	this->sceneNode->setMaterialTexture(0, texture);
 	this->sceneNode->setMaterialFlag(EMF_LIGHTING, true);
 	((IMeshSceneNode* )this->sceneNode)->addShadowVolumeSceneNode(0,-1,true,25.0f);
 
+    // add the roof node
 	this->roofNode = smgr->addCubeSceneNode();
 	this->roofNode->setScale(vector3df(width+1, 2, depth+1));
-	this->roofNode->setPosition(vector3df(actualPosX, (actualPosY*2-40), actualPosZ));
+	this->roofNode->setPosition(vector3df(posX, (actualPosY*2-40), posZ));
 	this->roofNode->setMaterialTexture(0, roofTexture);
 	this->roofNode->setMaterialFlag(EMF_LIGHTING, true);
 	//this->roofNode->addShadowVolumeSceneNode(0,-1,true,25.0f);
@@ -54,17 +56,6 @@ BuildingInstance::BuildingInstance(
 	this->height = height;
 	this->posY = posY;
 }
-
-
-/*BuildingInstance::~BuildingInstance(){
-    std::cout << "Deleted" << std::endl;
-	if(this->fireParticleSystem)
-		this->fireParticleSystem->remove();
-    if(this->sparkParticleSystem)
-        this->sparkParticleSystem->remove();
-    if(this->roofNode)
-        this->roofNode->remove();
-}*/
 
 
 // Adds a triangle selector to the given meta triangle selectior to add this
@@ -103,7 +94,6 @@ void BuildingInstance::setAblaze(){
     // if already exploded or already on fire, prevent adding the fire again
     if(this->hasBeenExploded || this->isOnFire)
         return;
-    std::cout << "Added fire" << std::endl;
     
     // ADD FIRE EFFECT
     // if a particle system for fire already exists, clean it off
@@ -188,9 +178,16 @@ void BuildingInstance::setAblaze(){
 	
 	// flag building as on fire
 	this->isOnFire = true;
+	
+	// play the 3d burning sound
+	this->audioSystem->playSound3dLoop(
+	    this->gameInstance->burningSound,
+	    this);
 }
 
 
+// Override: explode also removes the fire effect particle systems, AND AND AND
+//  it makes the roof go away.
 void BuildingInstance::explode(){
     // call super class explode
     GameObject::explode();

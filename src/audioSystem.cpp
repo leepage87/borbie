@@ -302,9 +302,9 @@ void AudioSystem::playSound3d(
     
     // set the sound position in 3D space
     FMOD_VECTOR pos;
-    pos.x = sourcePos.X;
-    pos.y = sourcePos.Y;
-    pos.z = sourcePos.Z;
+    pos.x = sourcePos.X / AUDIO_WORLD_SCALE;
+    pos.y = sourcePos.Y / AUDIO_WORLD_SCALE;
+    pos.z = sourcePos.Z / AUDIO_WORLD_SCALE;
     result = soundChannel->set3DAttributes(&pos, 0);
     if(result != FMOD_OK)
         std::cout << "FMOD ERROR: 3dset3dAttributes failed: " << std::endl;
@@ -343,7 +343,7 @@ SoundClip* AudioSystem::playSound3d(
 //  0.0 (mute) and 1.0 (max) (float).
 // Volume less than 0 will be set to 0; vol > 1 will be set to 1.
 void AudioSystem::playSound3dFollowTarget(FMOD::Sound *sound,
-    irr::scene::ISceneNode *target,
+    GameObject *target,
     float volume, bool looped)
 {
     FMOD_RESULT result;
@@ -379,11 +379,11 @@ void AudioSystem::playSound3dFollowTarget(FMOD::Sound *sound,
         std::cout << "FMOD ERROR: 3dsetVolume failed." << std::endl;
     
     // set the sound's initial position in 3D space
-    irr::core::vector3df targetPos = target->getPosition();
+    irr::core::vector3df targetPos = target->getNode()->getPosition();
     FMOD_VECTOR pos;
-    pos.x = targetPos.X;
-    pos.y = targetPos.Y;
-    pos.z = targetPos.Z;
+    pos.x = targetPos.X / AUDIO_WORLD_SCALE;
+    pos.y = targetPos.Y / AUDIO_WORLD_SCALE;
+    pos.z = targetPos.Z / AUDIO_WORLD_SCALE;
     result = soundChannel->set3DAttributes(&pos, 0);
     if(result != FMOD_OK)
         std::cout << "FMOD ERROR: 3dset3dAttributes failed: " << std::endl;
@@ -404,7 +404,7 @@ void AudioSystem::playSound3dFollowTarget(FMOD::Sound *sound,
 // See playSound3dFollowTarget above for follower sound specifications.
 // RETURNS: Pointer to the played sound object (NULL if something goes wrong)
 SoundClip* AudioSystem::playSound3d(const char *file,
-    irr::scene::ISceneNode *target, float volume)
+    GameObject *target, float volume)
 {
     FMOD::Sound *sound = this->createSound3d(file);
     this->playSound3dFollowTarget(sound, target, volume, false);
@@ -417,7 +417,7 @@ SoundClip* AudioSystem::playSound3d(const char *file,
 // This method only plays the sound once: this DOES NOT LOOP the sound.
 // See playSound3dFollowTarget above for follower sound specifications.
 void AudioSystem::playSound3d(SoundClip *sound,
-    irr::scene::ISceneNode *target, float volume)
+    GameObject *target, float volume)
 {
     this->playSound3dFollowTarget(sound, target, volume, false);
 }
@@ -429,7 +429,7 @@ void AudioSystem::playSound3d(SoundClip *sound,
 // See playSound3dFollowTarget above for follower sound specifications.
 // RETURNS: Pointer to the played sound object (NULL if something goes wrong)
 SoundClip* AudioSystem::playSound3dLoop(const char *file,
-    irr::scene::ISceneNode *target, float volume)
+    GameObject *target, float volume)
 {
     FMOD::Sound *sound = this->createSound3d(file);
     this->playSound3dFollowTarget(sound, target, volume, true);
@@ -443,7 +443,7 @@ SoundClip* AudioSystem::playSound3dLoop(const char *file,
 //  until the target node is destroyed (deleted).
 // See playSound3dFollowTarget above for follower sound specifications.
 void AudioSystem::playSound3dLoop(SoundClip *sound,
-    irr::scene::ISceneNode *target, float volume)
+    GameObject *target, float volume)
 {
     this->playSound3dFollowTarget(sound, target, volume, true);
 }
@@ -503,18 +503,23 @@ void AudioSystem::update(
         // if target is lost or if channel is done playing, remove the sound
         bool isChannelPlaying;
         fs.channel->isPlaying(&isChannelPlaying);
-        if(!fs.target || !isChannelPlaying) {
+        
+        // if target object is dead and/or is exploded, stop playing
+        if(!fs.target || fs.target->hasExploded())
+            fs.channel->stop();
+            
+        if(!fs.target || fs.target->hasExploded() || !isChannelPlaying) {
             followSounds.erase(followSounds.begin() + i);
             numFollowSounds--;
             i--;
         }
         // otherwise, update the channel's position to that of the target's
         else {
-            irr::core::vector3df targetPos = fs.target->getPosition();
+            irr::core::vector3df targetPos = fs.target->getNode()->getPosition();
             FMOD_VECTOR pos;
-            pos.x = targetPos.X;
-            pos.y = targetPos.Y;
-            pos.z = targetPos.Z;
+            pos.x = targetPos.X / AUDIO_WORLD_SCALE;
+            pos.y = targetPos.Y / AUDIO_WORLD_SCALE;
+            pos.z = targetPos.Z / AUDIO_WORLD_SCALE;
             fs.channel->set3DAttributes(&pos, 0);
         }
     }

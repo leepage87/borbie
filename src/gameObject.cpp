@@ -12,6 +12,7 @@
 #include "objectList.h"
 #include "game.h"
 #include "gameInstance.h"
+#include "audioSystem.h"
 
 // used for c++ variable arguments
 #include <cstdarg>
@@ -42,12 +43,17 @@ GameObject::GameObject(GameInstance *gameInstance){
 	// link pointer to game instance
 	this->gameInstance = gameInstance;
 	
+	// link pointer to audio system
+	this->audioSystem = gameInstance->getAudioSystem();
+	
 	// default values
 	this->health = GAME_OBJ_MAXHEALTH;
+    this->startingHealth = GAME_OBJ_MAXHEALTH;
 	this->explosionRadius = GAME_OBJ_EXPLOSION_RADIUS;
 	this->explosionDamage = GAME_OBJ_EXPLOSION_DAMAGE;
 	this->hasBeenExploded = false;
 	this->timeToDelete = 0;
+	this->objectType = NO_TYPE;
 	
 	// set all pointers to null initially
 	this->sceneNode = 0;
@@ -56,6 +62,7 @@ GameObject::GameObject(GameInstance *gameInstance){
 	
 	// start mode on idle (not doing anything with updates)
 	this->updateMode = GAME_OBJ_MODE_IDLE;
+	
 	
 }
 
@@ -90,48 +97,10 @@ void GameObject::setMetaTriSelector(IMetaTriangleSelector *metaTriSelector){
 }
 
 
-// this is hackery!
-void GameObject::applyExplosionDamage(int numLists, ...){
-    // get list of function arguments
-    va_list args;
-    va_start(args, numLists);
-    
-    // get this node's position (optimizing!)
-    vector3df explodePos = this->sceneNode->getPosition();
-    
-    // iterate through the list of arguments
-    for(int i=0; i<numLists; ++i){
-        ObjectList *objects = va_arg(args, ObjectList *);
-        // iterate through each list and check if it's close enough to this obj
-        int numObjs = objects->objList.size();
-        for(int j=0; j<numObjs; ++j){
-            ISceneNode *curNode = objects->objList[j]->getNode();
-            // if this (thrown) object IS the current node, ignore it
-            if(curNode == this->sceneNode)
-                continue;
-            // if this (thrown) node is NOT visible, ignore it
-            else if(!curNode->isVisible())
-                continue;
-            // otherwise, check if the distance is close enough, and apply damage
-            //  based on the distance to the explosion center
-            float distance = curNode->getPosition().getDistanceFrom(explodePos);
-            if(distance <= this->explosionRadius){
-                int damage = this->explosionDamage; // max damage
-                if(distance > 400){ // if more than 400 away, scale down damage
-                    float scale = (distance-400) / (this->explosionRadius-400);
-                    damage = int(this->explosionDamage * scale);
-                }
-                objects->objList[j]->applyDamage(damage);
-                std::cout << "Damaged @distance=" << distance <<
-                    " for @damage=" << damage << std::endl;
-            }
-        }
-    }
-    
-    // done with arguments
-    va_end(args);
+// GET: object type (returns the object's type to differentiate easily)
+GameObjectType GameObject::getObjectType() const {
+    return this->objectType;
 }
-
 
 // GET: health - returns the object's current health (in int form)
 int GameObject::getHealth() const {
@@ -182,12 +151,11 @@ unsigned int GameObject::update(){
     // if object was exploded, check if explosion timer is up. If so, keep it
     //  in the list but flag it for deleting.
     if(this->updateMode == GAME_OBJ_MODE_EXPLODED){
-        unsigned int curTime = this->device->getTimer()->getTime();
+        unsigned int curTime = this->gameInstance->currentGameTime;
         if(curTime >= this->explosionStopTime) { // if explosion is done
             // stop the explosion
             this->explosionParticleSystem->setEmitter(0);
             this->explosionParticleSystemLarge->setEmitter(0);
-            this->hasBeenExploded = true;
             this->updateMode = GAME_OBJ_MODE_PENDING_DELETE;
             // delete after 5 seconds
             this->timeToDelete = curTime + GAME_OBJ_DELETE_TIME_MS;
@@ -223,11 +191,15 @@ bool GameObject::hasExploded(){
 // Causes this object to explode, making it vanish, and return a particle
 //	effect node animating the explosion effect in its current position.
 void GameObject::explode(){
-    // TODO - make explosion size scale with this->explosionRadius
-
     // if already exploded, don't do it again
     if(this->hasBeenExploded)
         return;
+	
+	// flag as exploded
+    this->hasBeenExploded = true;
+    
+    // TODO - make explosion size scale with this->explosionRadius
+
     
 	// add a new explosion particle systems (for the two intermixed explosions)
     this->explosionParticleSystem =
@@ -317,5 +289,13 @@ void GameObject::explode(){
 	// add this object to the GameInstance's updator to keep the timers going
 	this->gameInstance->addUpdateObject(this);
 	//attempt at splash damage on exploding buildings and shit
-	//this->gameInstance->applyExplosionDamage(this);
+	this->gameInstance->applyExplosionDamage(this);
+    
+    // update player score
+    this->gameInstance->player->updateScore(startingHealth);
+    
+    // play explosion sound effect
+	this->audioSystem->playSound3d(
+	    this->gameInstance->explosionSound1,
+	    this);
 }

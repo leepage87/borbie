@@ -35,6 +35,9 @@
 #include "fmod.hpp"
 #include "fmod_errors.h"
 
+// GameObject for follow 3D targets
+#include "gameObject.h"
+
 // scale: divides the actual coordinates by this scale
 #define AUDIO_WORLD_SCALE 100.0f
 // max distance 3D audio can be heard (plays at minimum volume if further)
@@ -49,7 +52,7 @@ typedef FMOD::Sound SoundClip;
 //  the 3D sound follow mechanism
 struct FollowSound {
     FMOD::Channel *channel;
-    irr::scene::ISceneNode *target;
+    GameObject *target;
 };
 
 
@@ -70,7 +73,7 @@ class AudioSystem {
     
     // private helper function: target follow 3D sound
     void playSound3dFollowTarget(FMOD::Sound *sound,
-        irr::scene::ISceneNode *target,
+        GameObject *target,
         float volume, bool looped);
     
     // list of 3D sounds currently following a target node
@@ -124,17 +127,17 @@ class AudioSystem {
     
     // 3D Sound "Follow" - follows the object
     SoundClip* playSound3d(const char *file,
-        irr::scene::ISceneNode *target,
+        GameObject *target,
         float volume = 1.0f);
     void playSound3d(SoundClip *sound,
-        irr::scene::ISceneNode *target,
+        GameObject *target,
         float volume = 1.0f);
     // 3D Sound "Follow" with Loop
     SoundClip* playSound3dLoop(const char *file,
-        irr::scene::ISceneNode *target,
+        GameObject *target,
         float volume = 1.0f);
     void playSound3dLoop(SoundClip *sound,
-        irr::scene::ISceneNode *target,
+        GameObject *target,
         float volume = 1.0f);
     
     

@@ -18,7 +18,7 @@
 #include "gameObject.h"
 
 
-// define GameInstance to use pointer
+// define GameInstance and AudioSystem to use pointer
 class GameInstance;
 
 

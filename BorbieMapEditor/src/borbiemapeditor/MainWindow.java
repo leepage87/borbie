@@ -2,6 +2,7 @@ package borbiemapeditor;
 
 
 import borbiemapeditor.MenuPanel.MenuSelection;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -11,10 +12,15 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.util.List;
+import javax.swing.BoxLayout;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JSplitPane;
+import javax.swing.SwingConstants;
+import javax.swing.border.BevelBorder;
 
 /**
  *
@@ -30,6 +36,9 @@ public class MainWindow extends JFrame {
     
     // reference to the splitPane for repositioning divider if window is resized
     private JSplitPane splitPane;
+
+    // reference to the label on the bottom (to be updated by map editor).
+    private JLabel statusLabel;
     
     
     // global keyboard toggles
@@ -74,6 +83,8 @@ public class MainWindow extends JFrame {
         
         
         /*** ADD COMPONENTS ***/
+
+        this.setLayout(new BorderLayout());
         
         // add the main menu
         menuBar = new EditorMenuBar(this);
@@ -92,7 +103,27 @@ public class MainWindow extends JFrame {
         menuPanel = new MenuPanel();
         splitPane.setRightComponent(menuPanel);
         
-        this.add(splitPane);
+        this.add(splitPane, BorderLayout.CENTER);
+
+        JPanel statusPanel = new JPanel();
+        statusPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));
+        this.add(statusPanel, BorderLayout.SOUTH);
+
+        statusPanel.setPreferredSize(new Dimension(this.getWidth(), 16));
+        statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.X_AXIS));
+        statusLabel = new JLabel(" Go to File -> Open Map Image (ctrl+0) to begin.");
+        statusLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        statusPanel.add(statusLabel);
+/*
+// create the status bar panel and shove it down the bottom of the frame
+JPanel statusPanel = new JPanel();
+statusPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));
+frame.add(statusPanel, BorderLayout.SOUTH);
+statusPanel.setPreferredSize(new Dimension(frame.getWidth(), 16));
+statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.X_AXIS));
+JLabel statusLabel = new JLabel("status");
+statusLabel.setHorizontalAlignment(SwingConstants.LEFT);
+statusPanel.add(statusLabel);;*/
         
         
         // add resize listener: adjust splitPane divider accordingly
@@ -132,6 +163,12 @@ public class MainWindow extends JFrame {
     // Returns the current MenuPanel selection (which editor button is selected)
     public MenuSelection getCurSelection(){
         return this.menuPanel.getCurSelection();
+    }
+
+
+    // Sets the status text for the bottom status bar.
+    public void setStatusText(String text){
+        this.statusLabel.setText(text);
     }
     
     

@@ -6,7 +6,6 @@
 #include "objectCarrier.h"
 #include "castRay.h"
 #include "audioSystem.h"
-#include "gameInstance.h"
 
 class gameInstance;
 class Game;
@@ -16,6 +15,13 @@ class Game;
 		SMouseState() : RightButtonDown(false) { }
 	}MouseState;
 */
+
+// Mouse Button Types
+enum BorbieInputEvent {
+    BORBIE_LEFT_CLICK,
+    BORBIE_RIGHT_CLICK
+};
+
 // BorbiesEventReceiver class (extends IEventReceiver)
 class BorbiesEventReceiver : public irr::IEventReceiver {
   private:
@@ -38,9 +44,9 @@ class BorbiesEventReceiver : public irr::IEventReceiver {
     this->gameInstance=gameInstance;
    }
 
-   void setGameInstance(GameInstance* gI)
+   void setGameInstance(GameInstance* gameInstance)
    {
-    this->gameInstance=gI;
+    this->gameInstance=gameInstance;
    }
 
    void removeGameInstance()

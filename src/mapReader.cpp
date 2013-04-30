@@ -35,9 +35,7 @@ std::vector<RoadSpawnPoint> MapReader::vehicleSpawnPoints;
 void MapReader::readCoordFile(const char *fileName){
     // TODO - make this global or returned from Terrain map object
     const int farX = 20400.0f;
-	const int farY = 20400.0f;//19840.0f;
-	const int xOffset = -190;
-	const int yOffset = -190; // TODO: what the hell?
+	const int farY = 20400.0f;
 	
 	// Try to open the map coordinate file.
 	std::ifstream mapfile(fileName);
@@ -114,8 +112,8 @@ void MapReader::readCoordFile(const char *fileName){
         
         // Create the Point, scaled to the map's scale
         Point pos;
-        pos.X = (farX * coordX) + xOffset;
-        pos.Y = (farY * coordY) + yOffset;
+        pos.X = (farX * coordX);
+        pos.Y = (farY * coordY);
         
         // Push the coordinates to the correct list, based on type.
         switch(type){

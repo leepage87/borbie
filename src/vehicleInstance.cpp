@@ -25,11 +25,17 @@ VehicleInstance::VehicleInstance(
 	// call super GameObject constructor first:
 	: GameObject(gameInstance)
 {
-	this->model = model;
+	this->objectType = TYPE_VEHICLE;
+	
+    this->model = model;
     this->motionAnimator = 0;
     this->lastIntersection = 0;
     this->nextIntersection = 0;
     
+    // set health
+    this->setHealth(350);
+    this->startingHealth = 0;
+
 	this->sceneNode = smgr->addMeshSceneNode(mesh);
 	if (model == 0){//its a jeep
 		this->sceneNode->setScale(vector3df(.2, .2, .2));
@@ -64,7 +70,7 @@ void VehicleInstance::go() {
     endPoint.Y = startPoint.Y;
     endPoint.Z = this->nextIntersection->Y;
 	f32 length = (f32)(endPoint - startPoint).getLength();
-	const f32 SPEED = 0.5f;
+	const f32 SPEED = 0.25f;
 	u32 time = (u32)(length / SPEED);
     this->motionAnimator = this->smgr->createFlyStraightAnimator(
             startPoint,

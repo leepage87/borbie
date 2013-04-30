@@ -18,8 +18,9 @@ using namespace video;
 
 #include <iostream>
 
-const unsigned int MAX_NUMBER_VEHICLES = 20;
+const unsigned int MAX_NUMBER_VEHICLES = 30;
 const unsigned int SPAWN_TIME_MS = 3 * 1000; // 3 seconds
+const unsigned int ROAD_HEIGHT = 30;
 
 
 Vehicles::Vehicles(
@@ -51,12 +52,11 @@ void Vehicles::update(){
 	
 	// if spawn timer is ready, and there aren't too many vehicles in the
 	//  world, create a new vehicle at a random spawn point.
-	u32 curTime = this->device->getTimer()->getTime();
-	if( curTime >= this->nextSpawnTime &&
+	if( this->gameInstance->currentGameTime >= this->nextSpawnTime &&
 	    this->objList.size() < MAX_NUMBER_VEHICLES)
 	{
 	    this->spawnRandomVehicle();
-	    this->nextSpawnTime = curTime + SPAWN_TIME_MS;
+	    this->nextSpawnTime = this->gameInstance->currentGameTime + SPAWN_TIME_MS;
 	}
 }
 
@@ -74,7 +74,7 @@ void Vehicles::spawnRandomVehicle(){
     RoadSpawnPoint spawnPoint = MapReader::vehicleSpawnPoints[spawnPointIndex];
     VehicleInstance *spawnedVehicle = this->addRandomVehicle(
         spawnPoint.X,
-        70, //70, // road height
+        ROAD_HEIGHT, //70, // road height
         spawnPoint.Y );
     
     spawnedVehicle->setNextIntersection(spawnPoint.connection);
@@ -86,7 +86,7 @@ void Vehicles::spawnRandomVehicle(){
 VehicleInstance* Vehicles::addRandomVehicle(
 	float xPos, float yPos, float zPos)
 {
-    std::cout << "RANDOM VEHICLE CREATED AT: " << xPos << ", " << zPos << std::endl;
+    //std::cout << "RANDOM VEHICLE CREATED AT: " << xPos << ", " << zPos << std::endl;
     // get a random index from the model list
     int modelIndex = Random::randomInt(this->modelList.size());
     
@@ -100,6 +100,7 @@ VehicleInstance* Vehicles::makeVehicle(int modelIndex,
     // get the vehicle mesh
 	IAnimatedMesh *mesh =
 	    smgr->getMesh(this->modelList[modelIndex]);
+	// TODO - if you don't drop this, is it a memory leak?
 
 
 	VehicleInstance *newVehicle

@@ -16,11 +16,13 @@
 // include irrlicht
 #include <irrlicht.h>
 
+
 // declare ObjectList - (ObjectList in objectList.h): GameObject is included
 //  in that header.
 class ObjectList;
-// similarly, GameInstance is used
+// similarly, GameInstance and AudioSystem is used
 class GameInstance;
+class AudioSystem;
 
 
 // GameObject standard values
@@ -45,9 +47,13 @@ class GameInstance;
 #define GAME_OBJ_MODE_PENDING_DELETE 2
 
 
-struct CollisionSphere {
-    irr::scene::ISceneNode *sphere;
-    irr::scene::ISceneNodeAnimator* collisionAnimator;
+// GameObject types: used to differentiate
+enum GameObjectType {
+    NO_TYPE, // default
+    TYPE_BUILDING,
+    TYPE_VEHICLE,
+    TYPE_ENEMY,
+    TYPE_BORBIE
 };
 
 
@@ -67,6 +73,9 @@ class GameObject {
 	irr::scene::ISceneNode *sceneNode;
 	irr::scene::IMetaTriangleSelector *metaTriSelector;
 	
+	// pointer to the audio system
+	AudioSystem *audioSystem;
+	
 	// pointer to gameInstance (to add itself to the updator)
 	GameInstance *gameInstance;
 	
@@ -74,9 +83,13 @@ class GameObject {
 	void setMetaTriSelector(irr::scene::IMetaTriangleSelector *metaTriSelector);
 	
 	// object variables
+	int startingHealth;
 	int health;
 	int explosionRadius;
 	int explosionDamage;
+	
+	// object type
+	GameObjectType objectType;
 	
 	// explosion variables
 	irr::scene::IParticleSystemSceneNode *explosionParticleSystem;
@@ -99,8 +112,8 @@ class GameObject {
 	// destructor: automatically removes the node from the scene.
 	virtual ~GameObject();
 	
-	// TODO - perhaps these can be private, and only friend-accessible
-	// standard getters
+	// standard getters for object data
+	virtual GameObjectType getObjectType() const;
 	virtual int getHealth() const;
 	virtual int getExplosionRadius() const;
 	virtual int getExplosionDamage() const;
@@ -122,11 +135,6 @@ class GameObject {
 	//  frame until update() returns true (implying explosion is finished).
 	virtual void explode();
 	virtual bool hasExploded(); // returns TRUE if this object has exploded
-	
-	// if this node exploded, apply explosion damage around its own explosion
-	//  radius (scaled based on distance from explosion center), and apply
-	//  the appropriate amount of explosion damage.
-	virtual void applyExplosionDamage(int numLists, ...);
 	
 	// updates the object's animation/effects and other possible timers;
 	// RETURNS: value (defined as constants above) of action that the

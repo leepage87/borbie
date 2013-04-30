@@ -9,3 +9,8 @@
     buildings in front of it through which the car flies.
 3)  Pre-load textures for particle systems BEFORE calling them, that way
     the first explosion is actually seen by the player.
+4)  Audiosystem needs channel tracking via an audio object. If you
+    create an audio clip and play it in 3D, you can't stop it unless
+    you release the sound out of memory right now. That sucks.
+5)  Add lamps, fire hydrants, trees. Fire hydrants w/ particles may be
+    hard. Low priority.
