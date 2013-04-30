@@ -277,8 +277,8 @@ void GameInstance::applyExplosionDamage(GameObject *explodingObject) {
         // if current node is the exploding node, ignore it
         if(curNode == explodingNode)
             continue;
-        // if current node is NOT visible, ignore it
-        else if(!curNode->isVisible())
+        // if current node is NOT visible or if it already blew up, ignore it
+        else if(!curNode->isVisible() || enemies->objList[i]->hasExploded())
             continue;
         float distance = curNode->getPosition().getDistanceFrom(explodePos);
 		//std::cout<<"got distance"<<std::endl;
@@ -303,7 +303,7 @@ void GameInstance::applyExplosionDamage(GameObject *explodingObject) {
         if(curNode == explodingNode)
             continue;
         // if current node is NOT visible, ignore it
-        else if(!curNode->isVisible())
+        else if(!curNode->isVisible() || buildings->objList[i]->hasExploded())
             continue;
         // otherwise, check if the distance is close enough, and apply damage
         //  based on the distance to the explosion center
@@ -328,7 +328,7 @@ void GameInstance::applyExplosionDamage(GameObject *explodingObject) {
         if(curNode == explodingNode)
             continue;
         // if current node is NOT visible, ignore it
-        else if(!curNode->isVisible())
+        else if(!curNode->isVisible() || vehicles->objList[i]->hasExploded())
             continue;
         // otherwise, check if the distance is close enough, and apply damage
         //  based on the distance to the explosion center
@@ -344,6 +344,10 @@ void GameInstance::applyExplosionDamage(GameObject *explodingObject) {
                 " for @damage=" << damage << std::endl;
         } 
     } 
+    
+    // if Borbie is already dead, don't kill her again :(
+    if(player->hasExploded())
+        return;
     
     float distance = player->getNode()->getPosition().getDistanceFrom(explodePos);
     if(distance <= explosionRadius){

@@ -34,22 +34,18 @@ BuildingInstance::BuildingInstance(
     //  of the building. Irrlicht centers objects at 1/2 height.
     float actualPosY = posY + (height * 10) / 2;
     
-    // set x,z positions based on width and depth respectively (center it)
-    //float actualWidth = width * 10;
-    //float actualDepth = depth * 10;
-    float actualPosX = posX;// + actualWidth / 2;
-    float actualPosZ = posZ;// + actualDepth / 2;
-    
+    // add the building node
 	this->sceneNode = smgr->addCubeSceneNode();
 	this->sceneNode->setScale(vector3df(width, height, depth));
-	this->sceneNode->setPosition(vector3df(actualPosX, actualPosY , actualPosZ));
+	this->sceneNode->setPosition(vector3df(posX, actualPosY , posZ));
 	this->sceneNode->setMaterialTexture(0, texture);
 	this->sceneNode->setMaterialFlag(EMF_LIGHTING, true);
 	((IMeshSceneNode* )this->sceneNode)->addShadowVolumeSceneNode(0,-1,true,25.0f);
 
+    // add the roof node
 	this->roofNode = smgr->addCubeSceneNode();
 	this->roofNode->setScale(vector3df(width+1, 2, depth+1));
-	this->roofNode->setPosition(vector3df(actualPosX, (actualPosY*2-40), actualPosZ));
+	this->roofNode->setPosition(vector3df(posX, (actualPosY*2-40), posZ));
 	this->roofNode->setMaterialTexture(0, roofTexture);
 	this->roofNode->setMaterialFlag(EMF_LIGHTING, true);
 	//this->roofNode->addShadowVolumeSceneNode(0,-1,true,25.0f);

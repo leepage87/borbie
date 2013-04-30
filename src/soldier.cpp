@@ -24,11 +24,13 @@ Soldier::Soldier(
 {
     this->objectType = TYPE_ENEMY;
     sceneNode =
-    	smgr->addAnimatedMeshSceneNode(smgr->getMesh("assets/models/enemies/green_army_man.3DS"));
+    	smgr->addAnimatedMeshSceneNode(
+    	    smgr->getMesh("assets/models/enemies/green_army_man.3DS"));
 	sceneNode->setPosition(vector3df(posX, posY, posZ));
 	sceneNode->setScale(vector3df(0.7,0.7,0.7));
 	sceneNode->setVisible(true);
 	sceneNode->setMaterialFlag(EMF_LIGHTING, false);
+    
 	setHealth(350);
 }
 

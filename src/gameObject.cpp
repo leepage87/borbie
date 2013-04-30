@@ -156,7 +156,6 @@ unsigned int GameObject::update(){
             // stop the explosion
             this->explosionParticleSystem->setEmitter(0);
             this->explosionParticleSystemLarge->setEmitter(0);
-            this->hasBeenExploded = true;
             this->updateMode = GAME_OBJ_MODE_PENDING_DELETE;
             // delete after 5 seconds
             this->timeToDelete = curTime + GAME_OBJ_DELETE_TIME_MS;
@@ -192,13 +191,15 @@ bool GameObject::hasExploded(){
 // Causes this object to explode, making it vanish, and return a particle
 //	effect node animating the explosion effect in its current position.
 void GameObject::explode(){
-    this->gameInstance->player->updateScore(startingHealth);
-    
-  // TODO - make explosion size scale with this->explosionRadius
-
     // if already exploded, don't do it again
     if(this->hasBeenExploded)
         return;
+	
+	// flag as exploded
+    this->hasBeenExploded = true;
+    
+    // TODO - make explosion size scale with this->explosionRadius
+
     
 	// add a new explosion particle systems (for the two intermixed explosions)
     this->explosionParticleSystem =
@@ -289,7 +290,11 @@ void GameObject::explode(){
 	this->gameInstance->addUpdateObject(this);
 	//attempt at splash damage on exploding buildings and shit
 	this->gameInstance->applyExplosionDamage(this);
-	
+    
+    // update player score
+    this->gameInstance->player->updateScore(startingHealth);
+    
+    // play explosion sound effect
 	this->audioSystem->playSound3d(
 	    this->gameInstance->explosionSound1,
 	    this);
