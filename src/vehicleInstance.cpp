@@ -25,8 +25,9 @@ VehicleInstance::VehicleInstance(
 	// call super GameObject constructor first:
 	: GameObject(gameInstance)
 {
+	this->objectType = TYPE_VEHICLE;
 	
-  this->model = model;
+    this->model = model;
     this->motionAnimator = 0;
     this->lastIntersection = 0;
     this->nextIntersection = 0;

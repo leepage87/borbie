@@ -47,6 +47,16 @@ class AudioSystem;
 #define GAME_OBJ_MODE_PENDING_DELETE 2
 
 
+// GameObject types: used to differentiate
+enum GameObjectType {
+    NO_TYPE, // default
+    TYPE_BUILDING,
+    TYPE_VEHICLE,
+    TYPE_ENEMY,
+    TYPE_BORBIE
+};
+
+
 // GameObject class (abstract):
 class GameObject {
 
@@ -78,6 +88,9 @@ class GameObject {
 	int explosionRadius;
 	int explosionDamage;
 	
+	// object type
+	GameObjectType objectType;
+	
 	// explosion variables
 	irr::scene::IParticleSystemSceneNode *explosionParticleSystem;
 	irr::scene::IParticleSystemSceneNode *explosionParticleSystemLarge;
@@ -99,8 +112,8 @@ class GameObject {
 	// destructor: automatically removes the node from the scene.
 	virtual ~GameObject();
 	
-	// TODO - perhaps these can be private, and only friend-accessible
-	// standard getters
+	// standard getters for object data
+	virtual GameObjectType getObjectType() const;
 	virtual int getHealth() const;
 	virtual int getExplosionRadius() const;
 	virtual int getExplosionDamage() const;

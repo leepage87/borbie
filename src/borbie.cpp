@@ -9,6 +9,8 @@ using namespace video;
 using namespace core;
 
 Borbie::Borbie(GameInstance *gameInstance) : GameObject(gameInstance){
+  this->objectType = TYPE_BORBIE;
+  
   this->score=0;
   this->setHealth(1000);
   this->camera=gameInstance->getCamera();

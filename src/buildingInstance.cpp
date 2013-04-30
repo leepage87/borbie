@@ -28,6 +28,8 @@ BuildingInstance::BuildingInstance(
 	// call super GameObject constructor first:
 	: GameObject(gameInstance)
 {
+    this->objectType = TYPE_BUILDING;
+    
     // calculate y-position based on height (with posY being the base
     //  of the building. Irrlicht centers objects at 1/2 height.
     float actualPosY = posY + (height * 10) / 2;

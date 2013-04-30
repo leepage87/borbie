@@ -48,11 +48,12 @@ GameObject::GameObject(GameInstance *gameInstance){
 	
 	// default values
 	this->health = GAME_OBJ_MAXHEALTH;
-  this->startingHealth = GAME_OBJ_MAXHEALTH;
+    this->startingHealth = GAME_OBJ_MAXHEALTH;
 	this->explosionRadius = GAME_OBJ_EXPLOSION_RADIUS;
 	this->explosionDamage = GAME_OBJ_EXPLOSION_DAMAGE;
 	this->hasBeenExploded = false;
 	this->timeToDelete = 0;
+	this->objectType = NO_TYPE;
 	
 	// set all pointers to null initially
 	this->sceneNode = 0;
@@ -95,6 +96,11 @@ void GameObject::setMetaTriSelector(IMetaTriangleSelector *metaTriSelector){
     this->metaTriSelector = metaTriSelector;
 }
 
+
+// GET: object type (returns the object's type to differentiate easily)
+GameObjectType GameObject::getObjectType() const {
+    return this->objectType;
+}
 
 // GET: health - returns the object's current health (in int form)
 int GameObject::getHealth() const {
@@ -282,7 +288,7 @@ void GameObject::explode(){
 	// add this object to the GameInstance's updator to keep the timers going
 	this->gameInstance->addUpdateObject(this);
 	//attempt at splash damage on exploding buildings and shit
-	//this->gameInstance->applyExplosionDamage(this);
+	this->gameInstance->applyExplosionDamage(this);
 	
 	this->audioSystem->playSound3d(
 	    this->gameInstance->explosionSound1,

@@ -22,6 +22,7 @@ Soldier::Soldier(
 	// call super GameObject constructor first:
 	: GameObject(gameInstance)
 {
+    this->objectType = TYPE_ENEMY;
     sceneNode =
     	smgr->addAnimatedMeshSceneNode(smgr->getMesh("assets/models/enemies/green_army_man.3DS"));
 	sceneNode->setPosition(vector3df(posX, posY, posZ));
