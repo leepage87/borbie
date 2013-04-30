@@ -47,12 +47,6 @@ class AudioSystem;
 #define GAME_OBJ_MODE_PENDING_DELETE 2
 
 
-struct CollisionSphere {
-    irr::scene::ISceneNode *sphere;
-    irr::scene::ISceneNodeAnimator* collisionAnimator;
-};
-
-
 // GameObject class (abstract):
 class GameObject {
 
@@ -80,7 +74,7 @@ class GameObject {
 	
 	// object variables
 	int startingHealth;
-  int health;
+    int health;
 	int explosionRadius;
 	int explosionDamage;
 	

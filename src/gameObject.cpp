@@ -188,7 +188,7 @@ unsigned int GameObject::update(){
     // if object was exploded, check if explosion timer is up. If so, keep it
     //  in the list but flag it for deleting.
     if(this->updateMode == GAME_OBJ_MODE_EXPLODED){
-        unsigned int curTime = this->device->getTimer()->getTime();
+        unsigned int curTime = this->gameInstance->currentGameTime;
         if(curTime >= this->explosionStopTime) { // if explosion is done
             // stop the explosion
             this->explosionParticleSystem->setEmitter(0);

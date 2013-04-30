@@ -53,6 +53,9 @@ class GameInstance {
   	SoundClip *burningSound;
   	SoundClip *explosionSound1;
   	
+  	// current game time
+  	unsigned int currentGameTime;
+  	
   	
   private:
     // irrlicht renderer pointers
@@ -61,8 +64,9 @@ class GameInstance {
     irr::gui::IGUIEnvironment *guienv;
     irr::video::IVideoDriver *driver;
     irr::IrrlichtDevice *device;
+    irr::ITimer *timer;
 
-  CastRay *selector;
+    CastRay *selector;
 	ObjectCarrier *objCarry;
 	irr::scene::ISceneNode *highlightedSceneNode;
 	irr::IEventReceiver *receiver;
@@ -123,10 +127,14 @@ class GameInstance {
     irr::scene::ISceneManager* getSceneManager() { return this->smgr; }
     irr::video::IVideoDriver* getDriver() { return this->driver; }
     irr::IrrlichtDevice* getDevice() { return this->device; }
+    AudioSystem* getAudioSystem() { return this->audioSystem; }
+    irr::scene::ICameraSceneNode* getCamera() { return camera; }
     irr::scene::IMetaTriangleSelector* getMetaSelector() {
             return this->metaTriSelector;
         }
-    AudioSystem* getAudioSystem() { return this->audioSystem; }
+	
+	// register a click event (using BorbieInput enum)
+	void clickEvent(BorbieInputEvent click);
 	
 	// sets a new object to the update list
 	void addUpdateObject(GameObject *toUpdate);
@@ -134,10 +142,10 @@ class GameInstance {
     // updates all of the game subsystems (hud, selectors, sounds, etc.)
     void update();
 
-    irr::scene::ICameraSceneNode* getCamera() { return camera; }
 
-  //the coziest place
-  void applyExplosionDamage(GameObject *gameObject);
+    //the coziest place
+    void applyExplosionDamage(GameObject *gameObject);
+    
 	// collision detection functions (add and remove from meta tri selector)
 	void addCollision(irr::scene::ITriangleSelector *selector);
 	void removeCollision(irr::scene::ITriangleSelector *selector);

@@ -37,6 +37,7 @@ GameInstance::GameInstance(
   this->device = device;
   this->audioSystem = audioSystem;
   this->receiver = receiver;
+  this->timer = device->getTimer();
 
   ((BorbiesEventReceiver*)(this->receiver))->setGameInstance(this);
 
@@ -334,6 +335,22 @@ void GameInstance::createRainParticleSystem(const char *texture){
 }
 
 
+// Registers a click event with the Game instance:
+void GameInstance::clickEvent(BorbieInputEvent click) {
+    switch(click){
+        // if left click
+        case BORBIE_LEFT_CLICK:
+            std::cout << "Left clicked" << std::endl;
+            break;
+        // if right click
+        case BORBIE_RIGHT_CLICK:
+            break;
+        default:
+            break;
+    }
+}
+
+
 // Adds an object to the list of update-required objects, where they will
 //  be updated by the standard update system until they request themselves
 //  to be removed. Thanks Irrlicht.
@@ -347,11 +364,15 @@ void GameInstance::addUpdateObject(GameObject *toUpdate){
 // called each frame by Game object to upda all of the GameInstance
 //  subsystems, including GUI, target selector, and sound.
 void GameInstance::update(){
+    // update all subsystems
   this->drawGUI();
   this->updateSelector();
   this->updateSound();
-  enemies->updateEnemy();
+  this->enemies->updateEnemy();
   this->vehicles->update();
+  
+  // update global (publically available) game timer
+  this->currentGameTime = this->timer->getTime();
 
   // check objects in the update list that need to be updated each frame;
   //  if they are done needing to be updated (their updateTimer function
@@ -368,8 +389,8 @@ void GameInstance::update(){
       case GAME_OBJ_REMOVE_FROM_UPDATE_LIST: // remove object from list
         this->updateList.erase(it);
         it--;
-        std::cout << "Deleted from update list; new size = "
-          << updateList.size() << std::endl;
+        /*std::cout << "Deleted from update list; new size = "
+          << updateList.size() << std::endl;*/
         break;
       case GAME_OBJ_DO_NOTHING: // if do nothing, or unknown, do nothing
       default:
@@ -482,36 +503,40 @@ void GameInstance::updateThrownObject(){
       carriedVehicle = 0;
     }
   }
-  }
+}
 
-  // (private)
-  // update the sound system for current player position and orientation
-  void GameInstance::updateSound(){
-    this->audioSystem->update(
-        this->camera->getPosition(),
-        this->camera->getRotation()
-        );
-  }
+// (private)
+// update the sound system for current player position and orientation
+void GameInstance::updateSound(){
+  this->audioSystem->update(
+    this->camera->getPosition(),
+    this->camera->getRotation()
+  );
+}
 
 
 
-  /*** PRIVATE COLLISION METHODS ***/
+/*** PRIVATE COLLISION METHODS ***/
 
-  // Add a node's Traingle Selector to the global meta selector. Use
-  //	irr::scene::ISceneNode->getTriangleSelector() to get one.
-  //	Make sure to set it up first with:
-  //	smgr->createTriangleSelectorFromBoundingBox(node); (or something)
+// Add a node's Traingle Selector to the global meta selector. Use
+//	irr::scene::ISceneNode->getTriangleSelector() to get one.
+//	Make sure to set it up first with:
+//	smgr->createTriangleSelectorFromBoundingBox(node); (or something)
 void GameInstance::addCollision(irr::scene::ITriangleSelector *selector){
     this->metaTriSelector->addTriangleSelector(selector);
 }
 
-  // Remove a node's Triangle Selector from the global meta selector.
+// Remove a node's Triangle Selector from the global meta selector.
 void GameInstance::removeCollision(irr::scene::ITriangleSelector *selector){
     this->metaTriSelector->removeTriangleSelector(selector);
 }
 
-void GameInstance::applyExplosionDamage(GameObject *gameObject)
-  {
+
+// Apply explosion damage to all objects within the radius of the given
+//  gameObject, scaled based on distance from the explosion, up to a maximum
+//  damage as dictated by the given object's damage value. Explosions
+//  affect vehicles, buildings, enemies, and Borbie.
+void GameInstance::applyExplosionDamage(GameObject *gameObject) {
     ISceneNode *iSceneNode = gameObject->getNode();
     float explosionRadius = gameObject->getExplosionRadius();
     float explosionDamage = gameObject->getExplosionDamage();
@@ -607,4 +632,4 @@ void GameInstance::applyExplosionDamage(GameObject *gameObject)
       std::cout << "Damaged borbie @distance=" << distance <<
         " for @damage=" << damage << std::endl;
     } 
-  }
+}

@@ -29,12 +29,10 @@ bool BorbiesEventReceiver::OnEvent(const irr::SEvent& event){
                 if(newGame)
                  audioSystem->playSound2d(newGame); 
                 game->manageStates();
-                std::cout<<"Hello from New Game"<<std::endl;
                 break; 
               case QUIT:
                 if(device)
                 {
-                  std::cout << "Escape Button Pressed: Goodbye!" << std::endl;
                   device->closeDevice();
                   break;
                 }
@@ -76,25 +74,22 @@ bool BorbiesEventReceiver::OnEvent(const irr::SEvent& event){
         }
       } else if(event.EventType == irr::EET_MOUSE_INPUT_EVENT){
         switch(event.MouseInput.Event){
-          case irr::EMIE_RMOUSE_PRESSED_DOWN:
+          case irr::EMIE_RMOUSE_PRESSED_DOWN: // right mouse down
             rightButtonDown = true;
-            std::cout << "R MOUSE DOWN" << std::endl;
+            gameInstance->clickEvent(BORBIE_RIGHT_CLICK);
             break;
 
-          case irr::EMIE_RMOUSE_LEFT_UP:
+          case irr::EMIE_RMOUSE_LEFT_UP: // right mouse up
             rightButtonDown = false;
-            std::cout << "R MOUSE UP" << std::endl;
             break;
 
-          case irr::EMIE_LMOUSE_PRESSED_DOWN:
+          case irr::EMIE_LMOUSE_PRESSED_DOWN: // left mouse down
             leftButtonDown = true;
-            std::cout << "L MOUSE DOWN" << std::endl;
+            gameInstance->clickEvent(BORBIE_LEFT_CLICK);
             break;
 
-          case irr::EMIE_LMOUSE_LEFT_UP:
-            //MouseState.RightButtonDown = false;
+          case irr::EMIE_LMOUSE_LEFT_UP: // left mouse up
             leftButtonDown = false;
-            std::cout << "L MOUSE UP" << std::endl;
             break;
 
           default:

@@ -52,12 +52,11 @@ void Vehicles::update(){
 	
 	// if spawn timer is ready, and there aren't too many vehicles in the
 	//  world, create a new vehicle at a random spawn point.
-	u32 curTime = this->device->getTimer()->getTime();
-	if( curTime >= this->nextSpawnTime &&
+	if( this->gameInstance->currentGameTime >= this->nextSpawnTime &&
 	    this->objList.size() < MAX_NUMBER_VEHICLES)
 	{
 	    this->spawnRandomVehicle();
-	    this->nextSpawnTime = curTime + SPAWN_TIME_MS;
+	    this->nextSpawnTime = this->gameInstance->currentGameTime + SPAWN_TIME_MS;
 	}
 }
 
