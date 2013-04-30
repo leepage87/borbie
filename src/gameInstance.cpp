@@ -147,7 +147,7 @@ GameInstance::GameInstance(
       0,						// parent (none)
       PLAYER_ROTATE_SPEED,	// rotate speed
       playerMoveSpeed,        // move speed
-      80085,						// ID
+      IDFlag_IsPickable,		// ID
       keyMap,					// keymap
       9,						// keymap size
       noVerticalMovement,		// no vertical movement (true = up/down disabled)
@@ -171,13 +171,6 @@ GameInstance::GameInstance(
   camera->addAnimator(anim);
   anim->drop();
 
-  IMeshSceneNode* cameraBox = smgr->addCubeSceneNode();
-  cameraBox->setParent(camera);
-  cameraBox->setPosition(vector3df(0, 0, 0));
-  cameraBox->setScale(vector3df(3.0, 10.0, 3.0));
-  cameraBox->setID(80085);
-  cameraBox->setVisible(false);
-  metaTriSelector->addTriangleSelector(cameraBox->getTriangleSelector());
   //create beatDown ray selector
   selector = new CastRay(smgr, camera);
   highlightedSceneNode = 0;
