@@ -96,49 +96,6 @@ void GameObject::setMetaTriSelector(IMetaTriangleSelector *metaTriSelector){
 }
 
 
-// this is hackery!
-void GameObject::applyExplosionDamage(int numLists, ...){
-    // get list of function arguments
-    va_list args;
-    va_start(args, numLists);
-    
-    // get this node's position (optimizing!)
-    vector3df explodePos = this->sceneNode->getPosition();
-    
-    // iterate through the list of arguments
-    for(int i=0; i<numLists; ++i){
-        ObjectList *objects = va_arg(args, ObjectList *);
-        // iterate through each list and check if it's close enough to this obj
-        int numObjs = objects->objList.size();
-        for(int j=0; j<numObjs; ++j){
-            ISceneNode *curNode = objects->objList[j]->getNode();
-            // if this (thrown) object IS the current node, ignore it
-            if(curNode == this->sceneNode)
-                continue;
-            // if this (thrown) node is NOT visible, ignore it
-            else if(!curNode->isVisible())
-                continue;
-            // otherwise, check if the distance is close enough, and apply damage
-            //  based on the distance to the explosion center
-            float distance = curNode->getPosition().getDistanceFrom(explodePos);
-            if(distance <= this->explosionRadius){
-                int damage = this->explosionDamage; // max damage
-                if(distance > 400){ // if more than 400 away, scale down damage
-                    float scale = (distance-400) / (this->explosionRadius-400);
-                    damage = int(this->explosionDamage * scale);
-                }
-                objects->objList[j]->applyDamage(damage);
-                std::cout << "Damaged @distance=" << distance <<
-                    " for @damage=" << damage << std::endl;
-            }
-        }
-    }
-    
-    // done with arguments
-    va_end(args);
-}
-
-
 // GET: health - returns the object's current health (in int form)
 int GameObject::getHealth() const {
 	return this->health;

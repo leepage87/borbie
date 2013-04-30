@@ -123,11 +123,6 @@ class GameObject {
 	virtual void explode();
 	virtual bool hasExploded(); // returns TRUE if this object has exploded
 	
-	// if this node exploded, apply explosion damage around its own explosion
-	//  radius (scaled based on distance from explosion center), and apply
-	//  the appropriate amount of explosion damage.
-	virtual void applyExplosionDamage(int numLists, ...);
-	
 	// updates the object's animation/effects and other possible timers;
 	// RETURNS: value (defined as constants above) of action that the
 	//  caller of this update function should take on this object.
