@@ -16,6 +16,11 @@ using namespace core;
 using namespace gui;
 
 
+// GAMEPLAY CONSTANTS
+const float BORBIE_PUNCH_DAMAGE = 75;
+const float BORBIE_PUNCH_DELAY_MS = 250;
+
+
 // CONSTRUCTOR:
 //  builds the GameInstance object and initializes all internal game objects,
 //  such as buildings, vehicles, etc.
@@ -38,6 +43,10 @@ GameInstance::GameInstance(
   this->audioSystem = audioSystem;
   this->receiver = receiver;
   this->timer = device->getTimer();
+  
+  // initialize all game timers to 0
+  this->currentGameTime = 0;
+  this->nextPunchTime = 0;
 
   ((BorbiesEventReceiver*)(this->receiver))->setGameInstance(this);
 
@@ -227,7 +236,10 @@ GameInstance::~GameInstance(){
 //  happen once every two seconds.
 void GameInstance::punch() {
     ISceneNode *target = selector->getClickTargetShort();
-    if(target) {
+    // if ready to punch, and not carrying a vehicle, and a target is found
+    if(this->currentGameTime >= this->nextPunchTime &&
+        !this->carriedVehicle && target)
+    {
         // try to get a target, either a building, a vehicle, or an enemy
         GameObject *targetObj = buildings->getObject(target);
         if(!targetObj)
@@ -237,8 +249,9 @@ void GameInstance::punch() {
         
         // if a target object WAS found, proceed to apply damage to it
         if(targetObj){
-            targetObj->applyDamage(1000);
-            std::cout << "Pwned the target" << std::endl;
+            targetObj->applyDamage(BORBIE_PUNCH_DAMAGE);
+            std::cout << "Punched the target" << std::endl;
+            this->nextPunchTime = this->currentGameTime + BORBIE_PUNCH_DELAY_MS;
         }
     }
 }
@@ -597,7 +610,7 @@ void GameInstance::updateThrownObject(){
       // make everything around it take damage:
       applyExplosionDamage(carriedVehicle);
       
-      //// clean up temporaries (make we can pick up more vehicles)
+      // clean up temporaries (make we can pick up more vehicles)
       vehicleThrown = false;
       carriedVehicle = 0;
     }

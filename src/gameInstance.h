@@ -109,6 +109,7 @@ class GameInstance {
     
     // gameplay events
     void punch(); // try to punch something
+    unsigned int nextPunchTime; // lock to prevent punch by click spamming
     
 
   public:
