@@ -40,6 +40,7 @@ class CastRay {
     //  distance of 400 game units.
 	irr::scene::ISceneNode* getTarget(); // DEPRECATED: use getClickTarget()
     irr::scene::ISceneNode* getClickTarget();
+    irr::scene::ISceneNode* getClickTargetShort();
 
     // Returns the node of the nearest object thrown at, up to a
     //  distance of ??? game units.

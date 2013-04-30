@@ -107,6 +107,9 @@ class GameInstance {
     void createRainParticleSystem(const char *texture);
     void setRainEmitter(irr::scene::IParticleEmitter *emitter);
     
+    // gameplay events
+    void punch(); // try to punch something
+    
 
   public:
     Borbie *player;

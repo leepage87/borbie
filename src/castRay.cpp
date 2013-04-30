@@ -14,6 +14,7 @@ using namespace scene;
 using namespace core;
 
 const f32 CLICK_RAY_LENGTH = 600.0f;
+const f32 CLICK_RAY_LENGTH_SHORT = 300.0f;
 const f32 THROW_RAY_LENGTH = 10000.0f;
 
 //constructor:
@@ -46,10 +47,16 @@ irr::scene::ISceneNode * CastRay::getTarget(float distance) {
 	return selected;
 }
 
-// Returns the first ISceneNode in the current scene directly up to 400 units
+// Returns the first ISceneNode in the current scene directly up to 600 units
 //  away. Returns NULL if nothing is there.
 irr::scene::ISceneNode* CastRay::getClickTarget(){
     return this->getTarget(CLICK_RAY_LENGTH);
+}
+
+// Returns the first ISceneNode in the current scene directly up to 400 units
+//  away. Returns NULL if nothing is there.
+irr::scene::ISceneNode* CastRay::getClickTargetShort(){
+    return this->getTarget(CLICK_RAY_LENGTH_SHORT);
 }
 
 // Same as getClickTarget: DEPRECATED
