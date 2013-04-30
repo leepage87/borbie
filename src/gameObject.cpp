@@ -153,9 +153,11 @@ unsigned int GameObject::update(){
     if(this->updateMode == GAME_OBJ_MODE_EXPLODED){
         unsigned int curTime = this->gameInstance->currentGameTime;
         if(curTime >= this->explosionStopTime) { // if explosion is done
-            // stop the explosion
-            this->explosionParticleSystem->setEmitter(0);
-            this->explosionParticleSystemLarge->setEmitter(0);
+            // stop the explosion (if one exists!)
+            if(this->explosionParticleSystem)
+                this->explosionParticleSystem->setEmitter(0);
+            if(this->explosionParticleSystemLarge)
+                this->explosionParticleSystemLarge->setEmitter(0);
             this->updateMode = GAME_OBJ_MODE_PENDING_DELETE;
             // delete after 5 seconds
             this->timeToDelete = curTime + GAME_OBJ_DELETE_TIME_MS;
@@ -188,8 +190,9 @@ bool GameObject::hasExploded(){
 }
 
 
-// Causes this object to explode, making it vanish, and return a particle
-//	effect node animating the explosion effect in its current position.
+// Causes this object to explode, making it vanish and apply explosion damage
+//  to its surroundings. Also calls the particle effect method to create the
+//  visuals for the explosion.
 void GameObject::explode(){
     // if already exploded, don't do it again
     if(this->hasBeenExploded)
@@ -200,7 +203,33 @@ void GameObject::explode(){
     
     // TODO - make explosion size scale with this->explosionRadius
 
+    //this->createExplosionEffect();
+	
+	// run this explosion for the predefined number of miliseconds.
+	this->explosionStopTime = this->device->getTimer()->getTime()
+	    + GAME_OBJ_EXPLOSION_TIME_MS;
+	this->updateMode = GAME_OBJ_MODE_EXPLODED;
+	
+	// set the node visible, and remove it from the global collision meta
+	this->sceneNode->setVisible(false);
+	this->gameInstance->removeCollision(this->sceneNode->getTriangleSelector());
+	
+	// add this object to the GameInstance's updator to keep the timers going
+	this->gameInstance->addUpdateObject(this);
+	//attempt at splash damage on exploding buildings and shit
+	this->gameInstance->applyExplosionDamage(this);
     
+    // update player score
+    this->gameInstance->player->updateScore(startingHealth);
+    
+    // play explosion sound effect
+	this->audioSystem->playSound3d(
+	    this->gameInstance->explosionSound1,
+	    this);
+}
+
+
+void GameObject::createExplosionEffect(){
 	// add a new explosion particle systems (for the two intermixed explosions)
     this->explosionParticleSystem =
 		this->smgr->addParticleSystemSceneNode(false);
@@ -226,7 +255,7 @@ void GameObject::explode(){
 	IParticleGravityAffector* pgaf = explosionParticleSystem->createGravityAffector
 											(vector3df(0.F,-0.2F,0.0F), 200U);
 	explosionParticleSystem->addAffector(pgaf);
-  pgaf->drop();
+    pgaf->drop();
 
 	// add fade-out affector to the fire particle system
 	IParticleAffector* explosionFadeOutAffector =
@@ -276,26 +305,4 @@ void GameObject::explode(){
 	this->explosionParticleSystemLarge->setMaterialTexture(0,
 	this->driver->getTexture("assets/textures/fire.bmp")); // fire colored
 	this->explosionParticleSystemLarge->setMaterialType(EMT_TRANSPARENT_ADD_COLOR);
-	
-	// run this explosion for the predefined number of miliseconds.
-	this->explosionStopTime = this->device->getTimer()->getTime()
-	    + GAME_OBJ_EXPLOSION_TIME_MS;
-	this->updateMode = GAME_OBJ_MODE_EXPLODED;
-	
-	// set the node visible, and remove it from the global collision meta
-	this->sceneNode->setVisible(false);
-	this->gameInstance->removeCollision(this->sceneNode->getTriangleSelector());
-	
-	// add this object to the GameInstance's updator to keep the timers going
-	this->gameInstance->addUpdateObject(this);
-	//attempt at splash damage on exploding buildings and shit
-	this->gameInstance->applyExplosionDamage(this);
-    
-    // update player score
-    this->gameInstance->player->updateScore(startingHealth);
-    
-    // play explosion sound effect
-	this->audioSystem->playSound3d(
-	    this->gameInstance->explosionSound1,
-	    this);
 }

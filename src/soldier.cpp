@@ -120,19 +120,7 @@ void Soldier::fire(){
 
 // Causes this object to explode, making it vanish, and return a particle
 //	effect node animating the explosion effect in its current position.
-void Soldier::explode(){
-    // TODO - make explosion size scale with this->explosionRadius
-
-    // if already exploded, don't do it again
-    if(this->hasBeenExploded)
-        return;
-    
-	// add a new explosion particle systems (for the two intermixed explosions)
-    this->explosionParticleSystem =
-		this->smgr->addParticleSystemSceneNode(false);
-    this->explosionParticleSystemLarge =
-        this->smgr->addParticleSystemSceneNode(false);
-
+void Soldier::createExplosionEffect(){
 	// add an emitter to the first explosion particle system (pink sparkles)
 	IParticleEmitter *explosionEmitter =
 	    this->explosionParticleSystem->createBoxEmitter(
@@ -152,13 +140,13 @@ void Soldier::explode(){
 	IParticleGravityAffector* pgaf = explosionParticleSystem->createGravityAffector
 											(vector3df(0.F,-0.2F,0.0F), 200U);
 	explosionParticleSystem->addAffector(pgaf);
-  pgaf->drop();
+    pgaf->drop();
 
 	// add fade-out affector to the fire particle system
 	IParticleAffector* explosionFadeOutAffector =
 	    explosionParticleSystem->createFadeOutParticleAffector();
 	this->explosionParticleSystem->addAffector(explosionFadeOutAffector);
-	// DO NOT DROP! - recycling it for the second particle system
+	explosionFadeOutAffector->drop();
 	
 	// customize the first fire particle system positioning, etc.
 	vector3df explosionPos = this->sceneNode->getPosition();
@@ -173,18 +161,6 @@ void Soldier::explode(){
 	this->explosionParticleSystem->setMaterialTexture(0,
 	this->driver->getTexture("assets/textures/blood.bmp"));
 	this->explosionParticleSystem->setMaterialType(EMT_TRANSPARENT_ADD_COLOR);
-
-	// run this explosion for the predefined number of miliseconds.
-	this->explosionStopTime = this->device->getTimer()->getTime()
-	    + GAME_OBJ_EXPLOSION_TIME_MS;
-	this->updateMode = GAME_OBJ_MODE_EXPLODED;
 	
-	// set the node visible, and remove it from the global collision meta
-	this->sceneNode->setVisible(false);
-	this->gameInstance->removeCollision(this->sceneNode->getTriangleSelector());
-	
-	// add this object to the GameInstance's updator to keep the timers going
-	this->gameInstance->addUpdateObject(this);
-	//attempt at splash damage on exploding buildings and shit
-	//this->gameInstance->applyExplosionDamage(this);
+	std::cout << "Soldier gone boom " << std::endl;
 }

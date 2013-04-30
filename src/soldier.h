@@ -19,6 +19,9 @@ class Soldier : public GameObject {
 	Soldier(
 	    GameInstance *gameInstance,
 		float posX, float posY, float posZ);
+    
+    // override the explosion effect.
+    virtual void createExplosionEffect();
 
 	virtual void applyCollision(
 			irr::scene::IMetaTriangleSelector *metaTriSelector
@@ -27,6 +30,5 @@ class Soldier : public GameObject {
 	void targetRay();
 	bool canShoot();
 	void fire();
-	void explode();
 };
 #endif

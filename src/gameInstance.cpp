@@ -352,7 +352,7 @@ void GameInstance::applyExplosionDamage(GameObject *explodingObject) {
         player->applyDamage(damage);
         std::cout << "Damaged borbie @distance=" << distance <<
             " for @damage=" << damage << std::endl;
-    } 
+    }
 }
 
 

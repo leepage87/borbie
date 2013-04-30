@@ -25,7 +25,7 @@ class GameInstance;
 class AudioSystem;
 
 
-// GameObject standard values
+// GameObject standard (default) values
 //	TODO: modify as needed
 #define GAME_OBJ_MAXHEALTH 1000
 #define GAME_OBJ_EXPLOSION_RADIUS 1500
@@ -60,8 +60,8 @@ enum GameObjectType {
 // GameObject class (abstract):
 class GameObject {
 
-    // declare friend to have access to all of GameObject's members
-    friend class ObjectList;
+  // declare friend to have access to all of GameObject's members
+  friend class ObjectList;
 
   protected:
 	// pointers to Irrlicht scene objects as needed
@@ -92,6 +92,7 @@ class GameObject {
 	GameObjectType objectType;
 	
 	// explosion variables
+	virtual void createExplosionEffect(); // create the particles
 	irr::scene::IParticleSystemSceneNode *explosionParticleSystem;
 	irr::scene::IParticleSystemSceneNode *explosionParticleSystemLarge;
 	irr::u32 explosionStopTime;
