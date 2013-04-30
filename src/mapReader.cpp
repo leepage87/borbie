@@ -114,8 +114,8 @@ void MapReader::readCoordFile(const char *fileName){
         
         // Create the Point, scaled to the map's scale
         Point pos;
-        pos.X = (farX * coordX) + xOffset;
-        pos.Y = (farY * coordY) + yOffset;
+        pos.X = (farX * coordX);// + xOffset;
+        pos.Y = (farY * coordY);// + yOffset;
         
         // Push the coordinates to the correct list, based on type.
         switch(type){

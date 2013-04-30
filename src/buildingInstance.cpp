@@ -35,8 +35,10 @@ BuildingInstance::BuildingInstance(
     float actualPosY = posY + (height * 10) / 2;
     
     // set x,z positions based on width and depth respectively (center it)
-    float actualPosX = posX + (width * 10) / 2;
-    float actualPosZ = posZ + (depth * 10) / 2;
+    //float actualWidth = width * 10;
+    //float actualDepth = depth * 10;
+    float actualPosX = posX;// + actualWidth / 2;
+    float actualPosZ = posZ;// + actualDepth / 2;
     
 	this->sceneNode = smgr->addCubeSceneNode();
 	this->sceneNode->setScale(vector3df(width, height, depth));
@@ -58,17 +60,6 @@ BuildingInstance::BuildingInstance(
 	this->height = height;
 	this->posY = posY;
 }
-
-
-/*BuildingInstance::~BuildingInstance(){
-    std::cout << "Deleted" << std::endl;
-	if(this->fireParticleSystem)
-		this->fireParticleSystem->remove();
-    if(this->sparkParticleSystem)
-        this->sparkParticleSystem->remove();
-    if(this->roofNode)
-        this->roofNode->remove();
-}*/
 
 
 // Adds a triangle selector to the given meta triangle selectior to add this
@@ -199,6 +190,8 @@ void BuildingInstance::setAblaze(){
 }
 
 
+// Override: explode also removes the fire effect particle systems, AND AND AND
+//  it makes the roof go away.
 void BuildingInstance::explode(){
     // call super class explode
     GameObject::explode();
