@@ -23,11 +23,11 @@ Soldier::Soldier(
 	: GameObject(gameInstance)
 {
     sceneNode =
-    	smgr->addAnimatedMeshSceneNode(smgr->getMesh("assets/models/enemies/green_army_man.3DS"));
+    	smgr->addMeshSceneNode(smgr->getMesh("assets/models/enemies/armydude.obj"));
 	sceneNode->setPosition(vector3df(posX, posY, posZ));
-	sceneNode->setScale(vector3df(0.7,0.7,0.7));
+	sceneNode->setScale(vector3df(10,10,10));
 	sceneNode->setVisible(true);
-	sceneNode->setMaterialFlag(EMF_LIGHTING, false);
+	sceneNode->setMaterialFlag(EMF_LIGHTING, true);
 	setHealth(350);
 }
 
@@ -87,7 +87,7 @@ void Soldier::fire(){
 		//figure out how long it should take to get there, so the animator SPEED is constant
 		u32 time = (u32)(length / SPEED);
 		f32 scale = 20000/length;
-		std::cout<<"Scale is: " + scale <<std::endl;
+		//std::cout<<"Scale is: " + scale <<std::endl;
 		bulletEnd.X *= scale;
 		bulletEnd.Z *= scale;
 
