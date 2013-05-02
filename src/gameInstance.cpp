@@ -110,7 +110,7 @@ GameInstance::GameInstance(
 
   // add the vehicles and generate initial spawns
   this->vehicles = new Vehicles(metaTriSelector, this);
-  // this->vehicles->generateVehicles(); -- TODO: implement!
+  this->vehicles->generateVehicles();
 
   // default vehicle throwing variables to nothing
   this->carriedVehicle = 0;
@@ -310,7 +310,7 @@ void GameInstance::applyExplosionDamage(GameObject *explodingObject) {
             // if the exploding object is a building, reduce splash damage
             //  to prevent instant-killing an entire city. That would suck.
             if(explodingObject->getObjectType() == TYPE_BUILDING)
-                damage = damage / 10;
+                damage = damage / 20;
             buildings->objList[i]->applyDamage(damage);
             std::cout << "Damaged building @distance=" << distance <<
                 " for @damage=" << damage << std::endl;

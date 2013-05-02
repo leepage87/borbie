@@ -42,6 +42,46 @@ Vehicles::Vehicles(
 }
 
 
+// Generates the initial batch of vehicles randomly between two road intersections,
+//  and assigns them to go towards one of them. The number of vehicles generated
+//  is however many maximum number of vehicles are allowed for this map.
+void Vehicles::generateVehicles(){
+    int numRoadIntersections = MapReader::roadIntersectionCoords.size();
+    
+    for(int i=0; i<MAX_NUMBER_VEHICLES; i++){
+        // TODO - does not check for accidental "island" nodes, which should
+        //  not exist anyway and MapReader should check for those.
+        
+        // get first intersection randomly
+        int rand = Random::randomInt(numRoadIntersections);
+        RoadIntersection first = MapReader::roadIntersectionCoords[rand];
+        
+        // get second intersection randomly
+        rand = Random::randomInt(first.connections.size());
+        RoadIntersection *second = first.connections[rand];
+        
+        // randomly find a position between the two intersections
+        float pos = Random::randomFloat();
+        float vehicleX = first.X + (pos * (second->X - first.X));
+        float vehicleY = first.Y + (pos * (second->Y - first.Y));
+        std::cout << "X = " << vehicleX << std::endl;
+        std::cout << "Y = " << vehicleY << std::endl;
+        
+        // add the vehicle to the map
+        VehicleInstance *vehicle = this->addRandomVehicle(
+            vehicleX,
+            ROAD_HEIGHT,
+            vehicleY);
+        
+        // make the vehicle move towards the second intersection
+        vehicle->setNextIntersection(second);
+        vehicle->go();
+    }
+}
+
+
+// Called each frame to update all of the vehicles in the world, and check if
+//  it's time to spawn a new vehicle.
 void Vehicles::update(){
     // update all vehicles
     for(std::vector<GameObject *>::iterator it = this->objList.begin();
@@ -65,18 +105,19 @@ void Vehicles::update(){
 //  If the MapReader has no spawn points, does nothing. Vehicle type is
 //  is completely randomized.
 void Vehicles::spawnRandomVehicle(){
+    // choose a random spawn point
     int numSpawnPoints = MapReader::vehicleSpawnPoints.size();
     if(numSpawnPoints == 0)
-        return;
-    
-    // choose a random spawn point
+        return; // if no spawn points, can't do anything, so return.
     int spawnPointIndex = Random::randomInt(numSpawnPoints);
     RoadSpawnPoint spawnPoint = MapReader::vehicleSpawnPoints[spawnPointIndex];
     VehicleInstance *spawnedVehicle = this->addRandomVehicle(
         spawnPoint.X,
-        ROAD_HEIGHT, //70, // road height
+        ROAD_HEIGHT,
         spawnPoint.Y );
     
+    // make newly spawned vehicle move to the first intersection connected to
+    //  its spawn point.
     spawnedVehicle->setNextIntersection(spawnPoint.connection);
     spawnedVehicle->go();
 }
@@ -101,7 +142,6 @@ VehicleInstance* Vehicles::makeVehicle(int modelIndex,
 	IAnimatedMesh *mesh =
 	    smgr->getMesh(this->modelList[modelIndex]);
 	// TODO - if you don't drop this, is it a memory leak?
-
 
 	VehicleInstance *newVehicle
 		= new VehicleInstance(

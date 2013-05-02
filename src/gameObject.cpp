@@ -123,6 +123,11 @@ void GameObject::setHealth(int newHealth){
 	this->health = newHealth;
 }
 
+// SET: max health - set the objects maximum health
+void GameObject::setMaxHealth(int newHealth){
+	this->startingHealth = newHealth;
+}
+
 // SET: explosion radius - set the objects current explosion radius
 void GameObject::setExplosionRadius(int newRadius){
 	this->explosionRadius = newRadius;

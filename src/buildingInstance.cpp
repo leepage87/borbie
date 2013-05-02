@@ -30,6 +30,10 @@ BuildingInstance::BuildingInstance(
 {
     this->objectType = TYPE_BUILDING;
     
+    // set initial health to 2000
+    this->setHealth(2000);
+    this->setMaxHealth(2000);
+    
     // calculate y-position based on height (with posY being the base
     //  of the building. Irrlicht centers objects at 1/2 height.
     float actualPosY = posY + (height * 10) / 2;
@@ -111,7 +115,7 @@ void BuildingInstance::setAblaze(){
 	IParticleEmitter *fireEmitter = this->fireParticleSystem->createBoxEmitter(
 		aabbox3d<f32>(-5, 0, -5, 5, 1, 5),  // emitter size
 		vector3df(0.0f,0.3f,0.0f),          // direction + speed
-		3000, 8000,                         // min,max particles per second
+		1000, 5000,                         // min,max particles per second
 		SColor(0,255,255,255),              // darkest color
 		SColor(0,255,255,255),              // brightest color
 		minLifetime, maxLifetime,           // min, max particle lifetime
@@ -151,7 +155,7 @@ void BuildingInstance::setAblaze(){
 	IParticleEmitter *sparkEmitter = this->sparkParticleSystem->createBoxEmitter(
 		aabbox3d<f32>(-5, 0, -5, 5, this->height/8, 5),  // emitter size
 		vector3df(0.0f, 0.8f, 0.0f),        // direction + speed
-		250, 1200,                          // min,max particles per second
+		25, 250,                            // min,max particles per second
 		SColor(0,255,255,255),              // darkest color
 		SColor(0,255,255,255),              // brightest color
 		800, 850,                           // min, max particle lifetime

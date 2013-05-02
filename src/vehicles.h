@@ -39,8 +39,12 @@ class Vehicles : public ObjectList {
     // list of vehicle models
 	std::vector<const char *> modelList;
 	
+	// Randomly spawns a vehicle into the world using a Map spawnpoint.
+	void spawnRandomVehicle();
+	
 	// vehicle construction functions
 	VehicleInstance* makeVehicle(int modelIndex, float xPos, float yPos, float zPos);
+	VehicleInstance* addRandomVehicle(float xPos, float yPos, float zPos);
 	
 	// virtual game time indicating when to spawn the next vehicle.
 	unsigned int nextSpawnTime;
@@ -51,14 +55,13 @@ class Vehicles : public ObjectList {
 		irr::scene::IMetaTriangleSelector *metaTriSelector,
 		GameInstance *gameInstance);
 	
-	VehicleInstance* addRandomVehicle(float xPos, float yPos, float zPos);
+	// fills the map with vehicles (randomly positioned). Number of vehicles is
+	//  determined by maximum amount allowed for the current map.
+	void generateVehicles();
 	
 	// Updates all vehicles to keep on moving, and also spawns vehicles at
 	//  appropriate times.
 	void update();
-	
-	// Randomly spawns a vehicle into the world using a Map spawnpoint.
-	void spawnRandomVehicle(); // TODO - make private
 	
 	
 }; // end of Vehicles class
