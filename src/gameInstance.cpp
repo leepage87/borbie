@@ -303,14 +303,14 @@ void GameInstance::applyExplosionDamage(GameObject *explodingObject) {
         float distance = curNode->getPosition().getDistanceFrom(explodePos);
         if(distance <= explosionRadius){
             int damage = explosionDamage; // max damage
-            // if the exploding object is a building, reduce splash damage
-            //  to prevent instant-killing an entire city. That would suck.
-            if(explodingObject->getObjectType() == TYPE_BUILDING)
-                damage = damage / 10;
             if(distance > 400){ // if more than 400 away, scale down damage
                 float scale = (distance-400) / (explosionRadius-400);
                 damage = int(explosionDamage * scale);
             }
+            // if the exploding object is a building, reduce splash damage
+            //  to prevent instant-killing an entire city. That would suck.
+            if(explodingObject->getObjectType() == TYPE_BUILDING)
+                damage = damage / 10;
             buildings->objList[i]->applyDamage(damage);
             std::cout << "Damaged building @distance=" << distance <<
                 " for @damage=" << damage << std::endl;
