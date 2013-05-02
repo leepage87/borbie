@@ -34,8 +34,7 @@ Soldier::Soldier(
 	lastFireTime = 0;
 	moving = false;
     fireDelay = getRandomFireDelay() * 1000;
-    std::cout<<"firedelay is:" << fireDelay<<std::endl;
-	
+    this->burst = audioSystem->createSound3d("assets/sounds/soundEffects/burst.mp3");
 }
 
 void Soldier::applyCollision(
@@ -67,7 +66,7 @@ void Soldier::aim(){
 	vector3df start = sceneNode->getPosition();
 	start.Y += 75;
 	vector3df end = gameInstance->getCamera()->getPosition();
-	end.Y -= 125;
+	end.Y -= 150;
 	vector3df vect = end-start;
 	sceneNode->setRotation(vect.getHorizontalAngle());
 	length = (f32)start.getDistanceFrom(end);
@@ -95,8 +94,7 @@ void Soldier::targetRay(){
 		ISceneNode * selected =
 			collMan->getSceneNodeAndCollisionPointFromRay(
 			ray, intersection, hitTriangle, IDFlag_IsPickable, 0);
-		if (selected == sceneNode)
-            //bust a cap
+		if (selected == sceneNode)//bust a cap
 			fire();	
 	}
 }
@@ -142,6 +140,9 @@ void Soldier::fire(){
 	vector3df start = sceneNode->getPosition();
 	start.Y+=60;
 	bill->setPosition(start);
+
+    this->audioSystem->playSound3d(burst,
+	    this);
 	
 	const int MUZZLE_FLASH_TIME = 50;
 	

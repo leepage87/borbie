@@ -4,6 +4,7 @@
 
 #include <irrlicht.h>
 #include "gameObject.h"
+#include "audioSystem.h"
 
 
 // define GameInstance to use pointer
@@ -18,6 +19,7 @@ class Soldier : public GameObject {
 	bool moving;
 	irr::f32 length;
     irr::core::vector3df destination;
+    SoundClip *burst;
 	
 	public:
 	Soldier(
