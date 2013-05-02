@@ -118,6 +118,12 @@ void Soldier::fire(){
 // Causes this object to explode, making it vanish, and return a particle
 //	effect node animating the explosion effect in its current position.
 void Soldier::createExplosionEffect(){
+	// add a new explosion particle systems (for the two intermixed explosions)
+    this->explosionParticleSystem =
+		this->smgr->addParticleSystemSceneNode(false);
+    this->explosionParticleSystemLarge =
+        this->smgr->addParticleSystemSceneNode(false);
+    
 	// add an emitter to the first explosion particle system (pink sparkles)
 	IParticleEmitter *explosionEmitter =
 	    this->explosionParticleSystem->createBoxEmitter(

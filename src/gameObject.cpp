@@ -200,10 +200,9 @@ void GameObject::explode(){
 	
 	// flag as exploded
     this->hasBeenExploded = true;
-    
-    // TODO - make explosion size scale with this->explosionRadius
 
-    //this->createExplosionEffect();
+    // create the explosion effect using particles
+    this->createExplosionEffect();
 	
 	// run this explosion for the predefined number of miliseconds.
 	this->explosionStopTime = this->device->getTimer()->getTime()
@@ -216,7 +215,8 @@ void GameObject::explode(){
 	
 	// add this object to the GameInstance's updator to keep the timers going
 	this->gameInstance->addUpdateObject(this);
-	//attempt at splash damage on exploding buildings and shit
+	
+	// damage everything it its surroundings
 	this->gameInstance->applyExplosionDamage(this);
     
     // update player score
@@ -229,7 +229,12 @@ void GameObject::explode(){
 }
 
 
+// Creates an explosion particle system around this object to animate an explosion
+//  event. This is a generic explosion, and should be overridden for each object
+//  specifically as needed.
 void GameObject::createExplosionEffect(){
+    // TODO - make explosion size scale with this->explosionRadius
+    
 	// add a new explosion particle systems (for the two intermixed explosions)
     this->explosionParticleSystem =
 		this->smgr->addParticleSystemSceneNode(false);
