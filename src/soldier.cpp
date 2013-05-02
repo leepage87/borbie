@@ -94,7 +94,7 @@ void Soldier::fire(){
 		IBillboardSceneNode * bill;
 		bill = smgr->addBillboardSceneNode();
     	bill->setMaterialType(video::EMT_TRANSPARENT_ADD_COLOR );
-    		bill->setMaterialTexture(0, driver->getTexture("assets/textures/particle.bmp"));
+    		bill->setMaterialTexture(0, driver->getTexture("assets/textures/muzFlash.png"));
     	bill->setMaterialFlag(video::EMF_LIGHTING, false);
     	bill->setMaterialFlag(video::EMF_ZBUFFER, false);
 		float randomNum = Random::randomFloat(-10.0, 15.0);
