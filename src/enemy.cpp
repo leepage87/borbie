@@ -45,7 +45,7 @@ void Enemy::updateEnemy(){
         for(int j=0; j<numObjs; ++j){
 			if(objList[j]){
 				if(objList[j]->getNode()->isVisible())
-            	((Soldier*)objList[j])->aim();
+            	((Soldier*)objList[j])->updatePosition();
 			}	
 		}
 

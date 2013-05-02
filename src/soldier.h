@@ -14,8 +14,10 @@ class Soldier : public GameObject {
 	private:
 	irr::core::line3d<irr::f32> ray;
 	unsigned int lastFireTime;
+    int fireDelay;
 	bool moving;
 	irr::f32 length;
+    irr::core::vector3df destination;
 	
 	public:
 	Soldier(
@@ -28,6 +30,9 @@ class Soldier : public GameObject {
 	virtual void applyCollision(
 			irr::scene::IMetaTriangleSelector *metaTriSelector
 		);
+    int  getRandomFireDelay();
+    void updatePosition();
+    void isMoving();
 	void aim();
 	void targetRay();
 	void move();

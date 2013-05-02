@@ -33,6 +33,8 @@ Soldier::Soldier(
 	setHealth(350);
 	lastFireTime = 0;
 	moving = false;
+    fireDelay = getRandomFireDelay() * 1000;
+    std::cout<<"firedelay is:" << fireDelay<<std::endl;
 	
 }
 
@@ -46,7 +48,19 @@ void Soldier::applyCollision(
 	metaTriSelector->addTriangleSelector(sceneNode->getTriangleSelector());
 }
 
+int Soldier::getRandomFireDelay(){
+    return Random::randomInt(1, 4);
+}
 
+void Soldier::updatePosition(){
+    aim();
+    isMoving();
+}
+
+void Soldier::isMoving(){
+    if (sceneNode->getPosition() == destination)
+        moving = false;
+}
 
 void Soldier::aim(){
 	//turn the soldier to look at you
@@ -57,7 +71,14 @@ void Soldier::aim(){
 	vector3df vect = end-start;
 	sceneNode->setRotation(vect.getHorizontalAngle());
 	length = (f32)start.getDistanceFrom(end);
-	//start casting rays to test line of sight if player is within 4000 units
+    
+	//Tactically operate oneself towards the enemy (Borbie)
+    //in a high speed, low drag type of way
+    //if enemy distance is between 5k-2k units
+    if (!moving && length < 5000 && length > 2000)
+        move();
+    //Tactically attempt to bust a cap if Borbie is
+    //within 4000 units
 	if (length < 4000)
 		targetRay();	
 }
@@ -75,34 +96,33 @@ void Soldier::targetRay(){
 			collMan->getSceneNodeAndCollisionPointFromRay(
 			ray, intersection, hitTriangle, IDFlag_IsPickable, 0);
 		if (selected == sceneNode)
+            //bust a cap
 			fire();	
 	}
-	if (!moving && ray.start.getDistanceFrom(ray.end) > 3000){
-	    std::cout<<"calling move"<<std::endl;
-	    move();
-	    }
 }
 
 void Soldier::move(){
     moving = true;
-    vector3df destination = ray.end;
-    destination.X -= ray.start.X + 0.5*(ray.end.X-ray.start.X);
-    destination.Y-= ray.start.Y + 0.5*(ray.end.Y-ray.start.Y);
+    vector3df start = sceneNode->getPosition();
+    destination = gameInstance->getCamera()->getPosition();
+    destination.X = start.X + 0.2*(destination.X-start.X);
+    destination.Z = start.Z + 0.2*(destination.Z-start.Z);
+    destination.Y = 70;//ground height
     length = (f32)ray.start.getDistanceFrom(destination);
-    const int SOLDIER_MOVE_SPEED = 1;
-    f32 time = length / SOLDIER_MOVE_SPEED;
+    const int SOLDIER_MOVE_SPEED = 1.75;
+    f32 time = length * SOLDIER_MOVE_SPEED;
     ISceneNodeAnimator* anim =
-            gameInstance->getSceneManager()->createFlyStraightAnimator(ray.start,
+            gameInstance->getSceneManager()->createFlyStraightAnimator(start,
             destination, time, false);
     sceneNode->addAnimator(anim);
     anim->drop();
 }
 
 bool Soldier::canShoot(){
-	const int FIRE_TIME_DELAY = 3000;
 	unsigned int currentTime = gameInstance->getDevice()->getTimer()->getTime();
-	if (currentTime - lastFireTime  > FIRE_TIME_DELAY)
+	if (currentTime - lastFireTime  > fireDelay){
 		return true;
+    }
 	return false;
 }
 
@@ -115,7 +135,7 @@ void Soldier::fire(){
 		bill->setMaterialFlag(video::EMF_LIGHTING, false);
 		bill->setMaterialFlag(video::EMF_ZBUFFER, false);
 		float randomNum = Random::randomFloat(-10.0, 15.0);
-		bill->setSize(core::dimension2d<f32>(20.0+randomNum, 20.0+randomNum));
+		bill->setSize(core::dimension2d<f32>(30.0+randomNum, 30.0+randomNum));
 		bill->setID(0);//not pickable by ray caster
 		
 		//get enemy position, adjust muzzle flash height to barrel
@@ -140,12 +160,12 @@ void Soldier::createExplosionEffect(){
     this->explosionParticleSystemLarge =
         this->smgr->addParticleSystemSceneNode(false);
     
-	// add an emitter to the first explosion particle system (pink sparkles)
+	// add an emitter for BLOODSPLOSION!!!!!!!!!!!!!!!
 	IParticleEmitter *explosionEmitter =
 	    this->explosionParticleSystem->createBoxEmitter(
 		    aabbox3d<f32>(-5, 0, -5, 5, 1, 5),  // emitter size
 		    vector3df(0.0f,0.0f,0.1f),          // direction + speed
-		    12000, 14000,                       // min,max particles per second
+		    12000, 140000,                       // min,max particles per second
 		    SColor(0,255,255,255),              // darkest color
 		    SColor(0,255,255,255),              // brightest color
 		    200, 800,                          // min, max particle lifetime
