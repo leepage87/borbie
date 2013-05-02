@@ -128,27 +128,35 @@ bool Soldier::canShoot(){
 
 void Soldier::fire(){
 	lastFireTime = gameInstance->getDevice()->getTimer()->getTime();
-		IBillboardSceneNode * bill;
-		bill = smgr->addBillboardSceneNode();
-		bill->setMaterialType(video::EMT_TRANSPARENT_ADD_COLOR );
-    		bill->setMaterialTexture(0, driver->getTexture("assets/textures/muzFlash.png"));
-		bill->setMaterialFlag(video::EMF_LIGHTING, false);
-		bill->setMaterialFlag(video::EMF_ZBUFFER, false);
-		float randomNum = Random::randomFloat(-10.0, 15.0);
-		bill->setSize(core::dimension2d<f32>(30.0+randomNum, 30.0+randomNum));
-		bill->setID(0);//not pickable by ray caster
+	IBillboardSceneNode * bill;
+	bill = smgr->addBillboardSceneNode();
+	bill->setMaterialType(video::EMT_TRANSPARENT_ADD_COLOR );
+    bill->setMaterialTexture(0, driver->getTexture("assets/textures/muzFlash.png"));
+	bill->setMaterialFlag(video::EMF_LIGHTING, false);
+	bill->setMaterialFlag(video::EMF_ZBUFFER, false);
+	float randomNum = Random::randomFloat(-10.0, 15.0);
+	bill->setSize(core::dimension2d<f32>(30.0+randomNum, 30.0+randomNum));
+	bill->setID(0);//not pickable by ray caster
 		
-		//get enemy position, adjust muzzle flash height to barrel
-		vector3df start = sceneNode->getPosition();
-		start.Y+=60;
-		bill->setPosition(start);
+	//get enemy position, adjust muzzle flash height to barrel
+	vector3df start = sceneNode->getPosition();
+	start.Y+=60;
+	bill->setPosition(start);
 	
-		const int MUZZLE_FLASH_TIME = 50;
+	const int MUZZLE_FLASH_TIME = 50;
 	
-		ISceneNodeAnimator* anim = gameInstance->getSceneManager()->createDeleteAnimator(MUZZLE_FLASH_TIME);
-		bill->addAnimator(anim);
-		anim->drop();
-	gameInstance->player->applyDamage(3);		
+	ISceneNodeAnimator* anim = gameInstance->getSceneManager()->createDeleteAnimator(MUZZLE_FLASH_TIME);
+	bill->addAnimator(anim);
+	anim->drop();
+    if (!miss())
+	    gameInstance->player->applyDamage(3);		
+}
+
+bool Soldier::miss(){
+    if (Random::randomInt(1,6) <= 4){//20% chance
+        return false;
+    }
+    return true;
 }
 
 // Causes this object to explode, making it vanish, and return a particle

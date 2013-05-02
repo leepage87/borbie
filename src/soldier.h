@@ -38,5 +38,6 @@ class Soldier : public GameObject {
 	void move();
 	bool canShoot();
 	void fire();
+    bool miss();
 };
 #endif
