@@ -64,8 +64,6 @@ void Vehicles::generateVehicles(){
         float pos = Random::randomFloat();
         float vehicleX = first.X + (pos * (second->X - first.X));
         float vehicleY = first.Y + (pos * (second->Y - first.Y));
-        std::cout << "X = " << vehicleX << std::endl;
-        std::cout << "Y = " << vehicleY << std::endl;
         
         // add the vehicle to the map
         VehicleInstance *vehicle = this->addRandomVehicle(
@@ -143,14 +141,13 @@ VehicleInstance* Vehicles::makeVehicle(int modelIndex,
 	    smgr->getMesh(this->modelList[modelIndex]);
 	// TODO - if you don't drop this, is it a memory leak?
 
+    // create the new vehicle, add collision to it, and add it to the list
 	VehicleInstance *newVehicle
 		= new VehicleInstance(
 			this->gameInstance,
 			xPos, yPos, zPos, mesh, modelIndex
 		);
-	
 	newVehicle->applyCollision(this->metaTriSelector);
-	
 	this->addObject(newVehicle);
 	
 	return newVehicle;
