@@ -37,8 +37,7 @@ Soldier::Soldier(
 }
 
 void Soldier::applyCollision(
-	irr::scene::IMetaTriangleSelector *metaTriSelector)
-{
+	irr::scene::IMetaTriangleSelector *metaTriSelector){
 	// add its triangles to the global collision meta selector
 	ITriangleSelector *selector =
 		smgr->createTriangleSelectorFromBoundingBox(sceneNode);
@@ -90,7 +89,7 @@ void Soldier::move(){
     destination.X -= ray.start.X + 0.5*(ray.end.X-ray.start.X);
     destination.Y-= ray.start.Y + 0.5*(ray.end.Y-ray.start.Y);
     length = (f32)ray.start.getDistanceFrom(destination);
-    const int SOLDIER_MOVE_SPEED = 100;
+    const int SOLDIER_MOVE_SPEED = 1;
     f32 time = length / SOLDIER_MOVE_SPEED;
     ISceneNodeAnimator* anim =
             gameInstance->getSceneManager()->createFlyStraightAnimator(ray.start,

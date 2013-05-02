@@ -528,10 +528,9 @@ void GameInstance::drawGUI(){
 // (private)
 // gets a highlighted scene node if there is one
 void GameInstance::updateSelector(){
-  // if a highlighted node exists, deselect (un-highlight it). If it is still
+  // if a highlighted node exists, deselect. If it is still
   //  selected this frame, it will be re-selected below.
   if (highlightedSceneNode) {
-    highlightedSceneNode->setMaterialFlag(EMF_LIGHTING, true);
     highlightedSceneNode = 0;
   }
 
@@ -539,7 +538,6 @@ void GameInstance::updateSelector(){
   ISceneNode * selected = selector->getTarget();
   if (selected){
     highlightedSceneNode = selected;
-    highlightedSceneNode->setMaterialFlag(EMF_LIGHTING, false);
   }
 
   // If no vehicle is currently being carried and the right mouse button is
