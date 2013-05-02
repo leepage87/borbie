@@ -14,6 +14,8 @@ class Soldier : public GameObject {
 	private:
 	irr::core::line3d<irr::f32> ray;
 	unsigned int lastFireTime;
+	bool moving;
+	irr::f32 length;
 	
 	public:
 	Soldier(
@@ -28,6 +30,7 @@ class Soldier : public GameObject {
 		);
 	void aim();
 	void targetRay();
+	void move();
 	bool canShoot();
 	void fire();
 };

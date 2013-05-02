@@ -32,6 +32,7 @@ Soldier::Soldier(
 	sceneNode->setID(IDFlag_IsPickable);
 	setHealth(350);
 	lastFireTime = 0;
+	moving = false;
 	
 }
 
@@ -56,7 +57,7 @@ void Soldier::aim(){
 	end.Y -= 125;
 	vector3df vect = end-start;
 	sceneNode->setRotation(vect.getHorizontalAngle());
-	f32 length = (f32)start.getDistanceFrom(end);
+	length = (f32)start.getDistanceFrom(end);
 	//start casting rays to test line of sight if player is within 4000 units
 	if (length < 4000)
 		targetRay();	
@@ -75,8 +76,27 @@ void Soldier::targetRay(){
 			collMan->getSceneNodeAndCollisionPointFromRay(
 			ray, intersection, hitTriangle, IDFlag_IsPickable, 0);
 		if (selected == sceneNode)
-			fire();
+			fire();	
 	}
+	if (!moving && ray.start.getDistanceFrom(ray.end) > 3000){
+	    std::cout<<"calling move"<<std::endl;
+	    move();
+	    }
+}
+
+void Soldier::move(){
+    moving = true;
+    vector3df destination = ray.end;
+    destination.X -= ray.start.X + 0.5*(ray.end.X-ray.start.X);
+    destination.Y-= ray.start.Y + 0.5*(ray.end.Y-ray.start.Y);
+    length = (f32)ray.start.getDistanceFrom(destination);
+    const int SOLDIER_MOVE_SPEED = 100;
+    f32 time = length / SOLDIER_MOVE_SPEED;
+    ISceneNodeAnimator* anim =
+            gameInstance->getSceneManager()->createFlyStraightAnimator(ray.start,
+            destination, time, false);
+    sceneNode->addAnimator(anim);
+    anim->drop();
 }
 
 bool Soldier::canShoot(){
@@ -89,29 +109,26 @@ bool Soldier::canShoot(){
 
 void Soldier::fire(){
 	lastFireTime = gameInstance->getDevice()->getTimer()->getTime();
-	//create the billboard for the "bullet", fire 3 round burst
-	for (int i = 0; i < 3; i++){
 		IBillboardSceneNode * bill;
 		bill = smgr->addBillboardSceneNode();
-    	bill->setMaterialType(video::EMT_TRANSPARENT_ADD_COLOR );
+		bill->setMaterialType(video::EMT_TRANSPARENT_ADD_COLOR );
     		bill->setMaterialTexture(0, driver->getTexture("assets/textures/muzFlash.png"));
-    	bill->setMaterialFlag(video::EMF_LIGHTING, false);
-    	bill->setMaterialFlag(video::EMF_ZBUFFER, false);
+		bill->setMaterialFlag(video::EMF_LIGHTING, false);
+		bill->setMaterialFlag(video::EMF_ZBUFFER, false);
 		float randomNum = Random::randomFloat(-10.0, 15.0);
-    	bill->setSize(core::dimension2d<f32>(20.0+randomNum, 20.0+randomNum));
-    	bill->setID(0);//not pickable by ray caster
-	
+		bill->setSize(core::dimension2d<f32>(20.0+randomNum, 20.0+randomNum));
+		bill->setID(0);//not pickable by ray caster
+		
 		//get enemy position, adjust muzzle flash height to barrel
 		vector3df start = sceneNode->getPosition();
-		start.Y+=45;
+		start.Y+=60;
 		bill->setPosition(start);
 	
-		const int MUZZLE_FLASH_TIME = 300;
+		const int MUZZLE_FLASH_TIME = 50;
 	
 		ISceneNodeAnimator* anim = gameInstance->getSceneManager()->createDeleteAnimator(MUZZLE_FLASH_TIME);
 		bill->addAnimator(anim);
 		anim->drop();
-	}
 	gameInstance->player->applyDamage(3);		
 }
 
