@@ -24,19 +24,11 @@ Soldier::Soldier(
 {
     this->objectType = TYPE_ENEMY;
     sceneNode =
-    	smgr->addMeshSceneNode(smgr->getMesh("assets/models/enemies/armydude.obj"));
-/*=======
-    	smgr->addAnimatedMeshSceneNode(
-    	    smgr->getMesh("assets/models/enemies/green_army_man.3DS"));
->>>>>>> e32b07c054417a3ef16a4801b3d23a4450e2bf26*/
+    	smgr->addMeshSceneNode(smgr->getMesh("assets/models/enemies/soldier/armydude.obj"));
 	sceneNode->setPosition(vector3df(posX, posY, posZ));
 	sceneNode->setScale(vector3df(10,10,10));
 	sceneNode->setVisible(true);
-/*<<<<<<< HEAD
 	sceneNode->setMaterialFlag(EMF_LIGHTING, true);
-=======*/
-	sceneNode->setMaterialFlag(EMF_LIGHTING, false);
-
 	sceneNode->setID(IDFlag_IsPickable);
 	setHealth(350);
 	lastFireTime = 0;
@@ -62,7 +54,7 @@ void Soldier::aim(){
 	start.Y += 75;
 	vector3df end = gameInstance->getCamera()->getPosition();
 	end.Y -= 125;
-	vector3df vect = start-end;
+	vector3df vect = end-start;
 	sceneNode->setRotation(vect.getHorizontalAngle());
 	f32 length = (f32)start.getDistanceFrom(end);
 	//start casting rays to test line of sight if player is within 4000 units
