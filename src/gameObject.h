@@ -122,6 +122,7 @@ class GameObject {
 	
 	// standard setters
 	virtual void setHealth(int newHealth);
+	virtual void setMaxHealth(int newHealth);
 	virtual void setExplosionRadius(int newRadius);
 	virtual void setExplosionDamage(int newDamage);
 	
