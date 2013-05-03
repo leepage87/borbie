@@ -228,6 +228,7 @@ void GameObject::explode(){
     this->gameInstance->player->updateScore(startingHealth);
     
     // play explosion sound effect
+    std::cout<<"PLAYERING MOTEHRFUCKING EPXLOSION SOUND!"<<std::endl;
 	this->audioSystem->playSound3d(
 	    this->gameInstance->explosionSound1,
 	    this);
