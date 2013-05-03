@@ -33,9 +33,14 @@ void Enemy::makeEnemy(){
 			  xPos, yPos, zPos
 		  );
 		  
-		newSoldier->applyCollision(this->metaTriSelector);
+      newSoldier->applyCollision(this->metaTriSelector);
 	  this->addObject(newSoldier);
+
+      BigAssSoldier *newBigAssSoldier = new BigAssSoldier(this->gameInstance, 12000, 70, 12000);
+      newBigAssSoldier->applyCollision(this->metaTriSelector);
+      this->addObject(newBigAssSoldier);
 		//}
+
 	
 
 }

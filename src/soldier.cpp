@@ -186,13 +186,13 @@ void Soldier::createExplosionEffect(){
 	this->explosionParticleSystem->setEmitter(explosionEmitter);
 	explosionEmitter->drop(); // drop (re-created later)
 	
-	//add gravity affector to pink sparkles
+	//add gravity affector to BLOODSPLOSION!!!!!!!!!!!!
 	IParticleGravityAffector* pgaf = explosionParticleSystem->createGravityAffector
 											(vector3df(0.F,-0.2F,0.0F), 200U);
 	explosionParticleSystem->addAffector(pgaf);
     pgaf->drop();
 
-	// add fade-out affector to the fire particle system
+	// add fade-out affector to the BLOODSPLOSION!!!!!!!!!!!!
 	IParticleAffector* explosionFadeOutAffector =
 	    explosionParticleSystem->createFadeOutParticleAffector();
 	this->explosionParticleSystem->addAffector(explosionFadeOutAffector);

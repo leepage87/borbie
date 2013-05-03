@@ -7,6 +7,7 @@
 #include <irrlicht.h>
 #include "objectList.h"
 #include "soldier.h"
+#include "bigAssSoldier.h"
 
 
 
