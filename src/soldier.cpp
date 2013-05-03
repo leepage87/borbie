@@ -23,17 +23,17 @@ Soldier::Soldier(
 	: GameObject(gameInstance)
 {
     this->objectType = TYPE_ENEMY;
-    sceneNode =
+    this->sceneNode =
     	smgr->addMeshSceneNode(smgr->getMesh("assets/models/enemies/soldier/armydude.obj"));
-	sceneNode->setPosition(vector3df(posX, posY, posZ));
-	sceneNode->setScale(vector3df(10,10,10));
-	sceneNode->setVisible(true);
-	sceneNode->setMaterialFlag(EMF_LIGHTING, true);
-	sceneNode->setID(IDFlag_IsPickable);
-	setHealth(350);
-	lastFireTime = 0;
-	moving = false;
-    fireDelay = getRandomFireDelay() * 1000;
+	this->sceneNode->setPosition(vector3df(posX, posY, posZ));
+	this->sceneNode->setScale(vector3df(10,10,10));
+	this->sceneNode->setVisible(true);
+	this->sceneNode->setMaterialFlag(EMF_LIGHTING, true);
+	this->sceneNode->setID(IDFlag_IsPickable);
+	this->setHealth(350);
+	this->lastFireTime = 0;
+	this->moving = false;
+    this->fireDelay = getRandomFireDelay() * 1000;
     this->burst = audioSystem->createSound3d("assets/sounds/soundEffects/burst.mp3");
 }
 
@@ -150,7 +150,9 @@ void Soldier::fire(){
 	bill->addAnimator(anim);
 	anim->drop();
     if (!miss())
-	    gameInstance->player->applyDamage(3);		
+	    gameInstance->player->applyBulletDamage(3);
+    else
+        gameInstance->player->ricochet();		
 }
 
 bool Soldier::miss(){
