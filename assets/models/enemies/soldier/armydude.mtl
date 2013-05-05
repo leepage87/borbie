@@ -10,7 +10,6 @@ Ni 1.000000
 d 1.000000
 illum 2
 map_Kd greenskin.png
-map_Ka Models\\Soldier01\\Soldier01\\solid-green-background.jpg
 
 newmtl ___Default
 Ns 3.921569
@@ -21,7 +20,6 @@ Ni 1.000000
 d 1.000000
 illum 2
 map_Kd greenskin.png
-map_Ka Models\\Soldier01\\Soldier01\\solid-green-background.jpg
 
 newmtl smdimport_animal_reference2_smd_mesh_01
 Ns 0.000000
@@ -32,7 +30,6 @@ Ni 1.000000
 d 1.000000
 illum 2
 map_Kd greenskin.png
-map_Ka Models\\Soldier01\\Soldier01\\solid-green-background.jpg
 
 newmtl smdimport_animal_reference2_smd_mesh_013
 Ns 0.000000
@@ -43,7 +40,6 @@ Ni 1.000000
 d 1.000000
 illum 2
 map_Kd greenskin.png
-map_Ka Models\\Soldier01\\Soldier01\\solid-green-background.jpg
 
 newmtl smdimport_animal_reference2_smd_mesh_015
 Ns 0.000000
@@ -54,7 +50,6 @@ Ni 1.000000
 d 1.000000
 illum 2
 map_Kd greenskin.png
-map_Ka Models\\Soldier01\\Soldier01\\solid-green-background.jpg
 
 newmtl smdimport_animal_reference2_smd_mesh_017
 Ns 0.000000
@@ -65,7 +60,6 @@ Ni 1.000000
 d 1.000000
 illum 2
 map_Kd greenskin.png
-map_Ka Models\\Soldier01\\Soldier01\\solid-green-background.jpg
 
 newmtl smdimport_animal_reference2_smd_mesh_03
 Ns 0.000000
@@ -76,7 +70,6 @@ Ni 1.000000
 d 1.000000
 illum 2
 map_Kd greenskin.png
-map_Ka Models\\Soldier01\\Soldier01\\solid-green-background.jpg
 
 newmtl smdimport_animal_reference2_smd_mesh_05
 Ns 3.921569
@@ -97,7 +90,6 @@ Ni 1.000000
 d 1.000000
 illum 2
 map_Kd greenskin.png
-map_Ka Models\\Soldier01\\Soldier01\\solid-green-background.jpg
 
 newmtl smdimport_animal_reference2_smd_mesh_10
 Ns 0.000000

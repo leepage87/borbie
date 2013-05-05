@@ -1,11 +1,13 @@
 #ifndef BIG_ASS_SOLDIER_H
 #define BIG_ASS_SOLDIER_H
 
+#include <iostream> // TODO: debug (remove)
 
 #include <irrlicht.h>
+
 #include "gameObject.h"
 #include "audioSystem.h"
-
+#include "random.h"
 
 // define GameInstance to use pointer
 class GameInstance;
@@ -16,6 +18,7 @@ class BigAssSoldier : public GameObject {
 	irr::core::line3d<irr::f32> ray;
 	unsigned int lastFireTime;
     int fireDelay;
+    int BULLET_DAMAGE;
 	bool moving;
 	irr::f32 length;
     irr::core::vector3df destination;
@@ -34,9 +37,9 @@ class BigAssSoldier : public GameObject {
 		);
     int  getRandomFireDelay();
     void updatePosition();
-    void isMoving();
+    void setMoving();
 	void aim();
-	void targetRay();
+	bool visible();
 	void move();
 	bool canShoot();
 	void fire();

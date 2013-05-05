@@ -1,10 +1,13 @@
 #ifndef SOLDIER_H
 #define SOLDIER_H
 
+#include <iostream> // TODO: debug (remove)
 
 #include <irrlicht.h>
+
 #include "gameObject.h"
 #include "audioSystem.h"
+#include "random.h"
 
 
 // define GameInstance to use pointer
@@ -17,6 +20,7 @@ class Soldier : public GameObject {
 	unsigned int lastFireTime;
     int fireDelay;
 	bool moving;
+    int BULLET_DAMAGE;
 	irr::f32 length;
     irr::core::vector3df destination;
     SoundClip *burst;
@@ -34,9 +38,9 @@ class Soldier : public GameObject {
 		);
     int  getRandomFireDelay();
     void updatePosition();
-    void isMoving();
+    void setMoving();
 	void aim();
-	void targetRay();
+	bool visible();
 	void move();
 	bool canShoot();
 	void fire();

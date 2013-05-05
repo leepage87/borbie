@@ -53,7 +53,7 @@ GameInstance::GameInstance(
   /*** Setup Sounds and Music ***/
   
   this->bgSound = audioSystem->createSound2d("assets/sounds/yumyum.ogg");
-
+  this->bgSoundDead = audioSystem->createSound2d("assets/sounds/angryWorld.ogg");
   //Start the shitty music and loop! 
   audioSystem->playMusicLoop(bgSound); 
   audioSystem->setMusicVolume(0.15);
@@ -199,6 +199,7 @@ GameInstance::GameInstance(
 GameInstance::~GameInstance(){
   ((BorbiesEventReceiver*)receiver)->removeGameInstance();
   bgSound->release();  
+  bgSoundDead->release();
   delete this->terrain;
   delete this->skybox;
   delete this->light;
@@ -493,6 +494,14 @@ void GameInstance::update(){
   );
   this->enemies->update();
   this->vehicles->update();
+
+  if((player->getHealth() < 250) && (bgSound!=bgSoundDead))
+  {
+    bgSound = bgSoundDead; 
+    audioSystem->playMusicLoop(bgSound); 
+    audioSystem->setMusicVolume(0.2);
+    
+  }
   
   // update global (publically available) game timer
   this->currentGameTime = this->timer->getTime();

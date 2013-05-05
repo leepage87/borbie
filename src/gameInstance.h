@@ -80,12 +80,13 @@ class GameInstance {
 	// game objects (e.g. terrain, GUI, etc.)
 	AudioSystem *audioSystem;
     SoundClip *bgSound;
+    SoundClip *bgSoundDead;
 	Terrain *terrain;
 	Sky *skybox;
 	WorldLight *light;
 	Buildings *buildings;
 	Vehicles *vehicles;
-	Enemies * enemies;
+        Enemies * enemies;
 	Hud *hud;
 	
 	// private update methods to update the various subsystems:

@@ -11,9 +11,7 @@ bool BorbiesEventReceiver::OnEvent(const irr::SEvent& event){
   //MENU EVENTS
   if(game)
   {
-    SoundClip *mm = audioSystem->createSound2d("assets/sounds/menuMouseOver.wav");
-    SoundClip *newGame = audioSystem->createSound2d("assets/sounds/hugebitch.wav");
-
+    
     if(game->getGameState() == BORBIE_MAIN_MENU_STATE)
     {
 
@@ -59,7 +57,7 @@ bool BorbiesEventReceiver::OnEvent(const irr::SEvent& event){
   if(game)
     if(game->getGameState() == BORBIE_GAME_STATE)
     {
-      if (event.EventType == irr::EET_KEY_INPUT_EVENT){
+       if (event.EventType == irr::EET_KEY_INPUT_EVENT){
         //FIXME  TODO this is testing shit to see if borbi updates her health
         if(event.KeyInput.Key == irr::KEY_MINUS && !event.KeyInput.PressedDown){
           if(gameInstance && gameInstance->player)
