@@ -85,7 +85,7 @@ class GameInstance {
 	WorldLight *light;
 	Buildings *buildings;
 	Vehicles *vehicles;
-	Enemy * enemies;
+	Enemy *enemies;
 	Hud *hud;
 	
 	// private update methods to update the various subsystems:
