@@ -45,9 +45,9 @@ void Enemies::generateObjects(){
         //  normal soldier
         EnemyType type;
         if(Random::randomInt(10) == 0)
-            type = ENEMY_TYPE_SOLDIER;
+            type = NEMY_TYPE_BIG_ASS_SOLDIER;
         else
-            type = ENEMY_TYPE_BIG_ASS_SOLDIER;
+            type = ENEMY_TYPE_SOLDIER;
         
         // create the enemy at location of the given spawn point
         this->makeEnemy(
