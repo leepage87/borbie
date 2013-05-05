@@ -30,8 +30,13 @@ GameInstance::GameInstance(
     IrrlichtDevice *device,
     AudioSystem *audioSystem,
     unsigned int runMode,
-    IEventReceiver *receiver)
+    IEventReceiver *receiver,
+    Game *game)
 {
+  
+  this->game=game;
+  
+  
   /*** Setup Pointers and Irrlicht Objects ***/    
 
   // keep pointers to Irrlicht rendering pointers
@@ -179,7 +184,6 @@ GameInstance::GameInstance(
   this->player = new Borbie(this); 	
 
 
-
   /*** Test Crap ***/
 
   //TESTING ENEMY CLASS
@@ -198,6 +202,7 @@ GameInstance::GameInstance(
 //  manager is completely wiped clean of all Irrlicht objects.
 GameInstance::~GameInstance(){
   ((BorbiesEventReceiver*)receiver)->removeGameInstance();
+  this->updateList.clear();
   bgSound->release();  
   bgSoundDead->release();
   delete this->terrain;
@@ -205,6 +210,7 @@ GameInstance::~GameInstance(){
   delete this->light;
   delete this->buildings;
   delete this->vehicles;
+  delete this->player;
   delete this->selector;
   delete this->objCarry;
   if(this->rainParticleSystem)
@@ -502,7 +508,14 @@ void GameInstance::update(){
     audioSystem->setMusicVolume(0.2);
     
   }
-  
+ 
+  if(player && game)
+   if(player->getHealth() <= 0)
+   {
+    game->manageStates();
+   }
+
+
   // update global (publically available) game timer
   this->currentGameTime = this->timer->getTime();
 

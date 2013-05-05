@@ -40,23 +40,23 @@
 
 // world state enum
 enum WorldState {
-    FABULOUS,
-    WHATEVER,
-    GONETOSHIT
+  FABULOUS,
+  WHATEVER,
+  GONETOSHIT
 };
 
 
 // GameInstance class:
 class GameInstance {
   public:
-  	// list of game sounds used by multiple game classes
-  	SoundClip *burningSound;
-  	SoundClip *explosionSound1;
-  	
-  	// current game time
-  	unsigned int currentGameTime;
-  	
-  	
+    // list of game sounds used by multiple game classes
+    SoundClip *burningSound;
+    SoundClip *explosionSound1;
+
+    // current game time
+    unsigned int currentGameTime;
+
+
   private:
     // irrlicht renderer pointers
     irr::scene::ISceneManager *smgr;
@@ -67,64 +67,65 @@ class GameInstance {
     irr::ITimer *timer;
 
     CastRay *selector;
-	ObjectCarrier *objCarry;
-	irr::scene::ISceneNode *highlightedSceneNode;
-	irr::IEventReceiver *receiver;
-	irr::core::vector3df targetPos; //position object was thrown at
-	VehicleInstance *carriedVehicle; //object being carried/thrown
-	bool vehicleThrown; // true if a vehicle has been thrown
-    
+    ObjectCarrier *objCarry;
+    irr::scene::ISceneNode *highlightedSceneNode;
+    irr::IEventReceiver *receiver;
+    irr::core::vector3df targetPos; //position object was thrown at
+    VehicleInstance *carriedVehicle; //object being carried/thrown
+    bool vehicleThrown; // true if a vehicle has been thrown
+
     // collision detection pointers
-	irr::scene::IMetaTriangleSelector *metaTriSelector;
-	
-	// game objects (e.g. terrain, GUI, etc.)
-	AudioSystem *audioSystem;
+    irr::scene::IMetaTriangleSelector *metaTriSelector;
+
+    // game objects (e.g. terrain, GUI, etc.)
+    AudioSystem *audioSystem;
     SoundClip *bgSound;
     SoundClip *bgSoundDead;
-	Terrain *terrain;
-	Sky *skybox;
-	WorldLight *light;
-	Buildings *buildings;
-	Vehicles *vehicles;
-	Enemies * enemies;
-	Hud *hud;
-	
-	// private update methods to update the various subsystems:
-	//  all of these are called by the update() method.
-	void drawGUI();
+    Terrain *terrain;
+    Sky *skybox;
+    WorldLight *light;
+    Buildings *buildings;
+    Vehicles *vehicles;
+    Enemies * enemies;
+    Hud *hud;
+    Game *game;
+
+    // private update methods to update the various subsystems:
+    //  all of these are called by the update() method.
+    void drawGUI();
     void updateSelector();
     void updateThrownObject();
     std::vector<GameObject *> updateList;
-    
+
     // world state changes: update the mood of the global environment by swapping
     //  music, ambiant sound, ambiant colors and applying various world effects.
     void setWorldState(WorldState state);
     void setWorldState_wrecked();
     void setWorldState_fabulous();
-    
+
     // world effect values
     irr::scene::IParticleSystemSceneNode *rainParticleSystem;
     void createRainParticleSystem(const char *texture);
     void setRainEmitter(irr::scene::IParticleEmitter *emitter);
-    
+
     // gameplay events
     void punch(); // try to punch something
     unsigned int nextPunchTime; // lock to prevent punch by click spamming
-    
+
 
   public:
     Borbie *player;
-    
+
     GameInstance(irr::scene::ISceneManager *smgr,
-                irr::gui::IGUIEnvironment *guienv,
-    			irr::video::IVideoDriver *driver,
-    			irr::IrrlichtDevice *device,
-    			AudioSystem *audioSystem,
-    			unsigned int runMode,
-					irr::IEventReceiver *receiver);
+        irr::gui::IGUIEnvironment *guienv,
+        irr::video::IVideoDriver *driver,
+        irr::IrrlichtDevice *device,
+        AudioSystem *audioSystem,
+        unsigned int runMode,
+        irr::IEventReceiver *receiver, Game *game);
 
     ~GameInstance();
-    
+
     // getters for all Irrlicht objects: used by objects in the game
     //  to get pointers to all necessary Irrlicht objects.
     irr::gui::IGUIEnvironment* getIGUIEnvironment() {return this->guienv;}
@@ -134,26 +135,26 @@ class GameInstance {
     AudioSystem* getAudioSystem() { return this->audioSystem; }
     irr::scene::ICameraSceneNode* getCamera() { return camera; }
     irr::scene::IMetaTriangleSelector* getMetaSelector() {
-            return this->metaTriSelector;
-        }
-	
-	// register a click event (using BorbieInput enum)
-	void clickEvent(BorbieInputEvent click);
-	
-	// sets a new object to the update list
-	void addUpdateObject(GameObject *toUpdate);
-	
+      return this->metaTriSelector;
+    }
+
+    // register a click event (using BorbieInput enum)
+    void clickEvent(BorbieInputEvent click);
+
+    // sets a new object to the update list
+    void addUpdateObject(GameObject *toUpdate);
+
     // updates all of the game subsystems (hud, selectors, sounds, etc.)
     void update();
 
 
     //the coziest place
     void applyExplosionDamage(GameObject *gameObject);
-    
-	// collision detection functions (add and remove from meta tri selector)
-	void addCollision(irr::scene::ITriangleSelector *selector);
-	void removeCollision(irr::scene::ITriangleSelector *selector);
-  
+
+    // collision detection functions (add and remove from meta tri selector)
+    void addCollision(irr::scene::ITriangleSelector *selector);
+    void removeCollision(irr::scene::ITriangleSelector *selector);
+
 
 }; // end of GameInstance class
 
