@@ -47,11 +47,13 @@ void Enemies::generateObjects(){
         else
             type = ENEMY_TYPE_SOLDIER;
         
+        int xOffset = Random::randomInt(2000) - 1000;
+        int yOffset = Random::randomInt(2000) - 1000;
         // create the enemy at location of the given spawn point
         this->makeEnemy(
-            MapReader::enemySpawnPoints[spawnIndex].X,
+            MapReader::enemySpawnPoints[spawnIndex].X + xOffset,
             70, // ENEMY_HEIGHT
-            MapReader::enemySpawnPoints[spawnIndex].Y,
+            MapReader::enemySpawnPoints[spawnIndex].Y + yOffset,
             type);
     }
 }
