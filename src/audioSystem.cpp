@@ -462,7 +462,7 @@ void AudioSystem::playSound3dLoop(SoundClip *sound,
 // Once update is finished, calls the FMOD audio system to update itself.
 // This function should be called every frame
 //  (possibly except when in the main menu or not playing 3D sounds).
-void AudioSystem::update(
+void AudioSystem::updateSound(
     const irr::core::vector3df playerPos,
     const irr::core::vector3df playerRot
 ){

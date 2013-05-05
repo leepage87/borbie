@@ -17,6 +17,7 @@
 // include obj header
 #include "gameObject.h"
 #include "mapReader.h"
+#include "updatable.h"
 
 
 // define GameInstance to use pointer
@@ -24,7 +25,7 @@ class GameInstance;
 
 
 // VehicleInstance class:
-class VehicleInstance : public GameObject {
+class VehicleInstance : public GameObject, public Updatable {
 
   private:
     // location of the next intersection to go to
@@ -59,7 +60,7 @@ class VehicleInstance : public GameObject {
 	
 	// Updates animator checks. If animation done, selects next random
 	//  position to go to.
-	void updateMovement();
+	virtual void update();
 	
 	
 	virtual void applyCollision(

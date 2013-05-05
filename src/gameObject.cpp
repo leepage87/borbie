@@ -152,7 +152,7 @@ void GameObject::applyDamage(int amount){
 //  take upon this happening. If this update was called for no reason, then
 //  GAME_OBJ_REMOVE_FROM_UPDATE_LIST will be returned, indicating that this
 //  object should no longer be updated each frame.
-unsigned int GameObject::update(){
+unsigned int GameObject::updateTimers(){
     // if object was exploded, check if explosion timer is up. If so, keep it
     //  in the list but flag it for deleting.
     if(this->updateMode == GAME_OBJ_MODE_EXPLODED){

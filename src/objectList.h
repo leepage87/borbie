@@ -58,6 +58,9 @@ class ObjectList {
 	// add an object to the list of objects containted in this list
 	virtual void addObject(GameObject* object);
 	
+	// generate the objects in the world map (pure virtual)
+	virtual void generateObjects() = 0;
+	
 	
 }; // end of ObjectList class
 

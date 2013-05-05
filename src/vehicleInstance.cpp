@@ -96,7 +96,7 @@ void VehicleInstance::stop() {
 	
 // Updates animator checks. If animation done, selects next random
 //  position to go to.
-void VehicleInstance::updateMovement() {
+void VehicleInstance::update() {
     // If animation is done, remove animator and switch to next node.
     if(this->motionAnimator && this->motionAnimator->hasFinished()){
         this->motionAnimator->drop();
