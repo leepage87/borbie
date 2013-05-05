@@ -185,7 +185,7 @@ GameInstance::GameInstance(
   //TESTING ENEMY CLASS
   enemies = new Enemies (metaTriSelector, this);
   enemies->generateObjects();
-  enemies->makeEnemy();
+  //enemies->makeEnemy();
   // TODO - memory leak (erase enemies in destructor)
 
   // TODO- remove
