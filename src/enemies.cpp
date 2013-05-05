@@ -32,10 +32,8 @@ Enemies::Enemies(
 //  borbie. If she wrecks stuff, more will spawn.
 void Enemies::generateObjects(){
     int numSpawnPoints = MapReader::enemySpawnPoints.size();
-    if(numSpawnPoints == 0){
-        std::cout << "No spawn points... enemies not generated." << std::endl;
+    if(numSpawnPoints == 0)
         return;
-        }
     
     for(int i=0; i<STARTING_NUMBER_ENEMIES; ++i){
         // choose a random spawn point
