@@ -45,7 +45,7 @@ void Enemies::generateObjects(){
         //  normal soldier
         EnemyType type;
         if(Random::randomInt(10) == 0)
-            type = NEMY_TYPE_BIG_ASS_SOLDIER;
+            type = ENEMY_TYPE_BIG_ASS_SOLDIER;
         else
             type = ENEMY_TYPE_SOLDIER;
         
