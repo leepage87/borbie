@@ -510,10 +510,9 @@ void GameInstance::update(){
   }
  
   if(player && game)
-   if(player->getHealth() <= 0)
-   {
-    game->manageStates();
-   }
+    if(player->hasExploded()) 
+      game->manageStates();
+  
 
 
   // update global (publically available) game timer
