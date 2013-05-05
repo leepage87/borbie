@@ -130,7 +130,7 @@ void AudioSystem::playMusic(FMOD::Sound *musicSound, bool looped){
         std::cout << "FMOD ERROR: setMode (sound) failed." << std::endl;
     
     // attempt to play the sound file in the music channel.
-    result = system->playSound(FMOD_CHANNEL_FREE, musicSound, 0,
+    result = system->playSound(FMOD_CHANNEL_REUSE, musicSound, 0,
         &(this->musicChannel));
     if(result != FMOD_OK)
         std::cout << "FMOD ERROR: playSound failed." << std::endl;
@@ -462,7 +462,7 @@ void AudioSystem::playSound3dLoop(SoundClip *sound,
 // Once update is finished, calls the FMOD audio system to update itself.
 // This function should be called every frame
 //  (possibly except when in the main menu or not playing 3D sounds).
-void AudioSystem::update(
+void AudioSystem::updateSound(
     const irr::core::vector3df playerPos,
     const irr::core::vector3df playerRot
 ){

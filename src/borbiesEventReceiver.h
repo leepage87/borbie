@@ -33,15 +33,19 @@ class BorbiesEventReceiver : public irr::IEventReceiver {
 		bool rightButtonDown;
 		bool leftButtonDown;
     GameInstance* gameInstance;
-
+    SoundClip *mm;
+    SoundClip *newGame;
+      
   public:
-   
    // set the device pointer
-   void setDevice(GameInstance* gameInstance, irr::IrrlichtDevice *device, Game *game, AudioSystem *audioSystem){
+   void initialize(GameInstance* gameInstance, irr::IrrlichtDevice *device, Game *game, AudioSystem *audioSystem){
     this->audioSystem = audioSystem;
    	this->device = device;
    	this->game = game;
     this->gameInstance=gameInstance;
+    this->mm = audioSystem->createSound2d("assets/sounds/menuMouseOver.wav");
+    this->newGame = audioSystem->createSound2d("assets/sounds/hugebitch.wav");
+   
    }
 
    void setGameInstance(GameInstance* gameInstance)

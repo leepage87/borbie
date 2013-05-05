@@ -47,7 +47,7 @@ Buildings::Buildings(
 //  adding a randomly sized building at each point as dictated by the
 //  coordinate list.
 // --- (public) ---
-void Buildings::generateBuildings(){
+void Buildings::generateObjects(){
     // read in the map building coordinate file
     for(std::vector<Point>::iterator it = MapReader::buildingCoords.begin();
 		it != MapReader::buildingCoords.end(); ++it)

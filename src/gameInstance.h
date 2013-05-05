@@ -25,7 +25,7 @@
 #include "borbiesEventReceiver.h"
 #include "vehicleInstance.h"
 #include "soldier.h"
-#include "enemy.h"
+#include "enemies.h"
 #include "borbie.h"
 
 
@@ -80,19 +80,19 @@ class GameInstance {
 	// game objects (e.g. terrain, GUI, etc.)
 	AudioSystem *audioSystem;
     SoundClip *bgSound;
+    SoundClip *bgSoundDead;
 	Terrain *terrain;
 	Sky *skybox;
 	WorldLight *light;
 	Buildings *buildings;
 	Vehicles *vehicles;
-	Enemy *enemies;
+        Enemies * enemies;
 	Hud *hud;
 	
 	// private update methods to update the various subsystems:
 	//  all of these are called by the update() method.
 	void drawGUI();
     void updateSelector();
-    void updateSound(); 
     void updateThrownObject();
     std::vector<GameObject *> updateList;
     
