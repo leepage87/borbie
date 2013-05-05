@@ -173,7 +173,7 @@ void MapReader::readCoordFile(const char *fileName){
             case 's': // spawnpoint (for enemies, vehicles, etc.)
             {
                 switch(spawnType){
-                    case 'v': // vehicle
+                    case 'v': // vehicle spawn point
                     {
                         // find road intersection with matching id
                         int numIntersections =
@@ -199,7 +199,8 @@ void MapReader::readCoordFile(const char *fileName){
                         MapReader::vehicleSpawnPoints.push_back(spawnPoint);
                     }
                         break;
-                    case 'e': // enemy - TODO
+                    case 'e': // enemy spawn point
+                        MapReader::enemySpawnPoints.push_back(pos);
                         break;
                     default:
                         break;

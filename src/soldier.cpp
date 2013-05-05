@@ -1,13 +1,12 @@
 /*	File: soldier.cpp
- *	Authors: idk your names
+ *	Authors:  tkys
  *	
  *	This class creates soldiers so you can throw cars at them and shit
  */
 
 #include "soldier.h"
 #include "gameInstance.h"
-#include "random.h"
-#include <iostream> // TODO: debug (remove)
+
 using namespace std;
 
 using namespace irr;
@@ -15,13 +14,20 @@ using namespace scene;
 using namespace core;
 using namespace video;
 
-
+/*************************************************************
+ * Constructor for the big ass soldier
+ * Param: gameInstance the game instance containing all necessary pointers
+ * Param: posX the X coordinate at which the soldier will be spawned
+ * Param: posY the Y coordinate at which the soldier will be spawned
+ * Param: posZ the Z coordinate at which the soldier will be spawned
+ *************************************************************/
 Soldier::Soldier(
 	GameInstance *gameInstance,
 	float posX, float posY, float posZ)
 	// call super GameObject constructor first:
 	: GameObject(gameInstance)
 {
+    this->BULLET_DAMAGE = 20;
     this->objectType = TYPE_ENEMY;
     this->sceneNode =
     	smgr->addMeshSceneNode(smgr->getMesh("assets/models/enemies/soldier/armydude.obj"));
@@ -37,6 +43,11 @@ Soldier::Soldier(
     this->burst = audioSystem->createSound3d("assets/sounds/soundEffects/burst.mp3");
 }
 
+/*************************************************************
+ * Applies collision to the model created
+ * Param: metaTriSelector pointer to the IMetaFriangleSelector
+ *        that handles collision
+ ************************************************************/
 void Soldier::applyCollision(
 	irr::scene::IMetaTriangleSelector *metaTriSelector){
 	// add its triangles to the global collision meta selector
@@ -46,21 +57,35 @@ void Soldier::applyCollision(
 	selector->drop();
 	metaTriSelector->addTriangleSelector(sceneNode->getTriangleSelector());
 }
-
+/*************************************************************
+ * Gets an integer between 1 and 3 to use as the time between
+ * each shot
+ * Returns: random integer between 1 and 3
+ ************************************************************/
 int Soldier::getRandomFireDelay(){
     return Random::randomInt(1, 4);
 }
-
+/*************************************************************
+ * An updater method that calls aim() if the soldier has LOS
+ * on the player, also calls setMoving
+ ************************************************************/
 void Soldier::updatePosition(){
     aim();
-    isMoving();
+    setMoving();
 }
 
-void Soldier::isMoving(){
+/*************************************************************
+ * Sets the moving field to false once the soldier gets to
+ * his destination
+ ************************************************************/
+void Soldier::setMoving(){
     if (sceneNode->getPosition() == destination)
         moving = false;
 }
 
+/*************************************************************
+ * Orientates the soldier towards the players position
+ ************************************************************/
 void Soldier::aim(){
 	//turn the soldier to look at you
 	vector3df start = sceneNode->getPosition();
@@ -72,33 +97,40 @@ void Soldier::aim(){
 	length = (f32)start.getDistanceFrom(end);
     
 	//Tactically operate oneself towards the enemy (Borbie)
-    //in a high speed, low drag type of way
-    //if enemy distance is between 5k-2k units
-    if (!moving && length < 5000 && length > 2000)
+    //if enemy distance is between 7k-2k
+    if (!moving && length < 10000 && length > 2000 && visible())
         move();
     //Tactically attempt to bust a cap if Borbie is
-    //within 4000 units
-	if (length < 4000)
-		targetRay();	
+    //within 6000 units
+	if (length < 6000 && canShoot())
+            fire();	
 }
 
-void Soldier::targetRay(){
-	if(canShoot()){
-		ray.end = sceneNode->getPosition();
-		ray.start = gameInstance->getCamera()->getPosition();
-	
-		ISceneCollisionManager* collMan = gameInstance->getSceneManager()->getSceneCollisionManager();
-		vector3df intersection;
-		triangle3df hitTriangle;
-	
-		ISceneNode * selected =
-			collMan->getSceneNodeAndCollisionPointFromRay(
-			ray, intersection, hitTriangle, IDFlag_IsPickable, 0);
-		if (selected == sceneNode)//bust a cap
-			fire();	
-	}
+/*************************************************************
+ * Casts a ray to determine whether or not the soldier can see
+ * the player for use with movement and shooting
+ * Returns: a boolean value
+ ************************************************************/
+bool Soldier::visible(){
+    ray.end = sceneNode->getPosition();
+	ray.start = gameInstance->getCamera()->getPosition();
+
+	ISceneCollisionManager* collMan = gameInstance->getSceneManager()->getSceneCollisionManager();
+	vector3df intersection;
+	triangle3df hitTriangle;
+
+	ISceneNode * selected =
+		collMan->getSceneNodeAndCollisionPointFromRay(
+		ray, intersection, hitTriangle, IDFlag_IsPickable, 0);
+    if (selected == sceneNode)//Direct line of sight
+        return true;
+    return false;	
 }
 
+/*************************************************************
+ * Moves the soldier toward the enemy, only gets called when
+ * there is a direct line of sight
+ ************************************************************/
 void Soldier::move(){
     moving = true;
     vector3df start = sceneNode->getPosition();
@@ -107,7 +139,7 @@ void Soldier::move(){
     destination.Z = start.Z + 0.2*(destination.Z-start.Z);
     destination.Y = 70;//ground height
     length = (f32)ray.start.getDistanceFrom(destination);
-    const int SOLDIER_MOVE_SPEED = 1.75;
+    const int SOLDIER_MOVE_SPEED = 1.5;
     f32 time = length * SOLDIER_MOVE_SPEED;
     ISceneNodeAnimator* anim =
             gameInstance->getSceneManager()->createFlyStraightAnimator(start,
@@ -116,14 +148,25 @@ void Soldier::move(){
     anim->drop();
 }
 
+/*************************************************************
+ * Tests to see if the soldier is allowed to shoot, returns
+ * true if the fireDelay time has passed, false if otherwise
+ * Returns: a boolean value
+ ************************************************************/
 bool Soldier::canShoot(){
 	unsigned int currentTime = gameInstance->getDevice()->getTimer()->getTime();
-	if (currentTime - lastFireTime  > fireDelay){
+	if (currentTime - lastFireTime  > fireDelay && visible()){
 		return true;
     }
 	return false;
 }
 
+/*************************************************************
+ * Animates a muzzle flash billboard with firing sound and does
+ * damage to borbie.  This method is only called when the soldier
+ * is within range and has direct line of sight.  He has an 80%
+ * chance of hitting his target.
+ ************************************************************/
 void Soldier::fire(){
 	lastFireTime = gameInstance->getDevice()->getTimer()->getTime();
 	IBillboardSceneNode * bill;
@@ -155,8 +198,13 @@ void Soldier::fire(){
         gameInstance->player->ricochet();		
 }
 
+/*************************************************************
+ * Gets a random number between 1 and 5, if the number is less
+ * than or equal to 5 the soldier has hit his target (80%).
+ * Returns: a boolean value
+ ************************************************************/
 bool Soldier::miss(){
-    if (Random::randomInt(1,6) <= 4){//20% chance
+    if (Random::randomInt(1,6) <= 5){//20% chance
         return false;
     }
     return true;
@@ -176,13 +224,13 @@ void Soldier::createExplosionEffect(){
 	    this->explosionParticleSystem->createBoxEmitter(
 		    aabbox3d<f32>(-5, 0, -5, 5, 1, 5),  // emitter size
 		    vector3df(0.0f,0.0f,0.1f),          // direction + speed
-		    12000, 140000,                       // min,max particles per second
+		    2000, 10000,                       // min,max particles per second
 		    SColor(0,255,255,255),              // darkest color
 		    SColor(0,255,255,255),              // brightest color
 		    200, 800,                          // min, max particle lifetime
 		    360,                                // max angle degrees
-		    dimension2df(20.0f, 20.0f),         // min start size
-		    dimension2df(40.0f, 40.0f));        // max start size
+		    dimension2df(40.0f, 40.0f),         // min start size
+		    dimension2df(200.0f, 200.0f));        // max start size
 	this->explosionParticleSystem->setEmitter(explosionEmitter);
 	explosionEmitter->drop(); // drop (re-created later)
 	
@@ -198,7 +246,7 @@ void Soldier::createExplosionEffect(){
 	this->explosionParticleSystem->addAffector(explosionFadeOutAffector);
 	explosionFadeOutAffector->drop();
 	
-	// customize the first fire particle system positioning, etc.
+	// customize the particle system positioning, etc.
 	vector3df explosionPos = this->sceneNode->getPosition();
 	if(explosionPos.Y < 0) // adjust position: no explosions underground!
 	    explosionPos.Y = 0;

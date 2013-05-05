@@ -16,11 +16,18 @@
 class GameInstance;
 
 
+// Types of enemies
+enum EnemyType {
+    ENEMY_TYPE_SOLDIER,
+    ENEMY_TYPE_BIG_ASS_SOLDIER
+};
+
+
 // Enemy class: abstract, extends GameObject
 class Enemies : public ObjectList, public Updatable {
   private:
     // creates a new enemy at position x, y, z
-	void makeEnemy(float x, float y, float z);
+	void makeEnemy(float x, float y, float z, EnemyType type);
 	
   public:
 	Enemies (irr::scene::IMetaTriangleSelector *metaTriSelector,

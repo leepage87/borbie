@@ -32,41 +32,48 @@ Enemies::Enemies(
 //  borbie. If she wrecks stuff, more will spawn.
 void Enemies::generateObjects(){
     int numSpawnPoints = MapReader::enemySpawnPoints.size();
-    if(numSpawnPoints == 0){
-        std::cout << "No spawn points... enemies not generated." << std::endl;
+    if(numSpawnPoints == 0)
         return;
-        }
     
     for(int i=0; i<STARTING_NUMBER_ENEMIES; ++i){
         // choose a random spawn point
         int spawnIndex = Random::randomInt(numSpawnPoints);
         
+        // determine enemy type: 10% chance to get big ass solider, otherwise
+        //  normal soldier
+        EnemyType type;
+        if(Random::randomInt(10) == 0)
+            type = ENEMY_TYPE_BIG_ASS_SOLDIER;
+        else
+            type = ENEMY_TYPE_SOLDIER;
+        
         // create the enemy at location of the given spawn point
         this->makeEnemy(
             MapReader::enemySpawnPoints[spawnIndex].X,
             70, // ENEMY_HEIGHT
-            MapReader::enemySpawnPoints[spawnIndex].Y);
+            MapReader::enemySpawnPoints[spawnIndex].Y,
+            type);
     }
 }
 
 
 // create a new enemy
-void Enemies::makeEnemy(float xPos, float yPos, float zPos){
-	//for (int i = 0; i <= 1200; i+=300){
-	  Soldier *newSoldier
-		  = new Soldier(
-			  this->gameInstance,
-			  xPos, yPos, zPos
-		  );
-		  
-      newSoldier->applyCollision(this->metaTriSelector);
-	  this->addObject(newSoldier);
+void Enemies::makeEnemy(float xPos, float yPos, float zPos, EnemyType type){
 
-      /*BigAssSoldier *newBigAssSoldier = new BigAssSoldier(this->gameInstance, 12000, 70, 12000);
-      newBigAssSoldier->applyCollision(this->metaTriSelector);
-      this->addObject(newBigAssSoldier);
-		//}
-    */
+    // create the enemy based on type given
+    GameObject *enemy;
+    switch(type){
+        case ENEMY_TYPE_BIG_ASS_SOLDIER: // if big ass soldier
+            enemy = new BigAssSoldier(this->gameInstance, xPos, yPos, zPos);
+            break;
+        case ENEMY_TYPE_SOLDIER: // if regular solider or unknown type
+        default:
+            enemy = new Soldier(this->gameInstance, xPos, yPos, zPos);
+            break;
+    }
+   
+    enemy->applyCollision(this->metaTriSelector);
+	this->addObject(enemy);
 }
 
 
