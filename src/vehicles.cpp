@@ -45,7 +45,7 @@ Vehicles::Vehicles(
 // Generates the initial batch of vehicles randomly between two road intersections,
 //  and assigns them to go towards one of them. The number of vehicles generated
 //  is however many maximum number of vehicles are allowed for this map.
-void Vehicles::generateVehicles(){
+void Vehicles::generateObjects(){
     int numRoadIntersections = MapReader::roadIntersectionCoords.size();
     
     for(int i=0; i<MAX_NUMBER_VEHICLES; i++){
@@ -85,7 +85,7 @@ void Vehicles::update(){
     for(std::vector<GameObject *>::iterator it = this->objList.begin();
 	    it != this->objList.end(); ++it)
 	{
-		((VehicleInstance *)(*it))->updateMovement();
+		((VehicleInstance *)(*it))->update();
 	}
 	
 	// if spawn timer is ready, and there aren't too many vehicles in the

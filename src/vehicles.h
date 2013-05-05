@@ -20,6 +20,7 @@
 // include building header
 #include "objectList.h"
 #include "vehicleInstance.h"
+#include "updatable.h"
 
 
 // declare GameInstance to use its pointer
@@ -33,7 +34,7 @@ enum VehicleTypes {
 
 
 // Buildings class:
-class Vehicles : public ObjectList {
+class Vehicles : public ObjectList, public Updatable {
 
   private:
     // list of vehicle models
@@ -57,11 +58,11 @@ class Vehicles : public ObjectList {
 	
 	// fills the map with vehicles (randomly positioned). Number of vehicles is
 	//  determined by maximum amount allowed for the current map.
-	void generateVehicles();
+	virtual void generateObjects();
 	
 	// Updates all vehicles to keep on moving, and also spawns vehicles at
 	//  appropriate times.
-	void update();
+	virtual void update();
 	
 	
 }; // end of Vehicles class

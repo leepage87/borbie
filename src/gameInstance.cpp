@@ -1,7 +1,6 @@
 #include "gameInstance.h"
 #include "game.h"
 #include "keyBindings.h"
-#include "enemy.h"
 #include "mapReader.h"
 #include "borbie.h"
 
@@ -106,11 +105,11 @@ GameInstance::GameInstance(
 
   // add the buildings and generate city based on coordinate file
   this->buildings = new Buildings(metaTriSelector, this);
-  this->buildings->generateBuildings();
+  this->buildings->generateObjects();
 
   // add the vehicles and generate initial spawns
   this->vehicles = new Vehicles(metaTriSelector, this);
-  this->vehicles->generateVehicles();
+  this->vehicles->generateObjects();
 
   // default vehicle throwing variables to nothing
   this->carriedVehicle = 0;
@@ -184,7 +183,8 @@ GameInstance::GameInstance(
   /*** Test Crap ***/
 
   //TESTING ENEMY CLASS
-  enemies = new Enemy (metaTriSelector, this);
+  enemies = new Enemies (metaTriSelector, this);
+  enemies->generateObjects();
   enemies->makeEnemy();
   // TODO - memory leak (erase enemies in destructor)
 
@@ -487,8 +487,11 @@ void GameInstance::update(){
     // update all subsystems
   this->drawGUI();
   this->updateSelector();
-  this->updateSound();
-  this->enemies->updateEnemy();
+  this->audioSystem->updateSound(
+    this->camera->getPosition(),
+    this->camera->getRotation()
+  );
+  this->enemies->update();
   this->vehicles->update();
   
   // update global (publically available) game timer
@@ -502,7 +505,7 @@ void GameInstance::update(){
       it != this->updateList.end(); ++it)
   {
     //std::cout << updateList.size() << std::endl;
-    unsigned int retval = (*it)->update();
+    unsigned int retval = (*it)->updateTimers();
     switch(retval){
       case GAME_OBJ_DELETE: // delete object AND remove it from lists
         this->vehicles->deleteObject(*it);
@@ -613,15 +616,6 @@ void GameInstance::updateThrownObject(){
       carriedVehicle = 0;
     }
   }
-}
-
-// (private)
-// update the sound system for current player position and orientation
-void GameInstance::updateSound(){
-  this->audioSystem->update(
-    this->camera->getPosition(),
-    this->camera->getRotation()
-  );
 }
 
 

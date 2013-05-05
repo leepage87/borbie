@@ -141,7 +141,7 @@ class GameObject {
 	// updates the object's animation/effects and other possible timers;
 	// RETURNS: value (defined as constants above) of action that the
 	//  caller of this update function should take on this object.
-	virtual unsigned int update();
+	virtual unsigned int updateTimers();
 	
 	
 	// pure virtual functions (override mandatory)

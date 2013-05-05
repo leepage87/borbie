@@ -151,7 +151,7 @@ class AudioSystem {
     
     
     // 3D sound update -- must be called every frame in the game loop
-    void update(
+    virtual void updateSound(
         const irr::core::vector3df playerPos,
         const irr::core::vector3df playerRot
     );
