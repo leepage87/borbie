@@ -35,7 +35,6 @@ ObjectList::ObjectList(
 
 // delete all of the objects
 ObjectList::~ObjectList(){
-    std::cout << objList.size() << std::endl;
 	for(std::vector<GameObject *>::iterator it = objList.begin();
 		it != objList.end(); ++it)
 	{

@@ -106,13 +106,13 @@ void Enemies::update(){
             this->deleteObject(this->objList[i]);
             i--;
         }
-    }
+    }*/
     
     // if number of enemies is below the current limit, make moar!
     while(this->objList.size() < this->maxNumberEnemies){
         this->createRandomEnemy();
         std::cout << "NEW ENEMY CREATED" << std::endl;
-    }*/
+    }
     
     int numObjs = objList.size();
     for(int j=0; j<numObjs; ++j){
