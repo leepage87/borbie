@@ -23,7 +23,7 @@ enum EnemyType {
 };
 
 
-// Enemy class: abstract, extends GameObject
+// Enemy class: extends GameObject, extends Updatable
 class Enemies : public ObjectList, public Updatable {
   private:
     // creates a new enemy at position x, y, z
