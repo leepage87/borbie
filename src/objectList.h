@@ -52,8 +52,8 @@ class ObjectList {
 	
 	// delete objects from the list (and from Irrlicht) using either the
 	//  Irrlicht ISceneNode pointer or the GameObject pointer
-	virtual void deleteObject(irr::scene::ISceneNode* pointer);
-	virtual void deleteObject(GameObject *pointer);
+	virtual void removeObject(irr::scene::ISceneNode* pointer);
+	virtual void removeObject(GameObject *pointer);
 	
 	// add an object to the list of objects containted in this list
 	virtual void addObject(GameObject* object);

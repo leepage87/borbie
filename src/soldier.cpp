@@ -110,7 +110,7 @@ void Soldier::aim(){
 	if (length < 6000 && canShoot())
             fire();	
     //stomp him in the nuts
-    std::cout<<"distance is"<< length<<std::endl;
+    //std::cout<<"distance is"<< length<<std::endl;
     if (length < 150){
         this->audioSystem->playSound3d(death,
 	    this);

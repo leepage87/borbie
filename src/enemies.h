@@ -29,6 +29,14 @@ class Enemies : public ObjectList, public Updatable {
     // creates a new enemy at position x, y, z
 	void makeEnemy(float x, float y, float z, EnemyType type);
 	
+	// randomly creates an enemy near a randomly selected spawn point (exact
+	//  position is also randomized by an offset). The enemy created is also
+	//  random by a weighed percentage.
+	void createRandomEnemy();
+	
+	// number of enemies
+	unsigned int maxNumberEnemies;
+	
   public:
 	Enemies (irr::scene::IMetaTriangleSelector *metaTriSelector,
 			GameInstance *gameInstance);

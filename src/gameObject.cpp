@@ -59,6 +59,7 @@ GameObject::GameObject(GameInstance *gameInstance){
 	this->sceneNode = 0;
 	this->explosionParticleSystem = 0;
 	this->explosionParticleSystemLarge = 0;
+	this->containerList = 0;
 	
 	// start mode on idle (not doing anything with updates)
 	this->updateMode = GAME_OBJ_MODE_IDLE;
@@ -75,10 +76,20 @@ GameObject::GameObject(GameInstance *gameInstance){
  *	delete the interal ISceneNode.
  */
 GameObject::~GameObject(){
+    // If object was not yet removed from its container, do it now. If removing
+    //  manually from a list, make sure to set the container to 0, else the
+    //  iteration process may get screwed up when this object tries to remove
+    //  itself from the list (the iterator will get offset during the loop).
+    if(this->containerList)
+        this->containerList->removeObject(this);
+        
+    // remove the node
 	if(this->sceneNode){
 		this->sceneNode->remove();
 		this->sceneNode = 0;
 	}
+	
+	// remove all particle systems
     if(this->explosionParticleSystem){
         explosionParticleSystem->remove();
         explosionParticleSystem = 0;
@@ -94,6 +105,12 @@ GameObject::~GameObject(){
 // Set the meta triangle selector to the given selector.
 void GameObject::setMetaTriSelector(IMetaTriangleSelector *metaTriSelector){
     this->metaTriSelector = metaTriSelector;
+}
+
+// (private, friend-accessible by ObjectList's addObject function)
+// Set the container of this object to the given ObjectList.
+void GameObject::setContainer(ObjectList *objList){
+    this->containerList = objList;
 }
 
 
@@ -234,6 +251,10 @@ void GameObject::explode(){
 	this->audioSystem->playSound3d(
 	    this->gameInstance->explosionSound1,
 	    this);
+	
+	// if this object is part of a container, make it remove itself
+	if(this->containerList)
+	    this->containerList->removeObject(this);
 }
 
 

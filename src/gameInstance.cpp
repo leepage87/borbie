@@ -531,7 +531,7 @@ void GameInstance::update(){
     unsigned int retval = (*it)->updateTimers();
     switch(retval){
       case GAME_OBJ_DELETE: // delete object AND remove it from lists
-        this->vehicles->deleteObject(*it);
+      //  this->vehicles->removeObject(*it);
       case GAME_OBJ_REMOVE_FROM_UPDATE_LIST: // remove object from list
         this->updateList.erase(it);
         it--;
