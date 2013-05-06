@@ -41,6 +41,8 @@ Soldier::Soldier(
 	this->moving = false;
     this->fireDelay = getRandomFireDelay() * 1000;
     this->burst = audioSystem->createSound3d("assets/sounds/soundEffects/burst.mp3");
+    this->explosionDamage = 0;
+    this->explosionRadius = 50;
 }
 
 /*************************************************************
@@ -84,7 +86,9 @@ void Soldier::setMoving(){
 }
 
 /*************************************************************
- * Orientates the soldier towards the players position
+ * Orientates the soldier towards the players position and
+ * checks if the player is within moving/shooting distance
+ * also explodes the soldier if the player is on top of it
  ************************************************************/
 void Soldier::aim(){
 	//turn the soldier to look at you
@@ -104,6 +108,13 @@ void Soldier::aim(){
     //within 6000 units
 	if (length < 6000 && canShoot())
             fire();	
+    //stomp him in the nuts
+    std::cout<<"distance is"<< length<<std::endl;
+    if (length < 150){
+        std::cout<<"should be callign explode***************************************"<<std::endl;
+        explode();
+    }
+    
 }
 
 /*************************************************************

@@ -38,7 +38,7 @@ class BigAssSoldier : public GameObject {
     int  getRandomFireDelay();
     void updatePosition();
     void setMoving();
-	void aim();
+	void aim2();
 	bool visible();
 	void move();
 	bool canShoot();
