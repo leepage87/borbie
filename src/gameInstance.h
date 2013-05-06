@@ -27,6 +27,7 @@
 #include "soldier.h"
 #include "enemies.h"
 #include "borbie.h"
+#include "hands.h"
 
 
 // world constants
@@ -89,6 +90,8 @@ class GameInstance {
     Enemies * enemies;
     Hud *hud;
     Game *game;
+    Hands *hands;
+
 
     // private update methods to update the various subsystems:
     //  all of these are called by the update() method.

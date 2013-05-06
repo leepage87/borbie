@@ -177,8 +177,8 @@ GameInstance::GameInstance(
   //tell the mouse listener that right mouse isn't pressed to start with
   ((BorbiesEventReceiver *)receiver)->setRightMouse(false);
 
-
-
+  /*** Add Hands ***/
+  hands = new Hands(this);  
   /*** Add The Borbie ***/
   
   this->player = new Borbie(this); 	
@@ -190,7 +190,6 @@ GameInstance::GameInstance(
   enemies = new Enemies (metaTriSelector, this);
   enemies->generateObjects();
   //enemies->makeEnemy();
-  // TODO - memory leak (erase enemies in destructor)
 
   // TODO- remove
   //this->setWorldState_wrecked();
@@ -249,6 +248,7 @@ void GameInstance::punch() {
         
         // if a target object WAS found, proceed to apply damage to it
         if(targetObj){
+            hands->punch();
             targetObj->applyDamage(BORBIE_PUNCH_DAMAGE);
             std::cout << "Punched the target" << std::endl;
             this->nextPunchTime = this->currentGameTime + BORBIE_PUNCH_DELAY_MS;
@@ -500,6 +500,7 @@ void GameInstance::update(){
   );
   this->enemies->update();
   this->vehicles->update();
+  this->hands->update();
 
   if((player->getHealth() < 250) && (bgSound!=bgSoundDead))
   {
@@ -583,6 +584,9 @@ void GameInstance::updateSelector(){
 
       // display the target marker on the GUI
       this->hud->setTargetMarkerEnabled(true);
+
+      //set hands invisible
+      this->hands->setVisible(false);
     }
   }
 
@@ -603,6 +607,8 @@ void GameInstance::updateSelector(){
     //  (not found), it will just fly to the maximum distance possible.
     // This will start an animator to fly to the target.
     objCarry->throwObj(target);
+    //turn hands back on
+    this->hands->setVisible(true);
     vehicleThrown = true;
 
     // hide the target marker (no longer needed)

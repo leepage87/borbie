@@ -28,8 +28,8 @@ class Borbie : public GameObject{
 
 
   private:
-   int score;
-   irr::scene::ICameraSceneNode* camera;
+    int score;
+    irr::scene::ICameraSceneNode* camera;
 
     SoundClip *ricochet1;
 	SoundClip *ricochet2;
@@ -41,6 +41,7 @@ class Borbie : public GameObject{
     SoundClip *bulletHit5;
     SoundClip *bulletHit6;
     SoundClip *bulletHit7;
+    void playBulletHit();
 };
 
 #endif

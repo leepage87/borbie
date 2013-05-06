@@ -36,7 +36,7 @@ Soldier::Soldier(
 	this->sceneNode->setVisible(true);
 	this->sceneNode->setMaterialFlag(EMF_LIGHTING, true);
 	this->sceneNode->setID(IDFlag_IsPickable);
-	this->setHealth(350);
+	this->setHealth(401);
 	this->lastFireTime = 0;
 	this->moving = false;
     this->fireDelay = getRandomFireDelay() * 1000;
@@ -224,7 +224,7 @@ void Soldier::createExplosionEffect(){
 	    this->explosionParticleSystem->createBoxEmitter(
 		    aabbox3d<f32>(-5, 0, -5, 5, 1, 5),  // emitter size
 		    vector3df(0.0f,0.0f,0.1f),          // direction + speed
-		    2000, 10000,                       // min,max particles per second
+		    2000, 5000,                       // min,max particles per second
 		    SColor(0,255,255,255),              // darkest color
 		    SColor(0,255,255,255),              // brightest color
 		    200, 800,                          // min, max particle lifetime
