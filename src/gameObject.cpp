@@ -227,6 +227,8 @@ void GameObject::explode(){
     // update player score
     this->gameInstance->player->updateScore(startingHealth);
     
+    //TODO: For some reason the object dies before the sound can play
+    //make each object play its own sound for explosion
     // play explosion sound effect
     std::cout<<"PLAYERING MOTEHRFUCKING EPXLOSION SOUND!"<<std::endl;
 	this->audioSystem->playSound3d(

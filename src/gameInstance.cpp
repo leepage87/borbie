@@ -69,7 +69,8 @@ GameInstance::GameInstance(
     audioSystem->createSound3d("assets/sounds/soundEffects/burning.mp3");
   this->explosionSound1 =
     audioSystem->createSound3d("assets/sounds/soundEffects/rocketHit.wav");
-
+  this->death1 =
+    audioSystem->createSound3d("assets/sounds/soundEffects/meinLeiben.wav");  
 
   /*** Setup Runtime Flags ***/
 

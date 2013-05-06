@@ -53,6 +53,7 @@ class GameInstance {
     // list of game sounds used by multiple game classes
     SoundClip *burningSound;
     SoundClip *explosionSound1;
+    SoundClip *death1;
 
     // current game time
     unsigned int currentGameTime;

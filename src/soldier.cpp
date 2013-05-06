@@ -43,6 +43,7 @@ Soldier::Soldier(
     this->burst = audioSystem->createSound3d("assets/sounds/soundEffects/burst.mp3");
     this->explosionDamage = 0;
     this->explosionRadius = 50;
+    this->death = gameInstance->death1;
 }
 
 /*************************************************************
@@ -111,6 +112,8 @@ void Soldier::aim(){
     //stomp him in the nuts
     std::cout<<"distance is"<< length<<std::endl;
     if (length < 150){
+        this->audioSystem->playSound3d(death,
+	    this);
         std::cout<<"should be callign explode***************************************"<<std::endl;
         explode();
     }
