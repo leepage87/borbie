@@ -46,6 +46,11 @@ enum WorldState {
   GONETOSHIT
 };
 
+enum menu
+{
+  NG,
+  EXIT
+};
 
 // GameInstance class:
 class GameInstance {
@@ -72,6 +77,8 @@ class GameInstance {
     
     //menu of the death screen
     irr::video::ITexture *menu;
+    irr::gui::IGUIButton *newGameButton;
+    irr::gui::IGUIButton *quitButton;
 
     CastRay *selector;
     ObjectCarrier *objCarry;

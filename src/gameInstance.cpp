@@ -551,12 +551,16 @@ void GameInstance::update(){
   if(player && game)
     if(player->hasExploded())
     {
+      float screenHeight = driver->getScreenSize().Height;
+      float screenWidth = driver->getScreenSize().Width;
+
       driver->draw2DImage(
           this->menu,
-          rect<s32>(driver->getScreenSize().Width/3, driver->getScreenSize().Height/3, driver->getScreenSize().Width/3 + 300, driver->getScreenSize().Height/3+200),
+          rect<s32>(screenWidth/3, screenHeight/3, screenWidth*2/3, screenHeight* 2/3),
           rect<s32>(0, 0,
             this->menu->getSize().Width,
             this->menu->getSize().Height));
+  
     }
 
 
