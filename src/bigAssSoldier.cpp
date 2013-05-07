@@ -1,8 +1,10 @@
-/*	File: BigAssSoldier.cpp
- *	Authors: TYKS
- *	This class creates soldiers so you can throw cars at them and shit
- */
-
+/*********************************************************************
+ * File:     soldier.cpp
+ * Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
+ * Function: This class creates big ass soldiers so you
+ *           can throw cars at them and shit. Also allows them to aim
+ *           their weapon and fire.
+ *********************************************************************/
 #include "bigAssSoldier.h"
 #include "gameInstance.h"
 
@@ -13,13 +15,14 @@ using namespace scene;
 using namespace core;
 using namespace video;
 
-/*************************************************************
+/*********************************************************************
  * Constructor for the big ass soldier
- * Param: gameInstance the game instance containing all necessary pointers
+ * Param: gameInstance the game instance containing all necessary
+ *        pointers
  * Param: posX the X coordinate at which the soldier will be spawned
  * Param: posY the Y coordinate at which the soldier will be spawned
  * Param: posZ the Z coordinate at which the soldier will be spawned
- *************************************************************/
+ *********************************************************************/
 BigAssSoldier::BigAssSoldier(
 	GameInstance *gameInstance,
 	float posX, float posY, float posZ)
@@ -39,12 +42,12 @@ BigAssSoldier::BigAssSoldier(
     this->fireDelay = getRandomFireDelay();
 }
 
-/*************************************************************
+/*********************************************************************
  * Overrides the Soldier class aim() method
  * Orientates the soldier towards the players position and
  * checks if the player is within moving/shooting distance
  * also explodes the soldier if the player is on top of it
- ************************************************************/
+ ********************************************************************/
 void BigAssSoldier::aim(){
 	//turn the soldier to look at you
 	vector3df start = sceneNode->getPosition();
@@ -67,15 +70,14 @@ void BigAssSoldier::aim(){
     //big ass soldier cannot be stepped on
 }
 
-/*************************************************************
+/*********************************************************************
  * Overrides the Soldier class fire() method
  * Animates a muzzle flash billboard with firing sound and does
  * damage to borbie.  This method is only called when the soldier
  * is within range and has direct line of sight.  He has an 80%
  * chance of hitting his target.
- ************************************************************/
+ ********************************************************************/
 void BigAssSoldier::fire(){
-    std::cout<<"Inside BIG ASS soldier fire"<<std::endl;
 	lastFireTime = gameInstance->getDevice()->getTimer()->getTime();
 	IBillboardSceneNode * bill;
 	bill = smgr->addBillboardSceneNode();
