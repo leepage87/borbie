@@ -40,18 +40,20 @@ BigAssSoldier::BigAssSoldier(
 }
 
 /*************************************************************
+ * Overrides the Soldier class aim method
  * Orientates the soldier towards the players position and
  * checks if the player is within moving/shooting distance
  * also explodes the soldier if the player is on top of it
  ************************************************************/
 void BigAssSoldier::aim(){
-    std::cout<<"INSIDE BIG ASS AIM"<<std::endl;
 	//turn the soldier to look at you
 	vector3df start = sceneNode->getPosition();
-	start.Y += 450;
+	start.Y += 500;
 	vector3df end = gameInstance->getCamera()->getPosition();
 	vector3df vect = end-start;
-	sceneNode->setRotation(vect.getHorizontalAngle());
+    vect = vect.getHorizontalAngle();
+    vect.Y+=15;
+	sceneNode->setRotation(vect);
 	length = (f32)start.getDistanceFrom(end);
     
 	//Tactically operate oneself towards the enemy (Borbie)
@@ -65,6 +67,7 @@ void BigAssSoldier::aim(){
 }
 
 /*************************************************************
+ * Overrides the Soldier class fire method method
  * Animates a muzzle flash billboard with firing sound and does
  * damage to borbie.  This method is only called when the soldier
  * is within range and has direct line of sight.  He has an 80%
@@ -85,7 +88,7 @@ void BigAssSoldier::fire(){
 		
 	//get enemy position, adjust muzzle flash height to barrel
 	vector3df start = sceneNode->getPosition();
-	start.Y+=350;
+	start.Y+=325;
 	bill->setPosition(start);
 
     this->audioSystem->playSound3d(gameInstance->gunShot2, this);
