@@ -6,7 +6,7 @@
 
 #include <iostream> // TODO - remove (debug)
 
-#include "directoryReader.h" // TODO - remove
+#include "mapSearcher.h" // TODO - remove
 
 using namespace irr;
 using namespace scene;
@@ -195,6 +195,19 @@ GameInstance::GameInstance(
   // TODO- remove
   //this->setWorldState_wrecked();
   this->setWorldState_fabulous();
+}
+
+
+// TODO --- remove this function
+void GameInstance::TEST_PATH_FUNCTION_TODO_REMOVE(){
+    std::cout << "TEST PATH BUTTON PRESSED" << std::endl;
+    ISceneNode *sceneNode = smgr->addCubeSceneNode();
+	sceneNode->setScale(vector3df(40, 100, 40));
+	RoadIntersection *ri = MapSearcher::getClosestRoadIntersection(
+	    this->camera->getPosition());
+	float bestX = ri->X;
+	float bestY = ri->Y;
+	sceneNode->setPosition(vector3df(bestX, 0 , bestY));
 }
 
 
