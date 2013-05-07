@@ -61,7 +61,7 @@ bool BorbiesEventReceiver::OnEvent(const irr::SEvent& event){
         //FIXME  TODO this is testing shit to see if borbi updates her health
         if(event.KeyInput.Key == irr::KEY_MINUS && !event.KeyInput.PressedDown){
           if(gameInstance && gameInstance->player)
-            gameInstance->player->applyDamage(10);        
+            gameInstance->player->applyDamage(1000);        
         } 
         //FIXME  TODO this is testing shit to see if distance algorithms work
         if(event.KeyInput.Key == irr::KEY_KEY_P && !event.KeyInput.PressedDown){

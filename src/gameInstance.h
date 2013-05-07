@@ -54,6 +54,8 @@ class GameInstance {
     SoundClip *burningSound;
     SoundClip *explosionSound1;
     SoundClip *death1;
+    SoundClip *gunShot1;
+    SoundClip *gunShot2;
 
     // current game time
     unsigned int currentGameTime;
@@ -67,6 +69,9 @@ class GameInstance {
     irr::video::IVideoDriver *driver;
     irr::IrrlichtDevice *device;
     irr::ITimer *timer;
+    
+    //menu of the death screen
+    irr::video::ITexture *menu;
 
     CastRay *selector;
     ObjectCarrier *objCarry;

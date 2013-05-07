@@ -6,7 +6,6 @@
 #include <irrlicht.h>
 
 #include "gameObject.h"
-#include "audioSystem.h"
 #include "random.h"
 
 
@@ -16,7 +15,7 @@ class GameInstance;
 
 
 class Soldier : public GameObject {
-	private:
+	protected:
 	irr::core::line3d<irr::f32> ray;
 	unsigned int lastFireTime;
     int fireDelay;
@@ -24,8 +23,6 @@ class Soldier : public GameObject {
     int BULLET_DAMAGE;
 	irr::f32 length;
     irr::core::vector3df destination;
-    SoundClip *burst;
-    SoundClip *death;
 	
 	public:
 	Soldier(
@@ -38,15 +35,14 @@ class Soldier : public GameObject {
 	virtual void applyCollision(
 			irr::scene::IMetaTriangleSelector *metaTriSelector
 		);
-    int  getRandomFireDelay();
+    virtual int  getRandomFireDelay();
     void updatePosition();
-    void setMoving();
-	void aim();
-	bool visible();
-	void move();
-	bool canShoot();
-	void fire();
-    bool miss();
-    void deathSound();
+    virtual void setMoving();
+	virtual void aim();
+	virtual bool visible();
+	virtual void move();
+	virtual bool canShoot();
+	virtual void fire();
+    virtual bool miss();
 };
 #endif
