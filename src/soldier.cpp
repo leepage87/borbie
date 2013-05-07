@@ -27,7 +27,7 @@ Soldier::Soldier(
 	// call super GameObject constructor first:
 	: GameObject(gameInstance)
 {
-    this->BULLET_DAMAGE = 20;
+    this->BULLET_DAMAGE = 3;
     this->objectType = TYPE_ENEMY;
     this->sceneNode =
     	smgr->addMeshSceneNode(smgr->getMesh("assets/models/enemies/soldier/armydude.obj"));
@@ -36,14 +36,12 @@ Soldier::Soldier(
 	this->sceneNode->setVisible(true);
 	this->sceneNode->setMaterialFlag(EMF_LIGHTING, true);
 	this->sceneNode->setID(IDFlag_IsPickable);
-	this->setHealth(401);
+	this->setHealth(400);
 	this->lastFireTime = 0;
 	this->moving = false;
-    this->fireDelay = getRandomFireDelay() * 1000;
-    this->burst = audioSystem->createSound3d("assets/sounds/soundEffects/burst.mp3");
-    this->explosionDamage = 0;
+    this->fireDelay = getRandomFireDelay();
+    this->explosionDamage = 1;
     this->explosionRadius = 50;
-    this->death = gameInstance->death1;
 }
 
 /*************************************************************
@@ -63,10 +61,10 @@ void Soldier::applyCollision(
 /*************************************************************
  * Gets an integer between 1 and 3 to use as the time between
  * each shot
- * Returns: random integer between 1 and 3
+ * Returns: random integer between 1 and 4
  ************************************************************/
 int Soldier::getRandomFireDelay(){
-    return Random::randomInt(1, 4);
+    return Random::randomInt(1, 5)*1000;
 }
 /*************************************************************
  * An updater method that calls aim() if the soldier has LOS
@@ -112,7 +110,7 @@ void Soldier::aim(){
     //stomp him in the nuts
     //std::cout<<"distance is"<< length<<std::endl;
     if (length < 150){
-        this->audioSystem->playSound3d(death,
+        this->audioSystem->playSound3d(gameInstance->death1,
 	    this);
         std::cout<<"should be callign explode***************************************"<<std::endl;
         explode();
@@ -182,6 +180,7 @@ bool Soldier::canShoot(){
  * chance of hitting his target.
  ************************************************************/
 void Soldier::fire(){
+    std::cout<<"Inside small soldier fire"<<std::endl;
 	lastFireTime = gameInstance->getDevice()->getTimer()->getTime();
 	IBillboardSceneNode * bill;
 	bill = smgr->addBillboardSceneNode();
@@ -198,7 +197,7 @@ void Soldier::fire(){
 	start.Y+=60;
 	bill->setPosition(start);
 
-    this->audioSystem->playSound3d(burst,
+    this->audioSystem->playSound3d(gameInstance->gunShot1,
 	    this);
 	
 	const int MUZZLE_FLASH_TIME = 50;
@@ -207,7 +206,7 @@ void Soldier::fire(){
 	bill->addAnimator(anim);
 	anim->drop();
     if (!miss())
-	    gameInstance->player->applyBulletDamage(3);
+	    gameInstance->player->applyBulletDamage(BULLET_DAMAGE);
     else
         gameInstance->player->ricochet();		
 }

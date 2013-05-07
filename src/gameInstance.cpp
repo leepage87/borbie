@@ -69,9 +69,14 @@ GameInstance::GameInstance(
     audioSystem->createSound3d("assets/sounds/soundEffects/burning.mp3");
   this->explosionSound1 =
     audioSystem->createSound3d("assets/sounds/soundEffects/rocketHit.wav");
-  this->death1 =
-    audioSystem->createSound3d("assets/sounds/soundEffects/meinLeiben.wav");  
 
+  //TODO: Release these sounds in the destructor after merge
+  this->death1 =
+    audioSystem->createSound3d("assets/sounds/soundEffects/meinLeiben.wav");
+  this->gunShot1 =
+    audioSystem->createSound3d("assets/sounds/soundEffects/burst.mp3");  
+  this->gunShot2 =
+    audioSystem->createSound3d("assets/sounds/soundEffects/bigAssGun.mp3");  
   /*** Setup Runtime Flags ***/
 
   float gravity = GLOBAL_GRAVITY;

@@ -54,6 +54,8 @@ class GameInstance {
     SoundClip *burningSound;
     SoundClip *explosionSound1;
     SoundClip *death1;
+    SoundClip *gunShot1;
+    SoundClip *gunShot2;
 
     // current game time
     unsigned int currentGameTime;
