@@ -100,7 +100,7 @@ void Soldier::aim(){
 	length = (f32)start.getDistanceFrom(end);
     
 	//Tactically operate oneself towards the enemy (Borbie)
-    //if enemy distance is between 7k-2k
+    //if enemy distance is between 10k-2k and borbie is visible
     if (!moving && length < 10000 && length > 2000 && visible())
         move();
     //Tactically attempt to bust a cap if Borbie is
@@ -176,7 +176,6 @@ bool Soldier::canShoot(){
  * chance of hitting his target.
  ************************************************************/
 void Soldier::fire(){
-    std::cout<<"Inside small soldier fire"<<std::endl;
 	lastFireTime = gameInstance->getDevice()->getTimer()->getTime();
 	IBillboardSceneNode * bill;
 	bill = smgr->addBillboardSceneNode();

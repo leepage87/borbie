@@ -40,7 +40,7 @@ BigAssSoldier::BigAssSoldier(
 }
 
 /*************************************************************
- * Overrides the Soldier class aim method
+ * Overrides the Soldier class aim() method
  * Orientates the soldier towards the players position and
  * checks if the player is within moving/shooting distance
  * also explodes the soldier if the player is on top of it
@@ -57,17 +57,18 @@ void BigAssSoldier::aim(){
 	length = (f32)start.getDistanceFrom(end);
     
 	//Tactically operate oneself towards the enemy (Borbie)
-    //if enemy distance is between 7k-2k
+    //if enemy distance is between 10k-2k
     if (!moving && length < 10000 && length > 2000 && visible())
         move();
     //Tactically attempt to bust a cap if Borbie is
     //within 6000 units
 	if (length < 6000 && canShoot())
-        fire();	
+        fire();
+    //big ass soldier cannot be stepped on
 }
 
 /*************************************************************
- * Overrides the Soldier class fire method method
+ * Overrides the Soldier class fire() method
  * Animates a muzzle flash billboard with firing sound and does
  * damage to borbie.  This method is only called when the soldier
  * is within range and has direct line of sight.  He has an 80%
