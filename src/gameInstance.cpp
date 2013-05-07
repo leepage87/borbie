@@ -205,14 +205,14 @@ GameInstance::GameInstance(
 
 // TODO --- remove this function
 void GameInstance::TEST_PATH_FUNCTION_TODO_REMOVE(){
-    std::cout << "TEST PATH BUTTON PRESSED" << std::endl;
-    ISceneNode *sceneNode = smgr->addCubeSceneNode();
-	sceneNode->setScale(vector3df(40, 100, 40));
-	RoadIntersection *ri = MapSearcher::getClosestRoadIntersection(
-	    this->camera->getPosition());
-	float bestX = ri->X;
-	float bestY = ri->Y;
-	sceneNode->setPosition(vector3df(bestX, 0 , bestY));
+  std::cout << "TEST PATH BUTTON PRESSED" << std::endl;
+  ISceneNode *sceneNode = smgr->addCubeSceneNode();
+  sceneNode->setScale(vector3df(40, 100, 40));
+  RoadIntersection *ri = MapSearcher::getClosestRoadIntersection(
+      this->camera->getPosition());
+  float bestX = ri->X;
+  float bestY = ri->Y;
+  sceneNode->setPosition(vector3df(bestX, 0 , bestY));
 }
 
 
@@ -221,8 +221,14 @@ void GameInstance::TEST_PATH_FUNCTION_TODO_REMOVE(){
 GameInstance::~GameInstance(){
   ((BorbiesEventReceiver*)receiver)->removeGameInstance();
   this->updateList.clear();
+  if(bgSound)
   bgSound->release();  
+  if(bgSoundDead)
   bgSoundDead->release();
+  if(death1)
+  death1->release();
+  if(explosionSound1)
+  explosionSound1->release();
   delete this->terrain;
   delete this->skybox;
   delete this->light;
@@ -253,7 +259,7 @@ GameInstance::~GameInstance(){
 // Attempt to punch something directly in front of Borbie. Punching can only
 //  happen once every two seconds.
 void GameInstance::punch() {
-<<<<<<< HEAD
+
   ISceneNode *target = selector->getClickTargetShort();
   // if ready to punch, and not carrying a vehicle, and a target is found
   if(this->currentGameTime >= this->nextPunchTime &&
@@ -268,30 +274,10 @@ void GameInstance::punch() {
 
     // if a target object WAS found, proceed to apply damage to it
     if(targetObj){
+      hands->punch();
       targetObj->applyDamage(BORBIE_PUNCH_DAMAGE);
       std::cout << "Punched the target" << std::endl;
       this->nextPunchTime = this->currentGameTime + BORBIE_PUNCH_DELAY_MS;
-=======
-    ISceneNode *target = selector->getClickTargetShort();
-    // if ready to punch, and not carrying a vehicle, and a target is found
-    if(this->currentGameTime >= this->nextPunchTime &&
-        !this->carriedVehicle && target)
-    {
-        // try to get a target, either a building, a vehicle, or an enemy
-        GameObject *targetObj = buildings->getObject(target);
-        if(!targetObj)
-            targetObj = vehicles->getObject(target);
-        if(!targetObj)
-            targetObj = enemies->getObject(target);
-        
-        // if a target object WAS found, proceed to apply damage to it
-        if(targetObj){
-            hands->punch();
-            targetObj->applyDamage(BORBIE_PUNCH_DAMAGE);
-            std::cout << "Punched the target" << std::endl;
-            this->nextPunchTime = this->currentGameTime + BORBIE_PUNCH_DELAY_MS;
-        }
->>>>>>> 8d943edd63db50392054ec6bb98f0535a0d6ea2e
     }
   }
 }
@@ -576,7 +562,7 @@ void GameInstance::update(){
     unsigned int retval = (*it)->updateTimers();
     switch(retval){
       case GAME_OBJ_DELETE: // delete object AND remove it from lists
-      //  this->vehicles->removeObject(*it);
+        //  this->vehicles->removeObject(*it);
       case GAME_OBJ_REMOVE_FROM_UPDATE_LIST: // remove object from list
         this->updateList.erase(it);
         it--;
