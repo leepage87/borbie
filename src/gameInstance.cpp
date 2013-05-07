@@ -90,7 +90,7 @@ GameInstance::GameInstance(
 
 
   /*** create textures for in game menu ***/
-  this->menu = driver->getTexture("assets/textures/hudTexture1.jpg");
+  this->menu = driver->getTexture("assets/textures/deathMenu.jpg");
 
 
 
@@ -115,7 +115,7 @@ GameInstance::GameInstance(
   /*** Setup Game Objects (BUILDINGS, VEHICLES) ***/
 
   // Read the map file into the global static MapReader object.
-  MapReader::readCoordFile("assets/map/coords.bor");
+  this->mapReader = new MapReader("assets/map/coords.bor");
 
   // add the buildings and generate city based on coordinate file
   this->buildings = new Buildings(metaTriSelector, this);
@@ -208,14 +208,16 @@ GameInstance::GameInstance(
 
 // TODO --- remove this function
 void GameInstance::TEST_PATH_FUNCTION_TODO_REMOVE(){
-  std::cout << "TEST PATH BUTTON PRESSED" << std::endl;
-  ISceneNode *sceneNode = smgr->addCubeSceneNode();
-  sceneNode->setScale(vector3df(40, 100, 40));
-  RoadIntersection *ri = MapSearcher::getClosestRoadIntersection(
-      this->camera->getPosition());
-  float bestX = ri->X;
-  float bestY = ri->Y;
-  sceneNode->setPosition(vector3df(bestX, 0 , bestY));
+    std::cout << "TEST PATH BUTTON PRESSED" << std::endl;
+    MapSearcher *searcher = this->mapReader->getMapSearcher();
+    ISceneNode *sceneNode = smgr->addCubeSceneNode();
+	sceneNode->setScale(vector3df(40, 100, 40));
+	RoadIntersection *ri = searcher->getClosestRoadIntersection(
+	    this->camera->getPosition());
+	float bestX = ri->X;
+	float bestY = ri->Y;
+	sceneNode->setPosition(vector3df(bestX, 0 , bestY));
+	delete searcher;
 }
 
 
@@ -248,6 +250,8 @@ GameInstance::~GameInstance(){
   delete this->player;
   delete this->selector;
   delete this->objCarry;
+  delete this->mapReader;
+  delete this->hands;
   if(this->rainParticleSystem)
     this->rainParticleSystem->remove();
   this->smgr->clear();
@@ -258,9 +262,6 @@ GameInstance::~GameInstance(){
 
   //turn the mouse cursor back on
   device->getCursorControl()->setVisible(true);
-
-  // Clear off map
-  MapReader::clearMap();
 }
 
 
@@ -552,7 +553,7 @@ void GameInstance::update(){
     {
       driver->draw2DImage(
           this->menu,
-          rect<s32>(driver->getScreenSize().Width/4, driver->getScreenSize().Height/4, driver->getScreenSize().Width/4 + 75, driver->getScreenSize().Height/4+50),
+          rect<s32>(driver->getScreenSize().Width/3, driver->getScreenSize().Height/3, driver->getScreenSize().Width/3 + 300, driver->getScreenSize().Height/3+200),
           rect<s32>(0, 0,
             this->menu->getSize().Width,
             this->menu->getSize().Height));

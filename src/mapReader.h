@@ -45,35 +45,33 @@ struct RoadSpawnPoint {
 };
 
 
+// Declare MapSearcher for returning pointer
+class MapSearcher;
+
+
 // MapReader class:
 class MapReader {
 
-
-  public: // All static (globally accessible)
-  
+  public:
+    // constructor: read the file and populate the lists of coordinates
+    MapReader(const char *fileName);
+    
+    // returns a MapSearcher object to iterate this map
+    MapSearcher* getMapSearcher();
+    
     // Map texture directory path:
-    static std::string mapTextureDirectory;
+    std::string mapTextureDirectory;
   
     // Non-moving object coordinates:
-	static std::vector<Point> buildingCoords;
-	static std::vector<Point> streetLampCoords;
-	static std::vector<Point> treeCoords;
-	static std::vector<Point> fireHydrantCoords;
-	static std::vector<RoadIntersection> roadIntersectionCoords;
+	std::vector<Point> buildingCoords;
+	std::vector<Point> streetLampCoords;
+	std::vector<Point> treeCoords;
+	std::vector<Point> fireHydrantCoords;
+	std::vector<RoadIntersection> roadIntersectionCoords;
 	
 	// Spawn point coordinates:
-	static std::vector<Point> enemySpawnPoints;
-	static std::vector<RoadSpawnPoint> vehicleSpawnPoints;
-	
-	
-	// Function that reads a correctly-formatted coordinate file and
-	//  adds all values to the static lists. This should be done before
-	//  a game starts.
-	static void readCoordFile(const char *fileName);
-	
-	// Clears out all of the coordinate lists so that they can be
-	//  over-written. This should be done when a game finishes.
-	static void clearMap();
+	std::vector<Point> enemySpawnPoints;
+	std::vector<RoadSpawnPoint> vehicleSpawnPoints;
 	
 	
 }; // end of MapReader class

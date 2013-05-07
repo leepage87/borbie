@@ -97,6 +97,7 @@ class GameInstance {
     Hud *hud;
     Game *game;
     Hands *hands;
+    MapReader *mapReader;
 
 
     // private update methods to update the various subsystems:
@@ -148,6 +149,7 @@ class GameInstance {
     irr::scene::IMetaTriangleSelector* getMetaSelector() {
       return this->metaTriSelector;
     }
+    MapReader* getMapReader() { return this->mapReader; }
 
     // register a click event (using BorbieInput enum)
     void clickEvent(BorbieInputEvent click);

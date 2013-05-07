@@ -2,14 +2,13 @@
  * Borbie's Big Adventure: LET'S HIT THE TOWN! main file
  * Programmers: Lee Page
  *              Jonathan Miodownik
- *              Richard Teamco
+ *              Richard Teammco
  *              Ian Madigan
 */
 
 #include "game.h"
 #include <iostream>
 #include <string>
-
 
 /* main: determines runtime commands and attempts to run the game as such.
  * RUNTIME FLAGS: to add a runtime parameter, do "-x" after the executable

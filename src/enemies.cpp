@@ -7,8 +7,9 @@
 #include "enemies.h"
 #include "random.h"
 #include "mapReader.h"
+#include "gameInstance.h"
+
 #include <iostream> // TODO: debug (remove)
-using namespace std;
 
 using namespace irr;
 using namespace scene;
@@ -33,7 +34,8 @@ Enemies::Enemies(
 // Generate a default amount of enemies which start moving towards
 //  borbie. If she wrecks stuff, more will spawn.
 void Enemies::generateObjects(){
-    int numSpawnPoints = MapReader::enemySpawnPoints.size();
+    MapReader *mapReader = this->gameInstance->getMapReader();
+    int numSpawnPoints = mapReader->enemySpawnPoints.size();
     if(numSpawnPoints == 0)
         return;
     
@@ -48,9 +50,11 @@ void Enemies::generateObjects(){
 //  position is also randomized by an offset). The enemy created is also
 //  random by a weighed percentage.
 void Enemies::createRandomEnemy(){
+    MapReader *mapReader = this->gameInstance->getMapReader();
+    
     // get number of available spawn points: make sure there are some to spawn
     //  enemies from.
-    int numSpawnPoints = MapReader::enemySpawnPoints.size();
+    int numSpawnPoints = mapReader->enemySpawnPoints.size();
     if(numSpawnPoints == 0)
         return;
         
@@ -70,9 +74,9 @@ void Enemies::createRandomEnemy(){
     int yOffset = Random::randomInt(2000) - 1000;
     // create the enemy at location of the given spawn point
     this->makeEnemy(
-        MapReader::enemySpawnPoints[spawnIndex].X + xOffset,
+        mapReader->enemySpawnPoints[spawnIndex].X + xOffset,
         70, // ENEMY_HEIGHT
-        MapReader::enemySpawnPoints[spawnIndex].Y + yOffset,
+        mapReader->enemySpawnPoints[spawnIndex].Y + yOffset,
         type);
 }
 
