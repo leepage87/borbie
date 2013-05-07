@@ -34,11 +34,17 @@ class SearchNode {
     // get a list of the neighbors of this node
     std::vector<SearchNode> getNeighbors();
     
-    // overloaded operator for priority queue sorting
-    bool operator()
-        (const SearchNode& a, const SearchNode& b) const
-    {
-        return a.cost < b.cost;
+    // get an irrlicht version of the position vector
+    irr::core::vector3df getPosition();
+    
+    // overloaded compare < operator for priority queue sorting
+    bool operator < (const SearchNode& other) const {
+        return this->cost < other.cost;
+    }
+    
+    // overloaded compare == operator for list removal/getter
+    bool operator == (const SearchNode& other) const {
+        return this->intersection == other.intersection;
     }
 };
 
