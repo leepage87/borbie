@@ -33,10 +33,10 @@ GameInstance::GameInstance(
     IEventReceiver *receiver,
     Game *game)
 {
-  
+
   this->game=game;
-  
-  
+
+
   /*** Setup Pointers and Irrlicht Objects ***/    
 
   // keep pointers to Irrlicht rendering pointers
@@ -47,7 +47,7 @@ GameInstance::GameInstance(
   this->audioSystem = audioSystem;
   this->receiver = receiver;
   this->timer = device->getTimer();
-  
+
   // initialize all game timers to 0
   this->currentGameTime = 0;
   this->nextPunchTime = 0;
@@ -56,7 +56,7 @@ GameInstance::GameInstance(
 
 
   /*** Setup Sounds and Music ***/
-  
+
   this->bgSound = audioSystem->createSound2d("assets/sounds/yumyum.ogg");
   this->bgSoundDead = audioSystem->createSound2d("assets/sounds/angryWorld.ogg");
   //Start the shitty music and loop! 
@@ -64,7 +64,7 @@ GameInstance::GameInstance(
   audioSystem->setMusicVolume(0.15);
   // setup global collision meta selector
   this->metaTriSelector = smgr->createMetaTriangleSelector();
-  
+
   this->burningSound =
     audioSystem->createSound3d("assets/sounds/soundEffects/burning.mp3");
   this->explosionSound1 =
@@ -91,8 +91,13 @@ GameInstance::GameInstance(
   }
 
 
+  /*** create textures for in game menu ***/
+  this->menu = driver->getTexture("assets/textures/hudTexture1.jpg");
+
+
+
   /*** Setup Environment ***/
-  
+
   // Add Terrain and collision
   this->terrain = new Terrain(driver, smgr, metaTriSelector);
   addCollision(this->terrain->getTriSelector());
@@ -186,7 +191,7 @@ GameInstance::GameInstance(
   /*** Add Hands ***/
   hands = new Hands(this);  
   /*** Add The Borbie ***/
-  
+
   this->player = new Borbie(this); 	
 
 
@@ -205,14 +210,14 @@ GameInstance::GameInstance(
 
 // TODO --- remove this function
 void GameInstance::TEST_PATH_FUNCTION_TODO_REMOVE(){
-    std::cout << "TEST PATH BUTTON PRESSED" << std::endl;
-    ISceneNode *sceneNode = smgr->addCubeSceneNode();
-	sceneNode->setScale(vector3df(40, 100, 40));
-	RoadIntersection *ri = MapSearcher::getClosestRoadIntersection(
-	    this->camera->getPosition());
-	float bestX = ri->X;
-	float bestY = ri->Y;
-	sceneNode->setPosition(vector3df(bestX, 0 , bestY));
+  std::cout << "TEST PATH BUTTON PRESSED" << std::endl;
+  ISceneNode *sceneNode = smgr->addCubeSceneNode();
+  sceneNode->setScale(vector3df(40, 100, 40));
+  RoadIntersection *ri = MapSearcher::getClosestRoadIntersection(
+      this->camera->getPosition());
+  float bestX = ri->X;
+  float bestY = ri->Y;
+  sceneNode->setPosition(vector3df(bestX, 0 , bestY));
 }
 
 
@@ -221,8 +226,14 @@ void GameInstance::TEST_PATH_FUNCTION_TODO_REMOVE(){
 GameInstance::~GameInstance(){
   ((BorbiesEventReceiver*)receiver)->removeGameInstance();
   this->updateList.clear();
+  if(bgSound)
   bgSound->release();  
+  if(bgSoundDead)
   bgSoundDead->release();
+  if(death1)
+  death1->release();
+  if(explosionSound1)
+  explosionSound1->release();
   delete this->terrain;
   delete this->skybox;
   delete this->light;
@@ -234,14 +245,14 @@ GameInstance::~GameInstance(){
   if(this->rainParticleSystem)
     this->rainParticleSystem->remove();
   this->smgr->clear();
-  
+
   // release all sound clips from memory
   if(this->burningSound)
-	  this->burningSound->release();
-  
+    this->burningSound->release();
+
   //turn the mouse cursor back on
   device->getCursorControl()->setVisible(true);
-  
+
   // Clear off map
   MapReader::clearMap();
 }
@@ -253,26 +264,27 @@ GameInstance::~GameInstance(){
 // Attempt to punch something directly in front of Borbie. Punching can only
 //  happen once every two seconds.
 void GameInstance::punch() {
-    ISceneNode *target = selector->getClickTargetShort();
-    // if ready to punch, and not carrying a vehicle, and a target is found
-    if(this->currentGameTime >= this->nextPunchTime &&
-        !this->carriedVehicle && target)
-    {
-        // try to get a target, either a building, a vehicle, or an enemy
-        GameObject *targetObj = buildings->getObject(target);
-        if(!targetObj)
-            targetObj = vehicles->getObject(target);
-        if(!targetObj)
-            targetObj = enemies->getObject(target);
-        
-        // if a target object WAS found, proceed to apply damage to it
-        if(targetObj){
-            hands->punch();
-            targetObj->applyDamage(BORBIE_PUNCH_DAMAGE);
-            std::cout << "Punched the target" << std::endl;
-            this->nextPunchTime = this->currentGameTime + BORBIE_PUNCH_DELAY_MS;
-        }
+
+  ISceneNode *target = selector->getClickTargetShort();
+  // if ready to punch, and not carrying a vehicle, and a target is found
+  if(this->currentGameTime >= this->nextPunchTime &&
+      !this->carriedVehicle && target)
+  {
+    // try to get a target, either a building, a vehicle, or an enemy
+    GameObject *targetObj = buildings->getObject(target);
+    if(!targetObj)
+      targetObj = vehicles->getObject(target);
+    if(!targetObj)
+      targetObj = enemies->getObject(target);
+
+    // if a target object WAS found, proceed to apply damage to it
+    if(targetObj){
+      hands->punch();
+      targetObj->applyDamage(BORBIE_PUNCH_DAMAGE);
+      std::cout << "Punched the target" << std::endl;
+      this->nextPunchTime = this->currentGameTime + BORBIE_PUNCH_DELAY_MS;
     }
+  }
 }
 
 
@@ -281,108 +293,108 @@ void GameInstance::punch() {
 //  damage as dictated by the given object's damage value. Explosions
 //  affect vehicles, buildings, enemies, and Borbie.
 void GameInstance::applyExplosionDamage(GameObject *explodingObject) {
-    // get the exploding object's variables
-    ISceneNode *explodingNode = explodingObject->getNode();
-    float explosionRadius = explodingObject->getExplosionRadius();
-    float explosionDamage = explodingObject->getExplosionDamage();
-    vector3df explodePos = explodingNode->getPosition();
+  // get the exploding object's variables
+  ISceneNode *explodingNode = explodingObject->getNode();
+  float explosionRadius = explodingObject->getExplosionRadius();
+  float explosionDamage = explodingObject->getExplosionDamage();
+  vector3df explodePos = explodingNode->getPosition();
 
-	// calculate damage to enemies
-    int numEnemies = enemies->objList.size();
-    for(int i=0; i<numEnemies; i++){
-		//std::cout << "INSIDE FOR ENEMIES, numEnemies: " << numEnemies << std::endl;
-        ISceneNode *curNode = enemies->objList[i]->getNode();
-		//std::cout<<"getNode has worked"<<std::endl;
-        // if current node is the exploding node, ignore it
-        if(curNode == explodingNode)
-            continue;
-        // if current node is NOT visible or if it already blew up, ignore it
-        else if(!curNode->isVisible() || enemies->objList[i]->hasExploded())
-            continue;
-        float distance = curNode->getPosition().getDistanceFrom(explodePos);
-		//std::cout<<"got distance"<<std::endl;
-        if(distance <= explosionRadius){
-		    std::cout<<"inside if for explosion radius"<<std::endl;
-            int damage = explosionDamage; // max damage
-            if(distance > 400){ // if more than 400 away, scale down damage
-                float scale = (distance-400) / (explosionRadius-400);
-                damage = int(explosionDamage * scale);
-            }
-            enemies->objList[i]->applyDamage(damage);
-            std::cout << "Damaged enemy @distance=" << distance <<
-                " for @damage=" << damage << std::endl;
-        }
-    }
-
-	// calculate damage for buildings
-    int numBuild = buildings->objList.size();
-    for(int i=0; i<numBuild; i++){
-        ISceneNode *curNode = buildings->objList[i]->getNode();
-        // if current node is the exploding node, ignore it
-        if(curNode == explodingNode)
-            continue;
-        // if current node is NOT visible, ignore it
-        else if(!curNode->isVisible() || buildings->objList[i]->hasExploded())
-            continue;
-        // otherwise, check if the distance is close enough, and apply damage
-        //  based on the distance to the explosion center
-        float distance = curNode->getPosition().getDistanceFrom(explodePos);
-        if(distance <= explosionRadius){
-            int damage = explosionDamage; // max damage
-            if(distance > 400){ // if more than 400 away, scale down damage
-                float scale = (distance-400) / (explosionRadius-400);
-                damage = int(explosionDamage * scale);
-            }
-            // if the exploding object is a building, reduce splash damage
-            //  to prevent instant-killing an entire city. That would suck.
-            if(explodingObject->getObjectType() == TYPE_BUILDING)
-                damage = damage / 20;
-            buildings->objList[i]->applyDamage(damage);
-            std::cout << "Damaged building @distance=" << distance <<
-                " for @damage=" << damage << std::endl;
-        }
-    }
-    
-	// calculate damage for vehicles
-    int numVehicles = vehicles->objList.size();
-    for(int i = 0 ; i < numVehicles ; i++){
-        ISceneNode *curNode = vehicles->objList[i]->getNode();
-        // if current node is the exploding node, ignore it
-        if(curNode == explodingNode)
-            continue;
-        // if current node is NOT visible, ignore it
-        else if(!curNode->isVisible() || vehicles->objList[i]->hasExploded())
-            continue;
-        // otherwise, check if the distance is close enough, and apply damage
-        //  based on the distance to the explosion center
-        float distance = curNode->getPosition().getDistanceFrom(explodePos);
-        if(distance <= explosionRadius){
-            int damage = explosionDamage; // max damage
-            if(distance > 400){ // if more than 400 away, scale down damage
-                float scale = (distance-400) / (explosionRadius-400);
-                damage = int(explosionDamage * scale);
-            }
-            vehicles->objList[i]->applyDamage(damage);
-            std::cout << "Damaged vehicle @distance=" << distance <<
-                " for @damage=" << damage << std::endl;
-        } 
-    } 
-    
-    // if Borbie is already dead, don't kill her again :(
-    if(player->hasExploded())
-        return;
-    
-    float distance = player->getNode()->getPosition().getDistanceFrom(explodePos);
+  // calculate damage to enemies
+  int numEnemies = enemies->objList.size();
+  for(int i=0; i<numEnemies; i++){
+    //std::cout << "INSIDE FOR ENEMIES, numEnemies: " << numEnemies << std::endl;
+    ISceneNode *curNode = enemies->objList[i]->getNode();
+    //std::cout<<"getNode has worked"<<std::endl;
+    // if current node is the exploding node, ignore it
+    if(curNode == explodingNode)
+      continue;
+    // if current node is NOT visible or if it already blew up, ignore it
+    else if(!curNode->isVisible() || enemies->objList[i]->hasExploded())
+      continue;
+    float distance = curNode->getPosition().getDistanceFrom(explodePos);
+    //std::cout<<"got distance"<<std::endl;
     if(distance <= explosionRadius){
-        int damage = explosionDamage; // max damage
-        if(distance > 400){ // if more than 400 away, scale down damage
-            float scale = (distance-400) / (explosionRadius-400);
-            damage = int(explosionDamage * scale);
-        }
-        player->applyDamage(damage);
-        std::cout << "Damaged borbie @distance=" << distance <<
-            " for @damage=" << damage << std::endl;
+      std::cout<<"inside if for explosion radius"<<std::endl;
+      int damage = explosionDamage; // max damage
+      if(distance > 400){ // if more than 400 away, scale down damage
+        float scale = (distance-400) / (explosionRadius-400);
+        damage = int(explosionDamage * scale);
+      }
+      enemies->objList[i]->applyDamage(damage);
+      std::cout << "Damaged enemy @distance=" << distance <<
+        " for @damage=" << damage << std::endl;
     }
+  }
+
+  // calculate damage for buildings
+  int numBuild = buildings->objList.size();
+  for(int i=0; i<numBuild; i++){
+    ISceneNode *curNode = buildings->objList[i]->getNode();
+    // if current node is the exploding node, ignore it
+    if(curNode == explodingNode)
+      continue;
+    // if current node is NOT visible, ignore it
+    else if(!curNode->isVisible() || buildings->objList[i]->hasExploded())
+      continue;
+    // otherwise, check if the distance is close enough, and apply damage
+    //  based on the distance to the explosion center
+    float distance = curNode->getPosition().getDistanceFrom(explodePos);
+    if(distance <= explosionRadius){
+      int damage = explosionDamage; // max damage
+      if(distance > 400){ // if more than 400 away, scale down damage
+        float scale = (distance-400) / (explosionRadius-400);
+        damage = int(explosionDamage * scale);
+      }
+      // if the exploding object is a building, reduce splash damage
+      //  to prevent instant-killing an entire city. That would suck.
+      if(explodingObject->getObjectType() == TYPE_BUILDING)
+        damage = damage / 20;
+      buildings->objList[i]->applyDamage(damage);
+      std::cout << "Damaged building @distance=" << distance <<
+        " for @damage=" << damage << std::endl;
+    }
+  }
+
+  // calculate damage for vehicles
+  int numVehicles = vehicles->objList.size();
+  for(int i = 0 ; i < numVehicles ; i++){
+    ISceneNode *curNode = vehicles->objList[i]->getNode();
+    // if current node is the exploding node, ignore it
+    if(curNode == explodingNode)
+      continue;
+    // if current node is NOT visible, ignore it
+    else if(!curNode->isVisible() || vehicles->objList[i]->hasExploded())
+      continue;
+    // otherwise, check if the distance is close enough, and apply damage
+    //  based on the distance to the explosion center
+    float distance = curNode->getPosition().getDistanceFrom(explodePos);
+    if(distance <= explosionRadius){
+      int damage = explosionDamage; // max damage
+      if(distance > 400){ // if more than 400 away, scale down damage
+        float scale = (distance-400) / (explosionRadius-400);
+        damage = int(explosionDamage * scale);
+      }
+      vehicles->objList[i]->applyDamage(damage);
+      std::cout << "Damaged vehicle @distance=" << distance <<
+        " for @damage=" << damage << std::endl;
+    } 
+  } 
+
+  // if Borbie is already dead, don't kill her again :(
+  if(player->hasExploded())
+    return;
+
+  float distance = player->getNode()->getPosition().getDistanceFrom(explodePos);
+  if(distance <= explosionRadius){
+    int damage = explosionDamage; // max damage
+    if(distance > 400){ // if more than 400 away, scale down damage
+      float scale = (distance-400) / (explosionRadius-400);
+      damage = int(explosionDamage * scale);
+    }
+    player->applyDamage(damage);
+    std::cout << "Damaged borbie @distance=" << distance <<
+      " for @damage=" << damage << std::endl;
+  }
 }
 
 
@@ -489,18 +501,18 @@ void GameInstance::createRainParticleSystem(const char *texture){
 
 // Registers a click event with the Game instance:
 void GameInstance::clickEvent(BorbieInputEvent click) {
-    switch(click){
-        // if left click
-        case BORBIE_LEFT_CLICK:
-            // attempt to punch something
-            this->punch();
-            break;
-        // if right click
-        case BORBIE_RIGHT_CLICK:
-            break;
-        default:
-            break;
-    }
+  switch(click){
+    // if left click
+    case BORBIE_LEFT_CLICK:
+      // attempt to punch something
+      this->punch();
+      break;
+      // if right click
+    case BORBIE_RIGHT_CLICK:
+      break;
+    default:
+      break;
+  }
 }
 
 
@@ -510,13 +522,13 @@ void GameInstance::clickEvent(BorbieInputEvent click) {
 // called each frame by Game object to upda all of the GameInstance
 //  subsystems, including GUI, target selector, and sound.
 void GameInstance::update(){
-    // update all subsystems
+  // update all subsystems
   this->drawGUI();
   this->updateSelector();
   this->audioSystem->updateSound(
-    this->camera->getPosition(),
-    this->camera->getRotation()
-  );
+      this->camera->getPosition(),
+      this->camera->getRotation()
+      );
   this->enemies->update();
   this->vehicles->update();
   this->hands->update();
@@ -526,13 +538,19 @@ void GameInstance::update(){
     bgSound = bgSoundDead; 
     audioSystem->playMusicLoop(bgSound); 
     audioSystem->setMusicVolume(0.2);
-    
+
   }
- 
+
   if(player && game)
-    if(player->hasExploded()) 
-      game->manageStates();
-  
+    if(player->hasExploded())
+    {
+      driver->draw2DImage(
+          this->menu,
+          rect<s32>(driver->getScreenSize().Width/4, driver->getScreenSize().Height/4, driver->getScreenSize().Width/4 + 75, driver->getScreenSize().Height/4+50),
+          rect<s32>(0, 0,
+            this->menu->getSize().Width,
+            this->menu->getSize().Height));
+    }
 
 
   // update global (publically available) game timer
@@ -549,7 +567,7 @@ void GameInstance::update(){
     unsigned int retval = (*it)->updateTimers();
     switch(retval){
       case GAME_OBJ_DELETE: // delete object AND remove it from lists
-      //  this->vehicles->removeObject(*it);
+        //  this->vehicles->removeObject(*it);
       case GAME_OBJ_REMOVE_FROM_UPDATE_LIST: // remove object from list
         this->updateList.erase(it);
         it--;
@@ -655,36 +673,36 @@ void GameInstance::updateThrownObject(){
       carriedVehicle->explode();
 
       // make everything around it take damage:
-     // applyExplosionDamage(carriedVehicle);
-      
+      // applyExplosionDamage(carriedVehicle);
+
       // clean up temporaries (make we can pick up more vehicles)
       vehicleThrown = false;
       carriedVehicle = 0;
     }
   }
-}
+  }
 
 
-// Adds an object to the list of update-required objects, where they will
-//  be updated by the standard update system until they request themselves
-//  to be removed. Thanks Irrlicht.
-void GameInstance::addUpdateObject(GameObject *toUpdate){
-  this->updateList.push_back(toUpdate);
-}
+  // Adds an object to the list of update-required objects, where they will
+  //  be updated by the standard update system until they request themselves
+  //  to be removed. Thanks Irrlicht.
+  void GameInstance::addUpdateObject(GameObject *toUpdate){
+    this->updateList.push_back(toUpdate);
+  }
 
 
 
-/*** PRIVATE COLLISION METHODS ***/
+  /*** PRIVATE COLLISION METHODS ***/
 
-// Add a node's Traingle Selector to the global meta selector. Use
-//	irr::scene::ISceneNode->getTriangleSelector() to get one.
-//	Make sure to set it up first with:
-//	smgr->createTriangleSelectorFromBoundingBox(node); (or something)
-void GameInstance::addCollision(irr::scene::ITriangleSelector *selector){
+  // Add a node's Traingle Selector to the global meta selector. Use
+  //	irr::scene::ISceneNode->getTriangleSelector() to get one.
+  //	Make sure to set it up first with:
+  //	smgr->createTriangleSelectorFromBoundingBox(node); (or something)
+  void GameInstance::addCollision(irr::scene::ITriangleSelector *selector){
     this->metaTriSelector->addTriangleSelector(selector);
-}
+  }
 
-// Remove a node's Triangle Selector from the global meta selector.
-void GameInstance::removeCollision(irr::scene::ITriangleSelector *selector){
+  // Remove a node's Triangle Selector from the global meta selector.
+  void GameInstance::removeCollision(irr::scene::ITriangleSelector *selector){
     this->metaTriSelector->removeTriangleSelector(selector);
-}
+  }
