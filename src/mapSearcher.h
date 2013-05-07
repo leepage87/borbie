@@ -14,47 +14,7 @@
 
 // include cpp vector to return a list of RoadIntersections.
 #include <vector>
-
-
-// Customized priority queue implemented for the A* algorithm. Note:
-//  this queue is dumpy and inefficient, might need optimization.
-// TEMPLATE: arbitrary object T: requires operators "<" and "=="
-//  for comparisons.
-template <class T> class AStarPriorityQueue {
-
-  private:
-    // internal under-the-hood queue container (iterable vector)
-    std::vector<T> container;
-    
-  public:
-    // enqueue into the priority queue, sorting it as it goes
-    void enqueue(T obj){
-        typename std::vector<T>::iterator it = this->container.begin();
-        for( ; it != this->container.end(); ++it){
-            if(obj < (*it))
-                break;
-        }
-        this->container.insert(it, obj);
-    }
-    
-    // dequeue from the priority queue (returns and removes the front element)
-    T dequeue(){
-        T obj = this->container[0];
-        this->container.erase(this->container.begin());
-        return obj;
-    }
-    
-    // Returns TRUE if the given object is in this queue.
-    bool contains(T obj){ return false; }
-    
-    // Gets a matching object from the queue
-    //T getObject(T obj);
-    
-    // Remove an element from the priority queue by type or index.
-    //  Returns TRUE if something was removed, false if not found.
-    bool remove(T obj) { return false; }
-    //bool remove(int index);
-};
+#include <algorithm>
 
 
 // SearchNode object used to apply the A* algorithm to (instead of using the
