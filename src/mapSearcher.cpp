@@ -6,8 +6,8 @@
  */
 
 #include "mapSearcher.h"
+#include "aStarPriorityQueue.h"
 #include <cmath>
-#include <queue>
 #include <algorithm>
 
 #include <iostream> // TODO - remove
@@ -27,6 +27,7 @@ SearchNode::SearchNode(RoadIntersection *intersection){
     this->Y = intersection->Y;
     this->cost = 0;
     this->intersection = intersection;
+    this->previous = 0;
 }
 
 
@@ -132,28 +133,21 @@ std::vector<RoadIntersection> MapSearcher::getShortestPath(
     SearchNode end(endIntersection);
     
     // set up the frontier priority queue with the first node
-    priority_queue<SearchNode> frontier;
-    frontier.push(start);
+    AStarPriorityQueue<SearchNode> frontier;
+    frontier.enqueue(start);
     
     // keep track of visited nodes and in parallel a list of the queue's nodes
     //  for easy traversal with iterators when needed
     vector<SearchNode> visited;
-    vector<SearchNode> unsortedFrontier;
-    unsortedFrontier.push_back(start);
     
     // run A* search until a path is found, or until the queue runs out,
     //  in which case this search failed.
     while(frontier.size() > 0){
         // pop cur from top of frontier
-        SearchNode cur = frontier.top();
+        SearchNode cur = frontier.dequeue();
         
         // remove cur from the unsorted frontier list
-        vector<SearchNode>::iterator findCurIterator =
-            find(unsortedFrontier.begin(), unsortedFrontier.end(), cur);
-        if(findCurIterator != unsortedFrontier.end())
-            unsortedFrontier.erase(findCurIterator);
-        else
-            cout << "ERROR - couldn't remove CUR at top of while" << endl;
+        
         
         // add cur to list of visited nodes
         visited.push_back(cur);
@@ -163,47 +157,45 @@ std::vector<RoadIntersection> MapSearcher::getShortestPath(
         for(vector<SearchNode>::iterator it = neighbors.begin();
             it != neighbors.end(); ++it)
         {
+            // set neighbors previous to current's intersection
+            (*it).previous = cur.intersection;
+            
             // find distance to neighbor from current node
-            int distToNeighbor =
-                MapSearcher::getDistance(cur.X, cur.Y, (*it).X, (*it).Y);
+            int distToNeighbor = this->getDistance(cur.X, cur.Y, (*it).X, (*it).Y);
             
             // get best distance to end node (heuristic)
-            int heuristic =
-                MapSearcher::getDistance(end.X, end.Y, (*it).X, (*it).Y);
+            int heuristic = this->getDistance(end.X, end.Y, (*it).X, (*it).Y);
             
             // estimate best case cost to path
             int estimatedCost = cur.cost + distToNeighbor + heuristic;
             
-            // try to find the current neighbor in unsorted frontier list
-            vector<SearchNode>::iterator inFrontierIterator =
-                find(unsortedFrontier.begin(), unsortedFrontier.end(), (*it));
             // try to find the current neighbor in visited list
             vector<SearchNode>::iterator inVisitedIterator =
                 find(visited.begin(), visited.end(), (*it));
             
+            // try to find the current neighbor in the frontier (-1 if not found)
+            int frontierIndex = frontier.getElementIndex((*it));
+            
             // if neighbor NOT in frontier and NOT yet visited ...
-            if(inFrontierIterator == unsortedFrontier.end() &&
-                inVisitedIterator == visited.end())
-            {
+            if(inVisitedIterator == visited.end() && frontierIndex == -1) {
                 // ... if we found the end node, we're done!
                 if((*it) == end){
                     cout << "Found" << endl; // done TODO
                 }
                 // ... otherwise, push the neighbor into the frontier.
                 else {
-                    frontier.push(*it);
-                    unsortedFrontier.push_back(*it);
+                    frontier.enqueue(*it);
                 }
             }
             
             // otherwise if neighbor IS in frontier ...
-            else if(inFrontierIterator != unsortedFrontier.end()){
+            else if(frontierIndex >= 0){
                 // ... if cost is lower than the one already in frontier,
-                //  replace it.
-                if((*it).cost < (*inFrontierIterator).cost){
-                    // TODO
-                    // (*inFrontierIterator).cost = (*it).cost
-                    // (*inFrontierIterator).previous = (*it).previous // TODO
+                //  replace it with the node of lower cost.
+                SearchNode inFrontier = frontier.get(frontierIndex);
+                if((*it).cost < inFrontier.cost){
+                    if(frontier.remove(frontierIndex))
+                        frontier.enqueue(*it);
                 }
             }
         }

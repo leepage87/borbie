@@ -21,8 +21,6 @@
 //  RoadIntersection list).
 class SearchNode {
   private:
-    // associated road intersection object in MapReader
-    RoadIntersection *intersection;
     
   public:
     SearchNode(RoadIntersection *intersection);
@@ -31,6 +29,10 @@ class SearchNode {
     float X;
     float Y;
     float cost;
+    
+    // associated road intersection object in MapReader, and the previous
+    RoadIntersection *intersection;
+    RoadIntersection *previous;
     
     // get a list of the neighbors of this node
     std::vector<SearchNode> getNeighbors();

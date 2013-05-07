@@ -51,14 +51,37 @@ template <class T> class AStarPriorityQueue {
         return -1;
     }
     
-    // Remove an element from the priority queue by type or index.
-    //  Returns TRUE if something was removed, false if not found.
+    // Returns the element at the given index. Returns a segfault if element
+    //  index is not available in the container.
+    T get(unsigned int index) {
+        return this->container[index];
+    }
+    
+    // Remove an element from the priority queue by index in the internal
+    //  container. Returns TRUE if something was removed, false if not found.
     bool remove(unsigned int index) {
         if(index < 0 || index >= this->container.size())
             return false;
         
         this->container.erase(this->container.begin() + index);
         return true;
+    }
+    
+    // Remove an element from the priority queue by the object (compares them).
+    //  Returns TRUE if something was removed, false if not found.
+    bool remove(T obj) {
+        typename std::vector<T>::iterator finder =
+            std::find(this->container.begin(), this->container.end(), obj);
+        if(finder == this->container.end())
+            return false;
+        else{
+            this->container.erase(finder);
+            return true;
+        }
+    }
+    
+    int size(){
+        return this->container.size();
     }
     
 }; // end of AStarPriorityQueue class
