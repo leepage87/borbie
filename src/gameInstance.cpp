@@ -69,8 +69,6 @@ GameInstance::GameInstance(
     audioSystem->createSound3d("assets/sounds/soundEffects/burning.mp3");
   this->explosionSound1 =
     audioSystem->createSound3d("assets/sounds/soundEffects/rocketHit.wav");
-
-  //TODO: Release these sounds in the destructor after merge
   this->death1 =
     audioSystem->createSound3d("assets/sounds/soundEffects/meinLeiben.wav");
   this->gunShot1 =
@@ -226,14 +224,22 @@ void GameInstance::TEST_PATH_FUNCTION_TODO_REMOVE(){
 GameInstance::~GameInstance(){
   ((BorbiesEventReceiver*)receiver)->removeGameInstance();
   this->updateList.clear();
+  //delete sounds if they exist
   if(bgSound)
-  bgSound->release();  
+    bgSound->release();  
   if(bgSoundDead)
-  bgSoundDead->release();
+    bgSoundDead->release();
   if(death1)
-  death1->release();
+    death1->release();
   if(explosionSound1)
-  explosionSound1->release();
+    explosionSound1->release();
+  if(death1)
+    death1->release();
+  if(gunShot1)
+    gunShot1->release();
+  if(gunShot2)
+    gunShot2->release();
+
   delete this->terrain;
   delete this->skybox;
   delete this->light;
