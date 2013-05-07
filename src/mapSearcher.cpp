@@ -27,7 +27,6 @@ SearchNode::SearchNode(RoadIntersection *intersection){
     this->Y = intersection->Y;
     this->cost = 0;
     this->intersection = intersection;
-    this->previous = 0;
 }
 
 
@@ -122,7 +121,7 @@ std::vector<RoadIntersection> MapSearcher::getShortestPath(
     
     // create initial list with just the first node in it
     vector<RoadIntersection> path;
-    //path.push_back(*start);
+    path.push_back(*startIntersection);
     
     // if already at destination, just return start intersection
     if(startIntersection == endIntersection)
@@ -142,7 +141,8 @@ std::vector<RoadIntersection> MapSearcher::getShortestPath(
     
     // run A* search until a path is found, or until the queue runs out,
     //  in which case this search failed.
-    while(frontier.size() > 0){
+    bool found = false;
+    while(frontier.size() > 0 && !found){
         // pop cur from top of frontier
         SearchNode cur = frontier.dequeue();
         
@@ -158,7 +158,7 @@ std::vector<RoadIntersection> MapSearcher::getShortestPath(
             it != neighbors.end(); ++it)
         {
             // set neighbors previous to current's intersection
-            (*it).previous = cur.intersection;
+            (*it).previous = &cur; // TODO - temporary pointer, bad?
             
             // find distance to neighbor from current node
             int distToNeighbor = this->getDistance(cur.X, cur.Y, (*it).X, (*it).Y);
@@ -181,6 +181,9 @@ std::vector<RoadIntersection> MapSearcher::getShortestPath(
                 // ... if we found the end node, we're done!
                 if((*it) == end){
                     cout << "Found" << endl; // done TODO
+                    end = (*it);
+                    found = true;
+                    break;
                 }
                 // ... otherwise, push the neighbor into the frontier.
                 else {
@@ -199,6 +202,13 @@ std::vector<RoadIntersection> MapSearcher::getShortestPath(
                 }
             }
         }
+    }
+    
+    SearchNode cur = end;
+    while(cur.previous != &start){
+        path.push_back(*cur.intersection);
+        cur = *(cur.previous);
+        std::cout << "Added path node..." << std::endl;
     }
     
     return path;

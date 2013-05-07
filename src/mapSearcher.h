@@ -20,8 +20,7 @@
 // SearchNode object used to apply the A* algorithm to (instead of using the
 //  RoadIntersection list).
 class SearchNode {
-  private:
-    
+
   public:
     SearchNode(RoadIntersection *intersection);
     
@@ -32,7 +31,7 @@ class SearchNode {
     
     // associated road intersection object in MapReader, and the previous
     RoadIntersection *intersection;
-    RoadIntersection *previous;
+    SearchNode *previous;
     
     // get a list of the neighbors of this node
     std::vector<SearchNode> getNeighbors();
