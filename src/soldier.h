@@ -1,7 +1,10 @@
+/*********************************************************************
+ * File:     soldier.h
+ * Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
+ * Function: This is the header file for soldier.cpp
+ *********************************************************************/
 #ifndef SOLDIER_H
 #define SOLDIER_H
-
-#include <iostream> // TODO: debug (remove)
 
 #include <irrlicht.h>
 

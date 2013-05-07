@@ -1,5 +1,8 @@
-/*
- */
+/*********************************************************************
+ * File:     enemies.h
+ * Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
+ * Function: This is the header file for enemies.cpp
+ *********************************************************************/
 #ifndef ENEMY_H
 #define ENEMY_H
 

@@ -1,5 +1,6 @@
-/*	File: game_object.h
- *	Authors: teamKillYourself
+/********************************************************************* 
+ *	File: game_object.h
+ *	Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
  *
  *	Description: this file contains the class declaration for the abstract
  *	class GameObject. GameObject is responsible for keeping track of most
@@ -7,7 +8,7 @@
  *	appear in the world, such as buildings, vehicles or NPCs.
  *	This abstract class that provides an interface of functions and values
  *	for all interactive game objects.
- */
+ *********************************************************************/
 
 #ifndef GAME_OBJECT_H
 #define GAME_OBJECT_H

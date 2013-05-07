@@ -1,7 +1,11 @@
+/*********************************************************************
+ * File:     bigAssSoldier.h
+ * Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
+ * Function: This is the header file for bigAssSoldier.cpp
+ *********************************************************************/
+
 #ifndef BIG_ASS_SOLDIER_H
 #define BIG_ASS_SOLDIER_H
-
-#include <iostream> // TODO: debug (remove)
 
 #include <irrlicht.h>
 

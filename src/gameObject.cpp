@@ -1,11 +1,13 @@
-/*	File: game_object.cpp
- *	Authors: teamKillYourself
+/********************************************************************* 
+ * File:     gameObject.cpp
+ * Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
  *
- *	Description: this file contains the class definition for the abstract
- *	class GameObject. GameObject is responsible for keeping track of most
- *	non-specific (abstract) information about Borbie scene objects that
- *	appear in the world, such as buildings, vehicles or NPCs.
- */
+ * Function: This file contains the class definition for the abstract
+ *	         class GameObject. GameObject is responsible for keeping
+ *           track of most non-specific (abstract) information about
+ *           Borbie scene objects that appear in the world, such as
+ *           buildings, vehicles or NPCs.
+ *********************************************************************/
 
 // application headers
 #include "gameObject.h"
@@ -27,13 +29,15 @@ using namespace core;
 using namespace video;
 
 
-/* CONSTRUCTOR:
- *	Copies the pointer to the Irrlicht engine scene manager, and initializes
- *	all variables to their default level.
+/********************************************************************* 
+ * Constructor for the gameObjects.
+ * Copies the pointer to the Irrlicht engine scene manager, and
+ * initializes all variables to their default level.
  * To override this constructor, it is recommended to super-construct with
- *	this constructor first. You can do this by:
- *  ExtendedChild(int foo, int bar) : AbstractBase(foo) { ... }
- */
+ * this constructor first. You can do this by:
+ * ExtendedChild(int foo, int bar) : AbstractBase(foo) { ... }
+ * Param: gameInstance the game instance containing all necessary pointers
+ *********************************************************************/
 GameObject::GameObject(GameInstance *gameInstance){
 	// link pointers to Irrlicht objects
 	this->smgr = gameInstance->getSceneManager();
@@ -68,13 +72,14 @@ GameObject::GameObject(GameInstance *gameInstance){
 }
 
 
-/* DESTRUCTOR:
- *	Removes the Irrlicht ISceneNode associated with this object from
- *	the game (if it exists), as well as all of its associated particle systems.
+/*********************************************************************
+ * Desctructor
+ * Removes the Irrlicht ISceneNode associated with this object from
+ * the game (if it exists), as well as all of its associated particle systems.
  * NOTE: With inheritence, c++ automatically calls super destructors after
- *	child destructors are called. An overriding destructor needs not to
- *	delete the interal ISceneNode.
- */
+ * child destructors are called. An overriding destructor needs not to
+ * delete the interal ISceneNode.
+ *********************************************************************/
 GameObject::~GameObject(){
     // If object was not yet removed from its container, do it now. If removing
     //  manually from a list, make sure to set the container to 0, else the
@@ -100,61 +105,86 @@ GameObject::~GameObject(){
     }
 }
 
-
-// (private, friend-accessible by ObjectList's addObject function)
-// Set the meta triangle selector to the given selector.
+/*********************************************************************
+ * (private, friend-accessible by ObjectList's addObject function)
+ * Set the meta triangle selector to the given selector.
+ * Param: metaTriSelector The triangle selector that handles collision
+ *********************************************************************/
 void GameObject::setMetaTriSelector(IMetaTriangleSelector *metaTriSelector){
     this->metaTriSelector = metaTriSelector;
 }
-
-// (private, friend-accessible by ObjectList's addObject function)
-// Set the container of this object to the given ObjectList.
+/*********************************************************************
+ * (private, friend-accessible by ObjectList's addObject function)
+ * Set the container of this object to the given ObjectList.
+ * Param: objList the Object List this object will be added to
+ *********************************************************************/
 void GameObject::setContainer(ObjectList *objList){
     this->containerList = objList;
 }
 
-
-// GET: object type (returns the object's type to differentiate easily)
+/*********************************************************************
+ * GET: object type (returns the object's type to differentiate easily)
+ *********************************************************************/
 GameObjectType GameObject::getObjectType() const {
     return this->objectType;
 }
 
-// GET: health - returns the object's current health (in int form)
+/*********************************************************************
+ * GET: health - returns the object's current health (in int form)
+ *********************************************************************/
 int GameObject::getHealth() const {
 	return this->health;
 }
 
-// GET: explosion radius - returns the object's current explosion radius (int).
+/*********************************************************************
+ * GET: explosion radius - returns the object's current explosion radius (int).
+ *********************************************************************/
 int GameObject::getExplosionRadius() const {
 	return this->explosionRadius;
 }
-
-// GET: explosion radius - returns the object's current explosion radius (int).
+/*********************************************************************
+ * GET: explosion radius - returns the object's current explosion radius (int).
+ *********************************************************************/
 int GameObject::getExplosionDamage() const {
 	return this->explosionDamage;
 }
 
-
-// SET: health - set the objects current health
+/*********************************************************************
+ * SET: health - set the objects current health
+ * Param: newHealth The object's new health
+ *********************************************************************/
 void GameObject::setHealth(int newHealth){
 	this->health = newHealth;
 }
 
-// SET: max health - set the objects maximum health
+/*********************************************************************
+ * SET: max health - set the objects maximum health
+ * Param: newHealth The object's new maximum health
+ *********************************************************************/
 void GameObject::setMaxHealth(int newHealth){
 	this->startingHealth = newHealth;
 }
 
-// SET: explosion radius - set the objects current explosion radius
+/*********************************************************************
+ * SET: explosion radius - set the objects current explosion radius
+ * Param: newRadius The new explosion radius
+ *********************************************************************/
 void GameObject::setExplosionRadius(int newRadius){
 	this->explosionRadius = newRadius;
 }
 
-// SET: explosion damage - set the objects current explosion damage
+/*********************************************************************
+ * SET: explosion damage - set the objects current explosion damage
+ * Param: The new explosion damage amount
+ *********************************************************************/
 void GameObject::setExplosionDamage(int newDamage){
 	this->explosionDamage = newDamage;
 }
 
+/*********************************************************************
+ * Removes the specified amount of health from the gameObject
+ * Param: amount The amount of damage
+ *********************************************************************/
 void GameObject::applyDamage(int amount){
     this->health -= amount;
     if(this->health <= 0){
@@ -164,11 +194,12 @@ void GameObject::applyDamage(int amount){
     }
 }
 
-
-// updates all timers. If a timer is finished, returns the correct action to
-//  take upon this happening. If this update was called for no reason, then
-//  GAME_OBJ_REMOVE_FROM_UPDATE_LIST will be returned, indicating that this
-//  object should no longer be updated each frame.
+/*********************************************************************
+ * Updates all timers. If a timer is finished, returns the correct action to
+ * take upon this happening. If this update was called for no reason, then
+ * GAME_OBJ_REMOVE_FROM_UPDATE_LIST will be returned, indicating that this
+ * object should no longer be updated each frame.
+ *********************************************************************/
 unsigned int GameObject::updateTimers(){
     // if object was exploded, check if explosion timer is up. If so, keep it
     //  in the list but flag it for deleting.
@@ -203,18 +234,20 @@ unsigned int GameObject::updateTimers(){
         return GAME_OBJ_REMOVE_FROM_UPDATE_LIST;
 }
 
-
-// returns TRUE if this object was already exploded (if timer ticked out and
-//  explosion occured) - false if not yet exploded or if explode was never
-//  called.
+/*********************************************************************
+ * returns TRUE if this object was already exploded (if timer ticked out and
+ * explosion occured) - false if not yet exploded or if explode was never
+ * called.
+ *********************************************************************/
 bool GameObject::hasExploded(){
     return this->hasBeenExploded;
 }
 
-
-// Causes this object to explode, making it vanish and apply explosion damage
-//  to its surroundings. Also calls the particle effect method to create the
-//  visuals for the explosion.
+/*********************************************************************
+ * Causes this object to explode, making it vanish and apply explosion damage
+ *  to its surroundings. Also calls the particle effect method to create the
+ *  visuals for the explosion.
+ *********************************************************************/
 void GameObject::explode(){
     // if already exploded, don't do it again
     if(this->hasBeenExploded)
@@ -257,10 +290,11 @@ void GameObject::explode(){
 	    this->containerList->removeObject(this);
 }
 
-
-// Creates an explosion particle system around this object to animate an explosion
-//  event. This is a generic explosion, and should be overridden for each object
-//  specifically as needed.
+/*********************************************************************
+ * Creates an explosion particle system around this object to animate an
+ * explosion event. This is a generic explosion, and should be overridden
+ * for each object specifically as needed.
+ *********************************************************************/
 void GameObject::createExplosionEffect(){
     // TODO - make explosion size scale with this->explosionRadius
     

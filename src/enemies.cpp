@@ -1,8 +1,10 @@
-/*	File: enemy.cpp
- *	Authors: idk your names
- *
- *	Description: ENEMIES!
- */
+/*********************************************************************
+ * File:     enemies.cpp
+ * Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
+ * Function: This class generates all the soldiers in the game and 
+ *           creates a list containing their pointers, allowing us to
+ *           call each of their updatePosition() methods.
+ *********************************************************************/
 
 #include "enemies.h"
 #include "random.h"
@@ -20,7 +22,13 @@ using namespace video;
 const unsigned int STARTING_NUMBER_ENEMIES = 10;
 const unsigned int MAX_NUMBER_ENEMIES = 1000;
 
-// Create the enemies list object
+/*********************************************************************
+ * Creates a list object to hold references to all the enemies
+ * in the game
+ * Param: metaTriSelector a pointer to our collision handler
+ * Param: gameInstance the gameInstance containing all relevant
+ *        pointers
+ *********************************************************************/
 Enemies::Enemies(
 	IMetaTriangleSelector *metaTriSelector,
 	GameInstance *gameInstance)
@@ -30,9 +38,10 @@ Enemies::Enemies(
     this->maxNumberEnemies = STARTING_NUMBER_ENEMIES;
 }
 
-
-// Generate a default amount of enemies which start moving towards
-//  borbie. If she wrecks stuff, more will spawn.
+/*********************************************************************
+ * Generate a default amount of enemies which start moving towards
+ * borbie. If she wrecks stuff, more will spawn.
+ *********************************************************************/
 void Enemies::generateObjects(){
     MapReader *mapReader = this->gameInstance->getMapReader();
     int numSpawnPoints = mapReader->enemySpawnPoints.size();
@@ -45,10 +54,11 @@ void Enemies::generateObjects(){
     }
 }
 
-
-// randomly creates an enemy near a randomly selected spawn point (exact
-//  position is also randomized by an offset). The enemy created is also
-//  random by a weighed percentage.
+/*********************************************************************
+ * Randomly creates an enemy near a randomly selected spawn point (exact
+ * position is also randomized by an offset). The enemy created is also
+ * random by a weighed percentage.
+ *********************************************************************/
 void Enemies::createRandomEnemy(){
     MapReader *mapReader = this->gameInstance->getMapReader();
     
@@ -80,8 +90,13 @@ void Enemies::createRandomEnemy(){
         type);
 }
 
-
-// create a new enemy
+/*********************************************************************
+ * Create one enemy
+ * Param: xPos The X position the enemy will be generated at
+ * Param: yPos The Y position the enemy will be generated at
+ * Param: zPos The Z position the enemy will be generated at
+ * Param: type The type of enemy that will be generated
+ *********************************************************************/
 void Enemies::makeEnemy(float xPos, float yPos, float zPos, EnemyType type){
 
     // create the enemy based on type given
@@ -100,8 +115,9 @@ void Enemies::makeEnemy(float xPos, float yPos, float zPos, EnemyType type){
 	this->addObject(enemy);
 }
 
-
-// updates the enemies
+/*********************************************************************
+ * Call update on each of the enemies in the list
+ *********************************************************************/
 void Enemies::update(){
     // TODO - fix this by having game objects able to remove themselves -
     //  this might be a big in Buildings also BTW

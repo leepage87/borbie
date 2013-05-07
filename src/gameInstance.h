@@ -1,6 +1,9 @@
-/* Comments... YOU add them
+/********************************************************************* 
+ *	File:     gameInstance.h
+ *	Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
  *
- */
+ *	Description: This is the header file for gameInstance.cpp
+ *********************************************************************/
 
 #ifndef GAMEINSTANCE_H
 #define GAMEINSTANCE_H
