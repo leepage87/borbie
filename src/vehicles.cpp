@@ -46,7 +46,8 @@ Vehicles::Vehicles(
 //  and assigns them to go towards one of them. The number of vehicles generated
 //  is however many maximum number of vehicles are allowed for this map.
 void Vehicles::generateObjects(){
-    int numRoadIntersections = MapReader::roadIntersectionCoords.size();
+    MapReader *mapReader = this->gameInstance->getMapReader();
+    int numRoadIntersections = mapReader->roadIntersectionCoords.size();
     
     for(int i=0; i<MAX_NUMBER_VEHICLES; i++){
         // TODO - does not check for accidental "island" nodes, which should
@@ -54,7 +55,7 @@ void Vehicles::generateObjects(){
         
         // get first intersection randomly
         int rand = Random::randomInt(numRoadIntersections);
-        RoadIntersection first = MapReader::roadIntersectionCoords[rand];
+        RoadIntersection first = mapReader->roadIntersectionCoords[rand];
         
         // get second intersection randomly
         rand = Random::randomInt(first.connections.size());
@@ -103,12 +104,14 @@ void Vehicles::update(){
 //  If the MapReader has no spawn points, does nothing. Vehicle type is
 //  is completely randomized.
 void Vehicles::spawnRandomVehicle(){
+    MapReader *mapReader = this->gameInstance->getMapReader();
+    
     // choose a random spawn point
-    int numSpawnPoints = MapReader::vehicleSpawnPoints.size();
+    int numSpawnPoints = mapReader->vehicleSpawnPoints.size();
     if(numSpawnPoints == 0)
         return; // if no spawn points, can't do anything, so return.
     int spawnPointIndex = Random::randomInt(numSpawnPoints);
-    RoadSpawnPoint spawnPoint = MapReader::vehicleSpawnPoints[spawnPointIndex];
+    RoadSpawnPoint spawnPoint = mapReader->vehicleSpawnPoints[spawnPointIndex];
     VehicleInstance *spawnedVehicle = this->addRandomVehicle(
         spawnPoint.X,
         ROAD_HEIGHT,

@@ -59,6 +59,13 @@ irr::core::vector3df SearchNode::getPosition(){
 
 /*** --- MapSearcher Definitions --- ***/
 
+
+// Constructor: keeps track of the MapReader pointer that built this searcher.
+MapSearcher::MapSearcher(MapReader *mapReader){
+    this->mapReader = mapReader;
+}
+
+
 // Returns the closest RoadIntersection pointer from the given location.
 //  If none exist on the map, returns an uninitialized RoadIntersection.
 RoadIntersection * MapSearcher::getClosestRoadIntersection(
@@ -71,8 +78,8 @@ RoadIntersection * MapSearcher::getClosestRoadIntersection(
     // loop through each intersection; if one is closer, set closest to that
     //  intersection.
     for(vector<RoadIntersection>::iterator it =
-            MapReader::roadIntersectionCoords.begin();
-        it != MapReader::roadIntersectionCoords.end(); ++it)
+            this->mapReader->roadIntersectionCoords.begin();
+        it != this->mapReader->roadIntersectionCoords.end(); ++it)
     {
         int curDistance =
             MapSearcher::getDistance(location.X, location.Z, (*it).X, (*it).Y);
