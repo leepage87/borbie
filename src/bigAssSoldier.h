@@ -20,5 +20,9 @@ class BigAssSoldier : public virtual Soldier {
 	BigAssSoldier(
 	    GameInstance *gameInstance,
 		float posX, float posY, float posZ);
+
+    private:
+    virtual void fire();
+    virtual void aim();
 };
 #endif
