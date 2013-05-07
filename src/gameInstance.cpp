@@ -87,7 +87,7 @@ GameInstance::GameInstance(
 
 
   /*** create textures for in game menu ***/
-  this->menu = driver->getTexture("assets/textures/hudTexture1.jpg");
+  this->menu = driver->getTexture("assets/textures/deathMenu.jpg");
 
 
 
@@ -541,7 +541,7 @@ void GameInstance::update(){
     {
       driver->draw2DImage(
           this->menu,
-          rect<s32>(driver->getScreenSize().Width/4, driver->getScreenSize().Height/4, driver->getScreenSize().Width/4 + 75, driver->getScreenSize().Height/4+50),
+          rect<s32>(driver->getScreenSize().Width/3, driver->getScreenSize().Height/3, driver->getScreenSize().Width/3 + 300, driver->getScreenSize().Height/3+200),
           rect<s32>(0, 0,
             this->menu->getSize().Width,
             this->menu->getSize().Height));
