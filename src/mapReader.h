@@ -28,6 +28,11 @@ struct RoadIntersection {
     int Y;
     int id;
     std::vector<RoadIntersection *> connections;
+    
+    // comparison operator (check for equality)
+    bool operator == (const RoadIntersection& other) const {
+        return ((this->X == other.X) && (this->Y == other.Y));
+    }
 };
 
 // Basic x, y point, but attached with a reference to the road intersection

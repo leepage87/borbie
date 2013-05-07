@@ -27,6 +27,7 @@
 #include "soldier.h"
 #include "enemies.h"
 #include "borbie.h"
+#include "hands.h"
 
 
 // world constants
@@ -52,6 +53,7 @@ class GameInstance {
     // list of game sounds used by multiple game classes
     SoundClip *burningSound;
     SoundClip *explosionSound1;
+    SoundClip *death1;
 
     // current game time
     unsigned int currentGameTime;
@@ -92,6 +94,8 @@ class GameInstance {
     Enemies * enemies;
     Hud *hud;
     Game *game;
+    Hands *hands;
+
 
     // private update methods to update the various subsystems:
     //  all of these are called by the update() method.
@@ -128,6 +132,8 @@ class GameInstance {
         irr::IEventReceiver *receiver, Game *game);
 
     ~GameInstance();
+    
+    void TEST_PATH_FUNCTION_TODO_REMOVE(); // TODO - remove
 
     // getters for all Irrlicht objects: used by objects in the game
     //  to get pointers to all necessary Irrlicht objects.

@@ -55,8 +55,16 @@ void Borbie::ricochet(){
 }
 void Borbie::applyBulletDamage(int amount){
     this->health -= amount;
+    playBulletHit();
+    if(this->health <= 0){
+        this->health = 0;
+        std::cout << "BORBIE DEAD LOL" << std::endl;
+        this->explode();
+    }
+}
 
-    int num = Random::randomInt(0, 8);
+void Borbie::playBulletHit(){
+    int num = Random::randomInt(0, 7);
     switch (num){
         case 0:
             this->audioSystem->playSound3d(bulletHit1, this);         
@@ -64,25 +72,20 @@ void Borbie::applyBulletDamage(int amount){
         case 1:
             this->audioSystem->playSound3d(bulletHit2, this); 
             break;
-        case 3:
+        case 2:
             this->audioSystem->playSound3d(bulletHit3, this); 
             break;
-        case 4:
+        case 3:
             this->audioSystem->playSound3d(bulletHit4, this); 
             break;
-        case 5:
+        case 4:
             this->audioSystem->playSound3d(bulletHit5, this); 
             break;
-        case 6:
+        case 5:
             this->audioSystem->playSound3d(bulletHit6, this); 
             break;
-        case 7:
+        case 6:
             this->audioSystem->playSound3d(bulletHit7, this); 
             break;
-        }
-    if(this->health <= 0){
-        this->health = 0;
-        std::cout << "BORBIE DEAD LOL" << std::endl;
-        this->explode();
     }
 }

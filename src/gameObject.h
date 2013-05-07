@@ -57,11 +57,19 @@ enum GameObjectType {
 };
 
 
+// Declare ObjectList to save pointers to it
+class ObjectList;
+
+
 // GameObject class (abstract):
 class GameObject {
 
   // declare friend to have access to all of GameObject's members
   friend class ObjectList;
+	
+  protected: // function calls for ObjectList to use
+	void setMetaTriSelector(irr::scene::IMetaTriangleSelector *metaTriSelector);
+	void setContainer(ObjectList *objList);
 
   protected:
 	// pointers to Irrlicht scene objects as needed
@@ -73,14 +81,14 @@ class GameObject {
 	irr::scene::ISceneNode *sceneNode;
 	irr::scene::IMetaTriangleSelector *metaTriSelector;
 	
+	// pointer to object list containing this object
+	ObjectList *containerList;
+	
 	// pointer to the audio system
 	AudioSystem *audioSystem;
 	
 	// pointer to gameInstance (to add itself to the updator)
 	GameInstance *gameInstance;
-	
-	// allow a triangle selector to be set here
-	void setMetaTriSelector(irr::scene::IMetaTriangleSelector *metaTriSelector);
 	
 	// object variables
 	int startingHealth;

@@ -71,7 +71,7 @@ int BigAssSoldier::getRandomFireDelay(){
  * on the player and calls setMoving
  ************************************************************/
 void BigAssSoldier::updatePosition(){
-    aim();
+    aim2();
     setMoving();
 }
 
@@ -87,7 +87,7 @@ void BigAssSoldier::setMoving(){
 /*************************************************************
  * Orientates the soldier towards the players position
  ************************************************************/
-void BigAssSoldier::aim(){
+void BigAssSoldier::aim2(){
 	//turn the soldier to look at you
 	vector3df start = sceneNode->getPosition();
 	start.Y += 600;

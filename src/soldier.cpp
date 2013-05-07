@@ -36,11 +36,14 @@ Soldier::Soldier(
 	this->sceneNode->setVisible(true);
 	this->sceneNode->setMaterialFlag(EMF_LIGHTING, true);
 	this->sceneNode->setID(IDFlag_IsPickable);
-	this->setHealth(350);
+	this->setHealth(401);
 	this->lastFireTime = 0;
 	this->moving = false;
     this->fireDelay = getRandomFireDelay() * 1000;
     this->burst = audioSystem->createSound3d("assets/sounds/soundEffects/burst.mp3");
+    this->explosionDamage = 0;
+    this->explosionRadius = 50;
+    this->death = gameInstance->death1;
 }
 
 /*************************************************************
@@ -84,7 +87,9 @@ void Soldier::setMoving(){
 }
 
 /*************************************************************
- * Orientates the soldier towards the players position
+ * Orientates the soldier towards the players position and
+ * checks if the player is within moving/shooting distance
+ * also explodes the soldier if the player is on top of it
  ************************************************************/
 void Soldier::aim(){
 	//turn the soldier to look at you
@@ -104,6 +109,15 @@ void Soldier::aim(){
     //within 6000 units
 	if (length < 6000 && canShoot())
             fire();	
+    //stomp him in the nuts
+    //std::cout<<"distance is"<< length<<std::endl;
+    if (length < 150){
+        this->audioSystem->playSound3d(death,
+	    this);
+        std::cout<<"should be callign explode***************************************"<<std::endl;
+        explode();
+    }
+    
 }
 
 /*************************************************************
@@ -224,7 +238,7 @@ void Soldier::createExplosionEffect(){
 	    this->explosionParticleSystem->createBoxEmitter(
 		    aabbox3d<f32>(-5, 0, -5, 5, 1, 5),  // emitter size
 		    vector3df(0.0f,0.0f,0.1f),          // direction + speed
-		    2000, 10000,                       // min,max particles per second
+		    2000, 5000,                       // min,max particles per second
 		    SColor(0,255,255,255),              // darkest color
 		    SColor(0,255,255,255),              // brightest color
 		    200, 800,                          // min, max particle lifetime

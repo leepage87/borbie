@@ -10,6 +10,7 @@
 #include "random.h"
 
 
+
 // define GameInstance to use pointer
 class GameInstance;
 
@@ -24,6 +25,7 @@ class Soldier : public GameObject {
 	irr::f32 length;
     irr::core::vector3df destination;
     SoundClip *burst;
+    SoundClip *death;
 	
 	public:
 	Soldier(
@@ -45,5 +47,6 @@ class Soldier : public GameObject {
 	bool canShoot();
 	void fire();
     bool miss();
+    void deathSound();
 };
 #endif

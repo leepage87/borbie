@@ -6,7 +6,7 @@
 
 #include <iostream> // TODO - remove (debug)
 
-#include "directoryReader.h" // TODO - remove
+#include "mapSearcher.h" // TODO - remove
 
 using namespace irr;
 using namespace scene;
@@ -69,7 +69,8 @@ GameInstance::GameInstance(
     audioSystem->createSound3d("assets/sounds/soundEffects/burning.mp3");
   this->explosionSound1 =
     audioSystem->createSound3d("assets/sounds/soundEffects/rocketHit.wav");
-
+  this->death1 =
+    audioSystem->createSound3d("assets/sounds/soundEffects/meinLeiben.wav");  
 
   /*** Setup Runtime Flags ***/
 
@@ -182,8 +183,8 @@ GameInstance::GameInstance(
   //tell the mouse listener that right mouse isn't pressed to start with
   ((BorbiesEventReceiver *)receiver)->setRightMouse(false);
 
-
-
+  /*** Add Hands ***/
+  hands = new Hands(this);  
   /*** Add The Borbie ***/
 
   this->player = new Borbie(this); 	
@@ -195,11 +196,23 @@ GameInstance::GameInstance(
   enemies = new Enemies (metaTriSelector, this);
   enemies->generateObjects();
   //enemies->makeEnemy();
-  // TODO - memory leak (erase enemies in destructor)
 
   // TODO- remove
   //this->setWorldState_wrecked();
   this->setWorldState_fabulous();
+}
+
+
+// TODO --- remove this function
+void GameInstance::TEST_PATH_FUNCTION_TODO_REMOVE(){
+    std::cout << "TEST PATH BUTTON PRESSED" << std::endl;
+    ISceneNode *sceneNode = smgr->addCubeSceneNode();
+	sceneNode->setScale(vector3df(40, 100, 40));
+	RoadIntersection *ri = MapSearcher::getClosestRoadIntersection(
+	    this->camera->getPosition());
+	float bestX = ri->X;
+	float bestY = ri->Y;
+	sceneNode->setPosition(vector3df(bestX, 0 , bestY));
 }
 
 
@@ -240,6 +253,7 @@ GameInstance::~GameInstance(){
 // Attempt to punch something directly in front of Borbie. Punching can only
 //  happen once every two seconds.
 void GameInstance::punch() {
+<<<<<<< HEAD
   ISceneNode *target = selector->getClickTargetShort();
   // if ready to punch, and not carrying a vehicle, and a target is found
   if(this->currentGameTime >= this->nextPunchTime &&
@@ -257,6 +271,27 @@ void GameInstance::punch() {
       targetObj->applyDamage(BORBIE_PUNCH_DAMAGE);
       std::cout << "Punched the target" << std::endl;
       this->nextPunchTime = this->currentGameTime + BORBIE_PUNCH_DELAY_MS;
+=======
+    ISceneNode *target = selector->getClickTargetShort();
+    // if ready to punch, and not carrying a vehicle, and a target is found
+    if(this->currentGameTime >= this->nextPunchTime &&
+        !this->carriedVehicle && target)
+    {
+        // try to get a target, either a building, a vehicle, or an enemy
+        GameObject *targetObj = buildings->getObject(target);
+        if(!targetObj)
+            targetObj = vehicles->getObject(target);
+        if(!targetObj)
+            targetObj = enemies->getObject(target);
+        
+        // if a target object WAS found, proceed to apply damage to it
+        if(targetObj){
+            hands->punch();
+            targetObj->applyDamage(BORBIE_PUNCH_DAMAGE);
+            std::cout << "Punched the target" << std::endl;
+            this->nextPunchTime = this->currentGameTime + BORBIE_PUNCH_DELAY_MS;
+        }
+>>>>>>> 8d943edd63db50392054ec6bb98f0535a0d6ea2e
     }
   }
 }
@@ -505,6 +540,7 @@ void GameInstance::update(){
       );
   this->enemies->update();
   this->vehicles->update();
+  this->hands->update();
 
   if((player->getHealth() < 250) && (bgSound!=bgSoundDead))
   {
@@ -540,7 +576,7 @@ void GameInstance::update(){
     unsigned int retval = (*it)->updateTimers();
     switch(retval){
       case GAME_OBJ_DELETE: // delete object AND remove it from lists
-        this->vehicles->deleteObject(*it);
+      //  this->vehicles->removeObject(*it);
       case GAME_OBJ_REMOVE_FROM_UPDATE_LIST: // remove object from list
         this->updateList.erase(it);
         it--;
@@ -594,6 +630,9 @@ void GameInstance::updateSelector(){
 
       // display the target marker on the GUI
       this->hud->setTargetMarkerEnabled(true);
+
+      //set hands invisible
+      this->hands->setVisible(false);
     }
   }
 
@@ -614,6 +653,8 @@ void GameInstance::updateSelector(){
     //  (not found), it will just fly to the maximum distance possible.
     // This will start an animator to fly to the target.
     objCarry->throwObj(target);
+    //turn hands back on
+    this->hands->setVisible(true);
     vehicleThrown = true;
 
     // hide the target marker (no longer needed)

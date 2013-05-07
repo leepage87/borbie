@@ -38,12 +38,18 @@ ObjectList::~ObjectList(){
 	for(std::vector<GameObject *>::iterator it = objList.begin();
 		it != objList.end(); ++it)
 	{
+	    // null its container so that it doesn't try to remove itself from
+	    //  the list and screw up the iteration, and then delete it.
+	    (*it)->setContainer(0);
 		delete (*it);
 	}
 }
-//Adds an object to the list for tracking purposes
+
+//Adds an object to the list for tracking purposes, and assigns it a pointer
+//  back to this list for self-removal.
 void ObjectList::addObject(GameObject* object){
 	this->objList.push_back(object);
+	object->setContainer(this);
 	object->setMetaTriSelector(this->metaTriSelector);
 }
 
@@ -58,25 +64,27 @@ GameObject* ObjectList::getObject(irr::scene::ISceneNode* pointer){
 	return 0;
 }
 
-// delete object using the Irrlicht node pointer
-void ObjectList::deleteObject(irr::scene::ISceneNode* pointer){
+// Remove an object from this list using the Irrlicht node pointer. If no
+//  matching object exists, does nothing.
+void ObjectList::removeObject(irr::scene::ISceneNode* pointer){
     for(std::vector<GameObject *>::iterator it = objList.begin();
 		it != objList.end(); ++it){
 		if ((*it)->getNode() == pointer) {//pointer match, delete this object
             this->objList.erase(it);
-            delete (*it);
+            //delete (*it);
             break;
 	    }
 	}
 }
 
 
-// delete object using the object pointer
-void ObjectList::deleteObject(GameObject *pointer) {
+// Remove an object from this list using the object pointer. If no matching
+//  object exists, does nothing.
+void ObjectList::removeObject(GameObject *pointer) {
     std::vector<GameObject *>::iterator it;
     it = std::find(this->objList.begin(), this->objList.end(), pointer);
     if(it != this->objList.end()){
-        delete (*it);
+        //delete (*it);
         this->objList.erase(it);
     }
 }
