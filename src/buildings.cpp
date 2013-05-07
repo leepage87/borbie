@@ -10,6 +10,7 @@
 #include "buildings.h"
 #include "mapReader.h"
 #include "directoryReader.h"
+#include "gameInstance.h"
 #include "random.h"
 
 // include cpp library headers for random building sizing
@@ -31,14 +32,16 @@ Buildings::Buildings(
 	//passing these to supah constructah:
 	: ObjectList(metaTriSelector, gameInstance)
 {
+    MapReader *mapReader = this->gameInstance->getMapReader();
+    
     // populate building texture list with all available file names
     DirectoryReader::getDirectoryFiles(
-        MapReader::mapTextureDirectory, // relative path
+        mapReader->mapTextureDirectory, // relative path
         this->textureList, "building"); // e.g. "building1.jpg"
   
     // populate roof texture list with all available file names
     DirectoryReader::getDirectoryFiles(
-        MapReader::mapTextureDirectory,  // relative path
+        mapReader->mapTextureDirectory,  // relative path
         this->roofTextures, "Roof");     // e.g. "RoofOp1.jpg"
 }
 
@@ -48,9 +51,11 @@ Buildings::Buildings(
 //  coordinate list.
 // --- (public) ---
 void Buildings::generateObjects(){
+    MapReader *mapReader = this->gameInstance->getMapReader();
+    
     // read in the map building coordinate file
-    for(std::vector<Point>::iterator it = MapReader::buildingCoords.begin();
-		it != MapReader::buildingCoords.end(); ++it)
+    for(std::vector<Point>::iterator it = mapReader->buildingCoords.begin();
+		it != mapReader->buildingCoords.end(); ++it)
 	{
         this->addRandomBuilding((*it).X, BUILDING_GROUND_HEIGHT, (*it).Y);
         std::cout << "Generated building at " <<

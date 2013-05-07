@@ -14,15 +14,13 @@
 
 // include cpp vector to return a list of RoadIntersections.
 #include <vector>
+#include <algorithm>
 
 
 // SearchNode object used to apply the A* algorithm to (instead of using the
 //  RoadIntersection list).
 class SearchNode {
-  private:
-    // associated road intersection object in MapReader
-    RoadIntersection *intersection;
-    
+
   public:
     SearchNode(RoadIntersection *intersection);
     
@@ -30,6 +28,10 @@ class SearchNode {
     float X;
     float Y;
     float cost;
+    
+    // associated road intersection object in MapReader, and the previous
+    RoadIntersection *intersection;
+    SearchNode *previous;
     
     // get a list of the neighbors of this node
     std::vector<SearchNode> getNeighbors();
@@ -52,17 +54,21 @@ class SearchNode {
 // MapSearcher class:
 class MapSearcher {
 
+  private:
+    MapReader *mapReader;
 
-  public: // All static (globally accessible)
-  
+  public:
+    // constructor: keeps track of a MapReader object pointer
+    MapSearcher(MapReader *mapReader);
+    
     // Returns the closest RoadIntersection pointer from the given location.
     //  If none exist on the map, returns 0 (null).
-    static RoadIntersection * getClosestRoadIntersection(
+    RoadIntersection * getClosestRoadIntersection(
         irr::core::vector3df location);
     
     // Returns the distance (in game units) from between the two given X, Y
     //  coordinates.
-    static float getDistance(float X1, float Y1, float X2, float Y2);
+    float getDistance(float X1, float Y1, float X2, float Y2);
   
     // Find shortest path via roads from the first location to the second
     //  location.
@@ -70,7 +76,7 @@ class MapSearcher {
     //  required to take, starting with the closest road intersection to the
     //  start location, and ending with the closest road intersection to the
     //  destination location.
-    static std::vector<RoadIntersection> getShortestPath(
+    std::vector<RoadIntersection> getShortestPath(
         irr::core::vector3df startPosition,
         irr::core::vector3df endPosition
     );

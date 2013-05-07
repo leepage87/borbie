@@ -8,45 +8,36 @@
  */
 
 #include "mapReader.h"
+#include "mapSearcher.h"
 
 #include <string>
 #include <iostream>
 #include <fstream>
 #include <sstream>
 
-
-// Define the static values here.
-std::string MapReader::mapTextureDirectory;
-
-std::vector<Point> MapReader::buildingCoords;
-std::vector<Point> MapReader::streetLampCoords;
-std::vector<Point> MapReader::treeCoords;
-std::vector<Point> MapReader::fireHydrantCoords;
-std::vector<RoadIntersection> MapReader::roadIntersectionCoords;
-
-std::vector<Point> MapReader::enemySpawnPoints;
-std::vector<RoadSpawnPoint> MapReader::vehicleSpawnPoints;
+using namespace std;
 
 
+// Constructor:
 // Reads the coordinate file, and parses it. Populates the lists of
 //  coordinates as dictated by the file. See documentation on the map
 //  file for more information.
 // TODO - make documentation for the map file.
-void MapReader::readCoordFile(const char *fileName){
+MapReader::MapReader(const char *fileName){
     // TODO - make this global or returned from Terrain map object
     const int farX = 20400.0f;
 	const int farY = 20400.0f;
 	
 	// Try to open the map coordinate file.
-	std::ifstream mapfile(fileName);
+	ifstream mapfile(fileName);
 	if(mapfile.fail()){
-	    std::cerr << "ERROR: Cannot open map file." << std::endl;
+	    cerr << "ERROR: Cannot open map file." << endl;
 	    return;
 	}
 	
 	// If the file is readable, read it line by line.
 	int curLine = 0;
-    for(std::string line; getline(mapfile, line); ) {
+    for(string line; getline(mapfile, line); ) {
         if(line.size() == 0) // skip empty lines
             continue;
         
@@ -61,19 +52,19 @@ void MapReader::readCoordFile(const char *fileName){
         curLine++;
         
         // ignore first character (type indicator)
-        std::string ignore;
-        std::istringstream lineParser(line);
+        string ignore;
+        istringstream lineParser(line);
         lineParser >> ignore;
         
         // If line is 'i' (image/texture directory path), read and continue
         if(type == 'i') {
-            lineParser >> MapReader::mapTextureDirectory;
+            lineParser >> mapTextureDirectory;
             if(lineParser.fail()){
-                std::cerr << "WARNING: Invalid entry in map file ("
-                          << fileName << ", line " << curLine << "):" << std::endl
-                          << "       " << line << std::endl;
+                cerr << "WARNING: Invalid entry in map file ("
+                          << fileName << ", line " << curLine << "):" << endl
+                          << "       " << line << endl;
                 // reset directory
-                MapReader::mapTextureDirectory = "assets/textures/";
+                mapTextureDirectory = "assets/textures/";
             }
             continue;
         }
@@ -104,9 +95,9 @@ void MapReader::readCoordFile(const char *fileName){
         
         // If something failed, it's an invalid format, just skip.
         if(lineParser.fail()){
-            std::cerr << "WARNING: Invalid entry in map file ("
-                      << fileName << ", line " << curLine << "):" << std::endl
-                      << "       " << line << std::endl;
+            cerr << "WARNING: Invalid entry in map file ("
+                      << fileName << ", line " << curLine << "):" << endl
+                      << "       " << line << endl;
             continue;
         }
         
@@ -118,16 +109,16 @@ void MapReader::readCoordFile(const char *fileName){
         // Push the coordinates to the correct list, based on type.
         switch(type){
             case 'b': // building
-                MapReader::buildingCoords.push_back(pos);
+                buildingCoords.push_back(pos);
                 break;
             case 'l': // street lamp
-                MapReader::streetLampCoords.push_back(pos);
+                streetLampCoords.push_back(pos);
                 break;
             case 't': // tree
-                MapReader::treeCoords.push_back(pos);
+                treeCoords.push_back(pos);
                 break;
             case 'f': // fire hydrant
-                MapReader::fireHydrantCoords.push_back(pos);
+                fireHydrantCoords.push_back(pos);
                 break;
             case 'r': // road intersection
             {
@@ -136,17 +127,17 @@ void MapReader::readCoordFile(const char *fileName){
                 intersection.X = pos.X;
                 intersection.Y = pos.Y;
                 intersection.id = roadID;
-                MapReader::roadIntersectionCoords.push_back(intersection);
+                roadIntersectionCoords.push_back(intersection);
             }
                 break;
             case 'p': // path (connecting two road intersections)
             {
-                int numIntersections = MapReader::roadIntersectionCoords.size();
+                int numIntersections = roadIntersectionCoords.size();
                 
                 // find road intersection w/ id1
                 int index1;
                 for(index1=0; index1<numIntersections; ++index1){
-                    if(MapReader::roadIntersectionCoords[index1].id == id1)
+                    if(roadIntersectionCoords[index1].id == id1)
                         break;
                 }
                 // if index out of bounds, not found, so there was a problem.
@@ -156,7 +147,7 @@ void MapReader::readCoordFile(const char *fileName){
                 // find road intersection w/ id2
                 int index2;
                 for(index2=0; index2<numIntersections; ++index2){
-                    if(MapReader::roadIntersectionCoords[index2].id == id2)
+                    if(roadIntersectionCoords[index2].id == id2)
                         break;
                 }
                 // if index out of bounds, not found, so there was a problem.
@@ -164,10 +155,10 @@ void MapReader::readCoordFile(const char *fileName){
                     break;
                 
                 // Assign intersections as interconnected (get references).
-                MapReader::roadIntersectionCoords[index1].connections.push_back
-                    (&(MapReader::roadIntersectionCoords[index2]));
-                MapReader::roadIntersectionCoords[index2].connections.push_back
-                    (&(MapReader::roadIntersectionCoords[index1]));
+                roadIntersectionCoords[index1].connections.push_back
+                    (&(roadIntersectionCoords[index2]));
+                roadIntersectionCoords[index2].connections.push_back
+                    (&(roadIntersectionCoords[index1]));
             }
                 break;
             case 's': // spawnpoint (for enemies, vehicles, etc.)
@@ -177,10 +168,10 @@ void MapReader::readCoordFile(const char *fileName){
                     {
                         // find road intersection with matching id
                         int numIntersections =
-                            MapReader::roadIntersectionCoords.size();
+                            roadIntersectionCoords.size();
                         int index;
                         for(index=0; index<numIntersections; ++index) {
-                            if(MapReader::roadIntersectionCoords[index].id
+                            if(roadIntersectionCoords[index].id
                                 == roadID)
                             {
                                 break;
@@ -195,12 +186,12 @@ void MapReader::readCoordFile(const char *fileName){
                         spawnPoint.X = pos.X;
                         spawnPoint.Y = pos.Y;
                         spawnPoint.connection =
-                            &(MapReader::roadIntersectionCoords[index]);
-                        MapReader::vehicleSpawnPoints.push_back(spawnPoint);
+                            &(roadIntersectionCoords[index]);
+                        vehicleSpawnPoints.push_back(spawnPoint);
                     }
                         break;
                     case 'e': // enemy spawn point
-                        MapReader::enemySpawnPoints.push_back(pos);
+                        enemySpawnPoints.push_back(pos);
                         break;
                     default:
                         break;
@@ -208,23 +199,15 @@ void MapReader::readCoordFile(const char *fileName){
             }
                 break;
             default:
-                std::cerr << "WARNING: Unknown coordinate type in map file ("
-                      << fileName << ", line " << curLine << "):" << std::endl
-                      << "       " << line << std::endl;
+                cerr << "WARNING: Unknown coordinate type in map file ("
+                      << fileName << ", line " << curLine << "):" << endl
+                      << "       " << line << endl;
                 break;
         }
     }
 }
 
 
-// Clears off all coordinates and information about the map from the existing
-//  lists. This should be done when a game is finished.
-void MapReader::clearMap() {
-    MapReader::buildingCoords.clear();
-    MapReader::streetLampCoords.clear();
-    MapReader::treeCoords.clear();
-    MapReader::fireHydrantCoords.clear();
-    MapReader::roadIntersectionCoords.clear();
-    enemySpawnPoints.clear();
-    vehicleSpawnPoints.clear();
+MapSearcher* MapReader::getMapSearcher(){
+    return new MapSearcher(this);
 }
