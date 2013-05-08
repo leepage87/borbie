@@ -275,7 +275,7 @@ void GameObject::explode(){
 	this->gameInstance->applyExplosionDamage(this);
     
     // update player score
-    this->gameInstance->player->updateScore(startingHealth);
+    this->gameInstance->updatePlayerScore(startingHealth);
     
     //TODO: For some reason the object dies before the sound can play
     //make each object play its own sound for explosion

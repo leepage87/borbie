@@ -55,6 +55,14 @@ void Enemies::generateObjects(){
 }
 
 /*********************************************************************
+ * Increase the maximum number of enemies that can spawn at any given
+ * point in time by the given amount.
+ *********************************************************************/
+void Enemies::addMaxEnemies(unsigned int amount){
+    this->maxNumberEnemies += amount;
+}
+
+/*********************************************************************
  * Randomly creates an enemy near a randomly selected spawn point (exact
  * position is also randomized by an offset). The enemy created is also
  * random by a weighed percentage.
@@ -119,21 +127,13 @@ void Enemies::makeEnemy(float xPos, float yPos, float zPos, EnemyType type){
  * Call update on each of the enemies in the list
  *********************************************************************/
 void Enemies::update(){
-    // TODO - fix this by having game objects able to remove themselves -
-    //  this might be a big in Buildings also BTW
-    /*for(int i=0; i<this->objList.size(); ++i){
-        if(this->objList[i]->hasExploded()){
-            this->deleteObject(this->objList[i]);
-            i--;
-        }
-    }*/
-    
     // if number of enemies is below the current limit, make moar!
     while(this->objList.size() < this->maxNumberEnemies){
         this->createRandomEnemy();
         std::cout << "NEW ENEMY CREATED" << std::endl;
     }
     
+    // update each enemy individually if they are not blown up yet
     int numObjs = objList.size();
     for(int j=0; j<numObjs; ++j){
 	    if(objList[j]){

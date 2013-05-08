@@ -132,6 +132,10 @@ GameInstance::GameInstance(
   this->carriedVehicle = 0;
   this->vehicleThrown = false;
   this->targetPos = vector3df(0,0,0);
+  
+  // add and generate enemies
+  this->enemies = new Enemies (metaTriSelector, this);
+  this->enemies->generateObjects();
 
 
 
@@ -190,18 +194,17 @@ GameInstance::GameInstance(
   ((BorbiesEventReceiver *)receiver)->setRightMouse(false);
 
   /*** Add Hands ***/
+  
   hands = new Hands(this);  
+  
   /*** Add The Borbie ***/
 
   this->player = new Borbie(this); 	
+  
+  this->nextScoreEvent = 10000;
 
 
   /*** Test Crap ***/
-
-  //TESTING ENEMY CLASS
-  enemies = new Enemies (metaTriSelector, this);
-  enemies->generateObjects();
-  //enemies->makeEnemy();
 
   // TODO- remove
   //this->setWorldState_wrecked();
@@ -314,6 +317,16 @@ void GameInstance::punch() {
       this->nextPunchTime = this->currentGameTime + BORBIE_PUNCH_DELAY_MS;
     }
   }
+}
+
+
+void GameInstance::updatePlayerScore(int amount){
+    this->player->updateScore(amount);
+    if(this->player->getScore() >= this->nextScoreEvent){
+        this->nextScoreEvent += 10000;
+        this->enemies->addMaxEnemies(10);
+    }
+        
 }
 
 

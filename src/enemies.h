@@ -44,7 +44,7 @@ class Enemies : public ObjectList, public Updatable {
 	Enemies (irr::scene::IMetaTriangleSelector *metaTriSelector,
 			GameInstance *gameInstance);
 
-	//virtual void doDamage(int damage);
+    virtual void addMaxEnemies(unsigned int amount);
 	virtual void generateObjects();
 	virtual void update();
 

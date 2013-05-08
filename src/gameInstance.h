@@ -90,6 +90,7 @@ class GameInstance {
     irr::core::vector3df targetPos; //position object was thrown at
     VehicleInstance *carriedVehicle; //object being carried/thrown
     bool vehicleThrown; // true if a vehicle has been thrown
+    int nextScoreEvent;
 
     // collision detection pointers
     irr::scene::IMetaTriangleSelector *metaTriSelector;
@@ -135,7 +136,7 @@ class GameInstance {
 
 
   public:
-    Borbie *player;
+    Borbie *player; // TODO - public variable just like that? Really?
 
     GameInstance(irr::scene::ISceneManager *smgr,
         irr::gui::IGUIEnvironment *guienv,
@@ -163,6 +164,9 @@ class GameInstance {
     MapReader* getMapReader() { return this->mapReader; }
     MapSearcher* getMapSearcher() { return this->mapSearcher; }
 
+    // update the player's score
+    void updatePlayerScore(int amount);
+    
     // register a click event (using BorbieInput enum)
     void clickEvent(BorbieInputEvent click);
 
