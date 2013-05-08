@@ -17,6 +17,8 @@
 //  this queue is dumpy and inefficient, might need optimization.
 // TEMPLATE: arbitrary object T: requires operators "<" and "=="
 //  for comparisons.
+// TODO/NOTE: this currently only works if T is a pointer type. Comparisons all
+//  dereference at the moment.
 template <class T> class AStarPriorityQueue {
 
   private:
@@ -67,9 +69,10 @@ template <class T> class AStarPriorityQueue {
         return true;
     }
     
+    // TODO - does not work with pointers
     // Remove an element from the priority queue by the object (compares them).
     //  Returns TRUE if something was removed, false if not found.
-    bool remove(T obj) {
+    /*bool remove(T obj) {
         typename std::vector<T>::iterator finder =
             std::find(this->container.begin(), this->container.end(), obj);
         if(finder == this->container.end())
@@ -78,7 +81,7 @@ template <class T> class AStarPriorityQueue {
             this->container.erase(finder);
             return true;
         }
-    }
+    }*/
     
     int size(){
         return this->container.size();

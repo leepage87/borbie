@@ -137,7 +137,7 @@ std::vector<RoadIntersection> MapSearcher::getShortestPath(
     
     // keep track of visited nodes and in parallel a list of the queue's nodes
     //  for easy traversal with iterators when needed
-    vector<SearchNode> visited;
+    vector<SearchNode *> visited;
     
     // run A* search until a path is found, or until the queue runs out,
     //  in which case this search failed.
@@ -147,7 +147,7 @@ std::vector<RoadIntersection> MapSearcher::getShortestPath(
         SearchNode *cur = frontier.dequeue();
         
         // add cur (dereferenced) to list of visited nodes
-        visited.push_back(*cur);
+        visited.push_back(cur);
         
         // traverse all neighbors of this node
         vector<SearchNode *> neighbors = cur->getNeighbors();
@@ -169,17 +169,22 @@ std::vector<RoadIntersection> MapSearcher::getShortestPath(
             int estimatedCost = cur->cost + distToNeighbor + heuristic;
             
             // try to find the current neighbor in visited list
-            vector<SearchNode>::iterator inVisitedIterator =
-                find(visited.begin(), visited.end(), *(*it));
+            int numVisited = visited.size();
+            int visitedIndex = 0;
+            for( ; visitedIndex<numVisited; ++visitedIndex){
+                if((*(visited[visitedIndex])) == (*(*it)))
+                    break;
+            }
+            //vector<SearchNode>::iterator inVisitedIterator =
+            //    find(visited.begin(), visited.end(), *(*it));
             
             // try to find the current neighbor in the frontier (-1 if not found)
             int frontierIndex = frontier.getElementIndex((*it));
             
             // if neighbor NOT in frontier and NOT yet visited ...
-            if(inVisitedIterator == visited.end() && frontierIndex == -1) {
+            if(visitedIndex >= numVisited && frontierIndex == -1) {
                 // ... if we found the end node, we're done!
                 if((*(*it)) == (*end)){
-                    cout << "Found" << endl; // done TODO
                     end = (*it);
                     found = true;
                     break;
@@ -196,8 +201,13 @@ std::vector<RoadIntersection> MapSearcher::getShortestPath(
                 //  replace it with the node of lower cost.
                 SearchNode *inFrontier = frontier.get(frontierIndex);
                 if((*it)->cost < inFrontier->cost){
-                    if(frontier.remove(frontierIndex))
+                    SearchNode *old = frontier.get(frontierIndex);
+                    // if removed from frontier, add the better cost node
+                    if(frontier.remove(frontierIndex)){
                         frontier.enqueue(*it);
+                        // clean up memory (delete old node)
+                        delete old;
+                    }
                 }
             }
         }
@@ -215,6 +225,12 @@ std::vector<RoadIntersection> MapSearcher::getShortestPath(
     
     // reverse path to return it (since it is currently in backwards order)
     reverse(path.begin(), path.end());
+    
+    // clean up memory: delete all objects in frontier and visited list
+    for(int i=0; i<frontier.size(); i++)
+        delete frontier.get(i);
+    for(int i=0; i<visited.size(); i++)
+        delete visited[i];
     
     return path;
 }
