@@ -8,8 +8,10 @@
 
 #include "soldier.h"
 #include "gameInstance.h"
+#include "mapSearcher.h"
 
-using namespace std;
+#include <vector>
+
 
 using namespace irr;
 using namespace scene;
@@ -31,8 +33,8 @@ Soldier::Soldier(
 {
     this->BULLET_DAMAGE = 3;
     this->objectType = TYPE_ENEMY;
-    this->sceneNode =
-    	smgr->addMeshSceneNode(smgr->getMesh("assets/models/enemies/soldier/armydude.obj"));
+    this->sceneNode = smgr->addMeshSceneNode(
+    	smgr->getMesh("assets/models/enemies/soldier/armydude.obj"));
 	this->sceneNode->setPosition(vector3df(posX, posY, posZ));
 	this->sceneNode->setScale(vector3df(10,10,10));
 	this->sceneNode->setVisible(true);
@@ -72,7 +74,7 @@ int Soldier::getRandomFireDelay(){
  * An updater method that calls aim() if the soldier has LOS
  * on the player, also calls setMoving
  *********************************************************************/
-void Soldier::updatePosition(){
+void Soldier::update(){
     aim();
     setMoving();
 }
@@ -108,11 +110,16 @@ void Soldier::aim(){
     //Tactically attempt to bust a cap if Borbie is
     //within 6000 units
 	if (length < 6000 && canShoot())
-            fire();	
+        fire();	
     //stomp him in the nuts
     if (length < 200){
         this->audioSystem->playSound3d(gameInstance->death1,this);
         explode();
+    }
+    //If length is high enough and can't see Borbie, use the A* pathfinding
+    //algorithm to move over to Borbie if not already moving somewhere
+    if(!moving && length > 6000 && !visible()){
+        goToBorbie();
     }
 }
 
@@ -125,7 +132,8 @@ bool Soldier::visible(){
     ray.end = sceneNode->getPosition();
 	ray.start = gameInstance->getCamera()->getPosition();
 
-	ISceneCollisionManager* collMan = gameInstance->getSceneManager()->getSceneCollisionManager();
+	ISceneCollisionManager* collMan =
+	    gameInstance->getSceneManager()->getSceneCollisionManager();
 	vector3df intersection;
 	triangle3df hitTriangle;
 
@@ -156,6 +164,50 @@ void Soldier::move(){
             destination, time, false);
     sceneNode->addAnimator(anim);
     anim->drop();
+}
+
+/*********************************************************************
+ * Moves the soldier toward the Borbie over a longer distance, using
+ * A* algorithm to find a shortest path using roads.
+ *********************************************************************/
+void Soldier::goToBorbie(){
+    // Find shortest path using the MapSearcher from this soldier to the player
+    //  using the closest available road intersection points.
+    MapSearcher *searcher = this->gameInstance->getMapSearcher();
+    vector3df curPosition = this->sceneNode->getPosition();
+    std::vector<RoadIntersection> path = searcher->getShortestPath(
+	    curPosition,
+	    this->gameInstance->getCamera()->getPosition());
+    
+    // If path is unavailable, or already near Borbie, do nothing.
+    int numPathPoints = path.size();
+    if(numPathPoints == 0)
+        return;
+    
+    // set up a list of coordinates to move through, starting with the
+    //  soldier's current position.
+    array<vector3df> coords;
+    coords.push_back(this->sceneNode->getPosition());
+    for(int i=0; i<numPathPoints; ++i){
+        vector3df point;
+        point.X = path[i].X;
+        point.Y = curPosition.Y;
+        point.Z = path[i].Y;
+        coords.push_back(point);
+    }
+    
+    // set the destination to the location of the last coordinate
+    this->destination.X = path[numPathPoints-1].X;
+    this->destination.Y = curPosition.Y;
+    this->destination.Z = path[numPathPoints-1].Y;
+    
+    // create a spline animator (follows the path of coordinates) to animate
+    //  the soldier to move to Borbie.
+    ISceneNodeAnimator *anim = smgr->createFollowSplineAnimator(
+        this->gameInstance->currentGameTime, coords, 0.1f, 0.0, false);
+    sceneNode->addAnimator(anim);
+    anim->drop();
+    moving = true;
 }
 
 /*********************************************************************
@@ -199,7 +251,8 @@ void Soldier::fire(){
 	
 	const int MUZZLE_FLASH_TIME = 50;
 	
-	ISceneNodeAnimator* anim = gameInstance->getSceneManager()->createDeleteAnimator(MUZZLE_FLASH_TIME);
+	ISceneNodeAnimator* anim =
+	    gameInstance->getSceneManager()->createDeleteAnimator(MUZZLE_FLASH_TIME);
 	bill->addAnimator(anim);
 	anim->drop();
     if (!miss())

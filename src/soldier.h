@@ -9,6 +9,7 @@
 #include <irrlicht.h>
 
 #include "gameObject.h"
+#include "updatable.h"
 #include "random.h"
 
 
@@ -17,7 +18,7 @@
 class GameInstance;
 
 
-class Soldier : public GameObject {
+class Soldier : public GameObject, public Updatable {
 	protected:
 	irr::core::line3d<irr::f32> ray;
 	unsigned int lastFireTime;
@@ -39,11 +40,12 @@ class Soldier : public GameObject {
 			irr::scene::IMetaTriangleSelector *metaTriSelector
 		);
     virtual int  getRandomFireDelay();
-    void updatePosition();
+    virtual void update();
     virtual void setMoving();
 	virtual void aim();
 	virtual bool visible();
 	virtual void move();
+	virtual void goToBorbie();
 	virtual bool canShoot();
 	virtual void fire();
     virtual bool miss();

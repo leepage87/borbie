@@ -138,7 +138,7 @@ void Enemies::update(){
     for(int j=0; j<numObjs; ++j){
 	    if(objList[j]){
 		    if(objList[j]->getNode()->isVisible())
-            	((Soldier*)objList[j])->updatePosition();
+            	((Soldier*)objList[j])->update();
 		}	
 	}
 }

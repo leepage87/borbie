@@ -109,6 +109,9 @@ float MapSearcher::getDistance(float X1, float Y1, float X2, float Y2){
 //  required to take, starting with the closest road intersection to the
 //  start location, and ending with the closest road intersection to the
 //  destination location.
+// If no path is available, or the end point is already close enough to the
+//  starting point (where the start and end road intersections would be the
+//  same), returns an empty list.
 std::vector<RoadIntersection> MapSearcher::getShortestPath(
     irr::core::vector3df startPosition,
     irr::core::vector3df endPosition)
@@ -213,13 +216,19 @@ std::vector<RoadIntersection> MapSearcher::getShortestPath(
         }
     }
     
+    int frontierSize = frontier.size();
+    int visitedSize = visited.size();
+    
+    // if frontier is empty, no path was found, so return the empty list
+    if(frontierSize == 0)
+        return path;
+    
     // Backstep through the path as constructed and push all of the
     //  intersections in order from last to first into the path list.
     SearchNode *cur = end;
     while((*(cur->previous)) != (*start)){
         path.push_back(*(cur->intersection));
         cur = cur->previous;
-        std::cout << "Added path node..." << std::endl;
     }
     path.push_back(*(cur->intersection)); // push the start node
     
@@ -227,9 +236,9 @@ std::vector<RoadIntersection> MapSearcher::getShortestPath(
     reverse(path.begin(), path.end());
     
     // clean up memory: delete all objects in frontier and visited list
-    for(int i=0; i<frontier.size(); i++)
+    for(int i=0; i<frontierSize; i++)
         delete frontier.get(i);
-    for(int i=0; i<visited.size(); i++)
+    for(int i=0; i<visitedSize; i++)
         delete visited[i];
     
     return path;

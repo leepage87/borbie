@@ -108,6 +108,7 @@ class GameInstance {
     Game *game;
     Hands *hands;
     MapReader *mapReader;
+    MapSearcher *mapSearcher;
 
 
     // private update methods to update the various subsystems:
@@ -160,6 +161,7 @@ class GameInstance {
       return this->metaTriSelector;
     }
     MapReader* getMapReader() { return this->mapReader; }
+    MapSearcher* getMapSearcher() { return this->mapSearcher; }
 
     // register a click event (using BorbieInput enum)
     void clickEvent(BorbieInputEvent click);

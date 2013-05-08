@@ -118,6 +118,7 @@ GameInstance::GameInstance(
 
   // Read the map file into the global static MapReader object.
   this->mapReader = new MapReader("assets/map/coords.bor");
+  this->mapSearcher = this->mapReader->getMapSearcher();
 
   // add the buildings and generate city based on coordinate file
   this->buildings = new Buildings(metaTriSelector, this);
@@ -232,13 +233,9 @@ void GameInstance::TEST_PATH_FUNCTION_TODO_REMOVE(){
         point.Y = 0;
         point.Z = points[i].Y;
         coords.push_back(point);
-        /*std::cout << points[i].X << ", " << points[i].Y << std::endl;
-        ISceneNode *nextNode = smgr->addCubeSceneNode();
-        nextNode->setPosition(vector3df(points[i].X, 0, points[i].Y));
-	    nextNode->setScale(vector3df(20, 60, 20));*/
     }
     ISceneNodeAnimator *anim = smgr->createFollowSplineAnimator(
-        currentGameTime, coords, 1.0f);
+        currentGameTime, coords, 1.0f, 0.0);
     sceneNode->addAnimator(anim);
         
 	delete searcher;
@@ -275,6 +272,7 @@ GameInstance::~GameInstance(){
   delete this->selector;
   delete this->objCarry;
   delete this->mapReader;
+  delete this->mapSearcher;
   delete this->hands;
   if(this->rainParticleSystem)
     this->rainParticleSystem->remove();

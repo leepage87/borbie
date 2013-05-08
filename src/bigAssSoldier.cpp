@@ -68,6 +68,13 @@ void BigAssSoldier::aim(){
 	if (length < 6000 && canShoot())
         fire();
     //big ass soldier cannot be stepped on
+    
+    // TODO - abstraction can be added here
+    //If length is high enough and can't see Borbie, use the A* pathfinding
+    //algorithm to move over to Borbie if not already moving somewhere
+    if(!moving && length > 6000 && !visible()){
+        goToBorbie();
+    }
 }
 
 /*********************************************************************
