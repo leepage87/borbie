@@ -7,6 +7,8 @@
 #include <iostream> // TODO - remove (debug)
 
 #include "mapSearcher.h" // TODO - remove
+#include "random.h" // TODO - remove
+#include <vector> // TODO remove
 
 using namespace irr;
 using namespace scene;
@@ -209,14 +211,36 @@ GameInstance::GameInstance(
 // TODO --- remove this function
 void GameInstance::TEST_PATH_FUNCTION_TODO_REMOVE(){
     std::cout << "TEST PATH BUTTON PRESSED" << std::endl;
-    MapSearcher *searcher = this->mapReader->getMapSearcher();
+    // create a random node at a random place
+    float X = Random::randomFloat(18000) + 2000;
+    float Y = Random::randomFloat(18000) + 2000;
+    
     ISceneNode *sceneNode = smgr->addCubeSceneNode();
+    sceneNode->setPosition(vector3df(X, 0, Y));
 	sceneNode->setScale(vector3df(40, 100, 40));
-	RoadIntersection *ri = searcher->getClosestRoadIntersection(
+	
+    MapSearcher *searcher = this->mapReader->getMapSearcher();
+	std::vector<RoadIntersection> points = searcher->getShortestPath(
+	    sceneNode->getPosition(),
 	    this->camera->getPosition());
-	float bestX = ri->X;
-	float bestY = ri->Y;
-	sceneNode->setPosition(vector3df(bestX, 0 , bestY));
+    
+    // list of points
+    array<vector3df> coords;
+    for(int i=0; i<points.size(); ++i){
+        vector3df point;
+        point.X = points[i].X;
+        point.Y = 0;
+        point.Z = points[i].Y;
+        coords.push_back(point);
+        /*std::cout << points[i].X << ", " << points[i].Y << std::endl;
+        ISceneNode *nextNode = smgr->addCubeSceneNode();
+        nextNode->setPosition(vector3df(points[i].X, 0, points[i].Y));
+	    nextNode->setScale(vector3df(20, 60, 20));*/
+    }
+    ISceneNodeAnimator *anim = smgr->createFollowSplineAnimator(
+        currentGameTime, coords, 1.0f);
+    sceneNode->addAnimator(anim);
+        
 	delete searcher;
 }
 

@@ -34,7 +34,7 @@ class SearchNode {
     SearchNode *previous;
     
     // get a list of the neighbors of this node
-    std::vector<SearchNode> getNeighbors();
+    std::vector<SearchNode *> getNeighbors();
     
     // get an irrlicht version of the position vector
     irr::core::vector3df getPosition();
@@ -47,6 +47,11 @@ class SearchNode {
     // overloaded compare == operator for list removal/getter
     bool operator == (const SearchNode& other) const {
         return this->intersection == other.intersection;
+    }
+    
+    // overloaded compare != operator for list iteration
+    bool operator != (const SearchNode& other) const {
+        return this->intersection != other.intersection;
     }
 };
 

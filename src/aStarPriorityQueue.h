@@ -28,7 +28,7 @@ template <class T> class AStarPriorityQueue {
     void enqueue(T obj){
         typename std::vector<T>::iterator it = this->container.begin();
         for( ; it != this->container.end(); ++it){
-            if(obj < (*it))
+            if((*obj) < (*(*it))) // NOTICE: compares dereferenced pointers
                 break;
         }
         this->container.insert(it, obj);
@@ -45,7 +45,7 @@ template <class T> class AStarPriorityQueue {
     int getElementIndex(T obj){
         int numItems = this->container.size();
         for(int i=0; i<numItems; ++i){
-            if(this->container[i] == obj)
+            if(*(this->container[i]) == (*obj))
                 return i;
         }
         return -1;
