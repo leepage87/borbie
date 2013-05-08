@@ -1,8 +1,10 @@
-/*	File: soldier.cpp
- *	Authors:  tkys
- *	
- *	This class creates soldiers so you can throw cars at them and shit
- */
+/*********************************************************************
+ * File:     soldier.cpp
+ * Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
+ * Function: This abstract class creates regular sized soldiers so you
+ *           can throw cars at them and shit. Also allows them to aim
+ *           their weapon and fire.
+ *********************************************************************/
 
 #include "soldier.h"
 #include "gameInstance.h"
@@ -14,13 +16,13 @@ using namespace scene;
 using namespace core;
 using namespace video;
 
-/*************************************************************
+/*********************************************************************
  * Constructor for the big ass soldier
  * Param: gameInstance the game instance containing all necessary pointers
  * Param: posX the X coordinate at which the soldier will be spawned
  * Param: posY the Y coordinate at which the soldier will be spawned
  * Param: posZ the Z coordinate at which the soldier will be spawned
- *************************************************************/
+ *********************************************************************/
 Soldier::Soldier(
 	GameInstance *gameInstance,
 	float posX, float posY, float posZ)
@@ -44,11 +46,11 @@ Soldier::Soldier(
     this->explosionRadius = 50;
 }
 
-/*************************************************************
+/*********************************************************************
  * Applies collision to the model created
  * Param: metaTriSelector pointer to the IMetaFriangleSelector
  *        that handles collision
- ************************************************************/
+ *********************************************************************/
 void Soldier::applyCollision(
 	irr::scene::IMetaTriangleSelector *metaTriSelector){
 	// add its triangles to the global collision meta selector
@@ -58,37 +60,37 @@ void Soldier::applyCollision(
 	selector->drop();
 	metaTriSelector->addTriangleSelector(sceneNode->getTriangleSelector());
 }
-/*************************************************************
+/*********************************************************************
  * Gets an integer between 1 and 3 to use as the time between
  * each shot
  * Returns: random integer between 1 and 4
- ************************************************************/
+ *********************************************************************/
 int Soldier::getRandomFireDelay(){
     return Random::randomInt(1, 5)*1000;
 }
-/*************************************************************
+/*********************************************************************
  * An updater method that calls aim() if the soldier has LOS
  * on the player, also calls setMoving
- ************************************************************/
+ *********************************************************************/
 void Soldier::updatePosition(){
     aim();
     setMoving();
 }
 
-/*************************************************************
+/*********************************************************************
  * Sets the moving field to false once the soldier gets to
  * his destination
- ************************************************************/
+ *********************************************************************/
 void Soldier::setMoving(){
     if (sceneNode->getPosition() == destination)
         moving = false;
 }
 
-/*************************************************************
+/*********************************************************************
  * Orientates the soldier towards the players position and
  * checks if the player is within moving/shooting distance
  * also explodes the soldier if the player is on top of it
- ************************************************************/
+ *********************************************************************/
 void Soldier::aim(){
 	//turn the soldier to look at you
 	vector3df start = sceneNode->getPosition();
@@ -100,7 +102,7 @@ void Soldier::aim(){
 	length = (f32)start.getDistanceFrom(end);
     
 	//Tactically operate oneself towards the enemy (Borbie)
-    //if enemy distance is between 7k-2k
+    //if enemy distance is between 10k-2k and borbie is visible
     if (!moving && length < 10000 && length > 2000 && visible())
         move();
     //Tactically attempt to bust a cap if Borbie is
@@ -108,21 +110,17 @@ void Soldier::aim(){
 	if (length < 6000 && canShoot())
             fire();	
     //stomp him in the nuts
-    //std::cout<<"distance is"<< length<<std::endl;
-    if (length < 150){
-        this->audioSystem->playSound3d(gameInstance->death1,
-	    this);
-        std::cout<<"should be callign explode***************************************"<<std::endl;
+    if (length < 200){
+        this->audioSystem->playSound3d(gameInstance->death1,this);
         explode();
     }
-    
 }
 
-/*************************************************************
+/*********************************************************************
  * Casts a ray to determine whether or not the soldier can see
  * the player for use with movement and shooting
  * Returns: a boolean value
- ************************************************************/
+ *********************************************************************/
 bool Soldier::visible(){
     ray.end = sceneNode->getPosition();
 	ray.start = gameInstance->getCamera()->getPosition();
@@ -139,10 +137,10 @@ bool Soldier::visible(){
     return false;	
 }
 
-/*************************************************************
+/*********************************************************************
  * Moves the soldier toward the enemy, only gets called when
  * there is a direct line of sight
- ************************************************************/
+ *********************************************************************/
 void Soldier::move(){
     moving = true;
     vector3df start = sceneNode->getPosition();
@@ -160,11 +158,11 @@ void Soldier::move(){
     anim->drop();
 }
 
-/*************************************************************
+/*********************************************************************
  * Tests to see if the soldier is allowed to shoot, returns
  * true if the fireDelay time has passed, false if otherwise
  * Returns: a boolean value
- ************************************************************/
+ *********************************************************************/
 bool Soldier::canShoot(){
 	unsigned int currentTime = gameInstance->getDevice()->getTimer()->getTime();
 	if (currentTime - lastFireTime  > fireDelay && visible()){
@@ -173,14 +171,13 @@ bool Soldier::canShoot(){
 	return false;
 }
 
-/*************************************************************
+/*********************************************************************
  * Animates a muzzle flash billboard with firing sound and does
  * damage to borbie.  This method is only called when the soldier
  * is within range and has direct line of sight.  He has an 80%
  * chance of hitting his target.
- ************************************************************/
+ *********************************************************************/
 void Soldier::fire(){
-    std::cout<<"Inside small soldier fire"<<std::endl;
 	lastFireTime = gameInstance->getDevice()->getTimer()->getTime();
 	IBillboardSceneNode * bill;
 	bill = smgr->addBillboardSceneNode();
@@ -211,18 +208,21 @@ void Soldier::fire(){
         gameInstance->player->ricochet();		
 }
 
-/*************************************************************
+/*********************************************************************
  * Gets a random number between 1 and 5, if the number is less
  * than or equal to 5 the soldier has hit his target (80%).
  * Returns: a boolean value
- ************************************************************/
+ *********************************************************************/
 bool Soldier::miss(){
     if (Random::randomInt(1,6) <= 5){//20% chance
         return false;
     }
     return true;
 }
-
+/*********************************************************************
+ * Causes this soldier to explode, making it vanish, and return a particle
+ * effect node animating the explosion effect in its current position.
+ *********************************************************************/
 // Causes this object to explode, making it vanish, and return a particle
 //	effect node animating the explosion effect in its current position.
 void Soldier::createExplosionEffect(){
@@ -272,6 +272,4 @@ void Soldier::createExplosionEffect(){
 	this->explosionParticleSystem->setMaterialTexture(0,
 	this->driver->getTexture("assets/textures/blood.bmp"));
 	this->explosionParticleSystem->setMaterialType(EMT_TRANSPARENT_ADD_COLOR);
-	
-	std::cout << "Soldier gone boom " << std::endl;
 }

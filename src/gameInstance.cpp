@@ -92,7 +92,7 @@ GameInstance::GameInstance(
 
 
   /*** create textures for in game menu ***/
-  this->menu = driver->getTexture("assets/textures/hudTexture1.jpg");
+  this->menu = driver->getTexture("assets/textures/deathMenu.jpg");
 
 
 
@@ -575,12 +575,16 @@ void GameInstance::update(){
   if(player && game)
     if(player->hasExploded())
     {
+      float screenHeight = driver->getScreenSize().Height;
+      float screenWidth = driver->getScreenSize().Width;
+
       driver->draw2DImage(
           this->menu,
-          rect<s32>(driver->getScreenSize().Width/4, driver->getScreenSize().Height/4, driver->getScreenSize().Width/4 + 75, driver->getScreenSize().Height/4+50),
+          rect<s32>(screenWidth/3, screenHeight/3, screenWidth*2/3, screenHeight* 2/3),
           rect<s32>(0, 0,
             this->menu->getSize().Width,
             this->menu->getSize().Height));
+  
     }
 
 
