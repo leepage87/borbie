@@ -215,8 +215,15 @@ GameInstance::GameInstance(
 // TODO --- remove this function
 void GameInstance::TEST_PATH_FUNCTION_TODO_REMOVE(){
     std::cout << "TEST PATH BUTTON PRESSED" << std::endl;
+    
+    IMesh *mesh =  smgr->getMesh("assets/models/ah6.3DS");
+    ISceneNode *sceneNode = smgr->addMeshSceneNode(mesh);
+	sceneNode->setPosition(vector3df(10200, 500, 10200));
+	sceneNode->setScale(vector3df(10, 10, 10));
+	sceneNode->setMaterialFlag(EMF_LIGHTING, true);
+    
     // create a random node at a random place
-    float X = Random::randomFloat(18000) + 2000;
+    /*float X = Random::randomFloat(18000) + 2000;
     float Y = Random::randomFloat(18000) + 2000;
     
     ISceneNode *sceneNode = smgr->addCubeSceneNode();
@@ -241,7 +248,7 @@ void GameInstance::TEST_PATH_FUNCTION_TODO_REMOVE(){
         currentGameTime, coords, 1.0f, 0.0);
     sceneNode->addAnimator(anim);
         
-	delete searcher;
+	delete searcher;*/
 }
 
 
