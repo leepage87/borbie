@@ -1,4 +1,9 @@
-
+/*********************************************************************
+ * File:     hands.cpp
+ * Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
+ * Function: This class draws borbies hands and "animates" the punches
+ *           as well as plays their sound effects
+ *********************************************************************/
 #include <iostream>
 
 #include "gameInstance.h"
@@ -9,6 +14,11 @@ using namespace scene;
 using namespace core;
 using namespace video;
 
+/*********************************************************************
+ * Constructor for the hands object, this object holds the hand scene
+ * nodes as well as the punching sounds.
+ * Param: gameInstance the game instance containing all necessary pointers
+ *********************************************************************/
 Hands::Hands(GameInstance * gameInstance){
     this->gameInstance = gameInstance;
     this->camera = gameInstance->getCamera();
@@ -17,6 +27,8 @@ Hands::Hands(GameInstance * gameInstance){
     this->lastPunchTime = 0;
     addLeftHand();
     addRightHand();
+    leftHand = 0;
+    rightHand = 0;
 
     //add sounds
     this->punch1 = audioSystem->createSound3d("assets/sounds/soundEffects/punches/punch1.mp3");
@@ -27,6 +39,10 @@ Hands::Hands(GameInstance * gameInstance){
     this->punch6 = audioSystem->createSound3d("assets/sounds/soundEffects/punches/punch6.mp3");
 }
 
+/*************************************************************************
+* Desctructor, checks if each sound exists.  If the sound is loaded, delete it.
+* Also drops the hand scene nodes.
+*************************************************************************/
 Hands::~Hands(){
     if (punch1)
         punch1->release();
@@ -46,6 +62,9 @@ Hands::~Hands(){
         rightHand->drop();
 }
 
+/*************************************************************************
+* Draws and positions the left hand
+*************************************************************************/
 void Hands::addLeftHand(){
     leftHand = smgr->addMeshSceneNode(smgr->getMesh("assets/models/body/Left_hand.obj"));
     leftHand->setParent(camera);
@@ -55,6 +74,9 @@ void Hands::addLeftHand(){
     leftHand->setID(0);//unselectable
 }
 
+/*************************************************************************
+* Draws and positions the right hand
+*************************************************************************/
 void Hands::addRightHand(){
     rightHand = smgr->addMeshSceneNode(smgr->getMesh("assets/models/body/Right_hand.obj"));
     rightHand->setParent(camera);
@@ -64,11 +86,19 @@ void Hands::addRightHand(){
     rightHand->setID(0);//unselectable
 }
 
+/*************************************************************************
+* Turns the hands' visibility on or off
+* Param: value the boolean value to set the hands visibility to
+*************************************************************************/
 void Hands::setVisible(bool value){
     leftHand->setVisible(value);
     rightHand->setVisible(value);
 }
 
+/*************************************************************************
+* Checks if the right hand has punched, if so, wait 125ms and update the
+* "animation" by setting the camera back to where it was
+*************************************************************************/
 void Hands::update(){
     if (rightPunched){
         unsigned int currentTime = gameInstance->getDevice()->getTimer()->getTime();
@@ -76,6 +106,11 @@ void Hands::update(){
             punchLeft();
     }
 }
+
+/*************************************************************************
+* Initiates the punch "animation" and calls the method to play sound. The
+* animation is currently a camera rotation of 15 degrees.  
+*************************************************************************/
 void Hands::punch(){
     vector3df cameraRot = camera->getRotation();
     cameraRot.Y -=15;
@@ -86,6 +121,10 @@ void Hands::punch(){
     punchSound();
 }
 
+/*************************************************************************
+* Resets the punch "animation" by sending the camera back to its normal
+* rotation.  This method is called 125ms after a call to punch().
+*************************************************************************/
 void Hands::punchLeft(){
     vector3df cameraRot = camera->getRotation();
     cameraRot.Y +=15;
@@ -93,8 +132,11 @@ void Hands::punchLeft(){
     rightPunched = false;
 }
 
+/*************************************************************************
+* Randomly picks 1 of 6 punch sounds, then plays it.
+*************************************************************************/
 void Hands::punchSound(){
-    int num = Random::randomInt(0, 6);
+    int num = Random::randomInt(6);
     switch (num){
         case 0:
             this->audioSystem->playSound3d(punch1, gameInstance->player);         
