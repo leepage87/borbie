@@ -27,6 +27,8 @@ Hands::Hands(GameInstance * gameInstance){
     this->lastPunchTime = 0;
     addLeftHand();
     addRightHand();
+    leftHand = 0;
+    rightHand = 0;
 
     //add sounds
     this->punch1 = audioSystem->createSound3d("assets/sounds/soundEffects/punches/punch1.mp3");
