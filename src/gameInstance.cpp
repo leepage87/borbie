@@ -255,6 +255,9 @@ void GameInstance::TEST_PATH_FUNCTION_TODO_REMOVE(){
 // destructor: removes all objects from memory and ensures that the scene
 //  manager is completely wiped clean of all Irrlicht objects.
 GameInstance::~GameInstance(){
+  // remove all 3D sounds from the AudioSystem
+  this->audioSystem->removeFollowSounds();
+  
   ((BorbiesEventReceiver*)receiver)->removeGameInstance();
   this->updateList.clear();
   //delete sounds if they exist
