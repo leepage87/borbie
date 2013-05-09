@@ -356,11 +356,6 @@ void GameInstance::applyExplosionDamage(GameObject *explodingObject) {
   float explosionRadius = explodingObject->getExplosionRadius();
   float explosionDamage = explodingObject->getExplosionDamage();
   vector3df explodePos = explodingNode->getPosition();
-  
-  ISceneNode *DELETE_THIS = smgr->addSphereSceneNode();
-  DELETE_THIS->setScale(vector3df(10, 10, 10));
-  DELETE_THIS->setPosition(explodePos);
-  
 
   // calculate damage to enemies
   int numEnemies = enemies->objList.size();

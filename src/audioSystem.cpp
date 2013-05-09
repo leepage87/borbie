@@ -466,9 +466,7 @@ void AudioSystem::playSound3dLoop(SoundClip *sound,
 
 // Attempts to remove
 void AudioSystem::removeFollowSounds(){
-    std::cout << "REMOVED ALL THE FOLLOW SOUNDS" << std::endl;
     this->followSounds.clear();
-    std::cout << followSounds.size() << std::endl;
 }
 
 
@@ -521,7 +519,6 @@ void AudioSystem::updateSound(
     
     // update each of the FollowSounds
     int numFollowSounds = this->followSounds.size();
-    std::cout << numFollowSounds << std::endl;
     for(int i=0; i<numFollowSounds; ++i){
         FollowSound fs = this->followSounds[i];
         // if target is lost or if channel is done playing, remove the sound
