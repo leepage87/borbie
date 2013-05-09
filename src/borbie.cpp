@@ -10,7 +10,6 @@ using namespace core;
 
 Borbie::Borbie(GameInstance *gameInstance) : GameObject(gameInstance){
   this->objectType = TYPE_BORBIE;
-  
   this->score=0;
   this->setHealth(1000);
   this->camera=gameInstance->getCamera();
@@ -27,6 +26,31 @@ Borbie::Borbie(GameInstance *gameInstance) : GameObject(gameInstance){
   this->bulletHit7 = audioSystem->createSound3d("assets/sounds/soundEffects/bullets/bulletHit7.mp3");
 }
 
+/*************************************************************************
+Desctructor, checks if each sound exists.  If the sound is loaded, delete it.
+*************************************************************************/
+Borbie::~Borbie(){
+    if (bulletHit1)
+        bulletHit1->release();
+    if (bulletHit2)
+        bulletHit2->release();
+    if (bulletHit3)
+        bulletHit3->release();
+    if (bulletHit4)
+        bulletHit4->release();
+    if (bulletHit5)
+        bulletHit5->release();
+    if (bulletHit6)
+        bulletHit6->release();
+    if (bulletHit7)
+        bulletHit7->release();
+    if (ricochet1)
+        ricochet1->release();
+    if (ricochet1)
+        ricochet1->release();
+    if (ricochet2)
+        ricochet2->release();
+}
 void Borbie::applyCollision(irr::scene::IMetaTriangleSelector *metaTriSelector) {}
 
 
