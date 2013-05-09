@@ -37,7 +37,7 @@ AudioSystem::AudioSystem(){
     
     // initialize the audio system
     result = system->init(
-        10, // maximum number of audio channels that can play simultaneously
+        20, // maximum number of audio channels that can play simultaneously
         FMOD_INIT_NORMAL, // system flags (normal)
         0); // extra driver data (ignored)
     if(result != FMOD_OK)
@@ -134,6 +134,10 @@ void AudioSystem::playMusic(FMOD::Sound *musicSound, bool looped){
         &(this->musicChannel));
     if(result != FMOD_OK)
         std::cout << "FMOD ERROR: playSound failed." << std::endl;
+    
+    // make the music channel top priority
+    if(this->musicChannel)
+        this->musicChannel->setPriority(0);
     
     // update FMOD system
     this->system->update();
@@ -233,11 +237,15 @@ void AudioSystem::playSound2d(SoundClip *sound, float volume){
         std::cout << "FMOD ERROR: 2dsetMode (sound) failed." << std::endl;
     
     // attempt to play the sound file in a new sound channel.
-    FMOD::Channel *soundChannel;
+    FMOD::Channel *soundChannel = 0;
     result = system->playSound(FMOD_CHANNEL_FREE, sound, 0,
         &soundChannel);
     if(result != FMOD_OK)
         std::cout << "FMOD ERROR: 2dplaySound failed." << std::endl;
+    
+    // set channel priority to lower than music
+    if(soundChannel)
+        soundChannel->setPriority(100);
     
     // make sure volume is in the correct range
     if(volume < 0.0)
@@ -284,11 +292,15 @@ void AudioSystem::playSound3d(
         std::cout << "FMOD ERROR: 3dset3dMinMaxDistance failed." << std::endl;
     
     // attempt to play the sound file in a new sound channel.
-    FMOD::Channel *soundChannel;
+    FMOD::Channel *soundChannel = 0;
     result = system->playSound(FMOD_CHANNEL_FREE, sound, 0,
         &soundChannel);
     if(result != FMOD_OK)
         std::cout << "FMOD ERROR: 3dplaySound failed." << std::endl;
+    
+    // set channel priority to lower than music
+    if(soundChannel)
+        soundChannel->setPriority(100);
     
     // make sure volume is in the correct range
     if(volume < 0.0)
@@ -362,11 +374,15 @@ void AudioSystem::playSound3dFollowTarget(FMOD::Sound *sound,
         std::cout << "FMOD ERROR: 3dset3dMinMaxDistance failed." << std::endl;
     
     // attempt to play the sound file in a new sound channel.
-    FMOD::Channel *soundChannel;
+    FMOD::Channel *soundChannel = 0;
     result = system->playSound(FMOD_CHANNEL_FREE, sound, 0,
         &soundChannel);
     if(result != FMOD_OK)
         std::cout << "FMOD ERROR: 3dplaySound failed." << std::endl;
+    
+    // set channel priority to lower than music
+    if(soundChannel)
+        soundChannel->setPriority(100);
     
     // make sure volume is in the correct range
     if(volume < 0.0)
