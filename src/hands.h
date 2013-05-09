@@ -1,3 +1,9 @@
+/*********************************************************************
+ * File:     hands.h
+ * Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
+ * Function: This is the header file for hands.cpp
+ *********************************************************************/
+
 #ifndef HANDS_H
 #define HANDS_H
 
@@ -7,7 +13,7 @@
 
 #include"random.h"
 
-//GameInstance and AudioSystem is used
+//GameInstance and AudioSystem are used
 class GameInstance;
 class AudioSystem;
 
@@ -32,9 +38,11 @@ class Hands {
     SoundClip *punch5;
     SoundClip *punch6;
     SoundClip *punchMiss;
-
+    //load the models
     void addLeftHand();
     void addRightHand();
+    //methods that are called from this class
+    //after a call to punch()
     void punchSound();
     void punchLeft();
     
