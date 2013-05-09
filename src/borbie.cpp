@@ -23,6 +23,7 @@ Borbie::Borbie(GameInstance *gameInstance) : GameObject(gameInstance){
   this->objectType = TYPE_BORBIE;
   this->score=0;
   this->setHealth(1000);
+  this->playerMode = PLAYER_MODE_OK_HEALTH;
   this->camera=gameInstance->getCamera();
   this->sceneNode=camera;
   this->ricochet1 = audioSystem->
@@ -87,6 +88,22 @@ Borbie::~Borbie(){
         death3->release();
     if (death4)
         death4->release();
+}
+
+/*********************************************************************
+ * GET the current player mode. The player mode is an enum type that
+ * indicates the player's current health status.
+ *********************************************************************/
+PlayerMode Borbie::getMode(){
+    return this->playerMode;
+}
+
+/*********************************************************************
+ * SET the current player mode. The player mode is an enum type that
+ * indicates the player's current health status.
+ *********************************************************************/
+void Borbie::setMode(PlayerMode mode){
+    this->playerMode = mode;
 }
 
 /*********************************************************************

@@ -63,7 +63,7 @@ GameInstance::GameInstance(
   this->bgSoundDead = audioSystem->createSound2d("assets/sounds/angryWorld.ogg");
   //Start the shitty music and loop! 
   audioSystem->playMusicLoop(bgSound); 
-  audioSystem->setMusicVolume(0.6);
+  audioSystem->setMusicVolume(0.5);
   // setup global collision meta selector
   this->metaTriSelector = smgr->createMetaTriangleSelector();
 
@@ -356,6 +356,11 @@ void GameInstance::applyExplosionDamage(GameObject *explodingObject) {
   float explosionRadius = explodingObject->getExplosionRadius();
   float explosionDamage = explodingObject->getExplosionDamage();
   vector3df explodePos = explodingNode->getPosition();
+  
+  ISceneNode *DELETE_THIS = smgr->addSphereSceneNode();
+  DELETE_THIS->setScale(vector3df(10, 10, 10));
+  DELETE_THIS->setPosition(explodePos);
+  
 
   // calculate damage to enemies
   int numEnemies = enemies->objList.size();
@@ -397,10 +402,7 @@ void GameInstance::applyExplosionDamage(GameObject *explodingObject) {
     // otherwise, check if the distance is close enough, and apply damage
     //  based on the distance to the explosion center. Offset position by 200
     //  since the buildings are not positioned relative to their center.
-    vector3df curNodePos = curNode->getPosition();
-    //curNodePos.X += 200; // TODO -- wtf?
-    //curNodePos.Y += 200;
-    float distance = curNodePos.getDistanceFrom(explodePos);
+    float distance = curNode->getPosition().getDistanceFrom(explodePos);
     if(distance <= explosionRadius){
       int damage = explosionDamage; // max damage
       if(distance > 400){ // if more than 400 away, scale down damage
@@ -451,7 +453,7 @@ void GameInstance::applyExplosionDamage(GameObject *explodingObject) {
     int damage = explosionDamage; // max damage
     if(distance > 400){ // if more than 400 away, scale down damage
       float scale = (distance-400) / (explosionRadius-400);
-      damage = int(explosionDamage * scale * 0.5);
+      damage = int(explosionDamage * scale);
     }
     player->applyDamage(damage/2); // reduce damage by half
     std::cout << "Damaged borbie @distance=" << distance <<
@@ -595,11 +597,13 @@ void GameInstance::update(){
   this->vehicles->update();
   this->hands->update();
 
-  if((player->getHealth() < 250) && (bgSound!=bgSoundDead))
+  // if player is below 250 health and is still at OK health mode, then switch
+  // the music and switch player to be in low health mode.
+  if((player->getHealth() < 250) && player->getMode() == PLAYER_MODE_OK_HEALTH)
   {
-    bgSound = bgSoundDead;
-    audioSystem->playMusicLoop(bgSound);
-
+    player->setMode(PLAYER_MODE_LOW_HEALTH);
+    audioSystem->playMusicLoop(bgSoundDead);
+    audioSystem->setMusicVolume(0.4);
   }
 
   if(player && game)
