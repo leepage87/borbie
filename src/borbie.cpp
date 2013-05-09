@@ -1,13 +1,24 @@
+/*********************************************************************
+ * File:     borbie.cpp
+ * Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
+ * Function: This class extends gameObject and holds all the information
+ *           relating to borbie's health as well as the sounds played
+ *           when she is damaged.
+ *********************************************************************/
 #include "borbie.h"
 #include "gameInstance.h"
 
-#include <iostream> // TODO: debug
 
 using namespace irr;
 using namespace gui;
 using namespace video;
 using namespace core;
 
+/*********************************************************************
+ * Constructor for the borbie object, this object holds the player's
+ * health and bullet hit/miss sound effects, extends gameObject
+ * Param: gameInstance the game instance containing all necessary pointers
+ *********************************************************************/
 Borbie::Borbie(GameInstance *gameInstance) : GameObject(gameInstance){
   this->objectType = TYPE_BORBIE;
   this->score=0;
@@ -51,18 +62,33 @@ Borbie::~Borbie(){
     if (ricochet2)
         ricochet2->release();
 }
+
+/*********************************************************************
+ * Overrides the gameObject's applyCollision method in favor of the
+ * FPS camera's collision
+ *********************************************************************/
 void Borbie::applyCollision(irr::scene::IMetaTriangleSelector *metaTriSelector) {}
 
-
+/*********************************************************************
+ * Returns the player's score for use with the HUD
+ * Return: score an integer representing the player's score
+ *********************************************************************/
 int Borbie::getScore()
 {
   return score;
 }
 
+/*********************************************************************
+ * Updates the integer value containing the player's score
+ *********************************************************************/
 void Borbie::updateScore(int addition)
 {
  score+=addition; 
 }
+
+/*********************************************************************
+ * Plays a ricochet sound in the case of a bullet miss
+ *********************************************************************/
 void Borbie::ricochet(){
     int num = Random::randomInt(0, 4);
     switch (num){
@@ -77,16 +103,24 @@ void Borbie::ricochet(){
             break;
     }
 }
+
+/*********************************************************************
+ * Decrements the player's health by the given amount, also checks if
+ * the player's health is less than or equal to zero, and kills the player.
+ * Param: amount the amount of damage to do to the player
+ *********************************************************************/
 void Borbie::applyBulletDamage(int amount){
     this->health -= amount;
     playBulletHit();
     if(this->health <= 0){
         this->health = 0;
-        std::cout << "BORBIE DEAD LOL" << std::endl;
         this->explode();
     }
 }
 
+/*********************************************************************
+ * Plays the sound of a bullet hitting flesh
+ *********************************************************************/
 void Borbie::playBulletHit(){
     int num = Random::randomInt(0, 7);
     switch (num){
