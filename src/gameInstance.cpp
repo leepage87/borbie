@@ -288,6 +288,7 @@ GameInstance::~GameInstance(){
   delete this->mapReader;
   delete this->mapSearcher;
   delete this->hands;
+  std::cout<<"removed objects"<<std::endl;
   if(this->rainParticleSystem)
     this->rainParticleSystem->remove();
   this->smgr->clear();
