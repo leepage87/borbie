@@ -12,6 +12,12 @@
 #include "audioSystem.h"
 #include "random.h"
 
+
+enum PlayerMode {
+    PLAYER_MODE_OK_HEALTH,
+    PLAYER_MODE_LOW_HEALTH
+};
+
 class GameInstance;
 
 class Borbie : public GameObject{
@@ -29,6 +35,10 @@ class Borbie : public GameObject{
 
   //getters
    irr::scene::ICameraSceneNode* getCamera(){ return this->camera; }
+   
+   PlayerMode playerMode;
+   PlayerMode getMode();
+   void setMode(PlayerMode mode);
 
 
 
