@@ -25,16 +25,34 @@ Borbie::Borbie(GameInstance *gameInstance) : GameObject(gameInstance){
   this->setHealth(1000);
   this->camera=gameInstance->getCamera();
   this->sceneNode=camera;
-  this->ricochet1 = audioSystem->createSound3d("assets/sounds/soundEffects/bullets/ricochet.mp3");
-  this->ricochet2 = audioSystem->createSound3d("assets/sounds/soundEffects/bullets/ricochet2.mp3");
-  this->ricochet3 = audioSystem->createSound3d("assets/sounds/soundEffects/bullets/ricochet3.mp3");
-  this->bulletHit1 = audioSystem->createSound3d("assets/sounds/soundEffects/bullets/bulletHit.mp3");
-  this->bulletHit2 = audioSystem->createSound3d("assets/sounds/soundEffects/bullets/bulletHit2.mp3");
-  this->bulletHit3 = audioSystem->createSound3d("assets/sounds/soundEffects/bullets/bulletHit3.mp3");
-  this->bulletHit4 = audioSystem->createSound3d("assets/sounds/soundEffects/bullets/bulletHit4.mp3");
-  this->bulletHit5 = audioSystem->createSound3d("assets/sounds/soundEffects/bullets/bulletHit5.mp3");
-  this->bulletHit6 = audioSystem->createSound3d("assets/sounds/soundEffects/bullets/bulletHit6.mp3");
-  this->bulletHit7 = audioSystem->createSound3d("assets/sounds/soundEffects/bullets/bulletHit7.mp3");
+  this->ricochet1 = audioSystem->
+    createSound3d("assets/sounds/soundEffects/bullets/ricochet.mp3");
+  this->ricochet2 = audioSystem->
+    createSound3d("assets/sounds/soundEffects/bullets/ricochet2.mp3");
+  this->ricochet3 = audioSystem->
+    createSound3d("assets/sounds/soundEffects/bullets/ricochet3.mp3");
+  this->bulletHit1 = audioSystem->
+    createSound3d("assets/sounds/soundEffects/bullets/bulletHit.mp3");
+  this->bulletHit2 = audioSystem->
+    createSound3d("assets/sounds/soundEffects/bullets/bulletHit2.mp3");
+  this->bulletHit3 = audioSystem->
+    createSound3d("assets/sounds/soundEffects/bullets/bulletHit3.mp3");
+  this->bulletHit4 = audioSystem->
+    createSound3d("assets/sounds/soundEffects/bullets/bulletHit4.mp3");
+  this->bulletHit5 = audioSystem->
+    createSound3d("assets/sounds/soundEffects/bullets/bulletHit5.mp3");
+  this->bulletHit6 = audioSystem->
+    createSound3d("assets/sounds/soundEffects/bullets/bulletHit6.mp3");
+  this->bulletHit7 = audioSystem->
+    createSound3d("assets/sounds/soundEffects/bullets/bulletHit7.mp3");
+  this->death1 = audioSystem->
+    createSound3d("assets/sounds/soundEffects/meinLeiben.wav");
+  this->death2 = audioSystem->
+    createSound3d("assets/sounds/soundEffects/armyDeath.wav");
+  this->death3 = audioSystem->
+    createSound3d("assets/sounds/soundEffects/armyDeath2.wav");
+  this->death4 = audioSystem->
+    createSound3d("assets/sounds/soundEffects/gib.mp3");
 }
 
 /*************************************************************************
@@ -145,5 +163,19 @@ void Borbie::playBulletHit(){
         case 6:
             this->audioSystem->playSound3d(bulletHit7, this); 
             break;
+    }
+}
+
+void Borbie::deathStomp(){
+    int num = Random::randomInt(4);
+    switch (num){
+        case 0:
+            this->audioSystem->playSound3d(death1, this);
+        case 1:
+            this->audioSystem->playSound3d(death2, this);
+        case 2:
+            this->audioSystem->playSound3d(death3, this);
+        case 3:
+            this->audioSystem->playSound3d(death4, this);
     }
 }

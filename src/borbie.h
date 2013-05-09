@@ -1,3 +1,9 @@
+/*********************************************************************
+ * File:     borbie.h
+ * Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
+ * Function: This is the header file for borbie.cpp
+ *********************************************************************/
+
 #ifndef BORBIE_H
 #define BORBIE_H
 
@@ -10,7 +16,7 @@ class GameInstance;
 
 class Borbie : public GameObject{
 
-  public:
+   public:
    Borbie(GameInstance *gameInstance); 
    ~Borbie();
    int getScore();
@@ -22,19 +28,19 @@ class Borbie : public GameObject{
 			irr::scene::IMetaTriangleSelector *metaTriSelector);	
 
   //getters
-   irr::scene::ICameraSceneNode* getCamera()
-   {
-     return this->camera;
-   }
+   irr::scene::ICameraSceneNode* getCamera(){ return this->camera; }
+
+   void deathStomp();
 
 
   private:
     int score;
     irr::scene::ICameraSceneNode* camera;
-
+    //Bullet miss sounds
     SoundClip *ricochet1;
 	SoundClip *ricochet2;
 	SoundClip *ricochet3;
+    //Bullet hit sounds
     SoundClip *bulletHit1;
     SoundClip *bulletHit2;
     SoundClip *bulletHit3;
@@ -42,6 +48,12 @@ class Borbie : public GameObject{
     SoundClip *bulletHit5;
     SoundClip *bulletHit6;
     SoundClip *bulletHit7;
+    //Soldier deathstomp sounds
+    SoundClip *death1;
+    SoundClip *death2;
+    SoundClip *death3;
+    SoundClip *death4;
+
     void playBulletHit();
 };
 

@@ -113,7 +113,7 @@ void Soldier::aim(){
         fire();	
     //stomp him in the nuts
     if (length < 200){
-        this->audioSystem->playSound3d(gameInstance->death1,this);
+        this->gameInstance->player->deathStomp();
         explode();
     }
     //If length is high enough and can't see Borbie, use the A* pathfinding
