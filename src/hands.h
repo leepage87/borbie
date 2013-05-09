@@ -41,7 +41,7 @@ class Hands {
 
     public:
     Hands(GameInstance *gameInstance);
-
+    ~Hands();
     void setVisible(bool value);   
     void punch();
     void update();

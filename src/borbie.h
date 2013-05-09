@@ -29,7 +29,7 @@ class Borbie : public GameObject{
    void updateScore(int addition);
    void ricochet();
    void applyBulletDamage(int amount);
-
+   void deathStomp();
    virtual void applyCollision(
 			irr::scene::IMetaTriangleSelector *metaTriSelector);	
 
@@ -40,16 +40,20 @@ class Borbie : public GameObject{
    PlayerMode getMode();
    void setMode(PlayerMode mode);
 
-   void deathStomp();
+
 
 
   private:
     int score;
+    bool hasPlayed;
+    
     irr::scene::ICameraSceneNode* camera;
+
     //Bullet miss sounds
     SoundClip *ricochet1;
 	SoundClip *ricochet2;
 	SoundClip *ricochet3;
+
     //Bullet hit sounds
     SoundClip *bulletHit1;
     SoundClip *bulletHit2;
@@ -58,11 +62,16 @@ class Borbie : public GameObject{
     SoundClip *bulletHit5;
     SoundClip *bulletHit6;
     SoundClip *bulletHit7;
+
     //Soldier deathstomp sounds
     SoundClip *death1;
     SoundClip *death2;
     SoundClip *death3;
     SoundClip *death4;
+
+    //Low health sounds
+    SoundClip *lowHealth1;
+    SoundClip *lowHealth2;
 
     void playBulletHit();
 };

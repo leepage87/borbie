@@ -25,7 +25,25 @@ Hands::Hands(GameInstance * gameInstance){
     this->punch4 = audioSystem->createSound3d("assets/sounds/soundEffects/punches/punch4.mp3");
     this->punch5 = audioSystem->createSound3d("assets/sounds/soundEffects/punches/punch5.mp3");
     this->punch6 = audioSystem->createSound3d("assets/sounds/soundEffects/punches/punch6.mp3");
-    this->punchMiss = audioSystem->createSound3d("assets/sounds/soundEffects/punches/punch_miss.mp3");
+}
+
+Hands::~Hands(){
+    if (punch1)
+        punch1->release();
+    if (punch2)
+        punch2->release();
+    if (punch3)
+        punch3->release();
+    if (punch4)
+        punch4->release();
+    if (punch5)
+        punch5->release();
+    if (punch6)
+        punch6->release();
+    if (leftHand)
+        leftHand->drop();
+    if (rightHand)
+        rightHand->drop();
 }
 
 void Hands::addLeftHand(){
@@ -64,7 +82,6 @@ void Hands::punch(){
     camera->setRotation(cameraRot);
     lastPunchTime = gameInstance->getDevice()->getTimer()->getTime();
     rightPunched = true;
-
     //play random punch sound
     punchSound();
 }

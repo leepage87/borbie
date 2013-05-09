@@ -26,6 +26,7 @@ Borbie::Borbie(GameInstance *gameInstance) : GameObject(gameInstance){
   this->playerMode = PLAYER_MODE_OK_HEALTH;
   this->camera=gameInstance->getCamera();
   this->sceneNode=camera;
+  this->hasPlayed = false;
   this->ricochet1 = audioSystem->
     createSound3d("assets/sounds/soundEffects/bullets/ricochet.mp3");
   this->ricochet2 = audioSystem->
@@ -54,6 +55,10 @@ Borbie::Borbie(GameInstance *gameInstance) : GameObject(gameInstance){
     createSound3d("assets/sounds/soundEffects/armyDeath2.wav");
   this->death4 = audioSystem->
     createSound3d("assets/sounds/soundEffects/gib.mp3");
+  this->lowHealth1 = audioSystem->
+    createSound3d("assets/sounds/soundEffects/Mmm.mp3");
+  this->lowHealth2 = audioSystem->
+    createSound3d("assets/sounds/soundEffects/sugar.mp3");
 }
 
 /*************************************************************************
@@ -88,6 +93,10 @@ Borbie::~Borbie(){
         death3->release();
     if (death4)
         death4->release();
+    if (lowHealth1)
+        lowHealth1->release();
+    if (lowHealth2)
+        lowHealth2->release();
 }
 
 /*********************************************************************
@@ -158,6 +167,17 @@ void Borbie::applyBulletDamage(int amount){
     if(this->health <= 0){
         this->health = 0;
         this->explode();
+    }else if (!hasPlayed && this->health <= 250) {
+        hasPlayed = true;
+        int num = Random::randomInt(2);
+        switch (num){
+            case 0:
+                this->audioSystem->playSound3d(lowHealth1, this);
+                break;
+            case 1:
+                this->audioSystem->playSound3d(lowHealth2, this);
+                break;
+        }
     }
 }
 
@@ -165,7 +185,7 @@ void Borbie::applyBulletDamage(int amount){
  * Plays the sound of a bullet hitting flesh
  *********************************************************************/
 void Borbie::playBulletHit(){
-    int num = Random::randomInt(0, 7);
+    int num = Random::randomInt(7);
     switch (num){
         case 0:
             this->audioSystem->playSound3d(bulletHit1, this);         
@@ -191,6 +211,10 @@ void Borbie::playBulletHit(){
     }
 }
 
+/*************************************************************************
+Plays death sounds (taken from DOOM) when soldiers get stepped on.
+When the soldiers themselves were playing the sound, it was cutting out.
+*************************************************************************/
 void Borbie::deathStomp(){
     int num = Random::randomInt(4);
     switch (num){
