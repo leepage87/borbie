@@ -63,9 +63,9 @@ void Soldier::applyCollision(
 	metaTriSelector->addTriangleSelector(sceneNode->getTriangleSelector());
 }
 /*********************************************************************
- * Gets an integer between 1 and 3 to use as the time between
+ * Gets an integer between 1 and 4 to use as the time between
  * each shot
- * Returns: random integer between 1 and 4
+ * Returns: random integer between 1000 and 4000
  *********************************************************************/
 int Soldier::getRandomFireDelay(){
     return Random::randomInt(1, 5)*1000;
