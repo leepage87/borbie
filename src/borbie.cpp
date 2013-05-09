@@ -75,10 +75,18 @@ Borbie::~Borbie(){
         bulletHit7->release();
     if (ricochet1)
         ricochet1->release();
-    if (ricochet1)
-        ricochet1->release();
     if (ricochet2)
         ricochet2->release();
+    if (ricochet3)
+        ricochet3->release();
+    if (death1)
+        death1->release();
+    if (death2)
+        death2->release();
+    if (death3)
+        death3->release();
+    if (death4)
+        death4->release();
 }
 
 /*********************************************************************
