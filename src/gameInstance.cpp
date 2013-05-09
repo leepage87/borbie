@@ -260,18 +260,25 @@ GameInstance::~GameInstance(){
   //delete sounds if they exist
   if(bgSound)
     bgSound->release();  
+  std::cout<<"finished destruction of bgSound"<<std::endl;
   if(bgSoundDead)
     bgSoundDead->release();
+  std::cout<<"finished destruction of bgSoundDead"<<std::endl;
   if(death1)
     death1->release();
+  std::cout<<"finished destruction of death1"<<std::endl;
   if(explosionSound1)
     explosionSound1->release();
+  std::cout<<"finished destruction of explosionSound1"<<std::endl;
   if(death1)
     death1->release();
+  std::cout<<"finished destruction of death1"<<std::endl;
   if(gunShot1)
     gunShot1->release();
+  std::cout<<"finished destruction of gunShot1"<<std::endl;
   if(gunShot2)
     gunShot2->release();
+  std::cout<<"finished destruction of gunShot2"<<std::endl;
 
   delete this->terrain;
   delete this->skybox;
@@ -294,6 +301,7 @@ GameInstance::~GameInstance(){
 
   //turn the mouse cursor back on
   device->getCursorControl()->setVisible(true);
+  std::cout<<"finished destruction"<<std::endl;
 }
 
 
