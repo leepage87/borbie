@@ -35,11 +35,15 @@ class Borbie : public GameObject{
 
   private:
     int score;
+    bool hasPlayed;
+    
     irr::scene::ICameraSceneNode* camera;
+
     //Bullet miss sounds
     SoundClip *ricochet1;
 	SoundClip *ricochet2;
 	SoundClip *ricochet3;
+
     //Bullet hit sounds
     SoundClip *bulletHit1;
     SoundClip *bulletHit2;
@@ -48,6 +52,7 @@ class Borbie : public GameObject{
     SoundClip *bulletHit5;
     SoundClip *bulletHit6;
     SoundClip *bulletHit7;
+
     //Soldier deathstomp sounds
     SoundClip *death1;
     SoundClip *death2;

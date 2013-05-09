@@ -40,6 +40,10 @@ Hands::~Hands(){
         punch5->remove();
     if (punch6)
         punch6->remove();
+    if (leftHand)
+        leftHand->drop();
+    if (rightHand)
+        rightHand->drop();
 }
 
 void Hands::addLeftHand(){
