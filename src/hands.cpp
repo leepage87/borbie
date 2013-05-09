@@ -20,6 +20,9 @@ using namespace video;
  * Param: gameInstance the game instance containing all necessary pointers
  *********************************************************************/
 Hands::Hands(GameInstance * gameInstance){
+    leftHand = 0;
+    rightHand = 0;
+    
     this->gameInstance = gameInstance;
     this->camera = gameInstance->getCamera();
     this->smgr = gameInstance->getSceneManager();
@@ -27,8 +30,6 @@ Hands::Hands(GameInstance * gameInstance){
     this->lastPunchTime = 0;
     addLeftHand();
     addRightHand();
-    leftHand = 0;
-    rightHand = 0;
 
     //add sounds
     this->punch1 = audioSystem->createSound3d("assets/sounds/soundEffects/punches/punch1.mp3");

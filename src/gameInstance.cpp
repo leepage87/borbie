@@ -61,6 +61,7 @@ GameInstance::GameInstance(
 
   this->bgSound = audioSystem->createSound2d("assets/sounds/yumyum.ogg");
   this->bgSoundDead = audioSystem->createSound2d("assets/sounds/angryWorld.ogg");
+  this->borbieDead = audioSystem->createSound2d("assets/sounds/wut.mp3");
   //Start the shitty music and loop! 
   audioSystem->playMusicLoop(bgSound); 
   audioSystem->setMusicVolume(0.5);
@@ -261,7 +262,10 @@ GameInstance::~GameInstance(){
   ((BorbiesEventReceiver*)receiver)->removeGameInstance();
   this->updateList.clear();
   
+  
   //delete sounds if they exist
+  if(borbieDead)
+      borbieDead->release();
   if(bgSound)
     bgSound->release();  
   std::cout<<"finished destruction of bgSound (ogg)"<<std::endl;
@@ -599,6 +603,10 @@ void GameInstance::update(){
     player->setMode(PLAYER_MODE_LOW_HEALTH);
     audioSystem->playMusicLoop(bgSoundDead);
     audioSystem->setMusicVolume(0.4);
+  }else if(player->getHealth() == 0 && player->getMode() == PLAYER_MODE_LOW_HEALTH)
+  {
+    player->setMode(PLAYER_MODE_DEAD);
+    audioSystem->playSound2d(borbieDead);
   }
 
   if(player && game)

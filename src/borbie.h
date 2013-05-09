@@ -15,7 +15,8 @@
 
 enum PlayerMode {
     PLAYER_MODE_OK_HEALTH,
-    PLAYER_MODE_LOW_HEALTH
+    PLAYER_MODE_LOW_HEALTH,
+    PLAYER_MODE_DEAD
 };
 
 class GameInstance;

@@ -98,6 +98,7 @@ class GameInstance {
     // game objects (e.g. terrain, GUI, etc.)
     AudioSystem *audioSystem;
     SoundClip *bgSound;
+    SoundClip *borbieDead;
     SoundClip *bgSoundDead;
     Terrain *terrain;
     Sky *skybox;
