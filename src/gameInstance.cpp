@@ -255,26 +255,27 @@ void GameInstance::TEST_PATH_FUNCTION_TODO_REMOVE(){
 // destructor: removes all objects from memory and ensures that the scene
 //  manager is completely wiped clean of all Irrlicht objects.
 GameInstance::~GameInstance(){
-  // remove all 3D sounds from the AudioSystem
-  this->audioSystem->removeFollowSounds();
-  
   ((BorbiesEventReceiver*)receiver)->removeGameInstance();
   this->updateList.clear();
   //delete sounds if they exist
   if(bgSound)
     bgSound->release();  
+  std::cout<<"finished destruction of bgSound"<<std::endl;
   if(bgSoundDead)
     bgSoundDead->release();
+  std::cout<<"finished destruction of bgSoundDead"<<std::endl;
   if(death1)
     death1->release();
+  std::cout<<"finished destruction of death1"<<std::endl;
   if(explosionSound1)
     explosionSound1->release();
-  if(death1)
-    death1->release();
+  std::cout<<"finished destruction of explosionSound1"<<std::endl;
   if(gunShot1)
     gunShot1->release();
+  std::cout<<"finished destruction of gunShot1"<<std::endl;
   if(gunShot2)
     gunShot2->release();
+  std::cout<<"finished destruction of gunShot2"<<std::endl;
 
   delete this->terrain;
   delete this->skybox;
@@ -297,6 +298,7 @@ GameInstance::~GameInstance(){
 
   //turn the mouse cursor back on
   device->getCursorControl()->setVisible(true);
+  std::cout<<"finished destruction"<<std::endl;
 }
 
 
