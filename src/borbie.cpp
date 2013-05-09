@@ -174,6 +174,10 @@ void Borbie::playBulletHit(){
     }
 }
 
+/*************************************************************************
+Plays death sounds (taken from DOOM) when soldiers get stepped on.
+When the soldiers themselves were playing the sound, it was cutting out.
+*************************************************************************/
 void Borbie::deathStomp(){
     int num = Random::randomInt(4);
     switch (num){

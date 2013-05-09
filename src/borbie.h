@@ -23,14 +23,14 @@ class Borbie : public GameObject{
    void updateScore(int addition);
    void ricochet();
    void applyBulletDamage(int amount);
-
+   void deathStomp();
    virtual void applyCollision(
 			irr::scene::IMetaTriangleSelector *metaTriSelector);	
 
   //getters
    irr::scene::ICameraSceneNode* getCamera(){ return this->camera; }
 
-   void deathStomp();
+
 
 
   private:
