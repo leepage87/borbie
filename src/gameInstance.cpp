@@ -63,7 +63,7 @@ GameInstance::GameInstance(
   this->bgSoundDead = audioSystem->createSound2d("assets/sounds/angryWorld.ogg");
   //Start the shitty music and loop! 
   audioSystem->playMusicLoop(bgSound); 
-  audioSystem->setMusicVolume(1.0);
+  audioSystem->setMusicVolume(0.6);
   // setup global collision meta selector
   this->metaTriSelector = smgr->createMetaTriangleSelector();
 
@@ -395,8 +395,12 @@ void GameInstance::applyExplosionDamage(GameObject *explodingObject) {
     else if(!curNode->isVisible() || buildings->objList[i]->hasExploded())
       continue;
     // otherwise, check if the distance is close enough, and apply damage
-    //  based on the distance to the explosion center
-    float distance = curNode->getPosition().getDistanceFrom(explodePos);
+    //  based on the distance to the explosion center. Offset position by 200
+    //  since the buildings are not positioned relative to their center.
+    vector3df curNodePos = curNode->getPosition();
+    //curNodePos.X += 200; // TODO -- wtf?
+    //curNodePos.Y += 200;
+    float distance = curNodePos.getDistanceFrom(explodePos);
     if(distance <= explosionRadius){
       int damage = explosionDamage; // max damage
       if(distance > 400){ // if more than 400 away, scale down damage
@@ -447,9 +451,9 @@ void GameInstance::applyExplosionDamage(GameObject *explodingObject) {
     int damage = explosionDamage; // max damage
     if(distance > 400){ // if more than 400 away, scale down damage
       float scale = (distance-400) / (explosionRadius-400);
-      damage = int(explosionDamage * scale);
+      damage = int(explosionDamage * scale * 0.5);
     }
-    player->applyDamage(damage);
+    player->applyDamage(damage/2); // reduce damage by half
     std::cout << "Damaged borbie @distance=" << distance <<
       " for @damage=" << damage << std::endl;
   }
@@ -593,8 +597,8 @@ void GameInstance::update(){
 
   if((player->getHealth() < 250) && (bgSound!=bgSoundDead))
   {
-    bgSound = bgSoundDead; 
-    audioSystem->playMusicLoop(bgSound); 
+    bgSound = bgSoundDead;
+    audioSystem->playMusicLoop(bgSound);
 
   }
 

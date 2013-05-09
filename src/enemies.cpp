@@ -19,8 +19,9 @@ using namespace core;
 using namespace video;
 
 
-const unsigned int STARTING_NUMBER_ENEMIES = 10;
-const unsigned int MAX_NUMBER_ENEMIES = 1000;
+const unsigned int STARTING_NUMBER_ENEMIES = 5;
+const unsigned int MAX_NUMBER_ENEMIES = 100;
+const unsigned int SPAWN_TIME_MS = 2 * 1000; // 2 seconds
 
 /*********************************************************************
  * Creates a list object to hold references to all the enemies
@@ -36,6 +37,7 @@ Enemies::Enemies(
 	: ObjectList(metaTriSelector, gameInstance)
 {
     this->maxNumberEnemies = STARTING_NUMBER_ENEMIES;
+    this->nextSpawnTime = 0;
 }
 
 /*********************************************************************
@@ -127,11 +129,18 @@ void Enemies::makeEnemy(float xPos, float yPos, float zPos, EnemyType type){
  * Call update on each of the enemies in the list
  *********************************************************************/
 void Enemies::update(){
+    if( this->gameInstance->currentGameTime >= this->nextSpawnTime &&
+	    this->objList.size() < this->maxNumberEnemies)
+	{
+        this->createRandomEnemy();
+	    this->nextSpawnTime = this->gameInstance->currentGameTime + SPAWN_TIME_MS;
+	}
+	
     // if number of enemies is below the current limit, make moar!
-    while(this->objList.size() < this->maxNumberEnemies){
+    /*while(this->objList.size() < this->maxNumberEnemies){
         this->createRandomEnemy();
         std::cout << "NEW ENEMY CREATED" << std::endl;
-    }
+    }*/
     
     // update each enemy individually if they are not blown up yet
     int numObjs = objList.size();

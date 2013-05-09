@@ -29,7 +29,7 @@ BigAssSoldier::BigAssSoldier(
 	// call super GameObject constructor first:
 	: Soldier(gameInstance, posX, posY, posZ)
 {
-    this->BULLET_DAMAGE = 20;
+    this->BULLET_DAMAGE = 15;
     this->objectType = TYPE_ENEMY;
     this->sceneNode =
     	smgr->addMeshSceneNode(smgr->getMesh("assets/models/enemies/soldier/armydude.obj"));
@@ -38,7 +38,7 @@ BigAssSoldier::BigAssSoldier(
 	this->sceneNode->setVisible(true);
 	this->sceneNode->setMaterialFlag(EMF_LIGHTING, true);
 	this->sceneNode->setID(IDFlag_IsPickable);
-	this->setHealth(2000);
+	this->setHealth(1000);
     this->fireDelay = getRandomFireDelay();
 }
 

@@ -40,6 +40,9 @@ class Enemies : public ObjectList, public Updatable {
 	// number of enemies
 	unsigned int maxNumberEnemies;
 	
+	// next enemy spawn time
+	unsigned int nextSpawnTime;
+	
   public:
 	Enemies (irr::scene::IMetaTriangleSelector *metaTriSelector,
 			GameInstance *gameInstance);
