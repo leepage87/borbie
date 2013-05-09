@@ -31,8 +31,8 @@ BuildingInstance::BuildingInstance(
     this->objectType = TYPE_BUILDING;
     
     // set initial health to 1000
-    this->setHealth(1000);
-    this->setMaxHealth(1000);
+    this->setHealth(1500);
+    this->setMaxHealth(1500);
     
     // calculate y-position based on height (with posY being the base
     //  of the building. Irrlicht centers objects at 1/2 height.

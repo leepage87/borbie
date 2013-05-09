@@ -58,8 +58,8 @@ void Buildings::generateObjects(){
 		it != mapReader->buildingCoords.end(); ++it)
 	{
         this->addRandomBuilding((*it).X, BUILDING_GROUND_HEIGHT, (*it).Y);
-        std::cout << "Generated building at " <<
-            "x: " << (*it).X << ", y: " << (*it).Y << std::endl;
+        //std::cout << "Generated building at " <<
+        //    "x: " << (*it).X << ", y: " << (*it).Y << std::endl;
     }
 }
 
