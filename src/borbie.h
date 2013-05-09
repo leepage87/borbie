@@ -12,6 +12,7 @@ class Borbie : public GameObject{
 
   public:
    Borbie(GameInstance *gameInstance); 
+   ~Borbie();
    int getScore();
    void updateScore(int addition);
    void ricochet();
