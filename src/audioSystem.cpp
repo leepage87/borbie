@@ -448,6 +448,11 @@ void AudioSystem::playSound3dLoop(SoundClip *sound,
     this->playSound3dFollowTarget(sound, target, volume, true);
 }
 
+// Attempts to remove
+void AudioSystem::removeFollowSounds(){
+    this->followSounds.clear();
+}
+
 
 
 /*** SYSTEM UPDATE METHOD ***/

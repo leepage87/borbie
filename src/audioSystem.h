@@ -140,6 +140,9 @@ class AudioSystem {
         GameObject *target,
         float volume = 1.0f);
     
+    // clear out all 3D sound objects
+    void removeFollowSounds();
+    
     
     // 2D Sound Functions - plays once, then channel is gone
     SoundClip* playSound2d(const char *file,
