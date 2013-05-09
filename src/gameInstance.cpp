@@ -260,22 +260,25 @@ GameInstance::~GameInstance(){
   //delete sounds if they exist
   if(bgSound)
     bgSound->release();  
-  std::cout<<"finished destruction of bgSound"<<std::endl;
+  std::cout<<"finished destruction of bgSound (ogg)"<<std::endl;
   if(bgSoundDead)
     bgSoundDead->release();
-  std::cout<<"finished destruction of bgSoundDead"<<std::endl;
-  if(death1)
-    death1->release();
-  std::cout<<"finished destruction of death1"<<std::endl;
+  std::cout<<"finished destruction of bgSoundDead (ogg)"<<std::endl;
+  if(burningSound)
+    burningSound->release();
+  std::cout<<"finished destruction of burningSound (mp3)"<<std::endl;
   if(explosionSound1)
     explosionSound1->release();
-  std::cout<<"finished destruction of explosionSound1"<<std::endl;
+  std::cout<<"finished destruction of explosionSound1 (wav)"<<std::endl;
+  if(death1)
+    death1->release();
+  std::cout<<"finished destruction of death1 (wav)"<<std::endl;
   if(gunShot1)
     gunShot1->release();
-  std::cout<<"finished destruction of gunShot1"<<std::endl;
+  std::cout<<"finished destruction of gunShot1 (mp3)"<<std::endl;
   if(gunShot2)
     gunShot2->release();
-  std::cout<<"finished destruction of gunShot2"<<std::endl;
+  std::cout<<"finished destruction of gunShot2 (mp3)"<<std::endl;
 
   delete this->terrain;
   delete this->skybox;
@@ -292,10 +295,6 @@ GameInstance::~GameInstance(){
   if(this->rainParticleSystem)
     this->rainParticleSystem->remove();
   this->smgr->clear();
-
-  // release all sound clips from memory
-  if(this->burningSound)
-    this->burningSound->release();
 
   //turn the mouse cursor back on
   device->getCursorControl()->setVisible(true);
