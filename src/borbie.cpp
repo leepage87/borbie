@@ -92,7 +92,7 @@ Borbie::~Borbie(){
         death3->release();
     if (death4)
         death4->release();
-    if (lowHealth)
+    if (lowHealth1)
         lowHealth1->release();
     if (lowHealth2)
         lowHealth2->release();
@@ -152,7 +152,7 @@ void Borbie::applyBulletDamage(int amount){
         this->explode();
     }else if (!hasPlayed && this->health <= 250) {
         hasPlayed = true;
-        int num = Random::getRandomInt(2);
+        int num = Random::randomInt(2);
         switch (num){
             case 0:
                 this->audioSystem->playSound3d(lowHealth1, this);

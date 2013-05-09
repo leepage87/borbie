@@ -29,17 +29,17 @@ Hands::Hands(GameInstance * gameInstance){
 
 Hands::~Hands(){
     if (punch1)
-        punch1->remove();
+        punch1->release();
     if (punch2)
-        punch2->remove();
+        punch2->release();
     if (punch3)
-        punch3->remove();
+        punch3->release();
     if (punch4)
-        punch4->remove();
+        punch4->release();
     if (punch5)
-        punch5->remove();
+        punch5->release();
     if (punch6)
-        punch6->remove();
+        punch6->release();
     if (leftHand)
         leftHand->drop();
     if (rightHand)

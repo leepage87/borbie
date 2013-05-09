@@ -59,6 +59,10 @@ class Borbie : public GameObject{
     SoundClip *death3;
     SoundClip *death4;
 
+    //Low health sounds
+    SoundClip *lowHealth1;
+    SoundClip *lowHealth2;
+
     void playBulletHit();
 };
 
