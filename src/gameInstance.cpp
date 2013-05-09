@@ -63,7 +63,7 @@ GameInstance::GameInstance(
   this->bgSoundDead = audioSystem->createSound2d("assets/sounds/angryWorld.ogg");
   //Start the shitty music and loop! 
   audioSystem->playMusicLoop(bgSound); 
-  audioSystem->setMusicVolume(0.15);
+  audioSystem->setMusicVolume(1.0);
   // setup global collision meta selector
   this->metaTriSelector = smgr->createMetaTriangleSelector();
 
@@ -595,7 +595,6 @@ void GameInstance::update(){
   {
     bgSound = bgSoundDead; 
     audioSystem->playMusicLoop(bgSound); 
-    audioSystem->setMusicVolume(0.5);
 
   }
 
