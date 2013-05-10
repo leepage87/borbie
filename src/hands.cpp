@@ -58,9 +58,9 @@ Hands::~Hands(){
     if (punch6)
         punch6->release();
     if (leftHand)
-        leftHand->drop();
+        leftHand->remove();
     if (rightHand)
-        rightHand->drop();
+        rightHand->remove();
 }
 
 /*************************************************************************

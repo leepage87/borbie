@@ -62,12 +62,7 @@ bool BorbiesEventReceiver::OnEvent(const irr::SEvent& event){
         if(event.KeyInput.Key == irr::KEY_MINUS && !event.KeyInput.PressedDown){
           if(gameInstance && gameInstance->player)
             gameInstance->player->applyDamage(1000);        
-        } 
-        //FIXME  TODO this is testing shit to see if distance algorithms work
-        if(event.KeyInput.Key == irr::KEY_KEY_P && !event.KeyInput.PressedDown){
-          if(gameInstance && gameInstance->player)
-            gameInstance->TEST_PATH_FUNCTION_TODO_REMOVE();        
-        } 
+        }
 
         if(event.KeyInput.Key == irr::KEY_ESCAPE && !event.KeyInput.PressedDown){
           if(device){

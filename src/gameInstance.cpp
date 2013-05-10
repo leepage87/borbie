@@ -213,46 +213,6 @@ GameInstance::GameInstance(
 }
 
 
-// TODO --- remove this function
-void GameInstance::TEST_PATH_FUNCTION_TODO_REMOVE(){
-    std::cout << "TEST PATH BUTTON PRESSED" << std::endl;
-    
-    IMesh *mesh =  smgr->getMesh("assets/models/ah6.3DS");
-    ISceneNode *sceneNode = smgr->addMeshSceneNode(mesh);
-	sceneNode->setPosition(vector3df(10200, 500, 10200));
-	sceneNode->setScale(vector3df(10, 10, 10));
-	sceneNode->setMaterialFlag(EMF_LIGHTING, true);
-    
-    // create a random node at a random place
-    /*float X = Random::randomFloat(18000) + 2000;
-    float Y = Random::randomFloat(18000) + 2000;
-    
-    ISceneNode *sceneNode = smgr->addCubeSceneNode();
-    sceneNode->setPosition(vector3df(X, 0, Y));
-	sceneNode->setScale(vector3df(40, 100, 40));
-	
-    MapSearcher *searcher = this->mapReader->getMapSearcher();
-	std::vector<RoadIntersection> points = searcher->getShortestPath(
-	    sceneNode->getPosition(),
-	    this->camera->getPosition());
-    
-    // list of points
-    array<vector3df> coords;
-    for(int i=0; i<points.size(); ++i){
-        vector3df point;
-        point.X = points[i].X;
-        point.Y = 0;
-        point.Z = points[i].Y;
-        coords.push_back(point);
-    }
-    ISceneNodeAnimator *anim = smgr->createFollowSplineAnimator(
-        currentGameTime, coords, 1.0f, 0.0);
-    sceneNode->addAnimator(anim);
-        
-	delete searcher;*/
-}
-
-
 // destructor: removes all objects from memory and ensures that the scene
 //  manager is completely wiped clean of all Irrlicht objects.
 GameInstance::~GameInstance(){
@@ -268,25 +228,20 @@ GameInstance::~GameInstance(){
       borbieDead->release();
   if(bgSound)
     bgSound->release();  
-  std::cout<<"finished destruction of bgSound (ogg)"<<std::endl;
   if(bgSoundDead)
     bgSoundDead->release();
-  std::cout<<"finished destruction of bgSoundDead (ogg)"<<std::endl;
   if(burningSound)
     burningSound->release();
-  std::cout<<"finished destruction of burningSound (mp3)"<<std::endl;
   if(explosionSound1)
     explosionSound1->release();
-  std::cout<<"finished destruction of explosionSound1 (wav)"<<std::endl;
   if(death1)
     death1->release();
-  std::cout<<"finished destruction of death1 (wav)"<<std::endl;
   if(gunShot1)
     gunShot1->release();
-  std::cout<<"finished destruction of gunShot1 (mp3)"<<std::endl;
   if(gunShot2)
     gunShot2->release();
-  std::cout<<"finished destruction of gunShot2 (mp3)"<<std::endl;
+    
+  std::cout<<"All sounds successfully released..."<<std::endl;
 
   delete this->terrain;
   delete this->skybox;
@@ -302,7 +257,9 @@ GameInstance::~GameInstance(){
   std::cout<<"removed objects"<<std::endl;
   if(this->rainParticleSystem)
     this->rainParticleSystem->remove();
+  std::cout << "Removed rainParticleSystem" << std::endl;
   this->smgr->clear();
+  std::cout << "Cleared smgr" << std::endl;
 
   //turn the mouse cursor back on
   device->getCursorControl()->setVisible(true);
@@ -356,6 +313,7 @@ void GameInstance::updatePlayerScore(int amount){
 //  affect vehicles, buildings, enemies, and Borbie.
 void GameInstance::applyExplosionDamage(GameObject *explodingObject) {
   // get the exploding object's variables
+  GameObjectType explodingType = explodingObject->getObjectType();
   ISceneNode *explodingNode = explodingObject->getNode();
   float explosionRadius = explodingObject->getExplosionRadius();
   float explosionDamage = explodingObject->getExplosionDamage();
@@ -410,7 +368,7 @@ void GameInstance::applyExplosionDamage(GameObject *explodingObject) {
       }
       // if the exploding object is a building, reduce splash damage
       //  to prevent instant-killing an entire city. That would suck.
-      if(explodingObject->getObjectType() == TYPE_BUILDING)
+      if(explodingType == TYPE_BUILDING)
         damage = damage / 20;
       buildings->objList[i]->applyDamage(damage);
       std::cout << "Damaged building @distance=" << distance <<
@@ -447,6 +405,7 @@ void GameInstance::applyExplosionDamage(GameObject *explodingObject) {
   if(player->hasExploded())
     return;
 
+  // apply damage to borbie herself (the player)
   float distance = player->getNode()->getPosition().getDistanceFrom(explodePos);
   if(distance <= explosionRadius){
     int damage = explosionDamage; // max damage

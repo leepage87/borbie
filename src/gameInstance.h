@@ -148,8 +148,6 @@ class GameInstance {
         irr::IEventReceiver *receiver, Game *game);
 
     ~GameInstance();
-    
-    void TEST_PATH_FUNCTION_TODO_REMOVE(); // TODO - remove
 
     // getters for all Irrlicht objects: used by objects in the game
     //  to get pointers to all necessary Irrlicht objects.
