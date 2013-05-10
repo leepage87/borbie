@@ -105,30 +105,22 @@ void Soldier::aim(){
     
 	//Tactically operate oneself towards the enemy (Borbie)
     //if enemy distance is between 10k-2k and borbie is visible
-    if (!moving && length < 10000 && length > 2000 && visible()){
+    if (!moving && length < 10000 && length > 2000 && visible())
         move();
-        std::cout << "Initiated move" << std::endl;
-    }
     //If length is high enough and can't see Borbie, use the A* pathfinding
     //algorithm to move over to Borbie if not already moving somewhere
-    else if(!moving && length > 6000 && !visible()){
+    else if(!moving && length > 6000 && !visible())
         goToBorbie();
-        std::cout << "***Walking over to borbie, yay!" << std::endl;
-    }
     
     //Tactically attempt to bust a cap if Borbie is
     //within 6000 units
-	if (length < 6000 && canShoot()){
-        fire();
-        std::cout << "Fired gun" << std::endl;
-    }
+	if (length < 6000 && canShoot())
+        fire(length);
     //stomp him in the nuts
     if (length < 200){
         this->gameInstance->player->deathStomp();
         explode();
-        std::cout << "B00000m" << std::endl;
     }
-    //std::cout << moving << std::endl;
 }
 
 /*********************************************************************
@@ -237,7 +229,7 @@ bool Soldier::canShoot(){
  * is within range and has direct line of sight.  He has an 80%
  * chance of hitting his target.
  *********************************************************************/
-void Soldier::fire(){
+void Soldier::fire(int distance){
 	lastFireTime = gameInstance->getDevice()->getTimer()->getTime();
 	IBillboardSceneNode * bill;
 	bill = smgr->addBillboardSceneNode();
@@ -263,19 +255,24 @@ void Soldier::fire(){
 	    gameInstance->getSceneManager()->createDeleteAnimator(MUZZLE_FLASH_TIME);
 	bill->addAnimator(anim);
 	anim->drop();
-    if (!miss())
+    if (!miss(distance))
 	    gameInstance->player->applyBulletDamage(BULLET_DAMAGE);
     else
         gameInstance->player->ricochet();		
 }
 
 /*********************************************************************
- * Gets a random number between 1 and 5, if the number is less
- * than or equal to 5 the soldier has hit his target (80%).
- * Returns: a boolean value
+ * Gets a random number between 0 and 5, if the number is less
+ * than .
+ * Returns: a boolean value, true being a miss.
  *********************************************************************/
-bool Soldier::miss(){
-    if (Random::randomInt(1,6) <= 5){//20% chance
+bool Soldier::miss(int distance){
+    // lower distance = lower offset value (approx 1 offset per 1000 distance)
+    int offset = distance / 600;
+    // at  6k distance, offset = 10, 11-offset = 1,  1/10  chance to hit
+    // at  3k distance, offset = 5,  11-offset = 6,  6/10  chance to hit
+    // at <1k distance, offset = 1,  11-offset = 10, 10/10 chance to hit
+    if (Random::randomInt(10) < 11-offset){//chance to NOT miss
         return false;
     }
     return true;

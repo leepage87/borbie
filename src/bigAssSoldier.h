@@ -26,7 +26,7 @@ class BigAssSoldier : public virtual Soldier {
 		float posX, float posY, float posZ);
 
     private:
-    virtual void fire();
+    virtual void fire(int distance);
     virtual void aim();
 };
 #endif

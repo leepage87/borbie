@@ -31,8 +31,8 @@ BigAssSoldier::BigAssSoldier(
 {
     this->BULLET_DAMAGE = 15;
     this->objectType = TYPE_ENEMY;
-    this->sceneNode =
-    	smgr->addMeshSceneNode(smgr->getMesh("assets/models/enemies/soldier/armydude.obj"));
+    this->sceneNode = smgr->addMeshSceneNode(
+        smgr->getMesh("assets/models/enemies/soldier/armydude.obj"));
 	this->sceneNode->setPosition(vector3df(posX, posY, posZ));
 	this->sceneNode->setScale(vector3df(50,50,50));
 	this->sceneNode->setVisible(true);
@@ -61,24 +61,18 @@ void BigAssSoldier::aim(){
     
 	//Tactically operate oneself towards the enemy (Borbie)
     //if enemy distance is between 10k-2k
-    if (!moving && length < 10000 && length > 2000 && visible()){
+    if (!moving && length < 10000 && length > 2000 && visible())
         move();
-        std::cout << "Initiated move" << std::endl;
-    }
     // TODO - abstraction can be added here
     //If length is high enough and can't see Borbie, use the A* pathfinding
     //algorithm to move over to Borbie if not already moving somewhere
-    else if(!moving && length > 6000 && !visible()){
+    else if(!moving && length > 6000 && !visible())
         goToBorbie();
-        std::cout << "***Walking over to borbie, yay!" << std::endl;
-    }
     
     //Tactically attempt to bust a cap if Borbie is
     //within 6000 units
-	if (length < 6000 && canShoot()){
-        fire();
-        std::cout << "Fired gun" << std::endl;
-    }
+	if (length < 6000 && canShoot())
+        fire(length);
     //big ass soldier cannot be stepped on
 }
 
@@ -89,7 +83,7 @@ void BigAssSoldier::aim(){
  * is within range and has direct line of sight.  He has an 80%
  * chance of hitting his target.
  ********************************************************************/
-void BigAssSoldier::fire(){
+void BigAssSoldier::fire(int distance){
 	lastFireTime = gameInstance->getDevice()->getTimer()->getTime();
 	IBillboardSceneNode * bill;
 	bill = smgr->addBillboardSceneNode();
@@ -110,10 +104,11 @@ void BigAssSoldier::fire(){
 	
 	const int MUZZLE_FLASH_TIME = 50;
 	
-	ISceneNodeAnimator* anim = gameInstance->getSceneManager()->createDeleteAnimator(MUZZLE_FLASH_TIME);
+	ISceneNodeAnimator* anim =
+	    gameInstance->getSceneManager()->createDeleteAnimator(MUZZLE_FLASH_TIME);
 	bill->addAnimator(anim);
 	anim->drop();
-    if (!miss())
+    if (!miss(distance))
 	    gameInstance->player->applyBulletDamage(BULLET_DAMAGE);
     else
         gameInstance->player->ricochet();		

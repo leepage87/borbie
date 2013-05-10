@@ -47,7 +47,7 @@ class Soldier : public GameObject, public Updatable {
 	virtual void move();
 	virtual void goToBorbie();
 	virtual bool canShoot();
-	virtual void fire();
-    virtual bool miss();
+	virtual void fire(int distance);
+    virtual bool miss(int distance);
 };
 #endif
