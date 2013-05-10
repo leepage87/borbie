@@ -61,20 +61,25 @@ void BigAssSoldier::aim(){
     
 	//Tactically operate oneself towards the enemy (Borbie)
     //if enemy distance is between 10k-2k
-    if (!moving && length < 10000 && length > 2000 && visible())
+    if (!moving && length < 10000 && length > 2000 && visible()){
         move();
-    //Tactically attempt to bust a cap if Borbie is
-    //within 6000 units
-	if (length < 6000 && canShoot())
-        fire();
-    //big ass soldier cannot be stepped on
-    
+        std::cout << "Initiated move" << std::endl;
+    }
     // TODO - abstraction can be added here
     //If length is high enough and can't see Borbie, use the A* pathfinding
     //algorithm to move over to Borbie if not already moving somewhere
-    if(!moving && length > 6000 && !visible()){
+    else if(!moving && length > 6000 && !visible()){
         goToBorbie();
+        std::cout << "***Walking over to borbie, yay!" << std::endl;
     }
+    
+    //Tactically attempt to bust a cap if Borbie is
+    //within 6000 units
+	if (length < 6000 && canShoot()){
+        fire();
+        std::cout << "Fired gun" << std::endl;
+    }
+    //big ass soldier cannot be stepped on
 }
 
 /*********************************************************************

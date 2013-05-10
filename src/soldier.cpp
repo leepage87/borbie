@@ -105,22 +105,30 @@ void Soldier::aim(){
     
 	//Tactically operate oneself towards the enemy (Borbie)
     //if enemy distance is between 10k-2k and borbie is visible
-    if (!moving && length < 10000 && length > 2000 && visible())
+    if (!moving && length < 10000 && length > 2000 && visible()){
         move();
+        std::cout << "Initiated move" << std::endl;
+    }
+    //If length is high enough and can't see Borbie, use the A* pathfinding
+    //algorithm to move over to Borbie if not already moving somewhere
+    else if(!moving && length > 6000 && !visible()){
+        goToBorbie();
+        std::cout << "***Walking over to borbie, yay!" << std::endl;
+    }
+    
     //Tactically attempt to bust a cap if Borbie is
     //within 6000 units
-	if (length < 6000 && canShoot())
-        fire();	
+	if (length < 6000 && canShoot()){
+        fire();
+        std::cout << "Fired gun" << std::endl;
+    }
     //stomp him in the nuts
     if (length < 200){
         this->gameInstance->player->deathStomp();
         explode();
+        std::cout << "B00000m" << std::endl;
     }
-    //If length is high enough and can't see Borbie, use the A* pathfinding
-    //algorithm to move over to Borbie if not already moving somewhere
-    if(!moving && length > 6000 && !visible()){
-        goToBorbie();
-    }
+    //std::cout << moving << std::endl;
 }
 
 /*********************************************************************
@@ -216,7 +224,7 @@ void Soldier::goToBorbie(){
  * Returns: a boolean value
  *********************************************************************/
 bool Soldier::canShoot(){
-	unsigned int currentTime = gameInstance->getDevice()->getTimer()->getTime();
+	unsigned int currentTime = gameInstance->currentGameTime;
 	if (currentTime - lastFireTime  > fireDelay && visible()){
 		return true;
     }

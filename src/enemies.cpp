@@ -129,25 +129,27 @@ void Enemies::makeEnemy(float xPos, float yPos, float zPos, EnemyType type){
  * Call update on each of the enemies in the list
  *********************************************************************/
 void Enemies::update(){
+    // spawn more enemies if there are new enemies to be spawned and the spawn
+    //  timer is ready
     if( this->gameInstance->currentGameTime >= this->nextSpawnTime &&
 	    this->objList.size() < this->maxNumberEnemies)
 	{
         this->createRandomEnemy();
 	    this->nextSpawnTime = this->gameInstance->currentGameTime + SPAWN_TIME_MS;
 	}
-	
-    // if number of enemies is below the current limit, make moar!
-    /*while(this->objList.size() < this->maxNumberEnemies){
-        this->createRandomEnemy();
-        std::cout << "NEW ENEMY CREATED" << std::endl;
-    }*/
     
     // update each enemy individually if they are not blown up yet
     int numObjs = objList.size();
     for(int j=0; j<numObjs; ++j){
 	    if(objList[j]){
-		    if(objList[j]->getNode()->isVisible())
+	        //std::cout << "-------Calling dude " << j << "-------" << std::endl;
+		    if(objList[j]->getNode()->isVisible()){
+            	//std::cout << "About to call update()..." << std::endl;
             	((Soldier*)objList[j])->update();
+            	//std::cout << "Updated was called and returned." << std::endl;
+            }
+            else
+                std::cout << "Invisible?" << std::endl;
 		}	
 	}
 }

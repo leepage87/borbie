@@ -49,7 +49,7 @@ GameInstance::GameInstance(
   this->timer = device->getTimer();
 
   // initialize all game timers to 0
-  this->currentGameTime = 0;
+  this->currentGameTime = this->timer->getTime();
   this->nextPunchTime = 0;
 
   ((BorbiesEventReceiver*)(this->receiver))->setGameInstance(this);
