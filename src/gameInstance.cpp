@@ -202,12 +202,8 @@ GameInstance::GameInstance(
   
   this->nextScoreEvent = 10000;
 
-
-  /*** Test Crap ***/
-
-  // TODO- remove
-  //this->setWorldState_wrecked();
-  this->setWorldState_fabulous();
+  // initialize world state to fabulous
+  this->setWorldState(FABULOUS);
 }
 
 
@@ -296,9 +292,14 @@ void GameInstance::punch() {
 
 void GameInstance::updatePlayerScore(int amount){
     this->player->updateScore(amount);
-    if(this->player->getScore() >= this->nextScoreEvent){
+    // if player reached a new score rank, add more enemies
+    int playerScore = this->player->getScore();
+    if(playerScore >= this->nextScoreEvent){
         this->nextScoreEvent += 10000;
         this->enemies->addMaxEnemies(10);
+        // if player got over 100k score, change the world state to wrecked
+        if(playerScore >= 100000)
+            this->setWorldState(GONETOSHIT);
     }
         
 }
