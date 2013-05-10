@@ -395,6 +395,9 @@ void GameInstance::applyExplosionDamage(GameObject *explodingObject) {
 
   // apply damage to borbie herself (the player)
   float distance = player->getNode()->getPosition().getDistanceFrom(explodePos);
+  // if a vehicle, lower the explosion radius that applies to borbie
+  if(explodingType == TYPE_VEHICLE)
+    explosionRadius = 600;
   if(distance <= explosionRadius){
     int damage = explosionDamage; // max damage
     if(distance > 400){ // if more than 400 away, scale down damage

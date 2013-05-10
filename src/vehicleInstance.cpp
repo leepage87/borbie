@@ -35,6 +35,9 @@ VehicleInstance::VehicleInstance(
     // set health
     this->setHealth(350);
     this->startingHealth = 0;
+    
+    // standard explosion radius
+    this->setExplosionRadius(1500);
 
 	this->sceneNode = smgr->addMeshSceneNode(mesh);
 	if (model == 0){//its a jeep
