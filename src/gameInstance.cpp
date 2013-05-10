@@ -2,13 +2,11 @@
 #include "game.h"
 #include "keyBindings.h"
 #include "mapReader.h"
+#include "mapSearcher.h"
 #include "borbie.h"
 
+#include <vector>
 #include <iostream> // TODO - remove (debug)
-
-#include "mapSearcher.h" // TODO - remove
-#include "random.h" // TODO - remove
-#include <vector> // TODO remove
 
 using namespace irr;
 using namespace scene;
@@ -61,7 +59,7 @@ GameInstance::GameInstance(
 
   this->bgSound = audioSystem->createSound2d("assets/sounds/yumyum.ogg");
   this->bgSoundDead = audioSystem->createSound2d("assets/sounds/angryWorld.ogg");
-  this->borbieDead = audioSystem->createSound2d("assets/sounds/wut.mp3");
+  this->borbieDead = audioSystem->createSound2d("assets/sounds/soundEffects/wut.mp3");
   //Start the shitty music and loop! 
   audioSystem->playMusicLoop(bgSound); 
   audioSystem->setMusicVolume(0.5);
@@ -290,7 +288,6 @@ void GameInstance::punch() {
     if(targetObj){
       hands->punch();
       targetObj->applyDamage(BORBIE_PUNCH_DAMAGE);
-      std::cout << "Punched the target" << std::endl;
       this->nextPunchTime = this->currentGameTime + BORBIE_PUNCH_DELAY_MS;
     }
   }
@@ -322,9 +319,7 @@ void GameInstance::applyExplosionDamage(GameObject *explodingObject) {
   // calculate damage to enemies
   int numEnemies = enemies->objList.size();
   for(int i=0; i<numEnemies; i++){
-    //std::cout << "INSIDE FOR ENEMIES, numEnemies: " << numEnemies << std::endl;
     ISceneNode *curNode = enemies->objList[i]->getNode();
-    //std::cout<<"getNode has worked"<<std::endl;
     // if current node is the exploding node, ignore it
     if(curNode == explodingNode)
       continue;
@@ -332,17 +327,13 @@ void GameInstance::applyExplosionDamage(GameObject *explodingObject) {
     else if(!curNode->isVisible() || enemies->objList[i]->hasExploded())
       continue;
     float distance = curNode->getPosition().getDistanceFrom(explodePos);
-    //std::cout<<"got distance"<<std::endl;
     if(distance <= explosionRadius){
-      std::cout<<"inside if for explosion radius"<<std::endl;
       int damage = explosionDamage; // max damage
       if(distance > 400){ // if more than 400 away, scale down damage
         float scale = (distance-400) / (explosionRadius-400);
         damage = int(explosionDamage * scale);
       }
       enemies->objList[i]->applyDamage(damage);
-      std::cout << "Damaged enemy @distance=" << distance <<
-        " for @damage=" << damage << std::endl;
     }
   }
 
@@ -371,8 +362,6 @@ void GameInstance::applyExplosionDamage(GameObject *explodingObject) {
       if(explodingType == TYPE_BUILDING)
         damage = damage / 20;
       buildings->objList[i]->applyDamage(damage);
-      std::cout << "Damaged building @distance=" << distance <<
-        " for @damage=" << damage << std::endl;
     }
   }
 
@@ -396,8 +385,6 @@ void GameInstance::applyExplosionDamage(GameObject *explodingObject) {
         damage = int(explosionDamage * scale);
       }
       vehicles->objList[i]->applyDamage(damage);
-      std::cout << "Damaged vehicle @distance=" << distance <<
-        " for @damage=" << damage << std::endl;
     } 
   } 
 
@@ -414,8 +401,6 @@ void GameInstance::applyExplosionDamage(GameObject *explodingObject) {
       damage = int(explosionDamage * scale);
     }
     player->applyDamage(damage/2); // reduce damage by half
-    std::cout << "Damaged borbie @distance=" << distance <<
-      " for @damage=" << damage << std::endl;
   }
 }
 
@@ -594,7 +579,6 @@ void GameInstance::update(){
   for(std::vector<GameObject *>::iterator it = this->updateList.begin();
       it != this->updateList.end(); ++it)
   {
-    //std::cout << updateList.size() << std::endl;
     unsigned int retval = (*it)->updateTimers();
     switch(retval){
       case GAME_OBJ_DELETE: // delete object AND remove it from lists
@@ -602,8 +586,6 @@ void GameInstance::update(){
       case GAME_OBJ_REMOVE_FROM_UPDATE_LIST: // remove object from list
         this->updateList.erase(it);
         it--;
-        /*std::cout << "Deleted from update list; new size = "
-          << updateList.size() << std::endl;*/
         break;
       case GAME_OBJ_DO_NOTHING: // if do nothing, or unknown, do nothing
       default:
