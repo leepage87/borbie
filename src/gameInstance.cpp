@@ -212,12 +212,8 @@ GameInstance::GameInstance(
 GameInstance::~GameInstance(){
   // remove all of the audiosystem's follow sounds
   this->audioSystem->removeFollowSounds();
-
-  ((BorbiesEventReceiver*)receiver)->removeGameInstance();
-  this->updateList.clear();
   
-  
-  //delete sounds if they exist
+  //clean up delete sounds if they exist
   if(borbieDead)
       borbieDead->release();
   if(bgSound)
@@ -237,17 +233,25 @@ GameInstance::~GameInstance(){
     
   std::cout<<"All sounds successfully released..."<<std::endl;
 
+  // wipe lists and unset GameInstance pointer in receiver
+  ((BorbiesEventReceiver*)receiver)->removeGameInstance();
+  this->updateList.clear();
+  
+  // clear off all game instance objects
   delete this->terrain;
   delete this->skybox;
   delete this->light;
   delete this->buildings;
   delete this->vehicles;
+  delete this->enemies;
   delete this->player;
+  //delete this->hud; @@@ TODO - causes a segfault, fix? @@@
   delete this->selector;
   delete this->objCarry;
   delete this->mapReader;
   delete this->mapSearcher;
   delete this->hands;
+  // TODO - menu newGameButton quitButton ??
   std::cout<<"removed objects"<<std::endl;
   if(this->rainParticleSystem)
     this->rainParticleSystem->remove();
