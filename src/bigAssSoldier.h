@@ -20,13 +20,14 @@ class GameInstance;
 
 class BigAssSoldier : public virtual Soldier {
 
-	public:
+  private:
+    virtual int lookAtPlayer();
+    virtual void checkProximity(int distance) { } // empty function
+    virtual void fire(int distance);
+
+  public:
 	BigAssSoldier(
 	    GameInstance *gameInstance,
 		float posX, float posY, float posZ);
-
-    private:
-    virtual void fire(int distance);
-    virtual void aim();
 };
 #endif

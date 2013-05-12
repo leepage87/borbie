@@ -62,21 +62,72 @@ void Soldier::applyCollision(
 	selector->drop();
 	metaTriSelector->addTriangleSelector(sceneNode->getTriangleSelector());
 }
-/*********************************************************************
- * Gets an integer between 1 and 4 to use as the time between
- * each shot
- * Returns: random integer between 1000 and 4000
- *********************************************************************/
-int Soldier::getRandomFireDelay(){
-    return Random::randomInt(1, 5)*1000;
-}
+
 /*********************************************************************
  * An updater method that calls aim() if the soldier has LOS
  * on the player, also calls setMoving
  *********************************************************************/
 void Soldier::update(){
-    aim();
+    int distance = lookAtPlayer();
+    aim(distance);
+    checkMovement(distance);
+    checkProximity(distance);
     setMoving();
+}
+
+/*********************************************************************
+ * Orients the soldier towards the player's position (i.e. the solider
+ * turns to look at the player). Also, sets the length variable, which
+ * indicates the distance between this soldier and the player.
+ * Returns: int resembling the distance (in game units) to the player.
+ *********************************************************************/
+int Soldier::lookAtPlayer(){
+	vector3df start = sceneNode->getPosition();
+	start.Y += 75;
+	vector3df end = gameInstance->getCamera()->getPosition();
+	end.Y -= 150;
+	vector3df vect = end-start;
+	sceneNode->setRotation(vect.getHorizontalAngle());
+	return (f32)start.getDistanceFrom(end);
+}
+
+/*********************************************************************
+ * Checks if player is within line of sight and within range of firing.
+ * If so, attempts to shoot at the player.
+ *********************************************************************/
+void Soldier::aim(int distance){
+    //Tactically attempt to bust a cap if Borbie is
+    //within 6000 units
+	if (distance < 6000 && canShoot())
+        fire(distance);
+}
+
+/*********************************************************************
+ * Checks distance to player, and if the player is too far away, makes
+ * an effort to either walk to the player in a straight line (if
+ * possible) or else use the A-Star algorithm to find a path to the
+ * player using the roads.
+ *********************************************************************/
+void Soldier::checkMovement(int distance){
+    //Tactically operate oneself towards the enemy (Borbie)
+    //if enemy distance is between 10k-2k and borbie is visible
+    if (!moving && distance < 10000 && distance > 2000 && isPlayerVisible())
+        moveToPlayer();
+    //If length is high enough and can't see Borbie, use the A* pathfinding
+    //algorithm to move over to Borbie if not already moving somewhere
+    else if(!moving && distance > 6000 && !isPlayerVisible())
+        aStarToPlayer();
+}
+
+/*********************************************************************
+ * Checks proximity to the
+ *********************************************************************/
+void Soldier::checkProximity(int distance){
+    //stomp him in the nuts
+    if (distance < 200){
+        this->gameInstance->player->deathStomp();
+        explode();
+    }
 }
 
 /*********************************************************************
@@ -89,46 +140,11 @@ void Soldier::setMoving(){
 }
 
 /*********************************************************************
- * Orientates the soldier towards the players position and
- * checks if the player is within moving/shooting distance
- * also explodes the soldier if the player is on top of it
- *********************************************************************/
-void Soldier::aim(){
-	//turn the soldier to look at you
-	vector3df start = sceneNode->getPosition();
-	start.Y += 75;
-	vector3df end = gameInstance->getCamera()->getPosition();
-	end.Y -= 150;
-	vector3df vect = end-start;
-	sceneNode->setRotation(vect.getHorizontalAngle());
-	length = (f32)start.getDistanceFrom(end);
-    
-	//Tactically operate oneself towards the enemy (Borbie)
-    //if enemy distance is between 10k-2k and borbie is visible
-    if (!moving && length < 10000 && length > 2000 && visible())
-        move();
-    //If length is high enough and can't see Borbie, use the A* pathfinding
-    //algorithm to move over to Borbie if not already moving somewhere
-    else if(!moving && length > 6000 && !visible())
-        goToBorbie();
-    
-    //Tactically attempt to bust a cap if Borbie is
-    //within 6000 units
-	if (length < 6000 && canShoot())
-        fire(length);
-    //stomp him in the nuts
-    if (length < 200){
-        this->gameInstance->player->deathStomp();
-        explode();
-    }
-}
-
-/*********************************************************************
  * Casts a ray to determine whether or not the soldier can see
  * the player for use with movement and shooting
  * Returns: a boolean value
  *********************************************************************/
-bool Soldier::visible(){
+bool Soldier::isPlayerVisible(){
     ray.end = sceneNode->getPosition();
 	ray.start = gameInstance->getCamera()->getPosition();
 
@@ -149,14 +165,13 @@ bool Soldier::visible(){
  * Moves the soldier toward the enemy, only gets called when
  * there is a direct line of sight
  *********************************************************************/
-void Soldier::move(){
-    moving = true;
+void Soldier::moveToPlayer(){
     vector3df start = sceneNode->getPosition();
     destination = gameInstance->getCamera()->getPosition();
     destination.X = start.X + 0.2*(destination.X-start.X);
     destination.Z = start.Z + 0.2*(destination.Z-start.Z);
     destination.Y = 70;//ground height
-    length = (f32)ray.start.getDistanceFrom(destination);
+    f32 length = (f32)ray.start.getDistanceFrom(destination);
     const int SOLDIER_MOVE_SPEED = 1.5;
     f32 time = length * SOLDIER_MOVE_SPEED;
     ISceneNodeAnimator* anim =
@@ -164,13 +179,14 @@ void Soldier::move(){
             destination, time, false);
     sceneNode->addAnimator(anim);
     anim->drop();
+    moving = true;
 }
 
 /*********************************************************************
  * Moves the soldier toward the Borbie over a longer distance, using
  * A* algorithm to find a shortest path using roads.
  *********************************************************************/
-void Soldier::goToBorbie(){
+void Soldier::aStarToPlayer(){
     // Find shortest path using the MapSearcher from this soldier to the player
     //  using the closest available road intersection points.
     MapSearcher *searcher = this->gameInstance->getMapSearcher();
@@ -217,7 +233,7 @@ void Soldier::goToBorbie(){
  *********************************************************************/
 bool Soldier::canShoot(){
 	unsigned int currentTime = gameInstance->currentGameTime;
-	if (currentTime - lastFireTime  > fireDelay && visible()){
+	if (currentTime - lastFireTime  > fireDelay && isPlayerVisible()){
 		return true;
     }
 	return false;
@@ -277,6 +293,16 @@ bool Soldier::miss(int distance){
     }
     return true;
 }
+
+/*********************************************************************
+ * Gets an integer between 1 and 4 to use as the time between
+ * each shot
+ * Returns: random integer between 1000 and 4000
+ *********************************************************************/
+int Soldier::getRandomFireDelay(){
+    return Random::randomInt(1, 5)*1000;
+}
+
 /*********************************************************************
  * Causes this soldier to explode, making it vanish, and return a particle
  * effect node animating the explosion effect in its current position.
