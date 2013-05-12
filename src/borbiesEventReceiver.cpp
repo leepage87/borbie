@@ -59,12 +59,15 @@ bool BorbiesEventReceiver::OnEvent(const irr::SEvent& event){
 
   //BORBIE GAME ON EVENTS
 
-  // switch the game state if ESC is pressed (makes it easier to work with for now)
+  /****************************************************************************
+   * switch the game state if ESC is pressed (makes it easier 
+   * to work with for now)
+   ***************************************************************************/
   if(game)
     if(game->getGameState() == BORBIE_GAME_STATE)
     {
        if (event.EventType == irr::EET_KEY_INPUT_EVENT){
-        //FIXME  TODO this is testing shit to see if borbi updates her health
+        //FIXME  TODO this is testing shit to see if borbie updates her health
         if(event.KeyInput.Key == irr::KEY_MINUS && !event.KeyInput.PressedDown){
           if(gameInstance && gameInstance->player)
             gameInstance->player->applyDamage(1000);        
@@ -99,8 +102,6 @@ bool BorbiesEventReceiver::OnEvent(const irr::SEvent& event){
           default:
             break;
         }
-
-
       }
       return false;
     }
