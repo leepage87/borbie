@@ -1,3 +1,10 @@
+/*********************************************************************
+ * File:     gameInstance.cpp
+ * Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
+ * Function: This class defines and creates all of the needed objects
+ *           and behaviors needed to play the main game (not the 
+ *           menu). 
+ *********************************************************************/
 #include "gameInstance.h"
 #include "game.h"
 #include "keyBindings.h"
@@ -6,23 +13,30 @@
 #include "borbie.h"
 
 #include <vector>
-#include <iostream> // TODO - remove (debug)
+#include <iostream>
 
 using namespace irr;
 using namespace scene;
 using namespace video;
 using namespace core;
 using namespace gui;
-
+using namespace std;
 
 // GAMEPLAY CONSTANTS
 const float BORBIE_PUNCH_DAMAGE = 75;
 const float BORBIE_PUNCH_DELAY_MS = 250;
 
 
-// CONSTRUCTOR:
-//  builds the GameInstance object and initializes all internal game objects,
-//  such as buildings, vehicles, etc.
+/******************************************************************************
+ * Constructor for the gameInstance
+ * Param: smgr the iSceneManager for the game
+ * Param: guienv the GUI environment used by the game to draw gui's 
+ * Param: driver the IVideoDriver for the game 
+ * Param: device the IrrlichtDevice for the game
+ * Param: audioSystm used from making both 3d and 2d sound in the game
+ * Param: runMode used to determine if the debug flag has been set
+ * Param: game the encompassing game object for gameInstance
+ *****************************************************************************/
 GameInstance::GameInstance(
     ISceneManager *smgr,
     IGUIEnvironment *guienv,
@@ -56,7 +70,6 @@ GameInstance::GameInstance(
 
 
   /*** Setup Sounds and Music ***/
-
   this->bgSound = audioSystem->createSound2d("assets/sounds/yumyum.ogg");
   this->bgSoundDead = audioSystem->createSound2d("assets/sounds/angryWorld.ogg");
   this->borbieDead = audioSystem->createSound2d("assets/sounds/soundEffects/wut.mp3");
@@ -76,8 +89,8 @@ GameInstance::GameInstance(
     audioSystem->createSound3d("assets/sounds/soundEffects/burst.mp3");  
   this->gunShot2 =
     audioSystem->createSound3d("assets/sounds/soundEffects/bigAssGun.mp3");  
-  /*** Setup Runtime Flags ***/
 
+  /*** Setup Runtime Flags ***/
   float gravity = GLOBAL_GRAVITY;
   bool noVerticalMovement = true; // disabled
   float playerMoveSpeed = PLAYER_MOVEMENT_SPEED;
@@ -131,7 +144,7 @@ GameInstance::GameInstance(
   this->carriedVehicle = 0;
   this->vehicleThrown = false;
   this->targetPos = vector3df(0,0,0);
-  
+
   // add and generate enemies
   this->enemies = new Enemies (metaTriSelector, this);
   this->enemies->generateObjects();
@@ -166,7 +179,7 @@ GameInstance::GameInstance(
       PLAYER_JUMP_SPEED		// jump speed
       );
 
-  // TODO: read camera position from map file
+  //TODO: read camera position from map file
   camera->setPosition(vector3df(2500, 1000, 4450));
   // set view distance
   camera->setFarValue(30000.0f);
@@ -193,13 +206,13 @@ GameInstance::GameInstance(
   ((BorbiesEventReceiver *)receiver)->setRightMouse(false);
 
   /*** Add Hands ***/
-  
+
   hands = new Hands(this);  
-  
+
   /*** Add The Borbie ***/
 
   this->player = new Borbie(this); 	
-  
+
   this->nextScoreEvent = 10000;
 
   // initialize world state to fabulous
@@ -207,15 +220,19 @@ GameInstance::GameInstance(
 }
 
 
-// destructor: removes all objects from memory and ensures that the scene
-//  manager is completely wiped clean of all Irrlicht objects.
+/******************************************************************************
+ * Destructor for gameInstance
+ * removes all objects from memory and ensures that the scene
+ * manager is completely wiped clean of all Irrlicht objects.
+ *
+ *****************************************************************************/
 GameInstance::~GameInstance(){
   // remove all of the audiosystem's follow sounds
   this->audioSystem->removeFollowSounds();
-  
+
   //clean up delete sounds if they exist
   if(borbieDead)
-      borbieDead->release();
+    borbieDead->release();
   if(bgSound)
     bgSound->release();  
   if(bgSoundDead)
@@ -230,13 +247,13 @@ GameInstance::~GameInstance(){
     gunShot1->release();
   if(gunShot2)
     gunShot2->release();
-    
+
   std::cout<<"All sounds successfully released..."<<std::endl;
 
   // wipe lists and unset GameInstance pointer in receiver
   ((BorbiesEventReceiver*)receiver)->removeGameInstance();
   this->updateList.clear();
-  
+
   // clear off all game instance objects
   delete this->terrain;
   delete this->skybox;
@@ -268,8 +285,11 @@ GameInstance::~GameInstance(){
 
 /*** GAMEPLAY EVENTS ***/
 
-// Attempt to punch something directly in front of Borbie. Punching can only
-//  happen once every two seconds.
+/******************************************************************************
+ * allows borbie to punch objects if borbie isn't holding an object and if 
+ * borbie is 'ready'. Things that are punched take damage in the amount
+ * defined by BORBIE_PUNCH_DAMAGE
+ ******************************************************************************/
 void GameInstance::punch() {
 
   ISceneNode *target = selector->getClickTargetShort();
@@ -293,26 +313,31 @@ void GameInstance::punch() {
   }
 }
 
-
+/******************************************************************************
+ * updates the score of borbie based on the initial health of the object 
+ * she just destroyed. Additionally, the number of enemies added to the 
+ * world is added as borbie passes scoring thresholds.
+ *****************************************************************************/
 void GameInstance::updatePlayerScore(int amount){
-    this->player->updateScore(amount);
-    // if player reached a new score rank, add more enemies
-    int playerScore = this->player->getScore();
-    if(playerScore >= this->nextScoreEvent){
-        this->nextScoreEvent += 10000;
-        this->enemies->addMaxEnemies(10);
-        // if player got over 100k score, change the world state to wrecked
-        if(playerScore >= 100000)
-            this->setWorldState(GONETOSHIT);
-    }
-        
+  this->player->updateScore(amount);
+  // if player reached a new score rank, add more enemies
+  int playerScore = this->player->getScore();
+  if(playerScore >= this->nextScoreEvent){
+    this->nextScoreEvent += 10000;
+    this->enemies->addMaxEnemies(10);
+    // if player got over 100k score, change the world state to wrecked
+    if(playerScore >= 100000)
+      this->setWorldState(GONETOSHIT);
+  }
+
 }
 
-
-// Apply explosion damage to all objects within the radius of the given
-//  gameObject, scaled based on distance from the explosion, up to a maximum
-//  damage as dictated by the given object's damage value. Explosions
-//  affect vehicles, buildings, enemies, and Borbie.
+/******************************************************************************
+ * Apply explosion damage to all objects within the radius of the given
+ * gameObject, scaled based on distance from the explosion, up to a maximum
+ * damage as dictated by the given object's damage value. Explosions
+ * affect vehicles, buildings, enemies, and Borbie.
+ *****************************************************************************/
 void GameInstance::applyExplosionDamage(GameObject *explodingObject) {
   // get the exploding object's variables
   GameObjectType explodingType = explodingObject->getObjectType();
@@ -416,16 +441,18 @@ void GameInstance::applyExplosionDamage(GameObject *explodingObject) {
 
 /*** WORLD STATE (ENVIRONMENT/MOOD) SETTERS ***/
 
-// Changes the visible state of the world environment to the given WorldState
-//  value
-  void GameInstance::setWorldState(WorldState state){
-    if(state == GONETOSHIT)
-      this->setWorldState_wrecked();
-  }
+  // Changes the visible state of the world environment to the given WorldState
+  //  value
+void GameInstance::setWorldState(WorldState state){
+  if(state == GONETOSHIT)
+    this->setWorldState_wrecked();
+}
 
-// Set the mood and visible state of the world to a dark and hellish feeling,
-//  but of course, preserving Borbie's pink style (because Hell is so much
-//  hotter when it's wearing pink).
+/******************************************************************************
+ * Set the mood and visible state of the world to a dark and hellish feeling,
+ * but of course, preserving Borbie's pink style (because Hell is so much
+ * hotter when it's wearing pink).
+ *****************************************************************************/
 void GameInstance::setWorldState_wrecked(){
   // add a particle system effect to rain pink debree:
   if(!this->rainParticleSystem)
@@ -451,9 +478,10 @@ void GameInstance::setWorldState_wrecked(){
   this->light->setAmbientLight(50, 10, 22);
 }
 
-
-// Set the mood and visible state of the world to a light, happy "fabulous"
-//  mode - bright pink sparkles lightly fall from the sky.
+/******************************************************************************
+ * Set the mood and visible state of the world to a light, happy "fabulous"
+ * mode - bright pink sparkles lightly fall from the sky.
+ *****************************************************************************/
 void GameInstance::setWorldState_fabulous() {
   // add a particle system effect to rain pink debree:
   if(this->rainParticleSystem)
@@ -479,10 +507,11 @@ void GameInstance::setWorldState_fabulous() {
   this->light->setAmbientLight(255, 172, 253);
 }
 
-
-// Sets the rain source to the current emitter, and automatically adds fade-out
-//  affector.
-// TODO: fix this to pass in values instead of an emitter pointer
+/******************************************************************************
+ * Sets the rain source to the current emitter, and automatically adds fade-out
+ * affector.
+ * TODO: fix this to pass in values instead of an emitter pointer
+ *****************************************************************************/
 void GameInstance::setRainEmitter(IParticleEmitter *rainEmitter){
   this->rainParticleSystem->setEmitter(rainEmitter);
 
@@ -493,9 +522,10 @@ void GameInstance::setRainEmitter(IParticleEmitter *rainEmitter){
   rainFadeOutAffector->drop();
 }
 
-
-// Creates a rain particle system above the world map, but does not start making
-//  particles yet.
+/******************************************************************************
+ * Creates a rain particle system above the world map, but does not start 
+ * making particles yet.
+ *****************************************************************************/
 void GameInstance::createRainParticleSystem(const char *texture){
   // if not yet created, create the particle system
   this->rainParticleSystem =
@@ -555,6 +585,7 @@ void GameInstance::update(){
     player->setMode(PLAYER_MODE_LOW_HEALTH);
     audioSystem->playMusicLoop(bgSoundDead);
     audioSystem->setMusicVolume(0.4);
+    std::cout<<"8=============D~~"<<std::endl;
   }else if(player->getHealth() == 0 && player->getMode() == PLAYER_MODE_LOW_HEALTH)
   {
     player->setMode(PLAYER_MODE_DEAD);
@@ -573,7 +604,7 @@ void GameInstance::update(){
           rect<s32>(0, 0,
             this->menu->getSize().Width,
             this->menu->getSize().Height));
-  
+
     }
 
 

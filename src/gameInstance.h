@@ -1,7 +1,6 @@
 /********************************************************************* 
  *	File:     gameInstance.h
  *	Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
- *
  *	Description: This is the header file for gameInstance.cpp
  *********************************************************************/
 
