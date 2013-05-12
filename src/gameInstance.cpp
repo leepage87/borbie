@@ -1,3 +1,10 @@
+/*********************************************************************
+ * File:     gameInstance.cpp
+ * Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
+ * Function: This class defines and creates all of the needed objects
+ *           and behaviors needed to play the main game (not the 
+ *           menu). 
+ *********************************************************************/
 #include "gameInstance.h"
 #include "game.h"
 #include "keyBindings.h"
@@ -13,16 +20,23 @@ using namespace scene;
 using namespace video;
 using namespace core;
 using namespace gui;
-
+using namespace std;
 
 // GAMEPLAY CONSTANTS
 const float BORBIE_PUNCH_DAMAGE = 75;
 const float BORBIE_PUNCH_DELAY_MS = 250;
 
 
-// CONSTRUCTOR:
-//  builds the GameInstance object and initializes all internal game objects,
-//  such as buildings, vehicles, etc.
+/******************************************************************************
+ * Constructor for the gameInstance
+ * Param: smgr the iSceneManager for the game
+ * Param: guienv the GUI environment used by the game to draw gui's 
+ * Param: driver the IVideoDriver for the game 
+ * Param: device the IrrlichtDevice for the game
+ * Param: audioSystm used from making both 3d and 2d sound in the game
+ * Param: runMode used to determine if the debug flag has been set
+ * Param: game the encompassing game object for gameInstance
+ *****************************************************************************/
 GameInstance::GameInstance(
     ISceneManager *smgr,
     IGUIEnvironment *guienv,
@@ -555,6 +569,7 @@ void GameInstance::update(){
     player->setMode(PLAYER_MODE_LOW_HEALTH);
     audioSystem->playMusicLoop(bgSoundDead);
     audioSystem->setMusicVolume(0.4);
+    std::cout<<"8=============D~~"<<std::endl;
   }else if(player->getHealth() == 0 && player->getMode() == PLAYER_MODE_LOW_HEALTH)
   {
     player->setMode(PLAYER_MODE_DEAD);
