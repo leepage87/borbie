@@ -42,13 +42,7 @@ BigAssSoldier::BigAssSoldier(
     this->fireDelay = getRandomFireDelay();
 }
 
-/*********************************************************************
- * Overrides the Soldier class aim() method
- * Orientates the soldier towards the players position and
- * checks if the player is within moving/shooting distance
- * also explodes the soldier if the player is on top of it
- ********************************************************************/
-void BigAssSoldier::aim(){
+int BigAssSoldier::lookAtPlayer(){
 	//turn the soldier to look at you
 	vector3df start = sceneNode->getPosition();
 	start.Y += 500;
@@ -57,23 +51,7 @@ void BigAssSoldier::aim(){
     vect = vect.getHorizontalAngle();
     vect.Y+=15;
 	sceneNode->setRotation(vect);
-	length = (f32)start.getDistanceFrom(end);
-    
-	//Tactically operate oneself towards the enemy (Borbie)
-    //if enemy distance is between 10k-2k
-    if (!moving && length < 10000 && length > 2000 && visible())
-        move();
-    // TODO - abstraction can be added here
-    //If length is high enough and can't see Borbie, use the A* pathfinding
-    //algorithm to move over to Borbie if not already moving somewhere
-    else if(!moving && length > 6000 && !visible())
-        goToBorbie();
-    
-    //Tactically attempt to bust a cap if Borbie is
-    //within 6000 units
-	if (length < 6000 && canShoot())
-        fire(length);
-    //big ass soldier cannot be stepped on
+	return (f32)start.getDistanceFrom(end);
 }
 
 /*********************************************************************
