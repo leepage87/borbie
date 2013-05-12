@@ -1,3 +1,9 @@
+/*********************************************************************
+ * File:     borbiesEventReceiver.cpp
+ * Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
+ * Function: This class catches button presses and plays menu sounds
+ *********************************************************************/
+
 #include "borbiesEventReceiver.h"
 #include "game.h"
 #include "gameMenu.h"

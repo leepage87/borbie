@@ -1,8 +1,8 @@
-/*
-* Lee Page
-* Terrain object w/ collision (Terrain.h)
-* CIS 395 
-*/
+/*********************************************************************
+ * File:     terrain.h
+ * Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
+ * Function: This is the header file for terrain.cpp
+ *********************************************************************/
 #ifndef TERRAIN_H
 #define TERRAIN_H
 
@@ -25,6 +25,7 @@ private:
   irr::scene::ITriangleSelector *wallSelector;
 
   void applyCollision(irr::scene::IMeshSceneNode *wall);
+
 public:
 	// constructor
 	Terrain(irr::video::IVideoDriver * driver,
