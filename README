@@ -1,0 +1,96 @@
+/*********************************************************************
+ * Project:  Borbie's Big Adventure: Let's Hit the Town!
+ * Team:     Lee Page, Jonathan Miodownik, Richard Teammco, Ian Madigan
+ * Class:    Computer Games and Simulation
+ *           Spring 2013 - Dr. Brian Ladd
+ *********************************************************************/
+
+
+-----------------------------------------------------------------------
+
+           Borbie's Big Adventure: Let's Hit the Town!
+
+-----------------------------------------------------------------------
+
+
+LINUX BUILD INSTRUCTIONS:
+
+1) Install required libraries:
+    XCursor, OpenGL, ...
+
+2) Build the program by typing the following into your terminal.
+   NOTE: All other dependencies are pre-packaged, no need to link them. The
+         Makefile should automatically build for your system (32 or 64 bit).
+         Debug flags are enabled.
+    $ make clean
+    $ make
+
+
+RUNNING THE PROGRAM (LINUX):
+
+    Run the run script, or run the executable directly:
+        $ ./run
+       OR
+        $ ./bin/BorbiesBigAdventure
+       
+    You may also run the program with a varienty of runtime flags:
+        $ ./bin/BorbiesBigAdventure <-flags>
+    Available flags are:
+        d: debug mode (no gravity, fast movement):
+            $ ./bin/BorbiesBigAdventure -d
+        f: full screen mode:
+            $ ./bin/BorbiesBigAdventure -f
+        WARNING: full screen mode sometimes fails to reset your screen
+        resolution (thanks, Irrlicht). It is recommended to instead run
+        the program normally, and maximize the window.
+    
+    To run in debug mode, you can also use the debug run script:
+        $ ./debug
+
+
+OTHER PLATFORMS:
+
+    All libraries used to implement this game, namely FMOD and Irrlicht,
+    are compatible with Windows and Mac OS. However, this package does
+    not provide direct solutions for installing and running the game on
+    those platforms.
+
+
+-----------------------------------------------------------------------
+             CONTENT AND LIBRARY LICENCES AND INFORMATION
+-----------------------------------------------------------------------
+
+FMOD:   FMOD is the sound library used to implement sound in our game.
+        FMOD is NOT open source, but provides a free for non-commercial
+        use option for developers. This game implements FMOD under that
+        agreement.
+
+Irrlicht:   Irrlicht is open source, and available freely online. No
+        restrictions there. All Irrlicht-related tools used are open source.
+
+3D Models:  Unkown - most of the 3D models used have been scavaged online
+        from a variety of resources, and we do not know the licences.
+
+Textures:   Unkown - same as 3D models.
+
+Sounds:     Unkown - same as 3D models. Many of the sounds used were
+        released under the attribution licence, and they are NOT attributed
+        in the game. We don't even have credits.
+
+
+-----------------------------------------------------------------------
+                        WARNINGS AND COMMENTS
+-----------------------------------------------------------------------
+
+This game may not be suitable for children, due to strong violence, blood,
+sexual references, and other offensive material.
+
+It is recommended that this game is played on a computer with an actual
+video card.
+
+
+-----------------------------------------------------------------------
+                            THANK YOU
+-----------------------------------------------------------------------
+
+Thank you for playing Borbie's Big Adventure: Let's Hit the Town!
