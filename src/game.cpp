@@ -75,6 +75,11 @@ Game::Game(unsigned int runMode)
 //De(con)structor: clean up Irrlicht
 Game::~Game()
 {
+    if(this->gameInstance)
+        delete this->gameInstance;
+    if(this->gameMenu)
+        delete this->gameMenu;
+    delete this->receiver;
     delete this->audioSystem;
     this->device->drop();
 }

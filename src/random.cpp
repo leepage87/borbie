@@ -1,10 +1,11 @@
-/*	File: radnom.cpp
- *	Authors: idk your names
- *
- *	Description: this file contains the class definition of the static-based
- *  global random number generator, used by multiple objects, namely for
- *  creating randomly textures cars, buildings, spawning and movement, etc.
- */
+/*********************************************************************
+ * File:     random.cpp
+ * Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
+ * Function: this file contains the class definition of the static-based
+ *           global random number generator, used by multiple objects,
+ *           namely for creating randomly textures cars, buildings,
+ *           spawning and movement, etc.
+ *********************************************************************/
 
 #include "random.h"
 

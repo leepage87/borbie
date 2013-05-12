@@ -1,11 +1,8 @@
-/*	File: random.h
- *	Authors: teamKillYourself
- *
- *	Description: this file contains the class declaration of the static-based
- *  global random number generator, used by multiple objects, namely for
- *  creating randomly textures cars, buildings, spawning and movement, etc.
- */
-
+/*********************************************************************
+ * File:     random.h
+ * Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
+ * Function: This is the header file for random.cpp
+ *********************************************************************/
 #ifndef RANDOM_H
 #define RANDOM_H
 
