@@ -1,7 +1,7 @@
 /*********************************************************************
  * File:     enemies.cpp
  * Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
- * Function: This class generates all the soldiers in the game and 
+ * Function: This class generates all the soldiers in the game and
  *           creates a list containing their pointers, allowing us to
  *           call each of their updatePosition() methods.
  *********************************************************************/
@@ -142,14 +142,9 @@ void Enemies::update(){
     int numObjs = objList.size();
     for(int j=0; j<numObjs; ++j){
 	    if(objList[j]){
-	        //std::cout << "-------Calling dude " << j << "-------" << std::endl;
 		    if(objList[j]->getNode()->isVisible()){
-            	//std::cout << "About to call update()..." << std::endl;
             	((Soldier*)objList[j])->update();
-            	//std::cout << "Updated was called and returned." << std::endl;
             }
-            else
-                std::cout << "Invisible?" << std::endl;
 		}	
 	}
 }

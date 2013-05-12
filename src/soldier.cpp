@@ -166,7 +166,6 @@ bool Soldier::isPlayerVisible(){
  * there is a direct line of sight
  *********************************************************************/
 void Soldier::moveToPlayer(){
-    moving = true;
     vector3df start = sceneNode->getPosition();
     destination = gameInstance->getCamera()->getPosition();
     destination.X = start.X + 0.2*(destination.X-start.X);
@@ -180,6 +179,7 @@ void Soldier::moveToPlayer(){
             destination, time, false);
     sceneNode->addAnimator(anim);
     anim->drop();
+    moving = true;
 }
 
 /*********************************************************************
