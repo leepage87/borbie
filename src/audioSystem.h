@@ -1,5 +1,6 @@
-/*	File: audioSystem.h
- *	Authors: teamKillYourself
+/*********************************************************************
+ *	File: audioSystem.h
+ *	Authors: Richard Teammco, Lee Page, Jonathan Miodownik
  *
  *	Description: this file contains the class declaration for the
  *	AudioSystem class. This object is responsible for providing an interface
@@ -22,7 +23,7 @@
  *      distribution (even non-commercial), a credit line is required:
  *      "Audio engine : FMOD Sound System by Firelight Technologies"
  *      (or something similar). See http://www.fmod.org/fmod-sales.html
- */
+ *********************************************************************/
 
 #ifndef AUDIO_SYSTEM_H
 #define AUDIO_SYSTEM_H

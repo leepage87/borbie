@@ -1,3 +1,9 @@
+/*********************************************************************
+ * File:     borbiesEventReceiver.h
+ * Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
+ * Function: this is the header file for borbiesEventReceiver.cpp
+ *********************************************************************/
+
 #ifndef BORBIESEVENTRECEIVER_H
 #define BORBIESEVENTRECEIVER_H
   
@@ -9,12 +15,6 @@
 
 class gameInstance;
 class Game;
-/*
-	struct SMouseState{
-		bool RightButtonDown;
-		SMouseState() : RightButtonDown(false) { }
-	}MouseState;
-*/
 
 // Mouse Button Types
 enum BorbieInputEvent {
@@ -36,9 +36,9 @@ class BorbiesEventReceiver : public irr::IEventReceiver {
     SoundClip *mm;
     SoundClip *newGame;
       
-  public:
+    public:
    // set the device pointer
-   void initialize(GameInstance* gameInstance, irr::IrrlichtDevice *device, Game *game, AudioSystem *audioSystem){
+    void initialize(GameInstance* gameInstance, irr::IrrlichtDevice *device, Game *game, AudioSystem *audioSystem){
     this->audioSystem = audioSystem;
    	this->device = device;
    	this->game = game;
@@ -75,14 +75,14 @@ class BorbiesEventReceiver : public irr::IEventReceiver {
    }*/
    
    
-   // returns if key is pressed down or not
-   bool IsKeyDown(irr::EKEY_CODE key) { return false; }
+    // returns if key is pressed down or not
+    bool IsKeyDown(irr::EKEY_CODE key) { return false; }
 
 	bool isRightMouseDown() { return rightButtonDown; }
 	bool isLeftMouseDown() { return leftButtonDown; }
 
 	void setRightMouse(bool status) { rightButtonDown = status; }
-		//const SMouseState & GetMouseState(void) const;
+	//const SMouseState & GetMouseState(void) const;
    
 }; // end of BorbiesEventReceiver class.
 

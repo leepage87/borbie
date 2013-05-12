@@ -1,8 +1,9 @@
-/*
-* Lee Page
-* Terrain object w/ collision (Terrain.cpp)
-* CIS 395 
-*/
+/*********************************************************************
+ * File:     terrain.cpp
+ * Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
+ * Function: This class generates the terrain and the invisible walls
+ *           that prevent the player from running off the edge
+ *********************************************************************/
 
 #include "terrain.h"
 #include "castRay.h"
@@ -21,6 +22,14 @@ using namespace gui;
 #define s2( name ) #name
 #define stringify( name ) s2( name )
 
+
+/*********************************************************************
+ * Constructor for the terrain
+ * Param: _driver irrlict video driver
+ * Param: _smgr irrlicht scene manager
+ * Param: metaTriSelector triangle selector that handles collision
+ *********************************************************************/
+
 Terrain::Terrain(IVideoDriver * _driver, ISceneManager * _smgr, irr::scene::IMetaTriangleSelector *metaTriSelector) {
 	driver = _driver;
 	smgr = _smgr;
@@ -29,7 +38,7 @@ Terrain::Terrain(IVideoDriver * _driver, ISceneManager * _smgr, irr::scene::IMet
 	terrainNode = _smgr->addTerrainSceneNode(
 		"assets/map/valleyHeightMap.bmp",
 		0,					// parent node
-		-1,					// node idsssssssss
+		-1,					// node ids
 		core::vector3df(0.f, 0.f, 0.f),		// position
 		core::vector3df(0.f, 0.f, 0.f),		// rotation
 		core::vector3df(
@@ -44,9 +53,7 @@ Terrain::Terrain(IVideoDriver * _driver, ISceneManager * _smgr, irr::scene::IMet
 
     // make this node NOT pickable :( What a loser LOL!
     terrainNode->setID(IDFlag_IsNotPickable);
-	
 	terrainNode->setMaterialFlag(video::EMF_LIGHTING, true);
- 
 	terrainNode->setMaterialTexture(0,
 		_driver->getTexture("assets/map/groundTexture.jpg"));
 	terrainNode->setMaterialType(video::EMT_DETAIL_MAP);
@@ -84,28 +91,21 @@ Terrain::Terrain(IVideoDriver * _driver, ISceneManager * _smgr, irr::scene::IMet
   applyCollision(southWall);
   applyCollision(northWall);
   applyCollision(westWall);
-  applyCollision(eastWall);
-  
-  
-  // add its triangles to the global collision meta selector
-//  southWall->setTriangleSelector(wallSelector);
-//	wallSelector->drop();
-//  metaTriSelector->addTriangleSelector(southWall->getTriangleSelector());
-	
+  applyCollision(eastWall);	
  }
 
-//helper functions
+/*********************************************************************
+ * Helper function that applies collision to the bounding walls
+ * Param: wall the wall to apply collision to
+ *********************************************************************/
 void Terrain::applyCollision(IMeshSceneNode* wall)
 {
 	
   wallSelector =
 		smgr->createTriangleSelectorFromBoundingBox(wall);
-  
   wall->setTriangleSelector(wallSelector);
 	wallSelector->drop();
   metaTriSelector->addTriangleSelector(wall->getTriangleSelector());
-	
-
 }
 
 

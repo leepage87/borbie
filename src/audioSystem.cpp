@@ -1,12 +1,13 @@
-/*	File: audioSystem.cpp
- *	Authors: teamKillYourself
- *
- *	Description: this file contains the class definitions for the
- *	AudioSystem class. This object is responsible for providing an interface
- *  wrapping the Audio library subsystem. It is responsible for abstracting
- *  the audio playback functionality within the game, allowing for 2D and 3D
- *  sounds in the virtual world, such as music or world sound effects.
- */
+/*********************************************************************
+ * File:     audioSystem.cpp
+ * Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
+ * Function: this file contains the class definitions for the
+ *           AudioSystem class. This object is responsible for providing 
+ *           an interface wrapping the Audio library subsystem. It is 
+ *           responsible for abstracting the audio playback functionality
+ *           within the game, allowing for 2D and 3D sounds in the
+ *           virtual world, such as music or world sound effects.
+ *********************************************************************/
 
 #include "audioSystem.h"
 
@@ -14,16 +15,10 @@
 #include <math.h>
 
 
-/* TODO list:
- *  - test 3D follow target sound
- *  - test volume setting
- *  - get rid of print statements
- */
-
-
-// Constructor:
-//  Attempts to create and initialize the FMOD::System object, which is later
-//  used for all audio playback.
+/*********************************************************************
+ * Constructor: create and initialize the FMOD::System object, which is
+ *              later used for all audio playback.
+ *********************************************************************/
 AudioSystem::AudioSystem(){
     this->musicChannel = 0;
     this->ambianceChannel = 0;
@@ -54,26 +49,29 @@ AudioSystem::AudioSystem(){
     ////    irr::core::vector3df(10000/100.0, 516/100.0, 4450/100.0));
 }
 
-
-// Destructor:
-//  Cleans up the AudioSystem from memory. All SoundClip objects collected
-//  throughout your usage of the AudioSystem class should be released
-//  separately by using SoundClip->release();
+/*********************************************************************
+ * Destructor: Cleans up the AudioSystem from memory. All SoundClip
+ *              objects collected throughout your usage of the AudioSystem
+ *              class should be released separately by using
+ *              SoundClip->release();
+ *    
+ *********************************************************************/
 AudioSystem::~AudioSystem(){
     this->system->release();
 }
 
 
-
-/*** GLOBAL SOUND MANAGEMENT FUNCTIONS ***/
-
-// Attempts to create a new 2D sound from the given file name.
-// Use this to create sound objects during level loading, etc. On-the-fly
-//  sound playback functions will also use this method.
-// NOTE: If sound is intended for 3D use, use createSound3d method. Using a
-//  2D sound will cause the system to disregard all 3D positioning.
-// RETURNS the FMOD::Sound (SoundClip) object pointer, and if the sound could
-//  not be created, RETURNS NULL POINTER.
+/*********************************************************************
+  GLOBAL SOUND MANAGEMENT FUNCTIONS 
+ *********************************************************************/
+/* Attempts to create a new 2D sound from the given file name.
+ * Use this to create sound objects during level loading, etc. On-the-fly
+ * sound playback functions will also use this method.
+ * NOTE: If sound is intended for 3D use, use createSound3d method. Using a
+ *       2D sound will cause the system to disregard all 3D positioning.
+ * RETURNS: the FMOD::Sound (SoundClip) object pointer, and if the sound could
+ *          not be created, RETURNS NULL POINTER.
+ *********************************************************************/
 SoundClip* AudioSystem::createSound2d(const char *file){
     FMOD_RESULT result;
     
@@ -86,14 +84,15 @@ SoundClip* AudioSystem::createSound2d(const char *file){
     
     return sound;
 }
-
-// Attempts to create a new 3D sound from the given file name.
-// Use this to create sound objects during level loading, etc. On-the-fly
-//  sound playback functions will also use this method.
-// NOTE: If sound is intended for 2D use, use createSound2d method. Using a
-//  3D sound will result in it being played in default position (0, 0, 0)
-// RETURNS the FMOD::Sound (SoundClip) object pointer, and if the sound could
-//  not be created, RETURNS NULL POINTER.
+/*********************************************************************
+ * Attempts to create a new 3D sound from the given file name.
+ * Use this to create sound objects during level loading, etc. On-the-fly
+ * sound playback functions will also use this method.
+ * NOTE: If sound is intended for 2D use, use createSound2d method. Using a
+ *       3D sound will result in it being played in default position (0, 0, 0)
+ * RETURNS: the FMOD::Sound (SoundClip) object pointer, and if the sound could
+ *          not be created, RETURNS NULL POINTER.
+ *********************************************************************/
 SoundClip* AudioSystem::createSound3d(const char *file){
     FMOD_RESULT result;
     
@@ -108,16 +107,17 @@ SoundClip* AudioSystem::createSound3d(const char *file){
 }
 
 
-
-/*** MUSIC CONTROL METHODS ***/
-
-// (PRIVATE -- helper method)
-// Attempts to play the given SoundClip (FMOD::Sound) object on the dedicated
-//  music channel. Can be called directly or via helper method.
-// If <looped> parameter is set to true, the sound will repeat continuously
-//  until manually stopped (or until the AudioSystem object is deleted).
-// Sounds played through the playMusic call will be played in the dedicated
-//  music sound channel, and will play in standard 2D stereo mode.
+/*********************************************************************
+ MUSIC CONTROL METHODS
+ *********************************************************************/
+/* (PRIVATE -- helper method)
+ * Attempts to play the given SoundClip (FMOD::Sound) object on the dedicated
+ *  music channel. Can be called directly or via helper method.
+ *  If <looped> parameter is set to true, the sound will repeat continuously
+ *  until manually stopped (or until the AudioSystem object is deleted).
+ *  Sounds played through the playMusic call will be played in the dedicated
+ *  music sound channel, and will play in standard 2D stereo mode.
+ *********************************************************************/
 void AudioSystem::playMusic(FMOD::Sound *musicSound, bool looped){
     FMOD_RESULT result;
     
@@ -143,14 +143,16 @@ void AudioSystem::playMusic(FMOD::Sound *musicSound, bool looped){
     this->system->update();
 }
 
-// (PRIVATE -- helper method)
-// Attempts to load and play the sound file given by the string parameter.
-// If <looped> parameter is set to true, the sound will repeat continuously
-//  until manually stopped (or until the AudioSystem object is deleted).
-// Sounds played through the playMusic call will be played in the dedicated
-//  music sound channel, and will play in standard 2D stereo mode.
-// RETURNS: SoundClip / FMOD::Sound object pointer if successful;
-//  returns 0 (NULL pointer) if something went wrong).
+/*********************************************************************
+ * (PRIVATE -- helper method)
+ * Attempts to load and play the sound file given by the string parameter.
+ * If <looped> parameter is set to true, the sound will repeat continuously
+ * until manually stopped (or until the AudioSystem object is deleted).
+ * Sounds played through the playMusic call will be played in the dedicated
+ * music sound channel, and will play in standard 2D stereo mode.
+ * RETURNS: SoundClip / FMOD::Sound object pointer if successful;
+ *          returns 0 (NULL pointer) if something went wrong).
+ *********************************************************************/
 SoundClip* AudioSystem::playMusic(const char *file, bool looped){
     //return 0; // TODO: stop returning
     FMOD_RESULT result;
@@ -164,54 +166,68 @@ SoundClip* AudioSystem::playMusic(const char *file, bool looped){
     return musicSound;
 }
 
-// Attempts to load and start playing the sound file given by the parameter.
-//  This method only plays the sound once: this DOES NOT LOOP the music.
-// See playMusic(const char*, bool) above for playMusic specifications.
-// RETURNS: Pointer to the played sound object (NULL if something goes wrong)
+/*********************************************************************
+ * Attempts to load and start playing the sound file given by the parameter.
+ * This method only plays the sound once: this DOES NOT LOOP the music.
+ * See playMusic(const char*, bool) above for playMusic specifications.
+ * RETURNS: Pointer to the played sound object (NULL if something goes wrong)
+ *********************************************************************/
 SoundClip* AudioSystem::playMusic(const char *file){
     return this->playMusic(file, false);
 }
 
-// Attempts to load and start playing the sound file given by the parameter.
-//  This method causes the sound to continuously repeat: this LOOPS the music.
-// See playMusic(const char*, bool) above for playMusic specifications.
-// RETURNS: Pointer to the played sound object (NULL if something goes wrong)
+/*********************************************************************
+ * Attempts to load and start playing the sound file given by the parameter.
+ * This method causes the sound to continuously repeat: this LOOPS the music.
+ * See playMusic(const char*, bool) above for playMusic specifications.
+ * RETURNS: Pointer to the played sound object (NULL if something goes wrong)
+ *********************************************************************/
 SoundClip* AudioSystem::playMusicLoop(const char *file){
     return this->playMusic(file, true);
 }
 
-// Attempts to play the SoundClip (FMOD::Sound typedef) as a music clip.
-//  This method only plays the sound once: this DOES NOT LOOP the music.
-// See playMusic(SoundClip*, bool) above for playMusic specifications.
+/*********************************************************************
+ * Attempts to play the SoundClip (FMOD::Sound typedef) as a music clip.
+ * This method only plays the sound once: this DOES NOT LOOP the music.
+ * See playMusic(SoundClip*, bool) above for playMusic specifications.
+ *********************************************************************/
 void AudioSystem::playMusic(SoundClip *sound){
     this->playMusic(sound, false);
 }
 
-// Attempts to play the SoundClip (FMOD::Sound typedef) as a music clip.
-//  This method causes the sound to continuously repeat: this LOOPS the music.
-// See playMusic(SoundClip*, bool) above for playMusic specifications.
+/*********************************************************************
+ * Attempts to play the SoundClip (FMOD::Sound typedef) as a music clip.
+ * This method causes the sound to continuously repeat: this LOOPS the music.
+ * See playMusic(SoundClip*, bool) above for playMusic specifications.
+ *********************************************************************/
 void AudioSystem::playMusicLoop(SoundClip *sound){
     this->playMusic(sound, true);
 }
 
-// Attempts to pause the music channel if it's active. Does
-//  nothing if already paused.
+/*********************************************************************
+ * Attempts to pause the music channel if it's active. Does
+ * nothing if already paused.
+ *********************************************************************/
 void AudioSystem::pauseMusic(){
     if(this->musicChannel)
         this->musicChannel->setPaused(true);
 }
 
-// Attempts to unpause the music channel if it's active. Does
-//  nothing if already playing.
+/*********************************************************************
+ * Attempts to unpause the music channel if it's active. Does
+ * nothing if already playing.
+ *********************************************************************/
 void AudioSystem::resumeMusic(){
     if(this->musicChannel)
         this->musicChannel->setPaused(false);
 }
 
-// Attempts to set the volume of the music channel. Volume is expected to
-//  be between 0.0 (mute) and 1.0 (max) (float). Does nothing if the music
-//  channel is null/un-initialized.
-//  Volume less than 0 will be set to 0; vol > 1 will be set to 1.
+/*********************************************************************
+ * Attempts to set the volume of the music channel. Volume is expected to
+ * be between 0.0 (mute) and 1.0 (max) (float). Does nothing if the music
+ * channel is null/un-initialized.
+ * Volume less than 0 will be set to 0; vol > 1 will be set to 1.
+ *********************************************************************/
 void AudioSystem::setMusicVolume(float volume){
     // make sure volume is in the correct range
     if(volume < 0.0)
@@ -226,8 +242,11 @@ void AudioSystem::setMusicVolume(float volume){
 }
 
 
-
-/*** 2D SOUND CONTROL METHODS ***/
+/*********************************************************************
+ 2D SOUND CONTROL METHODS
+ *********************************************************************/
+/* Plays a 2d sound
+ *********************************************************************/
 void AudioSystem::playSound2d(SoundClip *sound, float volume){
     FMOD_RESULT result;
     
@@ -269,13 +288,14 @@ SoundClip* AudioSystem::playSound2d(const char *file, float volume){
 }
 
 
-
-/*** 3D SOUND CONTROL METHODS ***/
-
-// Attempts to play the given sound file in 3D space given by the Irrlicht
-//  vector3df at the provided volume. Volume is expected to be between
-//  0.0 (mute) and 1.0 (max) (float).
-// Volume less than 0 will be set to 0; vol > 1 will be set to 1.
+/*********************************************************************
+ 3D SOUND CONTROL METHODS
+ *********************************************************************/
+/* Attempts to play the given sound file in 3D space given by the Irrlicht
+ * vector3df at the provided volume. Volume is expected to be between
+ * 0.0 (mute) and 1.0 (max) (float).
+ * Volume less than 0 will be set to 0; vol > 1 will be set to 1.
+ *********************************************************************/
 void AudioSystem::playSound3d(
     SoundClip *sound, irr::core::vector3df sourcePos, float volume)
 {
@@ -325,12 +345,14 @@ void AudioSystem::playSound3d(
     this->system->update();
 }
 
-// Attempts to play the given sound file in 3D space given by the Irrlicht
-//  vector3df at the provided volume. Volume is expected to be between
-//  0.0 (mute) and 1.0 (max) (float).
-// Volume less than 0 will be set to 0; vol > 1 will be set to 1.
-// RETURNS: SoundClip / FMOD::Sound object pointer if successful;
-//  returns 0 (NULL pointer) if something went wrong).
+/*********************************************************************
+ * Attempts to play the given sound file in 3D space given by the Irrlicht
+ * vector3df at the provided volume. Volume is expected to be between
+ * 0.0 (mute) and 1.0 (max) (float).
+ * Volume less than 0 will be set to 0; vol > 1 will be set to 1.
+ * RETURNS: SoundClip / FMOD::Sound object pointer if successful;
+ *          returns 0 (NULL pointer) if something went wrong).
+ *********************************************************************/
 SoundClip* AudioSystem::playSound3d(
     const char *file, irr::core::vector3df sourcePos, float volume)
 {
@@ -341,19 +363,20 @@ SoundClip* AudioSystem::playSound3d(
 }
 
 
-
-/*** 3D TARGET FOLLOW SOUND CONTROL METHODS ***/
-
-// (PRIVATE -- helper method)
-// Attempts to play the given 3D sound attached to the provided Irrlicht
-//  scene node as a target to follow. The sound is established in the initial
-//  position of the given target node, and then is added to the list of
-//  updated FollowSounds to be checked each frame for re-positioning.
-// If <looped> parameter is set to TRUE, then the sound will keep looping
-//  until the target node is destroyed (i.e. the pointer beomces null).
-// Sound plays at the provided volume. Volume is expected to be between
-//  0.0 (mute) and 1.0 (max) (float).
-// Volume less than 0 will be set to 0; vol > 1 will be set to 1.
+/*********************************************************************
+ 3D TARGET FOLLOW SOUND CONTROL METHODS
+ *********************************************************************/
+/* (PRIVATE -- helper method)
+ * Attempts to play the given 3D sound attached to the provided Irrlicht
+ * scene node as a target to follow. The sound is established in the initial
+ * position of the given target node, and then is added to the list of
+ * updated FollowSounds to be checked each frame for re-positioning.
+ * If <looped> parameter is set to TRUE, then the sound will keep looping
+ * until the target node is destroyed (i.e. the pointer beomces null).
+ * Sound plays at the provided volume. Volume is expected to be between
+ * 0.0 (mute) and 1.0 (max) (float).
+ * Volume less than 0 will be set to 0; vol > 1 will be set to 1.
+ *********************************************************************/
 void AudioSystem::playSound3dFollowTarget(FMOD::Sound *sound,
     GameObject *target,
     float volume, bool looped)
@@ -414,11 +437,13 @@ void AudioSystem::playSound3dFollowTarget(FMOD::Sound *sound,
     this->system->update();
 }
 
-// Attempts to load and start playing the sound file given by the parameter,
-//  following the given Irrlicht scene node as a target at the provided volume.
-// This method only plays the sound once: this DOES NOT LOOP the sound.
-// See playSound3dFollowTarget above for follower sound specifications.
-// RETURNS: Pointer to the played sound object (NULL if something goes wrong)
+/*********************************************************************
+ * Attempts to load and start playing the sound file given by the parameter,
+ * following the given Irrlicht scene node as a target at the provided volume.
+ * This method only plays the sound once: this DOES NOT LOOP the sound.
+ * See playSound3dFollowTarget above for follower sound specifications.
+ * RETURNS: Pointer to the played sound object (NULL if something goes wrong)
+ *********************************************************************/
 SoundClip* AudioSystem::playSound3d(const char *file,
     GameObject *target, float volume)
 {
@@ -428,22 +453,26 @@ SoundClip* AudioSystem::playSound3d(const char *file,
     return sound;
 }
 
-// Attempts to play the given SoundClip (FMOD::Sound typedef) as a 3D sound
-//  following the given Irrlicht scene node as a target at the provided volume.
-// This method only plays the sound once: this DOES NOT LOOP the sound.
-// See playSound3dFollowTarget above for follower sound specifications.
+/*********************************************************************
+ * Attempts to play the given SoundClip (FMOD::Sound typedef) as a 3D sound
+ * following the given Irrlicht scene node as a target at the provided volume.
+ * This method only plays the sound once: this DOES NOT LOOP the sound.
+ * See playSound3dFollowTarget above for follower sound specifications.
+ *********************************************************************/
 void AudioSystem::playSound3d(SoundClip *sound,
     GameObject *target, float volume)
 {
     this->playSound3dFollowTarget(sound, target, volume, false);
 }
 
-// Attempts to load and start playing the sound file given by the parameter,
-//  following the given Irrlicht scene node as a target at the provided volume.
-// This method causes the sound to continuously repeat: this LOOPS the sound
-//  until the target node is destroyed (deleted).
-// See playSound3dFollowTarget above for follower sound specifications.
-// RETURNS: Pointer to the played sound object (NULL if something goes wrong)
+/*********************************************************************
+ * Attempts to load and start playing the sound file given by the parameter,
+ * following the given Irrlicht scene node as a target at the provided volume.
+ * This method causes the sound to continuously repeat: this LOOPS the sound
+ * until the target node is destroyed (deleted).
+ * See playSound3dFollowTarget above for follower sound specifications.
+ * RETURNS: Pointer to the played sound object (NULL if something goes wrong)
+ *********************************************************************/
 SoundClip* AudioSystem::playSound3dLoop(const char *file,
     GameObject *target, float volume)
 {
@@ -453,41 +482,46 @@ SoundClip* AudioSystem::playSound3dLoop(const char *file,
     return sound;
 }
 
-// Attempts to play the given SoundClip (FMOD::Sound typedef) as a 3D sound
-//  following the given Irrlicht scene node as a target at the provided volume.
-// This method causes the sound to continuously repeat: this LOOPS the sound
-//  until the target node is destroyed (deleted).
-// See playSound3dFollowTarget above for follower sound specifications.
+/*********************************************************************
+ * Attempts to play the given SoundClip (FMOD::Sound typedef) as a 3D sound
+ * following the given Irrlicht scene node as a target at the provided volume.
+ * This method causes the sound to continuously repeat: this LOOPS the sound
+ * until the target node is destroyed (deleted).
+ * See playSound3dFollowTarget above for follower sound specifications.
+ *********************************************************************/
 void AudioSystem::playSound3dLoop(SoundClip *sound,
     GameObject *target, float volume)
 {
     this->playSound3dFollowTarget(sound, target, volume, true);
 }
-
-// Attempts to remove
+/*********************************************************************
+ * Attempts to remove following sounds
+ *********************************************************************/
 void AudioSystem::removeFollowSounds(){
     this->followSounds.clear();
 }
 
 
-
-/*** SYSTEM UPDATE METHOD ***/
-
-// Updates the global 3D sound environment with the listener position
-//  and orientation of the player (pass in vectors from the camera
-//  or player node - wherever you want to "hear" your sound from).
-// Also updates each of the FollowSound channel positions to the position
-//  of its target Irrlicht scene node. If the following channel is done
-//  playing, or if the followed target is deleted, the FollowSound is also
-//  removed and no longer updated.
-// Once update is finished, calls the FMOD audio system to update itself.
-// This function should be called every frame
-//  (possibly except when in the main menu or not playing 3D sounds).
+/*********************************************************************
+ SYSTEM UPDATE METHOD
+ *********************************************************************/
+/* Updates the global 3D sound environment with the listener position
+ * and orientation of the player (pass in vectors from the camera
+ * or player node - wherever you want to "hear" your sound from).
+ * Also updates each of the FollowSound channel positions to the position
+ * of its target Irrlicht scene node. If the following channel is done
+ * playing, or if the followed target is deleted, the FollowSound is also
+ * removed and no longer updated.
+ * Once update is finished, calls the FMOD audio system to update itself.
+ * This function should be called every frame
+ * (possibly except when in the main menu or not playing 3D sounds).
+ * Param: playerPos The player's position
+ * Param: playerRot The player's rotational position
+ *********************************************************************/
 void AudioSystem::updateSound(
     const irr::core::vector3df playerPos,
     const irr::core::vector3df playerRot
 ){
-// TODO: can use FPS counter to update velocity data. What is vel for?
 
     // get scaled 3D sound position of listener
     FMOD_VECTOR listenerPosition;
@@ -516,7 +550,6 @@ void AudioSystem::updateSound(
         &listenerRotation,  // forward orientation of player
         0);                 // up orientation of player
     
-    
     // update each of the FollowSounds
     int numFollowSounds = this->followSounds.size();
     for(int i=0; i<numFollowSounds; ++i){
@@ -543,9 +576,7 @@ void AudioSystem::updateSound(
             pos.z = targetPos.Z / AUDIO_WORLD_SCALE;
             fs.channel->set3DAttributes(&pos, 0);
         }
-    }
-    
-    
+    }    
     // update the audio system
     system->update();
 }
