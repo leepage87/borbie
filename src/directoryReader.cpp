@@ -1,9 +1,10 @@
-/*	File: directoryReader.h
- *	Authors: teamKillYourself
+/*********************************************************************
+ *	File: directoryReader.h
+ *	Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
  *
  *	Description: provides a global interface for reading a directory of files
  *  into the specified list (std library list).
- */
+ *********************************************************************/
 
 #include "directoryReader.h"
 
@@ -13,7 +14,9 @@
 
 using namespace std;
 
-
+/*********************************************************************
+ * Populates a list with all filenames in the given directory
+ *********************************************************************/
 void DirectoryReader::getDirectoryFiles(
     string dirName,         // directory name
     vector<string> &list,   // list to be populated

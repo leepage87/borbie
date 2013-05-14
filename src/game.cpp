@@ -1,13 +1,13 @@
-/*	File: game.cpp
- *	Authors: idk your names
+ /********************************************************************* 
+ *	File: game.cpp
+ *	Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
  *
- *	Description: this file contains the class declaration for the
- *	Game class. This object is responsible for starting the
+ *	Description: This object is responsible for starting the
  *	game, initializaing the Irrlicht engine, and then switching between
  *	the primary high-level phases of the game (i.e. main menu and
  *	game instance). It "glues" main game pieces together under the
  *	game engine's roof.
- */
+ *********************************************************************/
 
 #include "game.h"
 #include "random.h"
@@ -22,7 +22,13 @@ using namespace video;
 using namespace gui;
 
 
-//Constructor
+/*********************************************************************
+ * Constructor: Initializes the irrlicht device driver, audio system,
+ *              event receiver, scene manager, GUI enviornment, and
+ *              loads the main menu.
+ * Param: runMode determines whether or not to run the game in fullscreen
+ *                See header file for full description.
+ *********************************************************************/
 Game::Game(unsigned int runMode)
 {
     // remember the run mode flag
@@ -71,8 +77,9 @@ Game::Game(unsigned int runMode)
     loadMainMenuState(); 
 }
 
-
-//De(con)structor: clean up Irrlicht
+/*********************************************************************
+ * De(con)structor: clean up Irrlicht
+ *********************************************************************/
 Game::~Game()
 {
     if(this->gameInstance)
@@ -84,14 +91,17 @@ Game::~Game()
     this->device->drop();
 }
 
-
-// loads the main menu
+/*********************************************************************
+ * loads the main menu
+ *********************************************************************/
 void Game::loadMainMenuState(){
     this->gameMenu = new GameMenu(guienv, driver, audioSystem);
 }
 
 
-// loads the main game state
+/*********************************************************************
+ * loads the main game 
+ *********************************************************************/
 void Game::loadGameState(){
     this->gameInstance = new GameInstance(
         this->smgr, this->guienv, this->driver, this->device,
@@ -99,12 +109,16 @@ void Game::loadGameState(){
 //    this->audioSystem->setMusicVolume(0.5);
 }
 
+/*********************************************************************
+ * Returns: the current game state
+ *********************************************************************/
 GameState Game::getGameState(void)
 {
   return gameState;
 }
-
-// switches to the next available game state
+/*********************************************************************
+ * switches to the next available game state
+ *********************************************************************/
 void Game::manageStates()
 {
 	// if currently in menu state, switch to game state
@@ -128,12 +142,18 @@ void Game::manageStates()
 	}
 }
 
+
+/*********************************************************************
+ * Returns: the game menu
+ *********************************************************************/
 GameMenu* Game::getGameMenu()
 {
     return gameMenu; 
 }
 
-//TODO eventually refactor to call a run either playable game or gui-menu
+/*********************************************************************
+ * Runs the game and calls per-frame update methods
+ *********************************************************************/
 int Game::run()
 {  
     while(device->run())

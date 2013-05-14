@@ -1,5 +1,6 @@
-/*	File: game.h
- *	Authors: idk your names
+ /********************************************************************* 
+ *	File: game.h
+ *	Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
  *
  *	Description: this file contains the class declaration for the
  *	Game class. This object is responsible for starting the
@@ -7,7 +8,7 @@
  *	the primary high-level phases of the game (i.e. main menu and
  *	game instance). It "glues" main game pieces together under the
  *	game engine's roof.
- */
+ *********************************************************************/
 
 #ifndef GAME_H
 #define GAME_H
@@ -54,7 +55,6 @@ enum GameState {
 };
 
 
-// TODO: fix this
 static irr::IrrlichtDevice *g_device = 0;
 static irr::IEventReceiver *g_receiver = 0;
 static irr::video::IVideoDriver *g_driver = 0;

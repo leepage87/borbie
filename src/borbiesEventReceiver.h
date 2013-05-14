@@ -1,6 +1,7 @@
 /*********************************************************************
  * File:     borbiesEventReceiver.h
  * Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
+
  * Function: this is the header file for borbiesEventReceiver.cpp
  *********************************************************************/
 

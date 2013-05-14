@@ -1,9 +1,10 @@
-/*	File: directoryReader.h
- *	Authors: teamKillYourself
+/********************************************************************* 
+ *	File: directoryReader.h
+ *	Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
  *
  *	Description: provides a global interface for reading a directory of files
  *  into the specified list (std library list).
- */
+ *********************************************************************/
 
 #ifndef DIRECTORY_READER_H
 #define DIRECTORY_READER_H
