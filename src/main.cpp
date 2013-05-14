@@ -1,10 +1,10 @@
-/* 
- * Borbie's Big Adventure: LET'S HIT THE TOWN! main file
- * Programmers: Lee Page
- *              Jonathan Miodownik
- *              Richard Teammco
- *              Ian Madigan
-*/
+/*********************************************************************
+ * File:     main.cpp
+ * Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
+
+ * Function: this is the main file
+ *********************************************************************/
+
 
 #include "game.h"
 #include <iostream>
