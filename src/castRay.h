@@ -1,9 +1,10 @@
-/*	File: castRay.h
- *	Authors: teamKillYourself
+/*********************************************************************
+ *	File: castRay.h
+ *	Authors: Richard Teammco, Lee Page, Jonathan Miodownik
  *
  *	Description: this file contains the class declaration of the
  *	ray caster, which allows the user to mouseover and select objects
- */
+ *********************************************************************/
 
 #ifndef CAST_RAY_H
 #define CAST_RAY_H

@@ -1,6 +1,6 @@
 /*********************************************************************
  *	File: buildings.h
- *	Authors: idk your names
+ *	Authors: Richard Teammco, Lee Page, Jonathan Miodownik
  *
  *	Description: this file contains the class declaration of the
  *	buildings list object. The building list object contains a
