@@ -1,3 +1,12 @@
+/*********************************************************************
+ * File:     hud.h
+ * Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
+
+ * Function: This is the class delaration for the HUD object, which
+ * displays health and score information as well as a borbie face and 
+ * crosshair when applicable.
+ *********************************************************************/
+
 #ifndef HUD_H
 #define HUD_H
 

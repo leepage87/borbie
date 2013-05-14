@@ -1,3 +1,13 @@
+/*********************************************************************
+ * File:     hud.cpp
+ * Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
+
+ * Function: This creates the HUD object, which displays health and
+ *           score information as well as a borbie face and crosshair
+ *           when applicable.
+ *********************************************************************/
+
+
 #include "hud.h"
 #include "gameInstance.h"
 
@@ -8,6 +18,13 @@ using namespace gui;
 using namespace video;
 using namespace core;
 
+
+/*********************************************************************
+ * Constructor: Initializes all necessary engine pointers.  Loads all
+ *              HUD textures and fonts.
+ * Param: gameInstasnce the game instance containing all necessary
+ *        irr pointers
+ *********************************************************************/
 Hud::Hud(GameInstance *gameInstance){
   this->gameInstance=gameInstance;
   this->guienv = gameInstance->getIGUIEnvironment();
@@ -36,12 +53,18 @@ Hud::Hud(GameInstance *gameInstance){
   this->targetImageSize = this->targetImage->getSize();
 }
 
+/*********************************************************************
+ * Destructor: Cut off its head.  This kills the HUD.
+ *********************************************************************/
 Hud::~Hud(){
   this->hudTexture->drop();
   this->targetImage->drop();
 }
 
-
+/*********************************************************************
+ * Renders the HUD on a frame by frame basis, updating each component
+ * (health, face, score, xhair) as necessary.
+ *********************************************************************/
 void Hud::drawHud(){
   // get screen dimensions
   float screenWidth = driver->getScreenSize().Width;
@@ -114,6 +137,9 @@ void Hud::drawHud(){
   }
 }
 
+/*********************************************************************
+ * Updates the facial status of borbie based on her current health
+ *********************************************************************/
 void Hud::updateFace(int health)
 {
   if(health >= 750)
@@ -134,16 +160,24 @@ void Hud::updateFace(int health)
   }
 }
 
-// start or stop displaying of the target icon in the middle of the screen
+/*********************************************************************
+ * Start or stop displaying of the target icon in the middle of the screen
+ *********************************************************************/
 void Hud::setTargetMarkerEnabled(bool val){
   this->targetMarkerEnabled = val;
 }
 
-
+/*********************************************************************
+ * Not yet implemented, but would trigger various things, like
+ * dialogue and music based on healthState
+ *********************************************************************/
 void Hud::changeHealthState(const int healthState){
 
 }
-
+/*********************************************************************
+ * Not yet implemented, but would change the text based on borbie's
+ * "mood"
+ *********************************************************************/
 void Hud::changeMoodText(const char *text){
 
 }
