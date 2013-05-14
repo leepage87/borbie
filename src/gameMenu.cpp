@@ -1,3 +1,10 @@
+/*********************************************************************
+ * File:     gameMenu.cpp
+ * Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
+
+ * Function: This creates the game's menu object.
+ *********************************************************************/
+
 #include "gameMenu.h"
 
 using namespace irr;
@@ -5,6 +12,11 @@ using namespace gui;
 using namespace video;
 using namespace core;
 
+
+/*********************************************************************
+ * Constructor: Initializes all necessary engine pointers, adds sound,
+ * and creates menu buttons.
+ *********************************************************************/
 GameMenu::GameMenu(IGUIEnvironment *guienv, IVideoDriver *driver, AudioSystem *audioSystem)
 {
   this->guienv=guienv;
@@ -31,22 +43,36 @@ GameMenu::GameMenu(IGUIEnvironment *guienv, IVideoDriver *driver, AudioSystem *a
   update();
 }
 
+
+/*********************************************************************
+ * Destructor: Clears the GUI env and releases all related sounds
+ *********************************************************************/
 GameMenu::~GameMenu()
 {
   sound->release();
   guienv->clear();
 }
 
+/*********************************************************************
+ * Updates the menu rendering on a frame by frame basis
+ *********************************************************************/
 void GameMenu::update()
 {
   drawMenu();
 }
 
+/*********************************************************************
+ * Getter for game buttons
+ * Returns: gameButton that got got
+ *********************************************************************/
 GameButton GameMenu::getGameButton(void)
 {
   return gameButton;
 }
 
+/*********************************************************************
+ * Draws each frame of the menu, is called by the Update() method
+ *********************************************************************/
 void GameMenu::drawMenu()
 {
   this->screenHeight = driver->getScreenSize().Height;

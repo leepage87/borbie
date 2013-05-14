@@ -1,6 +1,6 @@
 /*********************************************************************
  *	File: buildingInstance.cpp
- *	Authors: Richard Teammco, Lee Page, Jonathan Miodownik
+ *	Authors: Richard Teammco, Lee Page, Jonathan Miodownik, Ian Madigan
  *
  *	Description: The building object provides a specification
  *	of the abstract GameObject class and contains functions and variables

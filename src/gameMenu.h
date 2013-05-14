@@ -1,3 +1,10 @@
+/*********************************************************************
+ * File:     gameMenu.h
+ * Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
+
+ * Function: This is the class declaration for the gameMenu object
+ *********************************************************************/
+
 #ifndef GAME_MENU_H
 #define GAME_MENU_H
 
