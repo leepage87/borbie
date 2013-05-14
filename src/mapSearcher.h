@@ -1,9 +1,10 @@
-/*	File: mapSearcher.h
- *	Authors: teamKillYourself
+/*********************************************************************
+ *	File: mapSearcher.h
+ *  Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
  *
  *	Description: inplements an A* search algorithm that traverses the current
  *  map and determines the shortest path to a particular road intersection.
- */
+ *********************************************************************/
 
 #ifndef MAP_SEARCHER_H
 #define MAP_SEARCHER_H

@@ -1,9 +1,11 @@
-/*	File: mapSearcher.cpp
- *	Authors: teamKillYourself
+/*********************************************************************
+ *	File: mapSearcher.cpp
+ *  Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
  *
  *	Description: inplements an A* search algorithm that traverses the current
  *  map and determines the shortest path to a particular road intersection.
- */
+ *********************************************************************/
+
 
 #include "mapSearcher.h"
 #include "aStarPriorityQueue.h"
@@ -15,13 +17,14 @@
 using namespace std;
 
 
-
-/*** --- SearchNode Definitions --- ***/
-
-// Constructor:
-//  Copies all of the important values of the intersection and creates
-//  them as a SearchNode, initializing cost to 0 and the linked intersection
-//  to the one provided.
+/*********************************************************************
+                     --- SearchNode Definitions ---
+ *********************************************************************
+ * Constructor:
+ * Copies all of the important values of the intersection and creates
+ * them as a SearchNode, initializing cost to 0 and the linked
+ * intersection to the one provided.
+ *********************************************************************/
 SearchNode::SearchNode(RoadIntersection *intersection){
     this->X = intersection->X;
     this->Y = intersection->Y;
@@ -45,8 +48,9 @@ vector<SearchNode *> SearchNode::getNeighbors(){
     return neighbors;
 }
 
-
-// Return an Irrlicht version of a 3D vector resembling this node's position
+/*********************************************************************
+ * Return an Irrlicht version of a 3D vector resembling this node's position
+ *********************************************************************/
 irr::core::vector3df SearchNode::getPosition(){
     irr::core::vector3df pos;
     pos.X = this->X;
@@ -56,18 +60,22 @@ irr::core::vector3df SearchNode::getPosition(){
 }
 
 
-
-/*** --- MapSearcher Definitions --- ***/
-
-
-// Constructor: keeps track of the MapReader pointer that built this searcher.
+/*********************************************************************
+                   --- MapSearcher Definitions --- 
+ *********************************************************************
+ * Constructor: Keeps track of the MapReader pointer that built
+ *              this searcher.
+ *********************************************************************/
 MapSearcher::MapSearcher(MapReader *mapReader){
     this->mapReader = mapReader;
 }
 
-
-// Returns the closest RoadIntersection pointer from the given location.
-//  If none exist on the map, returns an uninitialized RoadIntersection.
+/*********************************************************************
+ * Gets the closest RoadIntersection pointer from the given location.
+ * If none exist on the map, returns an uninitialized RoadIntersection.
+ * Param: location - the current location
+ * Returns: The closest roadIntersection point
+ *********************************************************************/
 RoadIntersection * MapSearcher::getClosestRoadIntersection(
     irr::core::vector3df location)
 {
@@ -95,23 +103,30 @@ RoadIntersection * MapSearcher::getClosestRoadIntersection(
     return closest;
 }
 
-
-// Returns the distance (in game units) from between the two given X, Y
-//  coordinates.
+/*********************************************************************
+ * Returns the distance (in game units) from between the two
+ * given X, Y coordinates.
+ * Param: X1 - X coord 1
+ * Param: Y1 - Y coord 1
+ * Param: X2 - X coord 2
+ * Param: Y2 - Y coord 2
+ * Returns: distance between (X1,Y1) and (X2,Y2)
+ *********************************************************************/
 float MapSearcher::getDistance(float X1, float Y1, float X2, float Y2){
     return sqrt((X2-X1)*(X2-X1) + (Y2-Y1)*(Y2-Y1));
 }
 
-
-// Find shortest path via roads from the first location to the second
-//  location.
-// RETURNS: a list of road intersection pointers that represent the path
-//  required to take, starting with the closest road intersection to the
-//  start location, and ending with the closest road intersection to the
-//  destination location.
-// If no path is available, or the end point is already close enough to the
-//  starting point (where the start and end road intersections would be the
-//  same), returns an empty list.
+/*********************************************************************
+ * Find shortest path via roads from the first location to the second
+ * location.
+ * Returns: a list of road intersection pointers that represent the path
+ *          required to take, starting with the closest road intersection
+ *          to the start location, and ending with the closest road
+ *          intersection to the destination location. If no path is available,
+ *          or the end point is already close enough to the  starting point
+ *          (where the start and end road intersections would be the
+ *          same), returns an empty list.
+ *********************************************************************/
 std::vector<RoadIntersection> MapSearcher::getShortestPath(
     irr::core::vector3df startPosition,
     irr::core::vector3df endPosition)
