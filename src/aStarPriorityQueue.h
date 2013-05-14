@@ -1,9 +1,10 @@
-/*	File: aStarPriorityQueue.h
- *	Authors: teamKillYourself
+/*********************************************************************
+ * File:     aStarPriorityQueue.h
+ * Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
  *
  *	Description: a very crappy implementation of an interable priority queue
  *  to use for the A* map search algorithm.
- */
+ *********************************************************************/
 
 #ifndef A_STAR_PRIORITY_QUEUE_H
 #define A_STAR_PRIORITY_QUEUE_H
@@ -12,13 +13,14 @@
 #include <vector>
 #include <algorithm>
 
-
-// Customized priority queue implemented for the A* algorithm. Note:
-//  this queue is dumpy and inefficient, might need optimization.
-// TEMPLATE: arbitrary object T: requires operators "<" and "=="
-//  for comparisons.
-// TODO/NOTE: this currently only works if T is a pointer type. Comparisons all
-//  dereference at the moment.
+/*********************************************************************
+ * Customized priority queue implemented for the A* algorithm. Note:
+ * this queue is dumpy and inefficient, might need optimization.
+ * TEMPLATE: arbitrary object T: requires operators "<" and "=="
+ *           for comparisons.
+ * TODO/NOTE: this currently only works if T is a pointer type.
+ *            Comparisons all dereference at the moment.
+ *********************************************************************/
 template <class T> class AStarPriorityQueue {
 
   private:
