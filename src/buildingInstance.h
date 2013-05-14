@@ -1,11 +1,13 @@
-/*	File: buildingInstance.h
+/********************************************************************* 
+ *	File: buildingInstance.h
  *	Authors: idk your names
  *
  *	Description: this file contains the class declaration of the
  *	building instance object. The building object provides a specification
  *	of the abstract GameObject class and contains functions and variables
  *	specific to destructable buildings placed within the environment.
- */
+ *********************************************************************/
+
 
 #ifndef BUILDING_INSTANCE_H
 #define BUILDING_INSTANCE_H

@@ -1,11 +1,11 @@
-/*	File: buildingInstance.cpp
- *	Authors: idk your names
+/*********************************************************************
+ *	File: buildingInstance.cpp
+ *	Authors: Richard Teammco, Lee Page, Jonathan Miodownik
  *
- *	Description: this file contains the class declaration of the
- *	building instance object. The building object provides a specification
+ *	Description: The building object provides a specification
  *	of the abstract GameObject class and contains functions and variables
  *	specific to destructable buildings placed within the environment.
- */
+ *********************************************************************/
 
 #include "buildingInstance.h"
 #include "gameInstance.h"
@@ -61,11 +61,13 @@ BuildingInstance::BuildingInstance(
 	this->posY = posY;
 }
 
-
-// Adds a triangle selector to the given meta triangle selectior to add this
-//  building's collision detection to the global collision meta. The collision
-//  selector is given from the scene node's bounding box, which matches the
-//  visible object exactly since it is just a cube.
+/*********************************************************************
+ * Adds a triangle selector to the given meta triangle selectior to add this
+ * building's collision detection to the global collision meta. The collision
+ * selector is given from the scene node's bounding box, which matches the
+ * visible object exactly since it is just a cube.
+ * param: metaTriSelector triangle selector that handles collision
+ *********************************************************************/
 void BuildingInstance::applyCollision(
 	irr::scene::IMetaTriangleSelector *metaTriSelector)
 {
@@ -77,9 +79,11 @@ void BuildingInstance::applyCollision(
 	metaTriSelector->addTriangleSelector(sceneNode->getTriangleSelector());
 }
 
-
-// @Override
-// do damage
+/*********************************************************************
+ * Overrides the applyDamage method to check if the building should be
+ * set on fire
+ * Param: amount the amount of damage to do
+ *********************************************************************/
 void BuildingInstance::applyDamage(int amount) {
     GameObject::applyDamage(amount);
     
@@ -91,9 +95,10 @@ void BuildingInstance::applyDamage(int amount) {
         this->setAblaze();
 }
 
-
-// Sets this building on fire. Oh boy.
-// (adds a fire animation to the building model using particle effects)
+/*********************************************************************
+ * Sets this building on fire. Oh boy.
+ * Adds a fire animation to the building model using particle effects.
+ *********************************************************************/
 void BuildingInstance::setAblaze(){
     // if already exploded or already on fire, prevent adding the fire again
     if(this->hasBeenExploded || this->isOnFire)
@@ -189,9 +194,10 @@ void BuildingInstance::setAblaze(){
 	    this);
 }
 
-
-// Override: explode also removes the fire effect particle systems, AND AND AND
-//  it makes the roof go away.
+/*********************************************************************
+ * Overrides the explode method also removes the fire effect particle
+ * systems, AND AND AND it makes the roof go away.
+*********************************************************************/
 void BuildingInstance::explode(){
     // call super class explode
     GameObject::explode();
