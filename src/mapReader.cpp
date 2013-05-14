@@ -1,11 +1,12 @@
-/*	File: mapReader.cpp
- *	Authors: teamKillYourself
- *
+/*********************************************************************
+ * File:     mapReader.cpp
+ * Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
+ * 
  *	Description: provides a global interface for reading the map coordinate
  *  file, and storing all of the coordinate data for all map game objects,
  *  such as buildings, trees, lamps, spawn points, etc. This data can be
  *  access globally (static).
- */
+ *********************************************************************/
 
 #include "mapReader.h"
 #include "mapSearcher.h"
@@ -17,12 +18,12 @@
 
 using namespace std;
 
-
-// Constructor:
-// Reads the coordinate file, and parses it. Populates the lists of
-//  coordinates as dictated by the file. See documentation on the map
-//  file for more information.
-// TODO - make documentation for the map file.
+/*********************************************************************
+ * Constructor: Reads the coordinate file, and parses it. Populates 
+ *              the lists of coordinates as dictated by the file.
+ *              See documentation on the map file for more information.
+ * TODO - make documentation for the map file.
+ *********************************************************************/
 MapReader::MapReader(const char *fileName){
     // TODO - make this global or returned from Terrain map object
     const int farX = 20400.0f;
@@ -207,7 +208,10 @@ MapReader::MapReader(const char *fileName){
     }
 }
 
-
+/*********************************************************************
+ * Map searcher getter method
+ * Returns: MapSearcher that got got by the getter
+ *********************************************************************/
 MapSearcher* MapReader::getMapSearcher(){
     return new MapSearcher(this);
 }
