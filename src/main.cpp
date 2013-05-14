@@ -1,8 +1,9 @@
 /*********************************************************************
  * File:     main.cpp
  * Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
-
- * Function: this is the main file
+ * 
+ * Function: This is the main file, it creates a game object and tells
+ *           it to run.
  *********************************************************************/
 
 
@@ -10,13 +11,15 @@
 #include <iostream>
 #include <string>
 
-/* main: determines runtime commands and attempts to run the game as such.
+/*********************************************************************
+/* Determines runtime commands and attempts to run the game as such.
  * RUNTIME FLAGS: to add a runtime parameter, do "-x" after the executable
- *	command, where "x" represents the flag value.
+ *	              command, where "x" represents the flag value.
  * FLAGS:
  *	d	debug: runs the game in debug mode (allows free movevement)
  *	f	fullscreen: runs the game in fullscreen (not recommended if broken)
- */
+
+ *********************************************************************/
 int main(int argc, char ** argv) {
 	// loop through all arguments to determine which flags to set when
 	//	constructing the game.
