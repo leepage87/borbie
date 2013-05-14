@@ -1,12 +1,11 @@
-/*	File: buildings.cpp
- *	Authors: idk your names
+/*********************************************************************
+ *	File: buildings.cpp
+ *	Authors: Richard Teammco, Lee Page, Jonathan Miodownik
  *
- *	Description: this file contains the class declaration of the
- *	buildings list object. The building list object contains a
- *	function for constructing all buildings and placing them into the
+ *	Description: The building list object contains a function for 
+ *  constructing all buildings and placing them into the
  *	scene automatically.
- */
-
+ *********************************************************************/
 #include "buildings.h"
 #include "mapReader.h"
 #include "directoryReader.h"
@@ -22,10 +21,13 @@ using namespace irr;
 using namespace scene;
 using namespace video;
 
-
-// CONSTRUCTOR: initializes the list of building textures as they will
-//  be applied to each generated building. Sets up pointers to keep track
-//  of Irrlicht objects, and also seeds the random generator using system time.
+/*********************************************************************
+ * CONSTRUCTOR: initializes the list of building textures as they will
+ * be applied to each generated building. Sets up pointers to keep track
+ * of Irrlicht objects, and also seeds the random generator using system time.
+ * Param: metaTriSelector the triangle selector used for collision
+ * Param: gameInstance the gameInstance containing all necessary pointers
+ *********************************************************************/
 Buildings::Buildings(
 	IMetaTriangleSelector *metaTriSelector,
 	GameInstance *gameInstance)
@@ -63,12 +65,15 @@ void Buildings::generateObjects(){
     }
 }
 
-
-// Add a building at the given position with a randomized height
-//  (provided by the getRandomHeight function) and a texture
-//  selected randomly from the textureList std::vector.
-// RETURNS a pointer to the builing object created
-// --- (public) ---
+/*********************************************************************
+ * Add a building at the given position with a randomized height
+ * (provided by the getRandomHeight function) and a texture
+ * selected randomly from the textureList std::vector.
+ * Param: posX the X coordinate at which the soldier will be spawned
+ * Param: posY the Y coordinate at which the soldier will be spawned
+ * Param: posZ the Z coordinate at which the soldier will be spawned
+ * RETURNS: a pointer to the builing object created
+ *********************************************************************/
 BuildingInstance* Buildings::addRandomBuilding(
 	float xPos, float yPos, float zPos)
 {
@@ -81,10 +86,11 @@ BuildingInstance* Buildings::addRandomBuilding(
 	return this->makeBuilding(textureIndex, topTexture, rHeight, xPos, yPos, zPos);
 }
 
-
-// Returns a random height between the maximum and minimum heights allowed,
-//  with a general bias towards mid-ranged heights. The bias and all height
-//  restriction constants can be adjusted in the buildings.h file.
+/*********************************************************************
+ * Returns a random height between the maximum and minimum heights allowed,
+ * with a general bias towards mid-ranged heights. The bias and all height
+ * restriction constants can be adjusted in the buildings.h file.
+ *********************************************************************/
 float Buildings::getRandomHeight(){
     // get a random number between 0 and 1 (excluding 1)
     float randf = Random::randomFloat();
@@ -116,12 +122,13 @@ float Buildings::getRandomHeight(){
     return height;
 }
 
-
-// Make a building with the given texture and height value. This function
-//  adds the buildings collision triangles to the global triangle selector
-//  for global collision.
-// RETURNS the building object created.
-// --- (private) ---
+/*********************************************************************
+ * Make a building with the given texture and height value. This function
+ * adds the buildings collision triangles to the global triangle selector
+ * for global collision.
+ * RETURNS: the building object created.
+ * --- (private) ---
+ *********************************************************************/
 BuildingInstance* Buildings::makeBuilding(
     int textureIndex, int topTexture, float height,
 	float xPos, float yPos, float zPos)

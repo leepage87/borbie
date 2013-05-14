@@ -1,11 +1,12 @@
-/*	File: buildings.h
+/*********************************************************************
+ *	File: buildings.h
  *	Authors: idk your names
  *
  *	Description: this file contains the class declaration of the
  *	buildings list object. The building list object contains a
  *	function for constructing all buildings and placing them into the
  *	scene automatically.
- */
+ *********************************************************************/
 
 #ifndef BUILDINGS_H
 #define BUILDINGS_H
