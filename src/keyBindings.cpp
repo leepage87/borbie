@@ -1,15 +1,25 @@
-/**
- * helper class use to clean up key bindings settings
- */
+/*********************************************************************
+ * File:     keyBindings.cpp
+ * Authors:  Richard Teammco, Lee Page, Jonathan Miodownik
+
+ * Function: Helper class use to clean up key bindings settings
+ *********************************************************************/
 
 #include "keyBindings.h"
 
 using namespace irr;
 
+
+/*********************************************************************
+ * Constructor: Initializes the keyMap
+ *********************************************************************/
 KeyBindings::KeyBindings(SKeyMap *keyMap){
   this->keyMap = keyMap;
 }
 
+/*********************************************************************
+ * Binds WASD, space, and arrow keys to relative movement
+ *********************************************************************/
 void KeyBindings::setKeys()
 {
  // forward movement (UP arrow and W)
